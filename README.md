@@ -1,8 +1,8 @@
 # Security Agent Rules & Policies
-This repository hosts Datadog-curated rules & polices for the security agent. There are two main types:
+This repository hosts Datadog-curated rules & polices for the security agent. There are two main types: [Compliance Policies](#compliance-policies) and [Runtime Security Rules](#runtime-security-rules).
 
 ## Compliance Policies
-These policies provided by Datadog check configuration and state against specific compliance frameworks. Currently Datadog provides out of the box support for a number of CIS benchmarks. The Center for Internet Security (CIS) is a non-profit organization formed to "make the connected world a safer place by developing, validating, and promoting timely best practice solutions that help people, businesses, and governments protect themselves against pervasive cyber threats"[1](https://www.cisecurity.org/about-us/). These benchmarks are used through the security & compliance industries as a set of best practices.
+These policies, provided by Datadog, check configuration and state against specific compliance frameworks. Currently Datadog provides out of the box support for a number of CIS benchmarks. The Center for Internet Security (CIS) is a non-profit organization formed to "make the connected world a safer place by developing, validating, and promoting timely best practice solutions that help people, businesses, and governments protect themselves against pervasive cyber threats"[1](https://www.cisecurity.org/about-us/). These benchmarks are used through the security & compliance industries as a set of best practices.
 
 ### CIS Docker
 These policies are provded by Datadog and map to the CIS Docker benchmarks. Docker is a common technology used for hosting, installing, and managing containers and container images.
