@@ -4,1049 +4,528 @@ name: CIS Docker Generic
 framework: cis-docker
 version: 1.2.0
 rules:
-  # TODO: Implement rule cis-docker-1.2.0-1.2.1
   - id: cis-docker-1.2.0-1.2.1
-    description: Ensure a separate partition for containers has been created (Scored)
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure a separate partition for containers has been created (Scored)
-      description: All Docker containers and their data and metadata is stored under /var/lib/docker directory. By default, /var/lib/docker should be mounted under either the / or /var partitions dependent on how the Linux operating system in use is configured.
-      rationale: Docker depends on /var/lib/docker as the default directory where all Docker related files, including the images, are stored. This directory could fill up quickly causing both Docker and the host to become unusable. For this reason, you should create a separate partition (logical volume) for storing Docker files.
+    description: '[CIS Docker] Ensure a separate partition for containers has been created'
+    scope:
+      - docker
+    resources:
+      - file:
+          path: /proc/mounts
+        condition: file.regexp("[a-zA-Z0-9-_/]+ /var/lib/docker [a-zA-Z0-9-_/]+") != ""
   - id: cis-docker-1.2.0-1.2.2
-    description: Ensure only trusted users are allowed to control Docker daemon (Scored)
+    description: '[CIS Docker] Ensure only trusted users are allowed to control Docker daemon'
     scope:
       - docker
     resources:
       - group:
           name: docker
         condition: '"docker" in group.users'
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure only trusted users are allowed to control Docker daemon (Scored)
-      description: The Docker daemon currently requires access to the Docker socket which is, by default, owned by the user root and the group docker.
-      rationale: Docker allows you to share a directory between the Docker host and a guest container without limiting the access rights of the container. This means that you can start a container and map the / directory on your host to the container. The container would then be able to modify your host file system without any restrictions. This means that you could gain elevated privileges simply by being a member of the docker group and subsequently start a container which maps the root / directory on the host.
   - id: cis-docker-1.2.0-1.2.3
-    description: Ensure auditing is configured for the Docker daemon (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for the Docker daemon'
     scope:
       - docker
     resources:
       - audit:
           path: /usr/bin/dockerd
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for the Docker daemon (Scored)
-      description: Audit all Docker daemon activities.
-      rationale: As well as auditing the normal Linux file system and system calls, you should also audit the Docker daemon. Because this daemon runs with root privileges. It is very important to audit its activities and usage.
   - id: cis-docker-1.2.0-1.2.4
-    description: Ensure auditing is configured for Docker files and directories - /var/lib/docker (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - /var/lib/docker'
     scope:
       - docker
     resources:
       - audit:
           path: /var/lib/docker
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - /var/lib/docker (Scored)
-      description: Audit /var/lib/docker.
-      rationale: As well as auditing the normal Linux file system and system calls, you should also audit all Docker related files and directories. The Docker daemon runs with root privileges and its behaviour depends on some key files and directories. /var/lib/docker is one such directory. As it holds all the information about containers it should be audited.
   - id: cis-docker-1.2.0-1.2.5
-    description: Ensure auditing is configured for Docker files and directories - /etc/docker (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - /etc/docker'
     scope:
       - docker
     resources:
       - audit:
           path: /etc/docker
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - /etc/docker (Scored)
-      description: Audit /etc/docker.
-      rationale: As well as auditing the normal Linux file system and system calls, you should also audit all Docker related files and directories. The Docker daemon runs with root privilege and its behavior depends on some key files and directories, one of these being /etc/docker. This holds various certificates and keys used for TLS communication between Docker daemon and Docker client and as such it should be audited.
   - id: cis-docker-1.2.0-1.2.6
-    description: Ensure auditing is configured for Docker files and directories - docker.service (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - docker.service'
     scope:
       - docker
     resources:
       - audit:
           path: /usr/lib/systemd/system/docker.service
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - docker.service (Scored)
-      description: Audit the docker.service if applicable.
-      rationale: As well as auditing the normal Linux file system and system calls, you should also audit all Docker related files and directories. The Docker daemon runs with root privileges and its behavior depends on some key files and directories with docker.service being one such file. The docker.service file might be present if the daemon parameters have been changed by an administrator. If so, it holds various parameters for the Docker daemon and should be audited.
   - id: cis-docker-1.2.0-1.2.7
-    description: Ensure auditing is configured for Docker files and directories - docker.socket (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - docker.socket'
     scope:
       - docker
     resources:
       - audit:
           path: /usr/lib/systemd/system/docker.socket
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - docker.socket (Scored)
-      description: Audit docker.socket, if applicable.
-      rationale: As well as auditing the normal Linux file system and system calls, you should also audit the Docker daemon. Because this daemon runs with root privileges, it is very important to audit its activities and usage. Its behavior depends on some key files and directories with docker.socket being one such file, and as this holds various parameters for the Docker daemon, it should be audited.
   - id: cis-docker-1.2.0-1.2.8
-    description: Ensure auditing is configured for Docker files and directories - /etc/default/docker (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - /etc/default/docker'
     scope:
       - docker
     resources:
       - audit:
           path: /etc/default/docker
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - /etc/default/docker (Scored)
-      description: Audit /etc/default/docker, if applicable.
-      rationale: As well as auditing the normal Linux file system and system calls, you should audit all Docker related files and directories. The Docker daemon runs with root privileges and its behavior depends on some key files and directories. /etc/default/docker is one such file. It holds various parameters related to the Docker daemon and should therefore be audited.
   - id: cis-docker-1.2.0-1.2.9
-    description: Ensure auditing is configured for Docker files and directories - /etc/sysconfig/docker (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - /etc/sysconfig/docker'
     scope:
       - docker
     resources:
       - audit:
           path: /etc/sysconfig/docker
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - /etc/sysconfig/docker (Scored)
-      description: Audit /etc/sysconfig/docker if applicable
-      rationale: As well as auditing the normal Linux file system and system calls, you should also audit the Docker daemon. Because this daemon runs with root privileges it is very important to audit its activities and usage. Its behavior depends on some key files and directories and /etc/sysconfig/docker is one such file as it contains various parameters related to the Docker daemon when run on CentOS and RHEL based distributions. If present, it is important that it is audited.
   - id: cis-docker-1.2.0-1.2.10
-    description: Ensure auditing is configured for Docker files and directories - /etc/docker/daemon.json (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - /etc/docker/daemon.json'
     scope:
       - docker
     resources:
       - audit:
           path: /etc/docker/daemon.json
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - /etc/docker/daemon.json (Scored)
-      description: Audit /etc/docker/daemon.json, if applicable.
-      rationale: As well as auditing the normal Linux file system and system calls, you should also audit all Docker related files and directories. The Docker daemon runs with root privileges and its behavior depends on some key files and directories. /etc/docker/daemon.json is one such file. This holds various parameters for the Docker daemon, and as such it should be audited.
   - id: cis-docker-1.2.0-1.2.11
-    description: Ensure auditing is configured for Docker files and directories - /usr/bin/containerd (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - /usr/bin/containerd'
     scope:
       - docker
     resources:
       - audit:
           path: /usr/bin/containerd
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - /usr/bin/containerd (Scored)
-      description: Audit /usr/bin/containerd if applicable.
-      rationale: As well as auditing the normal Linux file system and system calls, you should audit all Docker related files and directories. The Docker daemon runs with root privileges and its behavior depends on some key files and directories. /usr/bin/containerd is one such file and as such should be audited.
   - id: cis-docker-1.2.0-1.2.12
-    description: Ensure auditing is configured for Docker files and directories - /usr/sbin/runc (Scored)
+    description: '[CIS Docker] Ensure auditing is configured for Docker files and directories - /usr/sbin/runc'
     scope:
       - docker
     resources:
       - audit:
           path: /usr/sbin/runc
         condition: audit.enabled
-    info:
-      index:
-        - 1. Host Configuration
-        - 1.2. Linux Hosts Specific Configuration
-      synopsis: Ensure auditing is configured for Docker files and directories - /usr/sbin/runc (Scored)
-      description: Audit /usr/sbin/runc if applicable
-      rationale: As well as auditing the normal Linux file system and system calls, you should also audit all Docker related files and directories. The Docker daemon runs with root privileges and its behavior depends on some key files and directories. /usr/sbin/runc is one such file, and as such it should be audited.
   - id: cis-docker-1.2.0-2.1
-    description: Ensure network traffic is restricted between containers on the default bridge (Scored)
+    description: '[CIS Docker] Ensure network traffic is restricted between containers on the default bridge'
     scope:
       - docker
     resources:
       - docker:
           kind: network
-        condition: docker.template("{{- index $.Options \"com.docker.network.bridge.default_bridge\" -}}") != "true" || docker.template("{{- index $.Options \"com.docker.network.bridge.enable_icc\" -}}") == "true"
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure network traffic is restricted between containers on the default bridge (Scored)
-      description: Set Docker daemon log level to info.
-      rationale: Setting up an appropriate log level, configures the Docker daemon to log events that you would want to review later. A base log level of info and above would capture all logs except debug logs. Until and unless required, you should not run Docker daemon at debug log level.
-  # TODO: Implement rule cis-docker-1.2.0-2.2
+        condition: docker.template("{{- index $.Options \"com.docker.network.bridge.default_bridge\" -}}") != "true" || docker.template("{{- index $.Options \"com.docker.network.bridge.enable_icc\" -}}")
+          == "true"
   - id: cis-docker-1.2.0-2.2
-    description: Ensure the logging level is set to 'info' (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure the logging level is set to 'info' (Scored)
-      description: Set Docker daemon log level to info.
-      rationale: Setting up an appropriate log level, configures the Docker daemon to log events that you would want to review later. A base log level of info and above would capture all logs except debug logs. Until and unless required, you should not run Docker daemon at debug log level.
-  - id: cis-docker-1.2.0-2.3
-    description: Ensure Docker is allowed to make changes to iptables (Scored)
+    description: '[CIS Docker] Ensure the logging level is set to ''info'''
     scope:
       - docker
     resources:
       - process:
           name: dockerd
-        condition: process.hasFlag("--iptables")
-      - file:
-          path: /etc/docker/daemon.json
-        condition: file.jq(".iptables") != ""
-    info:
-      index:
-        - 2. Docker daemon configuration
-        - 2. Docker daemon configuration
-      synopsis: Ensure Docker is allowed to make changes to iptables (Scored)
-      description: The iptables firewall is used to set up, maintain, and inspect the tables of IP packet filter rules within the Linux kernel. The Docker daemon should be allowed to make changes to the iptables ruleset.
-      rationale: Docker will never make changes to your system iptables rules unless you allow it to do so. If you do allow this, Docker server will automatically make any required changes. We recommended letting Docker make changes to iptablesautomatically in order to avoid networking misconfigurations that could affect the communication between containers and with the outside world. Additionally, this reduces the administrative overhead of updating iptablesevery time you add containers or modify networking options.
+        condition: process.flag("--log-level") == "info"
+        fallback:
+          condition: '!process.hasFlag("--log-level")'
+          resource:
+            file:
+              path: /etc/docker/daemon.json
+            condition: file.jq(".\"log-level\"") == "info"
+  - id: cis-docker-1.2.0-2.3
+    description: '[CIS Docker] Ensure Docker is allowed to make changes to iptables'
+    scope:
+      - docker
+    resources:
+      - process:
+          name: dockerd
+        condition: _
+        fallback:
+          condition: '!process.hasFlag("--iptables")'
+          resource:
+            file:
+              path: /etc/docker/daemon.json
+            condition: file.jq(".iptables") != ""
   - id: cis-docker-1.2.0-2.4
-    description: Ensure insecure registries are not used (Scored)
+    description: '[CIS Docker] Ensure insecure registries are not used'
     scope:
       - docker
     resources:
       - docker:
           kind: info
         condition: docker.template("{{- $.RegistryConfig.InsecureRegistryCIDRs | join \",\" -}}") == ""
-    info:
-      index:
-        - 2. Docker daemon configuration
-        - 2. Docker daemon configuration
-      synopsis: Ensure insecure registries are not used (Scored)
-      description: Docker considers a private registry either secure or insecure. By default, registries are considered secure.
-      rationale: A secure registry uses TLS. A copy of registry's CA certificate is placed on the Docker host at /etc/docker/certs.d/<registry-name>/ directory. An insecure registry is one which does not have a valid registry certificate, or one not not using TLS. Insecure registries should not be used as they present a risk of traffic interception and modification. Additionally, once a registry has been marked as insecure commands such as docker pull, docker push, and docker search will not result in an error message and users may indefinitely be working with this type of insecure registry without ever being notified of the risk of potential compromise.
   - id: cis-docker-1.2.0-2.5
-    description: Ensure aufs storage driver is not used (Scored)
+    description: '[CIS Docker] Ensure aufs storage driver is not used'
     scope:
       - docker
     resources:
       - docker:
           kind: info
         condition: docker.template("{{- $.Driver -}}") != "aufs"
-    info:
-      index:
-        - 2. Docker daemon configuration
-        - 2. Docker daemon configuration
-      synopsis: Ensure aufs storage driver is not used (Scored)
-      description: Do not use aufs as the storage driver for your Docker instance.
-      rationale: The aufs storage driver is the oldest storage driver used on Linux systems. It is based on a Linux kernel patch-set that is unlikely in future to be merged into the main OS kernel. The aufs driver is also known to cause some serious kernel crashes. aufs only has legacy support within systems using Docker. Most importantly, aufs is not a supported driver in many Linux distributions using latest Linux kernels.
-  # TODO: Implement rule cis-docker-1.2.0-2.6
   - id: cis-docker-1.2.0-2.6
-    description: Ensure TLS authentication for Docker daemon is configured (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure TLS authentication for Docker daemon is configured (Scored)
-      description: It is possible to make the Docker daemon available remotely over a TCP port. If this is required, you should ensure that TLS authentication is configured in order to restrict access to the Docker daemon via IP address and port.
-      rationale: By default, the Docker daemon binds to a non-networked Unix socket and runs with root privileges. If you change the default Docker daemon binding to a TCP port or any other Unix socket, anyone with access to that port or socket could have full access to the Docker daemon and therefore in turn to the host system. For this reason, you should not bind the Docker daemon to another IP/port or a Unix socket. If you must expose the Docker daemon via a network socket, you should configure TLS authentication for the daemon and for any Docker Swarm APIs (if they are in use). This type of configuration restricts the connections to your Docker daemon over the network to a limited number of clients who have access to the TLS client credentials.
-  # TODO: Implement rule cis-docker-1.2.0-2.8
-  - id: cis-docker-1.2.0-2.8
-    description: Enable user namespace support (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Enable user namespace support (Scored)
-      description: You should enable user namespace support in Docker daemon to utilize container user to host user re-mapping. This recommendation is beneficial where the containers you are using do not have an explicit container user defined in the container image. If the container images that you are using have a pre-defined non-root user, this recommendation may be skipped as this feature is still in its infancy, and might result in unpredictable issues or difficulty in configuration.
-      rationale: The Linux kernel "user namespace" support within the Docker daemon provides additional security for the Docker host system. It allows a container to have a unique range of user and group IDs which are outside the traditional user and group range utilized by the host system. For example, the root user can have the expected administrative privileges inside the container but can effectively be mapped to an unprivileged UID on the host system.
-  # TODO: Implement rule cis-docker-1.2.0-2.9
-  - id: cis-docker-1.2.0-2.9
-    description: Ensure the default cgroup usage has been confirmed (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure the default cgroup usage has been confirmed (Scored)
-      description: The --cgroup-parent option allows you to set the default cgroup parent to use for all containers. If there is no specific usage requirement for this, the setting should be left at its default.
-      rationale: System administrators typically define cgroups under which containers are supposed to run. Even if cgroups are not explicitly defined by the system administrators, containers run under docker cgroup by default. It is possible to attach to a different cgroup other than the one which is the default, however this type of usage should be monitored and confirmed because attaching to a different cgroup other than the one that is a default, it could be possible to share resources unevenly causing resource utilization problems on the host.
-  # TODO: Implement rule cis-docker-1.2.0-2.10
-  - id: cis-docker-1.2.0-2.10
-    description: Ensure base device size is not changed until needed (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure base device size is not changed until needed (Scored)
-      description: Under certain circumstances, you might need containers larger than 10G. Where this applies you should carefully choose the base device size.
-      rationale: The base device size can be increased on daemon restart. Increasing the base device size allows all future images and containers to be of the new base device size. A user can use this option to expand the base device size, however shrinking is not permitted. This value affects the system wide base empty filesystem that may already be initialized and therefore inherited by pulled images. Although the file system does not allocate the increased size as long as it is empty, more space will be allocated for extra images. This may cause a denial of service condition if the allocated partition becomes full.
-  # TODO: Implement rule cis-docker-1.2.0-2.11
-  - id: cis-docker-1.2.0-2.11
-    description: Ensure that authorization for Docker client commands is enabled (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure that authorization for Docker client commands is enabled (Scored)
-      description: You should use native Docker authorization plugins or a third party authorization mechanism with the Docker daemon to manage access to Docker client commands.
-      rationale: Dockers out-of-the-box authorization model is currently "all or nothing". This means that any user with permission to access the Docker daemon can run any Docker client command. The same is true for remote users accessing Dockers API to contact the daemon. If you require greater access control, you can create authorization plugins and add them to your Docker daemon configuration. Using an authorization plugin, a Docker administrator can configure granular access policies for managing access to the Docker daemon. Third party integrations of Docker may implement their own authorization models to require authorization with the Docker daemon outside of docker's native authorization plugin (i.e. Kubernetes, Cloud Foundry, Openshift).
-  # TODO: Implement rule cis-docker-1.2.0-2.12
-  - id: cis-docker-1.2.0-2.12
-    description: Ensure centralized and remote logging is configured (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure centralized and remote logging is configured (Scored)
-      description: Docker supports various logging mechanisms. A preferable method for storing logs is one that supports centralized and remote management.
-      rationale: Centralized and remote logging ensures that all important log records are safe even in the event of a major data availability issue . Docker supports various logging methods and you should use the one that best corresponds to your IT security policy.
-  # TODO: Implement rule cis-docker-1.2.0-2.13
-  - id: cis-docker-1.2.0-2.13
-    description: Ensure live restore is enabled (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure live restore is enabled (Scored)
-      description: The --live-restore option enables full support of daemon-less containers within Docker. It ensures that Docker does not stop containers on shutdown or restore and that it properly reconnects to the container when restarted.
-      rationale: One of the important security triads is availability. Setting the --live-restore flag within the Docker daemon ensures that container execution is not interrupted when it is not available. This also makes it easier to update and patch the Docker daemon without application downtime.
-  # TODO: Implement rule cis-docker-1.2.0-2.14
-  - id: cis-docker-1.2.0-2.14
-    description: Ensure Userland Proxy is Disabled (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure Userland Proxy is Disabled (Scored)
-      description: The Docker daemon starts a userland proxy service for port forwarding whenever a port is exposed. Where hairpin NAT is available, this service is generally superfluous to requirements and can be disabled.
-      rationale: The Docker engine provides two mechanisms for forwarding ports from the host to containers, hairpin NAT, and the use of a userland proxy. In most circumstances, the hairpin NAT mode is preferred as it improves performance and makes use of native Linux iptables functionality instead of using an additional component. Where hairpin NAT is available, the userland proxy should be disabled on startup to reduce the attack surface of the installation.
-  # TODO: Implement rule cis-docker-1.2.0-2.16
-  - id: cis-docker-1.2.0-2.16
-    description: Ensure that experimental features are not implemented in production (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure that experimental features are not implemented in production (Scored)
-      description: Experimental features should not be enabled in production.
-      rationale: '"Experimental" is currently a runtime Docker daemon flag rather than being a feature of a separate build. Passing --experimental as a runtime flag to the docker daemon activates experimental features. Whilst "Experimental" is considered a stable release, it has a number of features which may not have been fully tested and do not guarantee API stability.'
-  # TODO: Implement rule cis-docker-1.2.0-2.17
-  - id: cis-docker-1.2.0-2.17
-    description: Ensure containers are restricted from acquiring new privileges (Scored)
-    info:
-      index:
-        - 2. Docker daemon configuration
-      synopsis: Ensure containers are restricted from acquiring new privileges (Scored)
-      description: By default you should restrict containers from acquiring additional privileges via suid or sgid.
-      rationale: A process can set the no_new_priv bit in the kernel and this persists across forks, clones and execve. The no_new_priv bit ensures that the process and its child processes do not gain any additional privileges via suid or sgid bits. This reduces the security risks associated with many dangerous operations because there is a much reduced ability to subvert privileged binaries. Setting this at the daemon level ensures that by default all new containers are restricted from acquiring new privileges.
+    description: '[CIS Docker] Ensure TLS authentication for Docker daemon is configured'
+    scope:
+      - docker
+    resources:
+      - process:
+          name: dockerd
+        condition: process.flag("--tlscacert") != "" && process.flag("--tlscert") != "" && process.flag("--tlskey") != ""
+        fallback:
+          condition: '!process.hasFlag("--tlsverify")'
+          resource:
+            file:
+              path: /etc/docker/daemon.json
+            condition: file.jq(".tlsverify") == "true" && file.jq(".tlscacert") != "" && file.jq(".tlscert") != "" && file.jq(".tlskey") != ""
   - id: cis-docker-1.2.0-3.1
-    description: Ensure that the docker.service file ownership is set to root:root (Scored)
+    description: '[CIS Docker] Ensure that the docker.service file ownership is set to root:root'
     scope:
       - docker
     resources:
       - file:
           path: /usr/lib/systemd/system/docker.service
         condition: file.user == "root" && file.group == "root"
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the docker.service file ownership is set to root:root (Scored)
-      description: You should verify that the docker.service file ownership and group ownership are correctly set to root.
-      rationale: The docker.service file contains sensitive parameters that may alter the behavior of the Docker daemon. It should therefore be individually and group owned by the root user in order to ensure that it is not modified or corrupted by a less privileged user.
   - id: cis-docker-1.2.0-3.2
-    description: Ensure that docker.service file permissions are appropriately set (Scored)
+    description: '[CIS Docker] Ensure that docker.service file permissions are appropriately set'
     scope:
       - docker
     resources:
       - file:
           path: /usr/lib/systemd/system/docker.service
         condition: (file.permissions & 0644) == file.permissions
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that docker.service file permissions are appropriately set (Scored)
-      description: You should verify that the docker.service file permissions are either set to 644 or to a more restrictive value.
-      rationale: The docker.service file contains sensitive parameters that may alter the behavior of the Docker daemon. It should therefore not be writable by any other user other than root in order to ensure that it can not be modified by less privileged users.
   - id: cis-docker-1.2.0-3.3
-    description: Ensure that docker.socket file ownership is set to root:root (Scored)
+    description: '[CIS Docker] Ensure that docker.socket file ownership is set to root:root'
     scope:
       - docker
     resources:
       - file:
           path: /usr/lib/systemd/system/docker.socket
         condition: file.user == "root" && file.group == "root"
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that docker.socket file ownership is set to root:root (Scored)
-      description: You should verify that the docker.socket file ownership and group ownership are correctly set to root.
-      rationale: The docker.socket file contains sensitive parameters that may alter the behavior of the Docker remote API. For this reason, it should be owned and group owned by root in order to ensure that it is not modified by less privileged users.
   - id: cis-docker-1.2.0-3.4
-    description: Ensure that docker.socket file permissions are set to 644 or more restrictive (Scored)
+    description: '[CIS Docker] Ensure that docker.socket file permissions are set to 644 or more restrictive'
     scope:
       - docker
     resources:
       - file:
           path: /usr/lib/systemd/system/docker.socket
         condition: (file.permissions & 0644) == file.permissions
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that docker.socket file permissions are set to 644 or more restrictive (Scored)
-      description: You should verify that the file permissions on the docker.socket file are correctly set to 644 or more restrictively.
-      rationale: The docker.socket file contains sensitive parameters that may alter the behavior of the Docker remote API. It should therefore be writeable only by root in order to ensure that it is not modified by less privileged users.
   - id: cis-docker-1.2.0-3.5
-    description: Ensure that the /etc/docker directory ownership is set to root:root (Scored)
+    description: '[CIS Docker] Ensure that the /etc/docker directory ownership is set to root:root'
     scope:
       - docker
     resources:
       - file:
           path: /etc/docker
         condition: file.user == "root" && file.group == "root"
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the /etc/docker directory ownership is set to root:root (Scored)
-      description: You should verify that the /etc/docker directory ownership and group ownership is correctly set to root.
-      rationale: The /etc/docker directory contains certificates and keys in addition to various other sensitive files. It should therefore be individual owned and group owned by root in order to ensure that it can not be modified by less privileged users.
   - id: cis-docker-1.2.0-3.6
-    description: Ensure that /etc/docker directory permissions are set to 755 or more restrictively (Scored)
+    description: '[CIS Docker] Ensure that /etc/docker directory permissions are set to 755 or more restrictively'
     scope:
       - docker
     resources:
       - file:
           path: /etc/docker
         condition: (file.permissions & 0755) == file.permissions
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that /etc/docker directory permissions are set to 755 or more restrictively (Scored)
-      description: You should verify that the /etc/docker directory permissions are correctly set to 755 or more restrictively.
-      rationale: The /etc/docker directory contains certificates and keys in addition to various sensitive files. It should therefore only be writeable by root to ensure that it can not be modified by a less privileged user.
   - id: cis-docker-1.2.0-3.7
-    description: Ensure that registry certificate file ownership is set to root:root (Scored)
+    description: '[CIS Docker] Ensure that registry certificate file ownership is set to root:root'
     scope:
       - docker
     resources:
       - file:
           path: /etc/docker/certs.d/*.crt
         condition: file.user == "root" && file.group == "root"
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that registry certificate file ownership is set to root:root (Scored)
-      description: You should verify that all the registry certificate files (usually found under /etc/docker/certs.d/<registry-name> directory) are individually owned and group owned by root.
-      rationale: The /etc/docker/certs.d/<registry-name> directory contains Docker registry certificates. These certificate files must be individually owned and group owned by root to ensure that less privileged users are unable to modify the contents of the directory.
   - id: cis-docker-1.2.0-3.8
-    description: Ensure that registry certificate file permissions are set to 444 or more restrictively (Scored)
+    description: '[CIS Docker] Ensure that registry certificate file permissions are set to 444 or more restrictively'
     scope:
       - docker
     resources:
       - file:
           path: /etc/docker/certs.d/*.crt
         condition: (file.permissions & 0444) == file.permissions
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that registry certificate file permissions are set to 444 or more restrictively (Scored)
-      description: You should verify that all the registry certificate files (usually found under /etc/docker/certs.d/<registry-name> directory) have permissions of 444 or are set more restrictively.
-      rationale: The /etc/docker/certs.d/<registry-name> directory contains Docker registry certificates. These certificate files must have permissions of 444or more restrictive permissions in order to ensure that unprivileged users do not have full access to them..
-  # TODO: Implement rule cis-docker-1.2.0-3.9
   - id: cis-docker-1.2.0-3.9
-    description: Ensure that TLS CA certificate file ownership is set to root:root (Scored)
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that TLS CA certificate file ownership is set to root:root (Scored)
-      description: You should verify that the TLS CA certificate file (the file that is passed along with the --tlscacert parameter) is individually owned and group owned by root.
-      rationale: The TLS CA certificate file should be protected from any tampering. It is used to authenticate the Docker server based on a given CA certificate. It must be therefore be individually owned and group owned by root to ensure that it cannot be modified by less privileged users.
-  # TODO: Implement rule cis-docker-1.2.0-3.10
+    description: '[CIS Docker] Ensure that TLS CA certificate file ownership is set to root:root'
+    scope:
+      - docker
+    resources:
+      - file:
+          path: process.flag("dockerd", "--tlscacert")
+        condition: file.user == "root" && file.group == "root"
   - id: cis-docker-1.2.0-3.10
-    description: Ensure that TLS CA certificate file permissions are set to 444 or more restrictively (Scored)
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that TLS CA certificate file permissions are set to 444 or more restrictively (Scored)
-      description: You should verify that the TLS CA certificate file (the file that is passed along with the --tlscacert parameter) has permissions of 444 or is set more restrictively.
-      rationale: The TLS CA certificate file should be protected from any tampering. It is used to authenticate the Docker server based on a given CA certificate. It must therefore have permissions of 444, or more restrictive permissions to ensure that the file cannot be modified by a less privileged user.
-  # TODO: Implement rule cis-docker-1.2.0-3.11
+    description: '[CIS Docker] Ensure that TLS CA certificate file permissions are set to 444 or more restrictively'
+    scope:
+      - docker
+    resources:
+      - file:
+          path: process.flag("dockerd", "--tlscacert")
+        condition: (file.permissions & 0444) == file.permissions
   - id: cis-docker-1.2.0-3.11
-    description: Ensure that Docker server certificate file ownership is set to root:root (Scored)
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that Docker server certificate file ownership is set to root:root (Scored)
-      description: You should verify that the Docker server certificate file (the file that is passed along with the --tlscert parameter) is individual owned and group owned by root.
-      rationale: The Docker server certificate file should be protected from any tampering. It is used to authenticate the Docker server based on the given server certificate. It must therefore be individually owned and group owned by root to prevent modification by less privileged users.
-  # TODO: Implement rule cis-docker-1.2.0-3.12
+    description: '[CIS Docker] Ensure that Docker server certificate file ownership is set to root:root'
+    scope:
+      - docker
+    resources:
+      - file:
+          path: process.flag("dockerd", "--tlscert")
+        condition: file.user == "root" && file.group == "root"
   - id: cis-docker-1.2.0-3.12
-    description: Ensure that the Docker server certificate file permissions are set to 444 or more restrictively (Scored)
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the Docker server certificate file permissions are set to 444 or more restrictively (Scored)
-      description: You should verify that the Docker server certificate file (the file that is passed along with the --tlscert parameter) has permissions of 444 or more restrictive permissions.
-      rationale: The Docker server certificate file should be protected from any tampering. It is used to authenticate the Docker server based on the given server certificate. It should therefore have permissions of 444 to prevent its modification.
-  # TODO: Implement rule cis-docker-1.2.0-3.13
+    description: '[CIS Docker] Ensure that the Docker server certificate file permissions are set to 444 or more restrictively'
+    scope:
+      - docker
+    resources:
+      - file:
+          path: process.flag("dockerd", "--tlscert")
+        condition: (file.permissions & 0444) == file.permissions
   - id: cis-docker-1.2.0-3.13
-    description: Ensure that the Docker server certificate key file ownership is set to root:root (Scored)
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the Docker server certificate key file ownership is set to root:root (Scored)
-      description: You should verify that the Docker server certificate key file (the file that is passed along with the --tlskey parameter) is individually owned and group owned by root.
-      rationale: The Docker server certificate key file should be protected from any tampering or unneeded reads/writes. As it holds the private key for the Docker server certificate, it must be individually owned and group owned by root to ensure that it cannot be accessed by less privileged users.
-  # TODO: Implement rule cis-docker-1.2.0-3.14
+    description: '[CIS Docker] Ensure that the Docker server certificate key file ownership is set to root:root'
+    scope:
+      - docker
+    resources:
+      - file:
+          path: process.flag("dockerd", "--tlskey")
+        condition: file.user == "root" && file.group == "root"
   - id: cis-docker-1.2.0-3.14
-    description: Ensure that the Docker server certificate key file permissions are set to 400 (Scored)
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the Docker server certificate key file permissions are set to 400 (Scored)
-      description: You should verify that the Docker server certificate key file (the file that is passed along with the --tlskey parameter) has permissions of 400.
-      rationale: The Docker server certificate key file should be protected from any tampering or unneeded reads. It holds the private key for the Docker server certificate. It must therefore have permissions of 400 to ensure that the certificate key file is not modified.
+    description: '[CIS Docker] Ensure that the Docker server certificate key file permissions are set to 400'
+    scope:
+      - docker
+    resources:
+      - file:
+          path: process.flag("dockerd", "--tlskey")
+        condition: (file.permissions & 0400) == file.permissions
   - id: cis-docker-1.2.0-3.15
-    description: Ensure that the Docker socket file ownership is set to root:docker (Scored)
+    description: '[CIS Docker] Ensure that the Docker socket file ownership is set to root:docker'
     scope:
       - docker
     resources:
       - file:
           path: /var/run/docker.sock
         condition: file.user == "root" && file.group == "docker"
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the Docker socket file ownership is set to root:docker (Scored)
-      description: You should verify that the Docker socket file is owned by root and group owned by docker.
-      rationale: The Docker daemon runs as root. The default Unix socket therefore must be owned by root. If any other user or process owns this socket, it might be possible for that non-privileged user or process to interact with the Docker daemon. Additionally, in this case a non-privileged user or process might be able to interact with containers which is neither a secure nor desired behavior. Additionally, the Docker installer creates a Unix group called docker. You can add users to this group, and in this case, those users would be able to read and write to the default Docker Unix socket. The membership of the docker group is tightly controlled by the system administrator. However, ff any other group owns this socket, then it might be possible for members of that group to interact with the Docker daemon. Such a group might not be as tightly controlled as the docker group. Again, this is not in line with good security practice. For these reason, the default Docker Unix socket file should be owned by root and group owned by docker to maintain the integrity of the socket file.
   - id: cis-docker-1.2.0-3.16
-    description: Ensure that the Docker socket file permissions are set to 660 or more restrictively (Scored)
+    description: '[CIS Docker] Ensure that the Docker socket file permissions are set to 660 or more restrictively'
     scope:
       - docker
     resources:
       - file:
           path: /var/run/docker.sock
         condition: (file.permissions & 0660) == file.permissions
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the Docker socket file permissions are set to 660 or more restrictively (Scored)
-      description: You should verify that the Docker socket file has permissions of 660 or are configured more restrictively.
-      rationale: Only root and the members of the docker group should be allowed to read and write to the default Docker Unix socket. The Docker socket file should therefore have permissions of 660 or more restrictive permissions.
   - id: cis-docker-1.2.0-3.17
-    description: Ensure that the daemon.json file ownership is set to root:root (Scored)
+    description: '[CIS Docker] Ensure that the daemon.json file ownership is set to root:root'
     scope:
       - docker
     resources:
       - file:
           path: /etc/docker/daemon.json
         condition: file.user == "root" && file.group == "root"
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the daemon.json file ownership is set to root:root (Scored)
-      description: You should verify that the daemon.json file individual ownership and group ownership is correctly set to root.
-      rationale: The daemon.json file contains sensitive parameters that could alter the behavior of the docker daemon. It should therefore be owned and group owned by root to ensure it can not be modified by less privileged users.
   - id: cis-docker-1.2.0-3.18
-    description: Ensure that daemon.json file permissions are set to 644 or more restrictive (Scored)
+    description: '[CIS Docker] Ensure that daemon.json file permissions are set to 644 or more restrictive'
     scope:
       - docker
     resources:
       - file:
           path: /etc/docker/daemon.json
         condition: (file.permissions & 0644) == file.permissions
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that daemon.json file permissions are set to 644 or more restrictive (Scored)
-      description: You should verify that the daemon.json file permissions are correctly set to 644 or more restrictively.
-      rationale: The daemon.json file contains sensitive parameters that may alter the behavior of the docker daemon. Therefore it should be writeable only by root to ensure it is not modified by less privileged users.
   - id: cis-docker-1.2.0-3.19
-    description: Ensure that the /etc/default/docker file ownership is set to root:root (Scored)
+    description: '[CIS Docker] Ensure that the /etc/default/docker file ownership is set to root:root'
     scope:
       - docker
     resources:
       - file:
           path: /etc/default/docker
         condition: file.user == "root" && file.group == "root"
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the /etc/default/docker file ownership is set to root:root (Scored)
-      description: You should verify that the /etc/default/docker file ownership and group-ownership is correctly set to root.
-      rationale: The /etc/default/docker file contains sensitive parameters that may alter the behavior of the Docker daemon. It should therefore be individually owned and group owned by root to ensure that it cannot be modified by less privileged users.
   - id: cis-docker-1.2.0-3.20
-    description: Ensure that the /etc/sysconfig/docker file ownership is set to root:root (Scored)
+    description: '[CIS Docker] Ensure that the /etc/sysconfig/docker file ownership is set to root:root'
     scope:
       - docker
     resources:
       - file:
           path: /etc/sysconfig/docker
         condition: file.user == "root" && file.group == "root"
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the /etc/sysconfig/docker file ownership is set to root:root (Scored)
-      description: You should verify that the /etc/sysconfig/docker file individual ownership and group ownership is correctly set to root.
-      rationale: The /etc/sysconfig/docker file contains sensitive parameters that may alter the behavior of the Docker daemon. It should therefore be individually owned and group owned by root to ensure that it is not modified by less privileged users.
   - id: cis-docker-1.2.0-3.21
-    description: Ensure that the /etc/sysconfig/docker file permissions are set to 644 or more restrictively (Scored)
+    description: '[CIS Docker] Ensure that the /etc/sysconfig/docker file permissions are set to 644 or more restrictively'
     scope:
       - docker
     resources:
       - file:
           path: /etc/sysconfig/docker
         condition: (file.permissions & 0644) == file.permissions
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the /etc/sysconfig/docker file permissions are set to 644 or more restrictively (Scored)
-      description: You should verify that the /etc/sysconfig/docker file permissions are correctly set to 644 or more restrictively.
-      rationale: The /etc/sysconfig/docker file contains sensitive parameters that may alter the behavior of the Docker daemon. It should therefore be writeable only by root in order to ensure that it is not modified by less privileged users.
   - id: cis-docker-1.2.0-3.22
-    description: Ensure that the /etc/default/docker file permissions are set to 644 or more restrictively (Scored)
+    description: '[CIS Docker] Ensure that the /etc/default/docker file permissions are set to 644 or more restrictively'
     scope:
       - docker
     resources:
       - file:
           path: /etc/default/docker
         condition: (file.permissions & 0644) == file.permissions
-    info:
-      index:
-        - 3. Docker daemon configuration files
-      synopsis: Ensure that the /etc/default/docker file permissions are set to 644 or more restrictively (Scored)
-      description: You should verify that the /etc/default/docker file permissions are correctly set to 644 or more restrictively.
-      rationale: The /etc/default/docker file contains sensitive parameters that may alter the behavior of the Docker daemon. It should therefore be writeable only by root in order to ensure that it is not modified by less privileged users.
   - id: cis-docker-1.2.0-4.1
-    description: Ensure that a user for the container has been created (Scored)
+    description: '[CIS Docker] Ensure that a user for the container has been created'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.Config.User -}}") != ""
-    info:
-      index:
-        - 4. Container Images and Build File Configuration
-      synopsis: Ensure that a user for the container has been created (Scored)
-      description: Containers should run as a non-root user.
-      rationale: It is good practice to run the container as a non-root user, where possible. This can be done either via the USER directive in the Dockerfile or through gosu or similar where used as part of the CMD or ENTRYPOINT directives.
-  # TODO: Implement rule cis-docker-1.2.0-4.5
-  - id: cis-docker-1.2.0-4.5
-    description: Ensure Content trust for Docker is Enabled (Scored)
-    info:
-      index:
-        - 4. Container Images and Build File Configuration
-      synopsis: Ensure Content trust for Docker is Enabled (Scored)
-      description: Content trust is disabled by default and should be enabled in line with organizational security policy.
-      rationale: Content trust provides the ability to use digital signatures for data sent to and received from remote Docker registries. These signatures allow client-side verification of the identity and the publisher of specific image tags and ensures the provenance of container images.
   - id: cis-docker-1.2.0-4.6
-    description: Ensure that HEALTHCHECK instructions have been added to container images (Scored)
+    description: '[CIS Docker] Ensure that HEALTHCHECK instructions have been added to container images'
     scope:
       - docker
     resources:
       - docker:
           kind: image
         condition: docker.template("{{- $.Config.Healthcheck.Test -}}") != ""
-    info:
-      index:
-        - 4. Container Images and Build File Configuration
-      synopsis: Ensure that HEALTHCHECK instructions have been added to container images (Scored)
-      description: You should add the HEALTHCHECK instruction to your Docker container images in order to ensure that health checks are executed against running containers.
-      rationale: An important security control is that of availability. Adding the HEALTHCHECK instruction to your container image ensures that the Docker engine periodically checks the running container instances against that instruction to ensure that containers are still operational. Based on the results of the health check, the Docker engine could terminate containers which are not responding correctly, and instantiate new ones.
   - id: cis-docker-1.2.0-5.1
-    description: Ensure that, if applicable, an AppArmor Profile is enabled (Scored)
+    description: '[CIS Docker] Ensure that, if applicable, an AppArmor Profile is enabled'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.AppArmorProfile -}}") not in ["", "unconfined"]
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that, if applicable, an AppArmor Profile is enabled (Scored)
-      description: AppArmor is an effective and easy-to-use Linux application security system. It is available on some Linux distributions by default, for example, on Debian and Ubuntu.
-      rationale: AppArmor protects the Linux OS and applications from various threats by enforcing a security policy which is also known as an AppArmor profile. You can create your own AppArmor profile for containers or use Docker's default profile. Enabling this feature enforces security policies on containers as defined in the profile.
   - id: cis-docker-1.2.0-5.2
-    description: Ensure that, if applicable, SELinux security options are set (Scored)
+    description: '[CIS Docker] Ensure that, if applicable, SELinux security options are set'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- has \"selinux\" $.HostConfig.SecurityOpt -}}") == "true"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that, if applicable, SELinux security options are set (Scored)
-      description: SELinux is an effective and easy-to-use Linux application security system. It is available by default on some distributions such as Red Hat and Fedora.
-      rationale: SELinux provides a Mandatory Access Control (MAC) system that greatly augments the default Discretionary Access Control (DAC) model. You can therefore add an extra layer of safety to your containers by enabling SELinux on your Linux host.
   - id: cis-docker-1.2.0-5.3
-    description: Ensure that Linux kernel capabilities are restricted within containers (Scored)
+    description: '[CIS Docker] Ensure that Linux kernel capabilities are restricted within containers'
     scope:
       - docker
     resources:
       - docker:
           kind: container
-        condition: docker.template("{{ range $.HostConfig.CapAdd }}{{ if regexMatch \"AUDIT_WRITE|CHOWN|DAC_OVERRIDE|FOWNER|FSETID|KILL|MKNOD|NET_BIND_SERVICE|NET_RAW|SETFCAP|SETGID|SETPCAP|SETUID|SYS_CHROOT\" . }}failed{{ end }}{{ end }}") == ""
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that Linux kernel capabilities are restricted within containers (Scored)
-      description: By default, Docker starts containers with a restricted set of Linux kernel capabilities. This means that any process can be granted the required capabilities instead of giving it root access. Using Linux kernel capabilities, processes in general do not need to run as the root user.
-      rationale: Docker supports the addition and removal of capabilities. You should remove all capabilities not required for the correct function of the container. Specifically, in the default capability set provided by Docker, the NET_RAW capability should be removed if not explicitly required, as it can give an attacker with access to a container the ability to create spoofed network traffic.
+        condition: docker.template("{{ range $.HostConfig.CapAdd }}{{ if regexMatch \"AUDIT_WRITE|CHOWN|DAC_OVERRIDE|FOWNER|FSETID|KILL|MKNOD|NET_BIND_SERVICE|NET_RAW|SETFCAP|SETGID|SETPCAP|SETUID|SYS_CHROOT\"
+          . }}failed{{ end }}{{ end }}") == ""
   - id: cis-docker-1.2.0-5.4
-    description: Ensure that privileged containers are not used (Scored)
+    description: '[CIS Docker] Ensure that privileged containers are not used'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.Privileged -}}") != "true"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that privileged containers are not used (Scored)
-      description: Using the --privileged flag provides all Linux kernel capabilities to the container to which it is applied and therefore overwrites the --cap-add and --cap-drop flags. For this reason you should ensure that it is not used.
-      rationale: The --privileged flag provides all capabilities to the container to which it is applied, and also lifts all the limitations enforced by the device cgroup controller. As a consequence this the container has most of the rights of the underlying host. This flag only exists to allow for specific use cases (for example running Docker within Docker) and should not generally be used.
   - id: cis-docker-1.2.0-5.5
-    description: Ensure sensitive host system directories are not mounted on containers (Scored)
+    description: '[CIS Docker] Ensure sensitive host system directories are not mounted on containers'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{ range $.Mounts }}{{ if has .Source (list \"/\" \"/boot\" \"/dev\" \"/etc\" \"/lib\" \"/proc\" \"/sys\" \"/usr\") }}{{ .Source }}{{ end }}{{ end }}") == ""
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure sensitive host system directories are not mounted on containers (Scored)
-      description: You should not allow sensitive host system directories such as those listed below to be mounted as container volumes, especially in read-write mode. / /boot /dev /etc /lib /proc /sys /usr
-      rationale: If sensitive directories are mounted in read-write mode, it could be possible to make changes to files within them. This has obvious security implications and should be avoided.
-  # TODO: Implement rule cis-docker-1.2.0-5.6
-  - id: cis-docker-1.2.0-5.6
-    description: Ensure sshd is not run within containers (Scored)
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure sshd is not run within containers (Scored)
-      description: The SSH daemon should not be running within the container. You should SSH into the Docker host, and use docker exec to enter a container.
-      rationale: Running SSH within the container increases the complexity of security management by making it Difficult to manage access policies and security compliance for SSH server Difficult to manage keys and passwords across various containers Difficult to manage security upgrades for SSH server It is possible to have shell access to a container without using SSH, the needlessly increasing the complexity of security management should be avoided.
   - id: cis-docker-1.2.0-5.7
-    description: Ensure privileged ports are not mapped within containers (Scored)
+    description: '[CIS Docker] Ensure privileged ports are not mapped within containers'
     scope:
       - docker
     resources:
       - docker:
           kind: container
-        condition: docker.template("{{ range $k, $_ := $.NetworkSettings.Ports }}{{ with $p := (regexReplaceAllLiteral \"/.*\" ($k | toString) \"\") | atoi }}{{ if lt $p 1024}}failed{{ end }}{{ end }}{{ end }}") == ""
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure privileged ports are not mapped within containers (Scored)
-      description: The TCP/IP port numbers below 1024 are considered privileged ports. Normal users and processes are not allowed to use them for various security reasons. Docker does, however allow a container port to be mapped to a privileged port.
-      rationale: By default, if the user does not specifically declare a container port to host port mapping, Docker automatically and correctly maps the container port to one available in the 49153-65535 range on the host. Docker does, however, allow a container port to be mapped to a privileged port on the host if the user explicitly declares it. This is because containers are executed with NET_BIND_SERVICE Linux kernel capability which does not restrict privileged port mapping. The privileged ports receive and transmit various pieces of data which are security sensitive and allowing containers to use them is not in line with good security practice.
+        condition: docker.template("{{ range $k, $_ := $.NetworkSettings.Ports }}{{ with $p := (regexReplaceAllLiteral \"/.*\" ($k | toString) \"\") | atoi }}{{ if lt $p 1024}}failed{{ end }}{{ end }}{{
+          end }}") == ""
   - id: cis-docker-1.2.0-5.9
-    description: Ensure that the host's network namespace is not shared (Scored)
+    description: '[CIS Docker] Ensure that the host''s network namespace is not shared'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.NetworkMode -}}") != "host"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the host's network namespace is not shared (Scored)
-      description: When the networking mode on a container is set to --net=host, the container is not placed inside a separate network stack. Effectively, applying this option instructs Docker to not containerize the container's networking. The consequence of this is that the container lives "outside" in the main Docker host and has full access to its network interfaces.
-      rationale: Selecting this option is potentially dangerous. It allows the container process to open reserved low numbered ports in the way that any other root process can. It also allows the container to access network services such as D-bus on the Docker host. A container process could potentially carry out undesired actions, such as shutting down the Docker host. This option should not be used unless there is a very specific reason for enabling it.
   - id: cis-docker-1.2.0-5.10
-    description: Ensure that the memory usage for containers is limited (Scored)
+    description: '[CIS Docker] Ensure that the memory usage for containers is limited'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.Memory -}}") != "0"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the memory usage for containers is limited (Scored)
-      description: By default, all containers on a Docker host share resources equally. By using the resource management capabilities of the Docker host, you can control the amount of memory that a container is able to use.
-      rationale: By default a container can use all of the memory on the host. You can use memory limit mechanisms to prevent a denial of service occurring where one container consumes all of the hosts resources and other containers on the same host are therefore not able to function. Having no limit on memory usage can lead to issues where one container can easily make the whole system unstable and as a result unusable.
   - id: cis-docker-1.2.0-5.11
-    description: Ensure that CPU priority is set appropriately on containers (Scored)
+    description: '[CIS Docker] Ensure that CPU priority is set appropriately on containers'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.CpuShares -}}") not in ["0", "1024", ""]
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that CPU priority is set appropriately on containers (Scored)
-      description: The container's root filesystem should be treated as a 'golden image' by using Docker run's --read-only option. This prevents any writes to the container's root filesystem at container runtime and enforces the principle of immutable infrastructure.
-      rationale: Enabling this option forces containers at runtime to explicitly define their data writing strategy to persist or not persist their data. This also reduces security attack vectors since the container instance's filesystem cannot be tampered with or written to unless it has explicit read-write permissions on its filesystem folder and directories.
   - id: cis-docker-1.2.0-5.12
-    description: Ensure that the container's root filesystem is mounted as read only (Scored)
+    description: '[CIS Docker] Ensure that the container''s root filesystem is mounted as read only'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.ReadonlyRootfs -}}") == "true"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the container's root filesystem is mounted as read only (Scored)
-      description: The container's root filesystem should be treated as a 'golden image' by using Docker run's --read-only option. This prevents any writes to the container's root filesystem at container runtime and enforces the principle of immutable infrastructure.
-      rationale: Enabling this option forces containers at runtime to explicitly define their data writing strategy to persist or not persist their data. This also reduces security attack vectors since the container instance's filesystem cannot be tampered with or written to unless it has explicit read-write permissions on its filesystem folder and directories.
-  # TODO: Implement rule cis-docker-1.2.0-5.13
-  - id: cis-docker-1.2.0-5.13
-    description: Ensure that incoming container traffic is bound to a specific host interface (Scored)
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that incoming container traffic is bound to a specific host interface (Scored)
-      description: By default, Docker containers can make connections to the outside world, but the outside world cannot connect to containers and each outgoing connection will appear to originate from one of the host machine's own IP addresses. You should only allow container services to be contacted through a specific external interface on the host machine.
-      rationale: If you have multiple network interfaces on your host machine, the container can accept connections on exposed ports on any network interface. This might not be desirable and may not be secured. In many cases a specific, desired interface is exposed externally and services such as intrusion detection, intrusion prevention, firewall, load balancing, etc. are all run by intention there to screen incoming public traffic. You should therefore not accept incoming connections on any random interface, but only the one designated for this type of traffic.
   - id: cis-docker-1.2.0-5.14
-    description: Ensure that the 'on-failure' container restart policy is set to '5' (Scored)
+    description: '[CIS Docker] Ensure that the ''on-failure'' container restart policy is set to ''5'''
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.RestartPolicy.Name -}}") == "on-failure" && docker.template("{{- eq $.HostConfig.RestartPolicy.MaximumRetryCount 5 -}}") != "false"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the 'on-failure' container restart policy is set to '5' (Scored)
-      description: By using the --restart flag in the docker run command you can specify a restart policy for how a container should or should not be restarted on exit. You should choose the on-failure restart policy and limit the restart attempts to 5.
-      rationale: If you indefinitely keep trying to start the container, it could possibly lead to a denial of service on the host. It could be an easy way to do a distributed denial of service attack especially if you have many containers on the same host. Additionally, ignoring the exit status of the container and always attempting to restart the container, leads to non-investigation of the root cause behind containers getting terminated. If a container gets terminated, you should investigate on the reason behind it instead of just attempting to restart it indefinitely. You should use the on-failure restart policy to limit the number of container restarts to a maximum of 5 attempts.
   - id: cis-docker-1.2.0-5.15
-    description: Ensure that the host's process namespace is not shared (Scored)
+    description: '[CIS Docker] Ensure that the host''s process namespace is not shared'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.PidMode -}}") != "host"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the host's process namespace is not shared (Scored)
-      description: The Process ID (PID) namespace isolates the process ID space, meaning that processes in different PID namespaces can have the same PID. This creates process level isolation between the containers and the host.
-      rationale: PID namespace provides separation between processes. It prevents system processes from being visible, and allows process ids to be reused including PID 1. If the host's PID namespace is shared with containers, it would basically allow these to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them. This could allow for the host itself being shut down, which could be extremely serious, particularly in a multi-tenanted environment. You should not share the host's process namespace with the containers running on it.
   - id: cis-docker-1.2.0-5.16
-    description: Ensure that the host's IPC namespace is not shared (Scored)
+    description: '[CIS Docker] Ensure that the host''s IPC namespace is not shared'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.IpcMode -}}") != "host"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the host's IPC namespace is not shared (Scored)
-      description: IPC (POSIX/SysV IPC) namespace provides separation of named shared memory segments, semaphores and message queues. The IPC namespace on the host should therefore not be shared with containers and should remain isolated.
-      rationale: The IPC namespace provides separation of IPC between the host and containers. If the host's IPC namespace is shared with the container, it would allow processes within the container to see all of IPC communications on the host system. This would remove the benefit of IPC level isolation between host and containers. An attacker with access to a container could get access to the host at this level with major consequences. The IPC namespace should therefore not be shared between the host and its containers.
-  # TODO: Implement rule cis-docker-1.2.0-5.19
-  - id: cis-docker-1.2.0-5.19
-    description: Ensure mount propagation mode is not set to shared (Scored)
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure mount propagation mode is not set to shared (Scored)
-      description: Mount propagation mode allows mounting volumes in shared, slave or private mode on a container. Do not use shared mount propagation mode unless explicitly needed.
-      rationale: A shared mount is replicated at all mounts and changes made at any mount point are propagated to all other mount points. Mounting a volume in shared mode does not restrict any other container from mounting and making changes to that volume. As this is likely not a desirable option from a security standpoint, this feature should not be used unless explicitly required.
   - id: cis-docker-1.2.0-5.20
-    description: Ensure that the host's UTS namespace is not shared (Scored)
+    description: '[CIS Docker] Ensure that the host''s UTS namespace is not shared'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.UTSMode -}}") != "host"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the host's UTS namespace is not shared (Scored)
-      description: 'UTS namespaces provide isolation between two system identifiers: the hostname and the NIS domain name. It is used to set the hostname and the domain which are visible to running processes in that namespace. Processes running within containers do not typically require to know either the hostname or the domain name. The UTS namespace should therefore not be shared with the host.'
-      rationale: Sharing the UTS namespace with the host provides full permission for each container to change the hostname of the host. This is not in line with good security practice and should not be permitted.
   - id: cis-docker-1.2.0-5.21
-    description: Ensure the default seccomp profile is not Disabled (Scored)
+    description: '[CIS Docker] Ensure the default seccomp profile is not Disabled'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- has \"seccomp:unconfined\" $.HostConfig.SecurityOpt -}}") == "false"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure the default seccomp profile is not Disabled (Scored)
-      description: Seccomp filtering provides a means for a process to specify a filter for incoming system calls. The default Docker seccomp profile works on a whitelist basis and allows for a large number of common system calls, whilst blocking all others. This filtering should not be disabled unless it causes a problem with your container application usage.
-      rationale: A large number of system calls are exposed to every userland process with many of them going unused for the entire lifetime of the process. Most of applications do not need all these system calls and would therefore benefit from having a reduced set of available system calls. Having a reduced set of system calls reduces the total kernel surface exposed to the application and thus improvises application security.
-  # TODO: Implement rule cis-docker-1.2.0-5.22
-  - id: cis-docker-1.2.0-5.22
-    description: Ensure that docker exec commands are not used with the privileged option (Scored)
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that docker exec commands are not used with the privileged option (Scored)
-      description: You should not use docker exec with the --user=root option.
-      rationale: Using the --user=root option in a docker exec command, executes it within the container as the root user. This could potentially be insecure, particularly when you are running containers with reduced capabilities or enhanced restrictions. For example, if your container is running as a tomcat user (or any other non-root user), it would be possible to run a command through docker exec as rootwith the --user=root option. This could potentially be dangerous.
   - id: cis-docker-1.2.0-5.24
-    description: Ensure that cgroup usage is confirmed (Scored)
+    description: '[CIS Docker] Ensure that cgroup usage is confirmed'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.CgroupParent -}}") == ""
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that cgroup usage is confirmed (Scored)
-      description: It is possible to attach to a particular cgroup when a container is instantiated. Confirming cgroup usage would ensure that containers are running in defined cgroups.
-      rationale: System administrators typically define cgroups in which containers are supposed to run. If cgroups are not explicitly defined by the system administrator, containers run in the docker cgroup by default. At run time, it is possible to attach a container to a different cgroup other than the one originally defined. This usage should be monitored and confirmed, as by attaching to a different cgroup, excess permissions and resources might be granted to the container and this can therefore prove to be a security risk.
   - id: cis-docker-1.2.0-5.25
-    description: Ensure that the container is restricted from acquiring additional privileges (Scored)
+    description: '[CIS Docker] Ensure that the container is restricted from acquiring additional privileges'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- has \"no-new-privileges\" $.HostConfig.SecurityOpt -}}") == "true"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the container is restricted from acquiring additional privileges (Scored)
-      description: You should restrict the container from acquiring additional privileges via suid or sgid bits.
-      rationale: A process can set the no_new_priv bit in the kernel and this persists across forks, clones and execve. The no_new_priv bit ensures that the process and its child processes do not gain any additional privileges via suid or sgid bits. This reduces the danger associated with many operations because the possibility of subverting privileged binaries is lessened.
   - id: cis-docker-1.2.0-5.26
-    description: Ensure that container health is checked at runtime (Scored)
+    description: '[CIS Docker] Ensure that container health is checked at runtime'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.State.Health.Status -}}") != ""
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that container health is checked at runtime (Scored)
-      description: If the container image does not have an HEALTHCHECK instruction defined, you should use the --health-cmd parameter at container runtime to check container health.
-      rationale: If the container image you are using does not have a pre-defined HEALTHCHECK instruction, use the --health-cmd parameter to check container health at runtime. Based on the reported health status, remedial actions can be taken if necessary.
   - id: cis-docker-1.2.0-5.28
-    description: Ensure that the PIDs cgroup limit is used (Scored)
+    description: '[CIS Docker] Ensure that the PIDs cgroup limit is used'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.PidsLimit -}}") not in ["", "<nil>", "0"]
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the PIDs cgroup limit is used (Scored)
-      description: You should not share the host's user namespaces with containers running on it.
-      rationale: User namespaces ensure that a root process inside the container will be mapped to a non-root process outside the container. Sharing the user namespaces of the host with the container does not therefore isolate users on the host from users in the containers.
   - id: cis-docker-1.2.0-5.30
-    description: Ensure that the host's user namespaces are not shared (Scored)
+    description: '[CIS Docker] Ensure that the host''s user namespaces are not shared'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{- $.HostConfig.UsernsMode -}}") != "host"
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the host's user namespaces are not shared (Scored)
-      description: You should not share the host's user namespaces with containers running on it.
-      rationale: User namespaces ensure that a root process inside the container will be mapped to a non-root process outside the container. Sharing the user namespaces of the host with the container does not therefore isolate users on the host from users in the containers.
   - id: cis-docker-1.2.0-5.31
-    description: Ensure that the Docker socket is not mounted inside any containers (Scored)
+    description: '[CIS Docker] Ensure that the Docker socket is not mounted inside any containers'
     scope:
       - docker
     resources:
       - docker:
           kind: container
         condition: docker.template("{{ range $.Mounts }}{{ if eq .Source \"/var/run/docker.sock\" }}{{ .Source }}{{ end }}{{ end }}") == ""
-    info:
-      index:
-        - 5. Container Runtime Configuration
-      synopsis: Ensure that the Docker socket is not mounted inside any containers (Scored)
-      description: The Docker socket docker.sock should not be mounted inside a container.
-      rationale: If the Docker socket is mounted inside a container it could allow processes running within the container to execute Docker commands which would effectively allow for full control of the host.
-  # TODO: Implement rule cis-docker-1.2.0-7.1
-  - id: cis-docker-1.2.0-7.1
-    description: Ensure swarm mode is not Enabled, if not needed (Scored)
-    info:
-      index:
-        - 7. Docker Swarm Configuration
-      synopsis: Ensure swarm mode is not Enabled, if not needed (Scored)
-      description: Do not enable swarm mode on a Docker engine instance unless this is needed.
-      rationale: By default, a Docker engine instance will not listen on any network ports, with all communications with the client coming over the Unix socket. When Docker swarm mode is enabled on a Docker engine instance, multiple network ports are opened on the system and made available to other systems on the network for the purposes of cluster management and node communications. Opening network ports on a system increases its attack surface and this should be avoided unless required. It should be noted that swarm mode is required for the operation of Docker Enterprise components.
-  # TODO: Implement rule cis-docker-1.2.0-7.2
-  - id: cis-docker-1.2.0-7.2
-    description: Ensure that the minimum number of manager nodes have been created in a swarm (Scored)
-    info:
-      index:
-        - 7. Docker Swarm Configuration
-      synopsis: Ensure that the minimum number of manager nodes have been created in a swarm (Scored)
-      description: You should ensure that the minimum number of required manager nodes is created in a swarm.
-      rationale: Manager nodes within a swarm have control over the swarm and can change its configuration, including modifying security parameters. Having excessive manager nodes could render the swarm more susceptible to compromise. If fault tolerance is not required in the manager nodes, a single node should be elected as a manger. If fault tolerance is required then the smallest odd number to achieve the appropriate level of tolerance should be configured. This should always be an odd number in order to ensure that a quorum is reached.
-  # TODO: Implement rule cis-docker-1.2.0-7.3
-  - id: cis-docker-1.2.0-7.3
-    description: Ensure that swarm services are bound to a specific host interface (Scored)
-    info:
-      index:
-        - 7. Docker Swarm Configuration
-      synopsis: Ensure that swarm services are bound to a specific host interface (Scored)
-      description: By default, Docker swarm services will listen on all interfaces on the host. This may not be necessary for the operation of the swarm where the host has multiple network interfaces.
-      rationale: When a swarm is initialized the default value for the --listen-addr flag is 0.0.0.0:2377 which means that swarm services will listen on all interfaces on the host. If a host has multiple network interfaces this may be undesirable as it could expose swarm services to networks which are not involved with the operation of the swarm. By passing a specific IP address to the --listen-addr, a specific network interface can be specified, limiting this exposure.
-  # TODO: Implement rule cis-docker-1.2.0-7.4
-  - id: cis-docker-1.2.0-7.4
-    description: Ensure that all Docker swarm overlay networks are encrypted (Scored)
-    info:
-      index:
-        - 7. Docker Swarm Configuration
-      synopsis: Ensure that all Docker swarm overlay networks are encrypted (Scored)
-      description: Ensure that all Docker swarm overlay networks are encrypted.
-      rationale: By default, data exchanged between containers on nodes on the overlay network is not encrypted. This could potentially expose traffic between containers.
-  # TODO: Implement rule cis-docker-1.2.0-7.6
-  - id: cis-docker-1.2.0-7.6
-    description: Ensure that swarm manager is run in auto-lock mode (Scored)
-    info:
-      index:
-        - 7. Docker Swarm Configuration
-      synopsis: Ensure that swarm manager is run in auto-lock mode (Scored)
-      description: You should review whether you wish to run Docker swarm manager in auto-lock mode.
-      rationale: When Docker restarts, both the TLS key used to encrypt communication among swarm nodes, and the key used to encrypt and decrypt Raft logs on disk, are loaded into each manager node's memory. You could protect the mutual TLS encryption key and the key used to encrypt and decrypt Raft logs at rest. This protection could be enabled by initializing the swarm with the --autolock flag. With --autolockenabled, when Docker restarts, you must unlock the swarm first, using a key encryption key generated by Docker when the swarm was initialized. This has benefits in a high security environment, however these should be balanced against the support issues caused by the swarm not starting automatically if, for example the host were to experience an outage.
-  # TODO: Implement rule cis-docker-1.2.0-8.1.1
-  - id: cis-docker-1.2.0-8.1.1
-    description: Configure the LDAP authentication service (Scored)
-    info:
-      index:
-        - 8. Docker Enterprise Configuration
-        - 8.1. Universal Control Plane Configuration
-      synopsis: Configure the LDAP authentication service (Scored)
-      description: By default, the Universal Control Plane is configured to use the managed user authentication service. UCP should instead be configured to use one or more external LDAP endpoints for authenticating users as this can enable more granular control over authentication and authorization.
-      rationale: UCP's built-in managed user authentication system only supports user creation, deletion and disablement. By using an external LDAP endpoint, you can have more control over the users, groups and other hierarchical organizations that can access and manipulate resources via UCP.
-  # TODO: Implement rule cis-docker-1.2.0-8.1.2
-  - id: cis-docker-1.2.0-8.1.2
-    description: Use external certificates (Scored)
-    info:
-      index:
-        - 8. Docker Enterprise Configuration
-        - 8.1. Universal Control Plane Configuration
-      synopsis: Use external certificates (Scored)
-      description: When you install the Universal Control Plane without providing your own TLS certificates, it will, by default, configure self-signed certificates. You should instead use certificates signed by an external, trusted certified authority as these mitigate the overhead of having to distribute certificate authority certificates to all of the nodes in a Universal Control Plane cluster and additionally are in line with good security practice.
-      rationale: By default, UCP is configured to use untrusted, self-signed certificates. Using UCP with externally trusted certificate authorities is a more streamlined and secure option.
