@@ -35,12 +35,6 @@ rules:
       chmod.filename =~ "/var/log/*" || chmod.filename =~ "/usr/lib/*"
     tags:
       technique: T1222
-  - id: hidden_file
-    description: A hidden file was created
-    expression: >-
-      open.basename =~ ".*" && open.flags & O_CREAT > 0
-    tags:
-      technique: T1158
   - id: kernel_module
     description: A new kernel module was added
     expression: >-
