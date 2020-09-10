@@ -1,5 +1,5 @@
 ---
-version: 1.0.0
+version: 1.0.1
 rules:
   - id: credential_modified
     description: Sensitive credential files were modified using a non-standard tool
@@ -47,3 +47,53 @@ rules:
       open.filename =~ "/lib/modules/*" && open.flags & O_CREAT > 0
     tags:
       technique: T1215
+  - id: nsswitch_conf_mod
+    description: Exploits that modify nsswitch.conf to interfere with authentication
+    expression: >-
+      open.filename == "/etc/nsswitch.conf" && open.flags & (O_RDWR | O_WRONLY) > 0
+    tags:
+      technique: T1556
+  - id: pam_modification
+    description: PAM modification
+    expression: >-
+      open.filename =~ "/etc/pam.d/*" && open.flags & (O_RDWR | O_WRONLY) > 0
+    tags:
+      technique: T1556
+  - id: cron_at_job_injection
+    description: Unauthorized scheduling client
+    expression: >-
+      open.filename =~ "/var/spool/cron/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
+      process.name not in ["at", "crontab"]
+    tags:
+      technique: T1053
+  - id: kernel_modification
+    description: Unauthorized kernel modification
+    expression: >-
+      open.filename =~ "/boot/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+    tags:
+      technique: T1014
+  - id: systemd_modification
+    description: Unauthorized modification of a service
+    expression: >-
+      open.filename =~ "/lib/systemd/system/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+    tags:
+      technique: T1014
+  - id: authentication_logs_accessed
+    description: unauthorized file accessing access logs
+    expression: >-
+      open.filename in ["/run/utmp", "/var/run/utmp", "/var/log/wtmp"] &&
+      process.name not in ["login", "sshd", "last", "who", "w", "vminfo"]
+    tags:
+      technique: T1070
+  - id: root_ssh_key
+    description: attempts to create or modify root's SSH key
+    expression: >-
+      open.filename == "/root/.ssh/authorized_keys" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+    tags:
+      technique: T1556
+  - id: ssl_certificate_tampering
+    description: Tampering with SSL certificates for machine-in-the-middle attacks against OpenSSL
+    expression: >-
+      open.filename =~ "/etc/ssl/certs/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+    tags:
+      technique: T1338
