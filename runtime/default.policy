@@ -1,11 +1,11 @@
 ---
 version: 1.0.1
 rules:
-  - id: credential_modified
-    description: Sensitive credential files were modified using a non-standard tool
+  - id: credential_accessed
+    description: Sensitive credential files were accessed using a non-standard tool
     expression: >-
       (open.filename == "/etc/shadow" || open.filename == "/etc/gshadow") &&
-      process.name not in ["vipw", "vigr"]
+      process.name not in ["vipw", "vigr", "accounts-daemon"]
     tags:
       technique: T1003
   - id: memory_dump
