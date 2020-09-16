@@ -17,22 +17,25 @@ rules:
   - id: logs_altered
     description: Log data was deleted
     expression: >-
-      (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0)
+      (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0) &&
+      process.name not in ["agent", "security-agent", "process-agent", "system-probe", "kubelet", "containerd"]
     tags:
       technique: T1070
   - id: logs_removed
     description: Log files were removed
     expression: >-
-      unlink.filename =~ "/var/log/*"
+      unlink.filename =~ "/var/log/*" &&
+      process.name not in ["agent", "security-agent", "process-agent", "system-probe", "kubelet", "containerd"]
     tags:
       technique: T1070
   - id: permissions_changed
     description: Permissions were changed on sensitive files
     expression: >-
-      chmod.filename =~ "/etc/*" || chmod.filename =~ "/etc/*" ||
+      (chmod.filename =~ "/etc/*" || chmod.filename =~ "/etc/*" ||
       chmod.filename =~ "/sbin/*" || chmod.filename =~ "/usr/sbin/*" ||
       chmod.filename =~ "/usr/local/sbin*" || chmod.filename =~ "/usr/bin/local/*" ||
-      chmod.filename =~ "/var/log/*" || chmod.filename =~ "/usr/lib/*"
+      chmod.filename =~ "/var/log/*" || chmod.filename =~ "/usr/lib/*") &&
+      process.name not in ["containerd", "kubelet"]
     tags:
       technique: T1222
   - id: kernel_module
