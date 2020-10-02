@@ -1,11 +1,11 @@
 ---
-version: 1.0.1
+version: 1.0.2
 rules:
   - id: credential_accessed
     description: Sensitive credential files were accessed using a non-standard tool
     expression: >-
       (open.filename == "/etc/shadow" || open.filename == "/etc/gshadow") &&
-      process.name not in ["vipw", "vigr", "accounts-daemon"]
+      process.name not in ["vipw", "vigr", "accounts-daemon", "sudo", "cron"]
     tags:
       technique: T1003
   - id: memory_dump
@@ -79,7 +79,7 @@ rules:
     description: unauthorized file accessing access logs
     expression: >-
       open.filename in ["/run/utmp", "/var/run/utmp", "/var/log/wtmp"] &&
-      process.name not in ["login", "sshd", "last", "who", "w", "vminfo"]
+      process.name not in ["login", "sshd", "last", "who", "w", "vminfo", "sudo"]
     tags:
       technique: T1070
   - id: root_ssh_key
@@ -102,5 +102,5 @@ rules:
       open.filename =~ "/usr/bin/*" || 
       open.filename =~ "/usr/sbin/*" || 
       open.filename =~ "/opt/*") && 
-      open.flags & (O_RDWR | O_WRONLY) > 0 &&
-      process.name not in ["agent", "security-agent", "system-probe", "process-agent"]
+      open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
+      process.name not in ["agent", "security-agent", "system-probe", "process-agent", "postgres"]
