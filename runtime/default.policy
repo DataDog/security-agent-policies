@@ -94,13 +94,17 @@ rules:
       open.filename =~ "/etc/ssl/certs/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
     tags:
       technique: T1338
-  - id: pci_11_5
-    description: Modification of critical system files
+  - id: pci_11_5_critical_binaries
+    description: Modification of critical binary files
     expression: >-
       (open.filename =~ "/bin/*" || 
       open.filename =~ "/sbin/*" || 
       open.filename =~ "/usr/bin/*" || 
-      open.filename =~ "/usr/sbin/*" || 
-      open.filename =~ "/opt/*") && 
+      open.filename =~ "/usr/sbin/*") &&
+      open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+  - id: pci_11_5_critical_files
+    description: Modification of critical system files in /opt
+    expression: >-
+      open.filename =~ "/opt/*" &&
       open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
       process.name not in ["agent", "security-agent", "system-probe", "process-agent", "postgres"]
