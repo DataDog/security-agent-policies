@@ -687,7 +687,7 @@ rules:
     resources:
       - process:
           name: kubelet
-        condition: process.flag("--read-only-port") == "0"
+        condition: '!process.hasFlag("--read-only-port") || process.flag("--read-only-port") == "0"'
   - id: cis-kubernetes-1.5.1-4.2.5
     description: '[CIS Kubernetes] Ensure that the --streaming-connection-idle-timeout argument is not set to 0'
     scope:
@@ -742,6 +742,14 @@ rules:
       - process:
           name: kubelet
         condition: process.flag("--feature-gates") =~ "RotateKubeletServerCertificate=true"
+  - id: cis-kubernetes-1.5.1-5.1.5
+    description: '[CIS Kubernetes] Ensure that default service accounts are not actively used'
+    scope:
+      - kubernetesCluster
+    resources:
+      - custom:
+          name: kubernetesDefaultServiceAccounts
+        condition: _
   - id: cis-kubernetes-1.5.1-5.2.2
     description: '[CIS Kubernetes] Minimize the admission of containers wishing to share the host process ID namespace'
     scope:
@@ -790,6 +798,14 @@ rules:
           apiRequest:
             verb: list
         condition: count(kube.resource.jq(".spec.allowPrivilegeEscalation") != "true") > 0
+  - id: cis-kubernetes-1.5.1-5.3.2
+    description: '[CIS Kubernetes] Ensure that all Namespaces have Network Policies defined'
+    scope:
+      - kubernetesCluster
+    resources:
+      - custom:
+          name: kubernetesNetworkPolicies
+        condition: _
   - id: cis-kubernetes-1.5.1-5.7.4
     description: '[CIS Kubernetes] The default namespace should not be used'
     scope:
@@ -806,7 +822,7 @@ rules:
           kind: services
           version: v1
           namespace: default
-          fieldSelector: metadata.name!=kubernetes
+          fieldSelector: metadata.name!=kubernetes,metadata.name!=openshift
           apiRequest:
             verb: list
         condition: count(_) == 0
