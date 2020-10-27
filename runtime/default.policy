@@ -1,25 +1,67 @@
 ---
-version: 1.0.2
+version: 1.1.0
+
+#################################################################
+# Macros are a way to define reusable expressions and/or lists. #
+# Macros are used within rules. Macros do not monitor alone.    #
+#################################################################
+macros:
+# These processes are a part of the Datadog Agent
+  - id: DD_AGENT_PROCESSES
+    expression: >-
+      ["agent", "system-probe", "security-agent", "process-agent"] 
+
+# These processes are related to operating containers and kubernetes clusters
+  - id: CONTAINER_PROCESSES
+    expression: >-
+      ["containerd", "docker", "dockerd", "exe", "docker-compose", "docker-entrypoi", "docker-runc-cur", "docker-current", "dockerd-current", 
+      "kueblet", "hyperkube", "skydns", "kube2sky", "exechealthz", "weave-net", "loopback", "bridge", "openshift-sdn", "openshift"]
+  
+# These are processes that regularly access credential files as part of normal system activity. Add or remove as appropriate.
+  - id: CREDENTIAL_PROCESSES
+    expression: >-
+      ["accounts-daemon", "login", "newgrp", "sg", "sbin", "shadowconfig", "chage", "chfn", "chsh", "cron", "expiry", "gpasswd", "passwd", 
+      "chgpasswd", "chpasswd", "cpgr", "cppw", "groupadd", "groupdel", "groupmems", "groupmod", "grpck", "grpconv", "grpunconv", 
+      "newusers", "pwck", "pwconv", "pwunconv", "sudo", "useradd", "userdel", "usermod", "vigr", "vipw"]
+
+# These are common database processes. Add or remove as appropriate
+  - id: DB_PROCESSES
+    expression: >-
+      ["mysqld", "postgres", "elasticsearch", "mongod"]
+
+# Add allow-listed process names to this list. Uncomment to use.
+# Add to rules in order to apply this allow list.
+#  - id: ALLOWED_PROCESSES
+#    expression: >-
+#      process.name not in ["example"]
+
+################################################################
+# Rules determine what the Datadog security-agent will monitor.#
+################################################################
 rules:
   - id: credential_accessed
     description: Sensitive credential files were accessed using a non-standard tool
     expression: >-
       (open.filename == "/etc/shadow" || open.filename == "/etc/gshadow") &&
-      process.name not in ["vipw", "vigr", "accounts-daemon", "sudo", "cron"]
+      process.name not in CREDENTIAL_PROCESSES
+  
   - id: memory_dump
     description: Potential memory dump
     expression: >-
       open.filename =~ "/proc/*" && open.basename in ["maps", "mem"]
+  
   - id: logs_altered
     description: Log data was deleted
     expression: >-
       (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0) &&
-      process.name not in ["agent", "security-agent", "process-agent", "system-probe", "kubelet", "containerd"]
+      (process.name not in DD_AGENT_PROCESSES && process.name not in CONTAINER_PROCESSES)
+  
   - id: logs_removed
     description: Log files were removed
     expression: >-
       unlink.filename =~ "/var/log/*" &&
-      process.name not in ["agent", "security-agent", "process-agent", "system-probe", "kubelet", "containerd"]
+      (process.name not in DD_AGENT_PROCESSES && process.name not in CONTAINER_PROCESSES)
+  
   - id: permissions_changed
     description: Permissions were changed on sensitive files
     expression: >-
@@ -27,45 +69,56 @@ rules:
       chmod.filename =~ "/sbin/*" || chmod.filename =~ "/usr/sbin/*" ||
       chmod.filename =~ "/usr/local/sbin/*" || chmod.filename =~ "/usr/local/bin/*" ||
       chmod.filename =~ "/var/log/*" || chmod.filename =~ "/usr/lib/*") &&
-      process.name not in ["containerd", "kubelet"]
+      process.name not in CONTAINER_PROCESSES
+  
   - id: kernel_module
     description: A new kernel module was added
     expression: >-
       (open.filename =~ "/lib/modules/*" || open.filename =~ "/usr/lib/modules/*") && open.flags & O_CREAT > 0
+  
   - id: nsswitch_conf_mod
     description: Exploits that modify nsswitch.conf to interfere with authentication
     expression: >-
       open.filename == "/etc/nsswitch.conf" && open.flags & (O_RDWR | O_WRONLY) > 0
+  
   - id: pam_modification
     description: PAM modification
     expression: >-
       open.filename =~ "/etc/pam.d/*" && open.flags & (O_RDWR | O_WRONLY) > 0
+  
   - id: cron_at_job_injection
     description: Unauthorized scheduling client
     expression: >-
       open.filename =~ "/var/spool/cron/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
       process.name not in ["at", "crontab"]
+  
   - id: kernel_modification
     description: Unauthorized kernel modification
     expression: >-
       open.filename =~ "/boot/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+  
   - id: systemd_modification
     description: Unauthorized modification of a service
     expression: >-
-      (open.filename =~ "/lib/systemd/system/*" || open.filename =~ "/usr/lib/systemd/system/*") && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+      (open.filename =~ "/lib/systemd/system/*" || open.filename =~ "/usr/lib/systemd/system/*") && 
+      open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+  
   - id: authentication_logs_accessed
     description: unauthorized file accessing access logs
     expression: >-
       open.filename in ["/run/utmp", "/var/run/utmp", "/var/log/wtmp"] &&
       process.name not in ["login", "sshd", "last", "who", "w", "vminfo", "sudo"]
+  
   - id: root_ssh_key
     description: attempts to create or modify root's SSH key
     expression: >-
       open.filename == "/root/.ssh/authorized_keys" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+  
   - id: ssl_certificate_tampering
     description: Tampering with SSL certificates for machine-in-the-middle attacks against OpenSSL
     expression: >-
       open.filename =~ "/etc/ssl/certs/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+  
   - id: pci_11_5_critical_binaries
     description: Modification of critical binary files
     expression: >-
@@ -74,9 +127,10 @@ rules:
       open.filename =~ "/usr/bin/*" || 
       open.filename =~ "/usr/sbin/*") &&
       open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+  
   - id: pci_11_5_critical_files
     description: Modification of critical system files in /opt
     expression: >-
       open.filename =~ "/opt/*" &&
       open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
-      process.name not in ["agent", "security-agent", "system-probe", "process-agent", "postgres"]
+      (process.name not in DD_AGENT_PROCESSES && process.name not in DB_PROCESSES)
