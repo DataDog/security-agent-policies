@@ -14,7 +14,7 @@ macros:
 # These processes are related to operating containers and kubernetes clusters
   - id: CONTAINER_PROCESSES
     expression: >-
-      ["containerd", "docker", "dockerd", "exe", "docker-compose", "docker-entrypoi", "docker-runc-cur", "docker-current", "dockerd-current", 
+      ["containerd", "docker", "dockerd", "exe", "docker-compose", "docker-runc-cur", "docker-current", "dockerd-current", 
       "kueblet", "hyperkube", "skydns", "kube2sky", "exechealthz", "weave-net", "loopback", "bridge", "openshift-sdn", "openshift"]
   
 # These are processes that regularly access credential files as part of normal system activity. Add or remove as appropriate.
