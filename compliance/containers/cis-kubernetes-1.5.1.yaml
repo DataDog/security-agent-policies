@@ -5,7 +5,7 @@ framework: cis-kubernetes
 version: 1.5.1
 rules:
   - id: cis-kubernetes-1.5.1-1.1.1
-    description: '[CIS Kubernetes] Ensure that the API server pod specification file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] API server pod specification file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -14,7 +14,7 @@ rules:
           path: /etc/kubernetes/manifests/kube-apiserver.yaml
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-1.1.2
-    description: '[CIS Kubernetes] Ensure that the API server pod specification file ownership is set to root:root'
+    description: '[CIS Kubernetes] API server pod specification file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -23,7 +23,7 @@ rules:
           path: /etc/kubernetes/manifests/kube-apiserver.yaml
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-1.1.3
-    description: '[CIS Kubernetes] Ensure that the controller manager pod specification file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] Controller manager pod specification file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -32,7 +32,7 @@ rules:
           path: /etc/kubernetes/manifests/kube-controller-manager.yaml
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-1.1.4
-    description: '[CIS Kubernetes] Ensure that the controller manager pod specification file ownership is set to root:root'
+    description: '[CIS Kubernetes] Controller manager pod specification file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -41,7 +41,7 @@ rules:
           path: /etc/kubernetes/manifests/kube-controller-manager.yaml
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-1.1.5
-    description: '[CIS Kubernetes] Ensure that the scheduler pod specification file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] Scheduler pod specification file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -50,7 +50,7 @@ rules:
           path: /etc/kubernetes/manifests/kube-scheduler.yaml
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-1.1.6
-    description: '[CIS Kubernetes] Ensure that the scheduler pod specification file ownership is set to root:root'
+    description: '[CIS Kubernetes] Scheduler pod specification file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -59,7 +59,7 @@ rules:
           path: /etc/kubernetes/manifests/kube-scheduler.yaml
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-1.1.7
-    description: '[CIS Kubernetes] Ensure that the etcd pod specification file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] etcd pod specification file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -68,7 +68,7 @@ rules:
           path: /etc/kubernetes/manifests/etcd.yaml
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-1.1.8
-    description: '[CIS Kubernetes] Ensure that the etcd pod specification file ownership is set to root:root'
+    description: '[CIS Kubernetes] etcd pod specification file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -77,7 +77,7 @@ rules:
           path: /etc/kubernetes/manifests/etcd.yaml
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-1.1.11
-    description: '[CIS Kubernetes] Ensure that the etcd data directory permissions are set to 700 or more restrictive'
+    description: '[CIS Kubernetes] etcd data directory permissions are set to 700 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -86,7 +86,7 @@ rules:
           path: process.flag("etcd", "--data-dir")
         condition: (file.permissions & 0700) == file.permissions
   - id: cis-kubernetes-1.5.1-1.1.12
-    description: '[CIS Kubernetes] Ensure that the etcd data directory ownership is set to etcd:etcd'
+    description: '[CIS Kubernetes] etcd data directory ownership is set to etcd:etcd'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -95,7 +95,7 @@ rules:
           path: process.flag("etcd", "--data-dir")
         condition: file.user == "etcd" && file.group == "etcd"
   - id: cis-kubernetes-1.5.1-1.1.13
-    description: '[CIS Kubernetes] Ensure that the admin.conf file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] admin.conf file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -104,7 +104,7 @@ rules:
           path: /etc/kubernetes/admin.conf
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-1.1.14
-    description: '[CIS Kubernetes] Ensure that the admin.conf file ownership is set to root:root'
+    description: '[CIS Kubernetes] admin.conf file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -113,7 +113,7 @@ rules:
           path: /etc/kubernetes/admin.conf
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-1.1.15
-    description: '[CIS Kubernetes] Ensure that the scheduler.conf file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] scheduler.conf file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -122,7 +122,7 @@ rules:
           path: /etc/kubernetes/scheduler.conf
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-1.1.16
-    description: '[CIS Kubernetes] Ensure that the scheduler.conf file ownership is set to root:root'
+    description: '[CIS Kubernetes] scheduler.conf file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -131,7 +131,7 @@ rules:
           path: /etc/kubernetes/scheduler.conf
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-1.1.17
-    description: '[CIS Kubernetes] Ensure that the controller-manager.conf file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] controller-manager.conf file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -140,7 +140,7 @@ rules:
           path: /etc/kubernetes/controller-manager.conf
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-1.1.18
-    description: '[CIS Kubernetes] Ensure that the controller-manager.conf file ownership is set to root:root'
+    description: '[CIS Kubernetes] controller-manager.conf file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -149,7 +149,7 @@ rules:
           path: /etc/kubernetes/controller-manager.conf
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-1.1.19
-    description: '[CIS Kubernetes] Ensure that the Kubernetes PKI directory and file ownership is set to root:root'
+    description: '[CIS Kubernetes] Kubernetes PKI directory and file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -158,7 +158,7 @@ rules:
           path: /etc/kubernetes/pki/
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-1.1.20
-    description: '[CIS Kubernetes] Ensure that the Kubernetes PKI certificate file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] Kubernetes PKI certificate file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -167,7 +167,7 @@ rules:
           path: /etc/kubernetes/pki/*.crt
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-1.2.2
-    description: '[CIS Kubernetes] Ensure that the --basic-auth-file argument is not set'
+    description: '[CIS Kubernetes] --basic-auth-file argument is not set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -176,7 +176,7 @@ rules:
           name: kube-apiserver
         condition: '!process.hasFlag("--basic-auth-file")'
   - id: cis-kubernetes-1.5.1-1.2.3
-    description: '[CIS Kubernetes] Ensure that the --token-auth-file parameter is not set'
+    description: '[CIS Kubernetes] --token-auth-file parameter is not set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -185,7 +185,7 @@ rules:
           name: kube-apiserver
         condition: '!process.hasFlag("--token-auth-file")'
   - id: cis-kubernetes-1.5.1-1.2.4
-    description: '[CIS Kubernetes] Ensure that the --kubelet-https argument is set to true'
+    description: '[CIS Kubernetes] --kubelet-https argument is set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -194,7 +194,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--kubelet-https") == "true"
   - id: cis-kubernetes-1.5.1-1.2.5
-    description: '[CIS Kubernetes] Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate'
+    description: '[CIS Kubernetes] --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -203,7 +203,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--kubelet-client-certificate") != "" && process.flag("--kubelet-client-key") != ""
   - id: cis-kubernetes-1.5.1-1.2.6
-    description: '[CIS Kubernetes] Ensure that the --kubelet-certificate-authority argument is set as appropriate'
+    description: '[CIS Kubernetes] --kubelet-certificate-authority argument is set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -212,7 +212,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--kubelet-certificate-authority") != ""
   - id: cis-kubernetes-1.5.1-1.2.7
-    description: '[CIS Kubernetes] Ensure that the --authorization-mode argument is not set to AlwaysAllow (API server)'
+    description: '[CIS Kubernetes] --authorization-mode argument is not set to AlwaysAllow (API server)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -221,7 +221,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--authorization-mode") != "AlwaysAllow"
   - id: cis-kubernetes-1.5.1-1.2.8
-    description: '[CIS Kubernetes] Ensure that the --authorization-mode argument includes Node'
+    description: '[CIS Kubernetes] --authorization-mode argument includes Node'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -230,7 +230,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--authorization-mode") =~ "Node"
   - id: cis-kubernetes-1.5.1-1.2.9
-    description: '[CIS Kubernetes] Ensure that the --authorization-mode argument includes RBAC'
+    description: '[CIS Kubernetes] --authorization-mode argument includes RBAC'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -239,7 +239,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--authorization-mode") =~ "RBAC"
   - id: cis-kubernetes-1.5.1-1.2.11
-    description: '[CIS Kubernetes] Ensure that the admission control plugin AlwaysAdmit is not set'
+    description: '[CIS Kubernetes] Admission control plugin AlwaysAdmit is not set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -248,7 +248,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--enable-admission-plugins") !~ "AlwaysAdmit"
   - id: cis-kubernetes-1.5.1-1.2.14
-    description: '[CIS Kubernetes] Ensure that the admission control plugin ServiceAccount is set'
+    description: '[CIS Kubernetes] Admission control plugin ServiceAccount is set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -257,7 +257,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--disable-admission-plugins") !~ "ServiceAccount"
   - id: cis-kubernetes-1.5.1-1.2.15
-    description: '[CIS Kubernetes] Ensure that the admission control plugin NamespaceLifecycle is set'
+    description: '[CIS Kubernetes] Admission control plugin NamespaceLifecycle is set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -266,7 +266,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--disable-admission-plugins") !~ "NamespaceLifecycle"
   - id: cis-kubernetes-1.5.1-1.2.16
-    description: '[CIS Kubernetes] Ensure that the admission control plugin PodSecurityPolicy is set'
+    description: '[CIS Kubernetes] Admission control plugin PodSecurityPolicy is set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -275,7 +275,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--enable-admission-plugins") =~ "PodSecurityPolicy"
   - id: cis-kubernetes-1.5.1-1.2.17
-    description: '[CIS Kubernetes] Ensure that the admission control plugin NodeRestriction is set'
+    description: '[CIS Kubernetes] Admission control plugin NodeRestriction is set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -284,7 +284,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--enable-admission-plugins") =~ "NodeRestriction"
   - id: cis-kubernetes-1.5.1-1.2.18
-    description: '[CIS Kubernetes] Ensure that the --insecure-bind-address argument is not set'
+    description: '[CIS Kubernetes] --insecure-bind-address argument is not set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -293,7 +293,7 @@ rules:
           name: kube-apiserver
         condition: '!process.hasFlag("--insecure-bind-address")'
   - id: cis-kubernetes-1.5.1-1.2.19
-    description: '[CIS Kubernetes] Ensure that the --insecure-port argument is set to 0'
+    description: '[CIS Kubernetes] --insecure-port argument is set to 0'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -302,7 +302,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--insecure-port") == "0"
   - id: cis-kubernetes-1.5.1-1.2.20
-    description: '[CIS Kubernetes] Ensure that the --secure-port argument is not set to 0'
+    description: '[CIS Kubernetes] --secure-port argument is not set to 0'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -311,7 +311,7 @@ rules:
           name: kube-apiserver
         condition: '!process.hasFlag("--secure-port") || process.flag("--secure-port") != "0"'
   - id: cis-kubernetes-1.5.1-1.2.21
-    description: '[CIS Kubernetes] Ensure that the --profiling argument is set to false (API server)'
+    description: '[CIS Kubernetes] --profiling argument is set to false (API server)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -320,7 +320,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--profiling") == "false"
   - id: cis-kubernetes-1.5.1-1.2.22
-    description: '[CIS Kubernetes] Ensure that the --audit-log-path argument is set'
+    description: '[CIS Kubernetes] --audit-log-path argument is set'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -329,7 +329,7 @@ rules:
           name: kube-apiserver
         condition: process.hasFlag("--audit-log-path")
   - id: cis-kubernetes-1.5.1-1.2.23
-    description: '[CIS Kubernetes] Ensure that the --audit-log-maxage argument is set to 30 or as appropriate'
+    description: '[CIS Kubernetes] --audit-log-maxage argument is set to 30 or as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -338,7 +338,7 @@ rules:
           name: kube-apiserver
         condition: process.hasFlag("--audit-log-maxage")
   - id: cis-kubernetes-1.5.1-1.2.24
-    description: '[CIS Kubernetes] Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate'
+    description: '[CIS Kubernetes] --audit-log-maxbackup argument is set to 10 or as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -347,7 +347,7 @@ rules:
           name: kube-apiserver
         condition: process.hasFlag("--audit-log-maxbackup")
   - id: cis-kubernetes-1.5.1-1.2.25
-    description: '[CIS Kubernetes] Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate'
+    description: '[CIS Kubernetes] --audit-log-maxsize argument is set to 100 or as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -356,7 +356,7 @@ rules:
           name: kube-apiserver
         condition: process.hasFlag("--audit-log-maxsize")
   - id: cis-kubernetes-1.5.1-1.2.26
-    description: '[CIS Kubernetes] Ensure that the --request-timeout argument is set as appropriate'
+    description: '[CIS Kubernetes] --request-timeout argument is set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -365,7 +365,7 @@ rules:
           name: kube-apiserver
         condition: process.hasFlag("--request-timeout")
   - id: cis-kubernetes-1.5.1-1.2.27
-    description: '[CIS Kubernetes] Ensure that the --service-account-lookup argument is set to true'
+    description: '[CIS Kubernetes] --service-account-lookup argument is set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -374,7 +374,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--service-account-lookup") == "true"
   - id: cis-kubernetes-1.5.1-1.2.28
-    description: '[CIS Kubernetes] Ensure that the --service-account-key-file argument is set as appropriate'
+    description: '[CIS Kubernetes] --service-account-key-file argument is set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -383,7 +383,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--service-account-key-file") != ""
   - id: cis-kubernetes-1.5.1-1.2.29
-    description: '[CIS Kubernetes] Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate'
+    description: '[CIS Kubernetes] --etcd-certfile and --etcd-keyfile arguments are set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -392,7 +392,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--etcd-certfile") != "" && process.flag("--etcd-keyfile") != ""
   - id: cis-kubernetes-1.5.1-1.2.30
-    description: '[CIS Kubernetes] Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (API server)'
+    description: '[CIS Kubernetes] --tls-cert-file and --tls-private-key-file arguments are set as appropriate (API server)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -401,7 +401,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--tls-cert-file") != "" && process.flag("--tls-private-key-file") != ""
   - id: cis-kubernetes-1.5.1-1.2.31
-    description: '[CIS Kubernetes] Ensure that the --client-ca-file argument is set as appropriate (API server)'
+    description: '[CIS Kubernetes] --client-ca-file argument is set as appropriate (API server)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -410,7 +410,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--client-ca-file") != ""
   - id: cis-kubernetes-1.5.1-1.2.32
-    description: '[CIS Kubernetes] Ensure that the --etcd-cafile argument is set as appropriate'
+    description: '[CIS Kubernetes] --etcd-cafile argument is set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -419,7 +419,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--etcd-cafile") != ""
   - id: cis-kubernetes-1.5.1-1.2.33
-    description: '[CIS Kubernetes] Ensure that the --encryption-provider-config argument is set as appropriate'
+    description: '[CIS Kubernetes] --encryption-provider-config argument is set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -428,7 +428,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--encryption-provider-config") != ""
   - id: cis-kubernetes-1.5.1-1.3.2
-    description: '[CIS Kubernetes] Ensure that the --profiling argument is set to false (Controller Manager)'
+    description: '[CIS Kubernetes] --profiling argument is set to false (Controller Manager)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -437,7 +437,7 @@ rules:
           name: kube-controller-manager
         condition: process.flag("--profiling") == "false"
   - id: cis-kubernetes-1.5.1-1.3.3
-    description: '[CIS Kubernetes] Ensure that the --use-service-account-credentials argument is set to true'
+    description: '[CIS Kubernetes] --use-service-account-credentials argument is set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -446,7 +446,7 @@ rules:
           name: kube-controller-manager
         condition: process.flag("--use-service-account-credentials") == "true"
   - id: cis-kubernetes-1.5.1-1.3.4
-    description: '[CIS Kubernetes] Ensure that the --service-account-private-key-file argument is set as appropriate'
+    description: '[CIS Kubernetes] --service-account-private-key-file argument is set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -455,7 +455,7 @@ rules:
           name: kube-controller-manager
         condition: process.flag("--service-account-private-key-file") != ""
   - id: cis-kubernetes-1.5.1-1.3.5
-    description: '[CIS Kubernetes] Ensure that the --root-ca-file argument is set as appropriate'
+    description: '[CIS Kubernetes] --root-ca-file argument is set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -464,7 +464,7 @@ rules:
           name: kube-controller-manager
         condition: process.flag("--root-ca-file") != ""
   - id: cis-kubernetes-1.5.1-1.3.6
-    description: '[CIS Kubernetes] Ensure that the RotateKubeletServerCertificate argument is set to true (Controller Manager)'
+    description: '[CIS Kubernetes] RotateKubeletServerCertificate argument is set to true (Controller Manager)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -473,7 +473,7 @@ rules:
           name: kube-controller-manager
         condition: process.flag("--feature-gates") =~ "RotateKubeletServerCertificate=true"
   - id: cis-kubernetes-1.5.1-1.3.7
-    description: '[CIS Kubernetes] Ensure that the --bind-address argument is set to 127.0.0.1 (Controller Manager)'
+    description: '[CIS Kubernetes] --bind-address argument is set to 127.0.0.1 (Controller Manager)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -482,7 +482,7 @@ rules:
           name: kube-controller-manager
         condition: process.flag("--bind-address") == "127.0.0.1"
   - id: cis-kubernetes-1.5.1-1.4.1
-    description: '[CIS Kubernetes] Ensure that the --profiling argument is set to false (Scheduler)'
+    description: '[CIS Kubernetes] --profiling argument is set to false (Scheduler)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -491,7 +491,7 @@ rules:
           name: kube-scheduler
         condition: process.flag("--profiling") == "false"
   - id: cis-kubernetes-1.5.1-1.4.2
-    description: '[CIS Kubernetes] Ensure that the --bind-address argument is set to 127.0.0.1 (Scheduler)'
+    description: '[CIS Kubernetes] --bind-address argument is set to 127.0.0.1 (Scheduler)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -500,7 +500,7 @@ rules:
           name: kube-scheduler
         condition: process.flag("--bind-address") == "127.0.0.1"
   - id: cis-kubernetes-1.5.1-2.1
-    description: '[CIS Kubernetes] Ensure that the --cert-file and --key-file arguments are set as appropriate'
+    description: '[CIS Kubernetes] --cert-file and --key-file arguments are set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -509,7 +509,7 @@ rules:
           name: etcd
         condition: process.flag("--cert-file") != "" && process.flag("--key-file") != ""
   - id: cis-kubernetes-1.5.1-2.2
-    description: '[CIS Kubernetes] Ensure that the --client-cert-auth argument is set to true'
+    description: '[CIS Kubernetes] --client-cert-auth argument is set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -518,7 +518,7 @@ rules:
           name: etcd
         condition: process.flag("--client-cert-auth") == "true"
   - id: cis-kubernetes-1.5.1-2.3
-    description: '[CIS Kubernetes] Ensure that the --auto-tls argument is not set to true'
+    description: '[CIS Kubernetes] --auto-tls argument is not set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -527,7 +527,7 @@ rules:
           name: etcd
         condition: process.flag("--auto-tls") != "true"
   - id: cis-kubernetes-1.5.1-2.4
-    description: '[CIS Kubernetes] Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate'
+    description: '[CIS Kubernetes] --peer-cert-file and --peer-key-file arguments are set as appropriate'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -536,7 +536,7 @@ rules:
           name: etcd
         condition: process.flag("--peer-cert-file") != "" && process.flag("--peer-key-file") != ""
   - id: cis-kubernetes-1.5.1-2.5
-    description: '[CIS Kubernetes] Ensure that the --peer-client-cert-auth argument is set to true'
+    description: '[CIS Kubernetes] --peer-client-cert-auth argument is set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -545,7 +545,7 @@ rules:
           name: etcd
         condition: process.flag("--peer-client-cert-auth") == "true"
   - id: cis-kubernetes-1.5.1-2.6
-    description: '[CIS Kubernetes] Ensure that the --peer-auto-tls argument is not set to true'
+    description: '[CIS Kubernetes] --peer-auto-tls argument is not set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
@@ -554,7 +554,7 @@ rules:
           name: etcd
         condition: process.flag("--peer-auto-tls") != "true"
   - id: cis-kubernetes-1.5.1-3.2.1
-    description: '[CIS Kubernetes] Ensure that a minimal audit policy is created'
+    description: '[CIS Kubernetes] Minimal audit policy is created'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
@@ -563,7 +563,7 @@ rules:
           name: kube-apiserver
         condition: process.flag("--audit-policy-file") != ""
   - id: cis-kubernetes-1.5.1-4.1.1
-    description: '[CIS Kubernetes] Ensure that the kubelet service file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] Kubelet service file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -572,7 +572,7 @@ rules:
           path: /usr/lib/systemd/system/kubelet.service
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-4.1.2
-    description: '[CIS Kubernetes] Ensure that the kubelet service file ownership is set to root:root'
+    description: '[CIS Kubernetes] Kubelet service file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -581,7 +581,7 @@ rules:
           path: /usr/lib/systemd/system/kubelet.service
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-4.1.3
-    description: '[CIS Kubernetes] Ensure that the proxy kubeconfig file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] Proxy kubeconfig file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -590,7 +590,7 @@ rules:
           path: /var/lib/kube-proxy/kubeconfig
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-4.1.4
-    description: '[CIS Kubernetes] Ensure that the proxy kubeconfig file ownership is set to root:root'
+    description: '[CIS Kubernetes] Proxy kubeconfig file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -599,7 +599,7 @@ rules:
           path: /var/lib/kube-proxy/kubeconfig
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-4.1.5
-    description: '[CIS Kubernetes] Ensure that the kubelet.conf file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] kubelet.conf file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -608,7 +608,7 @@ rules:
           path: /etc/kubernetes/kubelet.conf
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-4.1.6
-    description: '[CIS Kubernetes] Ensure that the kubelet.conf file ownership is set to root:root'
+    description: '[CIS Kubernetes] kubelet.conf file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -617,7 +617,7 @@ rules:
           path: /etc/kubernetes/kubelet.conf
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-4.1.7
-    description: '[CIS Kubernetes] Ensure that the certificate authorities file permissions are set to 644 or more restrictive'
+    description: '[CIS Kubernetes] Certificate authorities file permissions are set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -626,7 +626,7 @@ rules:
           path: process.flag("kubelet", "--client-ca-file")
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-4.1.8
-    description: '[CIS Kubernetes] Ensure that the client certificate authorities file ownership is set to root:root'
+    description: '[CIS Kubernetes] Client certificate authorities file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -635,7 +635,7 @@ rules:
           path: process.flag("kubelet", "--client-ca-file")
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-4.1.9
-    description: '[CIS Kubernetes] Ensure that the kubelet configuration file has permissions set to 644 or more restrictive'
+    description: '[CIS Kubernetes] Kubelet configuration file has permissions set to 644 or more restrictive'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -644,7 +644,7 @@ rules:
           path: process.flag("kubelet", "--config")
         condition: (file.permissions & 0644) == file.permissions
   - id: cis-kubernetes-1.5.1-4.1.10
-    description: '[CIS Kubernetes] Ensure that the kubelet configuration file ownership is set to root:root'
+    description: '[CIS Kubernetes] Kubelet configuration file ownership is set to root:root'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -653,7 +653,7 @@ rules:
           path: process.flag("kubelet", "--config")
         condition: file.user == "root" && file.group == "root"
   - id: cis-kubernetes-1.5.1-4.2.1
-    description: '[CIS Kubernetes] Ensure that the anonymous-auth argument is set to false'
+    description: '[CIS Kubernetes] Anonymous-auth argument is set to false'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -662,7 +662,7 @@ rules:
           name: kubelet
         condition: process.flag("--anonymous-auth") == "false"
   - id: cis-kubernetes-1.5.1-4.2.2
-    description: '[CIS Kubernetes] Ensure that the --authorization-mode argument is not set to AlwaysAllow (Kubelet)'
+    description: '[CIS Kubernetes] --authorization-mode argument is not set to AlwaysAllow (Kubelet)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -671,7 +671,7 @@ rules:
           name: kubelet
         condition: process.flag("--authorization-mode") !~ "AlwaysAllow"
   - id: cis-kubernetes-1.5.1-4.2.3
-    description: '[CIS Kubernetes] Ensure that the --client-ca-file argument is set as appropriate (Kubelet)'
+    description: '[CIS Kubernetes] --client-ca-file argument is set as appropriate (Kubelet)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -680,7 +680,7 @@ rules:
           name: kubelet
         condition: process.flag("--client-ca-file") != ""
   - id: cis-kubernetes-1.5.1-4.2.4
-    description: '[CIS Kubernetes] Ensure that the --read-only-port argument is set to 0'
+    description: '[CIS Kubernetes] --read-only-port argument is set to 0'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -689,7 +689,7 @@ rules:
           name: kubelet
         condition: '!process.hasFlag("--read-only-port") || process.flag("--read-only-port") == "0"'
   - id: cis-kubernetes-1.5.1-4.2.5
-    description: '[CIS Kubernetes] Ensure that the --streaming-connection-idle-timeout argument is not set to 0'
+    description: '[CIS Kubernetes] --streaming-connection-idle-timeout argument is not set to 0'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -698,7 +698,7 @@ rules:
           name: kubelet
         condition: process.flag("--streaming-connection-idle-timeout") != "0"
   - id: cis-kubernetes-1.5.1-4.2.6
-    description: '[CIS Kubernetes] Ensure that the --protect-kernel-defaults argument is set to true'
+    description: '[CIS Kubernetes] --protect-kernel-defaults argument is set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -707,7 +707,7 @@ rules:
           name: kubelet
         condition: process.flag("--protect-kernel-defaults") == "true"
   - id: cis-kubernetes-1.5.1-4.2.7
-    description: '[CIS Kubernetes] Ensure that the --make-iptables-util-chains argument is set to true'
+    description: '[CIS Kubernetes] --make-iptables-util-chains argument is set to true'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -716,7 +716,7 @@ rules:
           name: kubelet
         condition: '!process.hasFlag("--make-iptables-util-chains") || process.flag("--make-iptables-util-chains") == "true"'
   - id: cis-kubernetes-1.5.1-4.2.10
-    description: '[CIS Kubernetes] Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Kubelet)'
+    description: '[CIS Kubernetes] --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Kubelet)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -725,7 +725,7 @@ rules:
           name: kubelet
         condition: process.flag("--tls-cert-file") != "" && process.flag("--tls-private-key-file") != ""
   - id: cis-kubernetes-1.5.1-4.2.11
-    description: '[CIS Kubernetes] Ensure that the --rotate-certificates argument is not set to false'
+    description: '[CIS Kubernetes] --rotate-certificates argument is not set to false'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -734,7 +734,7 @@ rules:
           name: kubelet
         condition: '!process.hasFlag("--rotate-certificates") || process.flag("--rotate-certificates") == "true"'
   - id: cis-kubernetes-1.5.1-4.2.12
-    description: '[CIS Kubernetes] Ensure that the RotateKubeletServerCertificate argument is set to true (Kubelet)'
+    description: '[CIS Kubernetes] RotateKubeletServerCertificate argument is set to true (Kubelet)'
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
@@ -743,7 +743,7 @@ rules:
           name: kubelet
         condition: process.flag("--feature-gates") =~ "RotateKubeletServerCertificate=true"
   - id: cis-kubernetes-1.5.1-5.1.5
-    description: '[CIS Kubernetes] Ensure that default service accounts are not actively used'
+    description: '[CIS Kubernetes] Default service accounts are not actively used'
     scope:
       - kubernetesCluster
     resources:
@@ -799,7 +799,7 @@ rules:
             verb: list
         condition: count(kube.resource.jq(".spec.allowPrivilegeEscalation") != "true") > 0
   - id: cis-kubernetes-1.5.1-5.3.2
-    description: '[CIS Kubernetes] Ensure that all Namespaces have Network Policies defined'
+    description: '[CIS Kubernetes] All namespaces have network policies defined'
     scope:
       - kubernetesCluster
     resources:
