@@ -40,11 +40,6 @@ rules:
       (open.filename == "/etc/shadow" || open.filename == "/etc/gshadow") &&
       process.name not in CREDENTIAL_PROCESSES
   
-  - id: memory_dump
-    description: Potential memory dump
-    expression: >-
-      open.filename =~ "/proc/*" && open.basename in ["maps", "mem"]
-  
   - id: logs_altered
     description: Log data was deleted
     expression: >-
