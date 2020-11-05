@@ -17,13 +17,17 @@ macros:
     expression: >-
       ["containerd", "docker", "dockerd", "exe", "docker-compose", "docker-current", "dockerd-current", 
       "kueblet", "hyperkube", "skydns", "kube2sky", "exechealthz", "weave-net", "loopback", "bridge", "openshift-sdn", "openshift"]
-  
-# These are processes that regularly access credential files as part of normal system activity. Add or remove as appropriate.
+
   - id: CREDENTIAL_PROCESSES
+    desription: Processes that access credential files as part of normal system activity
     expression: >-
-      ["accounts-daemon", "login", "newgrp", "sg", "sbin", "shadowconfig", "chage", "chfn", "chsh", "cron", "expiry", "gpasswd", "passwd", 
-      "chgpasswd", "chpasswd", "cpgr", "cppw", "groupadd", "groupdel", "groupmems", "groupmod", "grpck", "grpconv", "grpunconv", 
-      "newusers", "pwck", "pwconv", "pwunconv", "sudo", "useradd", "userdel", "usermod", "vigr", "vipw"]
+      ["/usr/lib/accountsservice/accounts-daemon", "/usr/bin/login", "/usr/bin/newgrp", "/usr/bin/sg",
+       "/usr/bin/shadowconfig", "/usr/bin/chage", "/usr/bin/chfn", "/usr/bin/chsh", "/usr/sbin/cron", "/usr/bin/expiry",
+       "/usr/bin/gpasswd", "/usr/bin/passwd", "/usr/sbin/chgpasswd", "/usr/sbin/chpasswd", "/usr/sbin/cpgr",
+       "/usr/sbin/cppw", "/usr/sbin/groupadd", "/usr/sbin/groupdel", "/usr/sbin/groupmems", "/usr/sbin/groupmod",
+       "/usr/sbin/grpck", "/usr/sbin/grpconv", "/usr/sbin/grpunconv", "/usr/sbin/newusers", "/usr/sbin/pwck",
+       "/usr/sbin/pwconv", "/usr/sbin/pwunconv", "/usr/bin/sudo", "/usr/sbin/useradd", "/usr/sbin/userdel",
+       "/usr/sbin/usermod", "/usr/sbin/vigr", "/usr/sbin/vipw"]
 
 # Add allow-listed process names to this list. Uncomment to use.
 # Add to rules in order to apply this allow list.
@@ -39,7 +43,7 @@ rules:
     description: Sensitive credential files were accessed using a non-standard tool
     expression: >-
       (open.filename == "/etc/shadow" || open.filename == "/etc/gshadow") &&
-      process.name not in CREDENTIAL_PROCESSES
+      process.filename not in CREDENTIAL_PROCESSES
   
   - id: logs_altered
     description: Log data was deleted
