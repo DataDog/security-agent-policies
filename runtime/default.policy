@@ -29,11 +29,11 @@ macros:
        "/usr/sbin/pwconv", "/usr/sbin/pwunconv", "/usr/bin/sudo", "/usr/sbin/useradd", "/usr/sbin/userdel",
        "/usr/sbin/usermod", "/usr/sbin/vigr", "/usr/sbin/vipw"]
 
-# Add allow-listed process names to this list. Uncomment to use.
+# Add allow-listed process filenames to this list. Uncomment to use.
 # Add to rules in order to apply this allow list.
 #  - id: ALLOWED_PROCESSES
 #    expression: >-
-#      process.name not in ["example"]
+#      process.filename not in ["/usr/bin/example"]
 
 ################################################################
 # Rules determine what the Datadog security-agent will monitor.#
