@@ -49,14 +49,14 @@ rules:
     description: Log data was deleted
     expression: >-
       (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0)
-      && ((open.filename !~ "/var/log/datadog-agent/*" && process.filename not in DD_AGENT_PROCESSES)
+      && ((open.filename !~ "/var/log/datadog/*" && process.filename not in DD_AGENT_PROCESSES)
            || process.name not in CONTAINER_PROCESSES))
 
   - id: logs_removed
     description: Log files were removed
     expression: >-
       unlink.filename =~ "/var/log/*"
-      && ((unlink.filename !~ "/var/log/datadog-agent/*" && process.filename not in DD_AGENT_PROCESSES)
+      && ((unlink.filename !~ "/var/log/datadog/*" && process.filename not in DD_AGENT_PROCESSES)
            || process.name not in CONTAINER_PROCESSES))
 
   - id: permissions_changed
