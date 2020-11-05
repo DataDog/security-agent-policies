@@ -95,7 +95,7 @@ rules:
     description: Unauthorized scheduling client
     expression: >-
       open.filename =~ "/var/spool/cron/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
-      process.name not in ["at", "crontab"]
+      process.filename not in ["/usr/bin/at", "/usr/bin/crontab"]
 
   - id: systemd_modification
     description: Unauthorized modification of a service
@@ -107,7 +107,8 @@ rules:
     description: unauthorized file accessing access logs
     expression: >-
       open.filename in ["/run/utmp", "/var/run/utmp", "/var/log/wtmp"] &&
-      process.name not in ["login", "sshd", "last", "who", "w", "vminfo", "sudo"]
+      process.filename not in ["/usr/bin/login", "/usr/sbin/sshd", "/usr/bin/last", "/usr/bin/who", "/usr/bin/w",
+      "/usr/bin/sudo", "/usr/sbin/cron"]
 
   - id: ssh_authorized_keys
     description: attempts to create or modify an authorized_keys file
