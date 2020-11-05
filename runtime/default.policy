@@ -44,21 +44,21 @@ rules:
     expression: >-
       (open.filename == "/etc/shadow" || open.filename == "/etc/gshadow") &&
       process.filename not in CREDENTIAL_PROCESSES
-  
+
   - id: logs_altered
     description: Log data was deleted
     expression: >-
       (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0)
       && ((open.filename !~ "/var/log/datadog-agent/*" && process.filename not in DD_AGENT_PROCESSES)
            || process.name not in CONTAINER_PROCESSES))
-  
+
   - id: logs_removed
     description: Log files were removed
     expression: >-
       unlink.filename =~ "/var/log/*"
       && ((unlink.filename !~ "/var/log/datadog-agent/*" && process.filename not in DD_AGENT_PROCESSES)
            || process.name not in CONTAINER_PROCESSES))
-  
+
   - id: permissions_changed
     description: Permissions were changed on sensitive files
     expression: >-
@@ -67,60 +67,60 @@ rules:
       chmod.filename =~ "/usr/local/sbin/*" || chmod.filename =~ "/usr/local/bin/*" ||
       chmod.filename =~ "/var/log/*" || chmod.filename =~ "/usr/lib/*") &&
       process.name not in CONTAINER_PROCESSES
-  
+
   - id: kernel_module
     description: A new kernel module was added
     expression: >-
       (open.filename =~ "/lib/modules/*" || open.filename =~ "/usr/lib/modules/*") && open.flags & O_CREAT > 0
-  
+
   - id: nsswitch_conf_mod
     description: Exploits that modify nsswitch.conf to interfere with authentication
     expression: >-
       open.filename == "/etc/nsswitch.conf" && open.flags & (O_RDWR | O_WRONLY) > 0
-  
+
   - id: pam_modification
     description: PAM modification
     expression: >-
       open.filename =~ "/etc/pam.d/*" && open.flags & (O_RDWR | O_WRONLY) > 0
-  
+
   - id: cron_at_job_injection
     description: Unauthorized scheduling client
     expression: >-
       open.filename =~ "/var/spool/cron/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
       process.name not in ["at", "crontab"]
-  
+
   - id: kernel_modification
     description: Unauthorized kernel modification
     expression: >-
       open.filename =~ "/boot/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
-  
+
   - id: systemd_modification
     description: Unauthorized modification of a service
     expression: >-
-      (open.filename =~ "/lib/systemd/system/*" || open.filename =~ "/usr/lib/systemd/system/*") && 
+      (open.filename =~ "/lib/systemd/system/*" || open.filename =~ "/usr/lib/systemd/system/*") &&
       open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
-  
+
   - id: authentication_logs_accessed
     description: unauthorized file accessing access logs
     expression: >-
       open.filename in ["/run/utmp", "/var/run/utmp", "/var/log/wtmp"] &&
       process.name not in ["login", "sshd", "last", "who", "w", "vminfo", "sudo"]
-  
+
   - id: root_ssh_key
     description: attempts to create or modify root's SSH key
     expression: >-
       open.filename == "/root/.ssh/authorized_keys" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
-  
+
   - id: ssl_certificate_tampering
     description: Tampering with SSL certificates for machine-in-the-middle attacks against OpenSSL
     expression: >-
       open.filename =~ "/etc/ssl/certs/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
-  
+
   - id: pci_11_5_critical_binaries
     description: Modification of critical binary files
     expression: >-
-      (open.filename =~ "/bin/*" || 
-      open.filename =~ "/sbin/*" || 
-      open.filename =~ "/usr/bin/*" || 
+      (open.filename =~ "/bin/*" ||
+      open.filename =~ "/sbin/*" ||
+      open.filename =~ "/usr/bin/*" ||
       open.filename =~ "/usr/sbin/*") &&
       open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
