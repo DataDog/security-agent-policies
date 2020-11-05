@@ -12,11 +12,12 @@ macros:
       ["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe",
        "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent"]
 
-# These processes are related to operating containers and kubernetes clusters
   - id: CONTAINER_PROCESSES
+    description: Processes related to operating containers and kubernetes clusters
     expression: >-
-      ["containerd", "docker", "dockerd", "exe", "docker-compose", "docker-current", "dockerd-current", 
-      "kueblet", "hyperkube", "skydns", "kube2sky", "exechealthz", "weave-net", "loopback", "bridge", "openshift-sdn", "openshift"]
+      ["/usr/bin/containerd", "/usr/bin/docker", "/usr/bin/dockerd", "/usr/bin/docker-compose",
+      "/usr/bin/kubelet", "/usr/bin/skydns", "exechealthz", "/usr/local/bin/weave-net", "/opt/cni/bin/loopback", "/opt/cni/bin/bridge", "openshift-sdn", "openshift"]
+      # TODO: hyperkube, kube2sky, exechealthz, openshift-sdn, openshift
 
   - id: CREDENTIAL_PROCESSES
     desription: Processes that access credential files as part of normal system activity
@@ -50,14 +51,14 @@ rules:
     expression: >-
       (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0)
       && ((open.filename !~ "/var/log/datadog/*" && process.filename not in DD_AGENT_PROCESSES)
-           || process.name not in CONTAINER_PROCESSES))
+           || process.filename not in CONTAINER_PROCESSES))
 
   - id: logs_removed
     description: Log files were removed
     expression: >-
       unlink.filename =~ "/var/log/*"
       && ((unlink.filename !~ "/var/log/datadog/*" && process.filename not in DD_AGENT_PROCESSES)
-           || process.name not in CONTAINER_PROCESSES))
+           || process.filename not in CONTAINER_PROCESSES))
 
   - id: permissions_changed
     description: Permissions were changed on sensitive files
@@ -66,7 +67,7 @@ rules:
       chmod.filename =~ "/sbin/*" || chmod.filename =~ "/usr/sbin/*" ||
       chmod.filename =~ "/usr/local/sbin/*" || chmod.filename =~ "/usr/local/bin/*" ||
       chmod.filename =~ "/var/log/*" || chmod.filename =~ "/usr/lib/*") &&
-      process.name not in CONTAINER_PROCESSES
+      process.filename not in CONTAINER_PROCESSES
 
   - id: kernel_module
     description: A new kernel module was added
