@@ -24,11 +24,6 @@ macros:
       "chgpasswd", "chpasswd", "cpgr", "cppw", "groupadd", "groupdel", "groupmems", "groupmod", "grpck", "grpconv", "grpunconv", 
       "newusers", "pwck", "pwconv", "pwunconv", "sudo", "useradd", "userdel", "usermod", "vigr", "vipw"]
 
-# These are common database processes. Add or remove as appropriate
-  - id: DB_PROCESSES
-    expression: >-
-      ["mysqld", "postgres", "elasticsearch", "mongod"]
-
 # Add allow-listed process names to this list. Uncomment to use.
 # Add to rules in order to apply this allow list.
 #  - id: ALLOWED_PROCESSES
@@ -127,10 +122,3 @@ rules:
       open.filename =~ "/usr/bin/*" || 
       open.filename =~ "/usr/sbin/*") &&
       open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
-  
-  - id: pci_11_5_critical_files
-    description: Modification of critical system files in /opt
-    expression: >-
-      open.filename =~ "/opt/*" &&
-      open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
-      (process.name not in DD_AGENT_PROCESSES && process.name not in DB_PROCESSES)
