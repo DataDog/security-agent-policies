@@ -6,10 +6,11 @@ version: 1.1.0
 # Macros are used within rules. Macros do not monitor alone.    #
 #################################################################
 macros:
-# These processes are a part of the Datadog Agent
   - id: DD_AGENT_PROCESSES
+    description: Processes that are a part of the Datadog Agent
     expression: >-
-      ["agent", "system-probe", "security-agent", "process-agent"] 
+      ["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe",
+       "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent"]
 
 # These processes are related to operating containers and kubernetes clusters
   - id: CONTAINER_PROCESSES
@@ -43,14 +44,16 @@ rules:
   - id: logs_altered
     description: Log data was deleted
     expression: >-
-      (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0) &&
-      (process.name not in DD_AGENT_PROCESSES && process.name not in CONTAINER_PROCESSES)
+      (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0)
+      && ((open.filename !~ "/var/log/datadog-agent/*" && process.filename not in DD_AGENT_PROCESSES)
+           || process.name not in CONTAINER_PROCESSES))
   
   - id: logs_removed
     description: Log files were removed
     expression: >-
-      unlink.filename =~ "/var/log/*" &&
-      (process.name not in DD_AGENT_PROCESSES && process.name not in CONTAINER_PROCESSES)
+      unlink.filename =~ "/var/log/*"
+      && ((unlink.filename !~ "/var/log/datadog-agent/*" && process.filename not in DD_AGENT_PROCESSES)
+           || process.name not in CONTAINER_PROCESSES))
   
   - id: permissions_changed
     description: Permissions were changed on sensitive files
