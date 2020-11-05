@@ -72,6 +72,14 @@ rules:
     description: A new kernel module was added
     expression: >-
       (open.filename =~ "/lib/modules/*" || open.filename =~ "/usr/lib/modules/*") && open.flags & O_CREAT > 0
+      && process.filename not in ["/usr/bin/dpkg"]
+
+  - id: kernel_modification
+    description: Unauthorized kernel modification
+    expression: >-
+      open.filename =~ "/boot/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+      && process.filename not in ["/usr/bin/dpkg", "/usr/sbin/grub-mkconfig", "/usr/sbin/mkinitramfs",
+         "/usr/libexec/fwupd/fwupd"]
 
   - id: nsswitch_conf_mod
     description: Exploits that modify nsswitch.conf to interfere with authentication
@@ -88,11 +96,6 @@ rules:
     expression: >-
       open.filename =~ "/var/spool/cron/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
       process.name not in ["at", "crontab"]
-
-  - id: kernel_modification
-    description: Unauthorized kernel modification
-    expression: >-
-      open.filename =~ "/boot/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
 
   - id: systemd_modification
     description: Unauthorized modification of a service
