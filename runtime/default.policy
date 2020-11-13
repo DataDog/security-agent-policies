@@ -92,7 +92,7 @@ rules:
     expression: >-
       open.filename =~ "/etc/pam.d/*" && open.flags & (O_RDWR | O_WRONLY | O_CREAT) > 0
 
-  - id: cron_at_job_injection
+  - id: cron_at_job_creation
     description: Unauthorized scheduling client
     expression: >-
       open.filename =~ "/var/spool/cron/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
