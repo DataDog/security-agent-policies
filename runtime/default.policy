@@ -9,26 +9,18 @@ macros:
   - id: DD_AGENT_PROCESSES
     description: Processes that are a part of the Datadog Agent
     expression: >-
-      ["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe",
-       "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent"]
+      ["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent"]
 
   - id: CONTAINER_PROCESSES
     description: Processes related to operating containers and kubernetes clusters
     expression: >-
-      ["/usr/bin/containerd", "/usr/bin/docker", "/usr/bin/dockerd", "/usr/bin/docker-compose",
-      "/usr/bin/kubelet", "/usr/bin/skydns", "exechealthz", "/usr/local/bin/weave-net", "/opt/cni/bin/loopback", "/opt/cni/bin/bridge", "openshift-sdn", "openshift"]
+      ["/usr/bin/containerd", "/usr/bin/docker", "/usr/bin/dockerd", "/usr/bin/docker-compose", "/usr/bin/kubelet", "/usr/bin/skydns", "exechealthz", "/usr/local/bin/weave-net", "/opt/cni/bin/loopback", "/opt/cni/bin/bridge", "openshift-sdn", "openshift"]
       # TODO: hyperkube, kube2sky, exechealthz, openshift-sdn, openshift
 
   - id: CREDENTIAL_PROCESSES
     desription: Processes that access credential files as part of normal system activity
     expression: >-
-      ["/usr/lib/accountsservice/accounts-daemon", "/usr/bin/login", "/usr/bin/newgrp", "/usr/bin/sg",
-       "/usr/bin/shadowconfig", "/usr/bin/chage", "/usr/bin/chfn", "/usr/bin/chsh", "/usr/sbin/cron", "/usr/bin/expiry",
-       "/usr/bin/gpasswd", "/usr/bin/passwd", "/usr/sbin/chgpasswd", "/usr/sbin/chpasswd", "/usr/sbin/cpgr",
-       "/usr/sbin/cppw", "/usr/sbin/groupadd", "/usr/sbin/groupdel", "/usr/sbin/groupmems", "/usr/sbin/groupmod",
-       "/usr/sbin/grpck", "/usr/sbin/grpconv", "/usr/sbin/grpunconv", "/usr/sbin/newusers", "/usr/sbin/pwck",
-       "/usr/sbin/pwconv", "/usr/sbin/pwunconv", "/usr/bin/sudo", "/usr/sbin/useradd", "/usr/sbin/userdel",
-       "/usr/sbin/usermod", "/usr/sbin/vigr", "/usr/sbin/vipw"]
+      ["/usr/lib/accountsservice/accounts-daemon", "/usr/bin/login", "/usr/bin/newgrp", "/usr/bin/sg", "/usr/bin/shadowconfig", "/usr/bin/chage", "/usr/bin/chfn", "/usr/bin/chsh", "/usr/sbin/cron", "/usr/bin/expiry", "/usr/bin/gpasswd", "/usr/bin/passwd", "/usr/sbin/chgpasswd", "/usr/sbin/chpasswd", "/usr/sbin/cpgr", "/usr/sbin/cppw", "/usr/sbin/groupadd", "/usr/sbin/groupdel", "/usr/sbin/groupmems", "/usr/sbin/groupmod", "/usr/sbin/grpck", "/usr/sbin/grpconv", "/usr/sbin/grpunconv", "/usr/sbin/newusers", "/usr/sbin/pwck", "/usr/sbin/pwconv", "/usr/sbin/pwunconv", "/usr/bin/sudo", "/usr/sbin/useradd", "/usr/sbin/userdel", "/usr/sbin/usermod", "/usr/sbin/vigr", "/usr/sbin/vipw"]
 
 # Add allow-listed process filenames to this list. Uncomment to use.
 # Add to rules in order to apply this allow list.
@@ -79,8 +71,7 @@ rules:
     description: Unauthorized kernel modification
     expression: >-
       open.filename =~ "/boot/*" && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
-      && process.filename not in ["/usr/bin/dpkg", "/usr/sbin/grub-mkconfig", "/usr/sbin/mkinitramfs",
-         "/usr/libexec/fwupd/fwupd"]
+      && process.filename not in ["/usr/bin/dpkg", "/usr/sbin/grub-mkconfig", "/usr/sbin/mkinitramfs", "/usr/libexec/fwupd/fwupd"]
 
   - id: nsswitch_conf_mod
     description: Exploits that modify nsswitch.conf to interfere with authentication
@@ -108,8 +99,7 @@ rules:
     description: unauthorized file accessing access logs
     expression: >-
       open.filename in ["/run/utmp", "/var/run/utmp", "/var/log/wtmp"] &&
-      process.filename not in ["/usr/bin/login", "/usr/sbin/sshd", "/usr/bin/last", "/usr/bin/who", "/usr/bin/w",
-      "/usr/bin/sudo", "/usr/sbin/cron"]
+      process.filename not in ["/usr/bin/login", "/usr/sbin/sshd", "/usr/bin/last", "/usr/bin/who", "/usr/bin/w", "/usr/bin/sudo", "/usr/sbin/cron"]
 
   - id: ssh_authorized_keys
     description: attempts to create or modify an authorized_keys file
