@@ -14,8 +14,7 @@ macros:
   - id: CONTAINER_PROCESSES
     description: Processes related to operating containers and kubernetes clusters
     expression: >-
-      ["/usr/bin/containerd", "/usr/bin/docker", "/usr/bin/dockerd", "/usr/bin/docker-compose", "/usr/bin/kubelet", "/usr/bin/skydns", "exechealthz", "/usr/local/bin/weave-net", "/opt/cni/bin/loopback", "/opt/cni/bin/bridge", "openshift-sdn", "openshift"]
-      # TODO: hyperkube, kube2sky, exechealthz, openshift-sdn, openshift
+      ["/usr/bin/containerd", "/usr/bin/docker", "/usr/bin/dockerd", "/usr/bin/docker-compose", "/usr/bin/kubelet", "/usr/bin/skydns", "/usr/bin/exechealthz", "/usr/local/bin/weave-net", "/opt/cni/bin/loopback", "/opt/cni/bin/bridge"]
 
   - id: CREDENTIAL_PROCESSES
     desription: Processes that access credential files as part of normal system activity
@@ -42,15 +41,13 @@ rules:
     description: Log data was deleted
     expression: >-
       (open.filename =~ "/var/log/*" && open.flags & O_TRUNC > 0)
-      && ((open.filename !~ "/var/log/datadog/*" && process.filename not in DD_AGENT_PROCESSES)
-           || process.filename not in CONTAINER_PROCESSES))
+      && ((open.filename !~ "/var/log/datadog/*" && process.filename not in DD_AGENT_PROCESSES) || process.filename not in CONTAINER_PROCESSES)
 
   - id: logs_removed
     description: Log files were removed
     expression: >-
       unlink.filename =~ "/var/log/*"
-      && ((unlink.filename !~ "/var/log/datadog/*" && process.filename not in DD_AGENT_PROCESSES)
-           || process.filename not in CONTAINER_PROCESSES))
+      && ((unlink.filename !~ "/var/log/datadog/*" && process.filename not in DD_AGENT_PROCESSES) || process.filename not in CONTAINER_PROCESSES)
 
   - id: permissions_changed
     description: Permissions were changed on sensitive files
@@ -104,8 +101,7 @@ rules:
   - id: ssh_authorized_keys
     description: attempts to create or modify an authorized_keys file
     expression: >-
-      (open.filename =~ "/root/.ssh/" || open.filename =~ "/home/*") && open.basename == "authorized_keys"
-       && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+      (open.filename =~ "/root/.ssh/*" || open.filename =~ "/home/*") && open.basename == "authorized_keys"  && open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
 
   - id: ssl_certificate_tampering
     description: Tampering with SSL certificates for machine-in-the-middle attacks against OpenSSL
