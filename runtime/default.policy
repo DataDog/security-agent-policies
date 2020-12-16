@@ -117,3 +117,27 @@ rules:
       open.filename =~ "/usr/sbin/*") &&
       open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
       && process.filename not in ["/usr/bin/containerd", "/usr/bin/dpkg"]
+
+#################################
+# Process Detection Rules Tests #
+#################################
+
+  - id: gitpaste12_worm
+    description: Execution of a binary associated with the Gitpaste-12 worm
+    expression: >-
+      exec.name == "X10-unix"
+
+  - id: pgminer_botnet
+    description: Execution of a binary associated with the pgminer botnet
+    expression: >-
+      exec.name in ["base64", "bash", "apt-get", "yum", "curl", "crontab"] && process.ancestors[_].name in ["postgres"]
+
+  - id: suspicious_directory_execution
+    description: A binary was executed from a supicious directory
+    expression: >-
+      exec.filename =~ "/home/*" || exec.filename =~ "/root/*" || exec.filename =~ "/tmp/*" || exec.filename =~ "/var/crash/*" || exec.filename =~ "/var/tmp/*"
+
+  - id: fritzfrog_botnet
+    description: Execution of a binary associated with the FritzFrog botnet
+    expression: >-
+      exec.name in ["nginx", "ifconfig", "libexec", "php-fpm"] && (exec.filename =~ "/home/*" || exec.filename =~ "/root/*" || exec.filename =~ "/tmp/*" || exec.filename =~ "/var/crash/*" || exec.filename =~ "/var/tmp/*")
