@@ -23,11 +23,11 @@ macros:
   - id: WEBAPP_PROCESSES
     description: Processes that commonly run web applications
     expression: >-
-      ["/usr/bin/python2", "/usr/bin/python3", "/usr/local/bin/node", "/usr/sbin/apache2", "/usr/bin/php*"]
+      ["python2", "python3", "node", "apache2"]
   - id: DATABASE_PROCESSES
     description: Database process names
     expression: >-
-      ["mysqld", "postgres*", "mongod"]
+      ["mysqld", "mongod"]
   - id: SHELLS
     description: Shell processes
     expression: >-
@@ -51,12 +51,12 @@ rules:
   - id: potential_web_shell
     description: Potential webshell execution
     expression: >-
-      (exec.filename in SHELLS || exec.filename in ["/usr/bin/curl", "/usr/bin/wget"] || exec.filename in SHELL_UTILS) && process.ancestors.filename in WEBAPP_PROCESSES
+      (exec.filename in SHELLS || exec.filename in ["/usr/bin/curl", "/usr/bin/wget"] || exec.filename in SHELL_UTILS) && process.ancestors.name in WEBAPP_PROCESSES || process.ancestors.name =~ "php*"
   
   - id: suspicious_database_process
     description: Terminal utilites spawned by a database process
     expression: >-
-      (exec.filename in SHELLS || exec.filename in ["/usr/bin/curl", "/usr/bin/wget"] || exec.filename in SHELL_UTILS) && process.ancestors.name in DATABASE_PROCESSES
+      (exec.filename in SHELLS || exec.filename in ["/usr/bin/curl", "/usr/bin/wget"] || exec.filename in SHELL_UTILS) && process.ancestors.name in DATABASE_PROCESSES || process.ancestors.name =~ "postgres*"
   
   - id: suspicious_java_process
     description: Terminal utilites spawned by a java process
