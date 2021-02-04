@@ -82,7 +82,7 @@ rules:
   - id: container_management_in_container
     description: Docker client tool executed inside container
     expression: >-
-      (exec.filename in CONTAINER_PROCESSES) && container.id != ""
+      exec.filename in CONTAINER_PROCESSES && container.id != ""
 
   - id: package_management_in_container
     description: Package management detected in container
