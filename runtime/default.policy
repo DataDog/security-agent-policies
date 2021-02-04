@@ -39,7 +39,11 @@ macros:
   - id: NET_UTILS
     description: Common network utilites
     expression: >-
-      ["/usr/bin/wget", "/usr/bin/curl","/usr/bin/nmap", "/usr/bin/socat","/usr/bin/dig", "/usr/bin/nslookup", "/usr/bin/netcat", "/usr/bin/nc"]
+      ["/usr/bin/nmap", "/usr/bin/socat","/usr/bin/dig", "/usr/bin/nslookup", "/usr/bin/netcat", "/usr/bin/nc"]
+  - id: HTTP_UTILS
+    description: Common HTTP utilities
+    expression: >-
+      ["/usr/bin/wget", "/usr/bin/curl"]
   - id: PKG_MAN
     description: Common package managers
     expression: >-
@@ -58,17 +62,17 @@ rules:
   - id: potential_web_shell
     description: Potential webshell execution
     expression: >-
-      (exec.filename in SHELLS || exec.filename in ["/usr/bin/curl", "/usr/bin/wget"] || exec.filename in SHELL_UTILS) && process.ancestors.name in WEBAPP_PROCESSES || process.ancestors.name =~ "php*"
+      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && (process.ancestors.name in WEBAPP_PROCESSES || process.ancestors.name =~ "php*")
   
   - id: suspicious_database_process
     description: Shell or shell utilites spawned by a database process
     expression: >-
-      (exec.filename in SHELLS || exec.filename in ["/usr/bin/curl", "/usr/bin/wget"] || exec.filename in SHELL_UTILS) && process.ancestors.name in DATABASE_PROCESSES || process.ancestors.name =~ "postgres*"
+      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && (process.ancestors.name in DATABASE_PROCESSES || process.ancestors.name =~ "postgres*")
   
   - id: suspicious_java_process
     description: Shell or shell utilites spawned by a java process
     expression: >-
-      (exec.filename in SHELLS || exec.filename in ["/usr/bin/curl", "/usr/bin/wget"] || exec.filename in SHELL_UTILS) && process.ancestors.name == "java"
+      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && process.ancestors.name == "java"
 
   - id: passwd_process_detected
     description: passwd process detected
@@ -83,12 +87,12 @@ rules:
   - id: package_management_in_container
     description: Package management detected in container
     expression: >-
-      (exec.filename in PKG_MAN) && container.id != ""
+      exec.filename in PKG_MAN && container.id != ""
 
   - id: net_util_in_container
     description: Network utility executed in container
     expression: >-
-      (exec.filename in NET_UTILS) && container.id != ""
+      (exec.filename in NET_UTILS || exec.filename in HTTP_UTILS) && container.id != ""
 
 ## File Activity Rules ##
   - id: credential_accessed
