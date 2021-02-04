@@ -23,7 +23,7 @@ macros:
   - id: WEBAPP_PROCESSES
     description: Processes that commonly run web applications
     expression: >-
-      ["python2", "python3", "node", "apache2"]
+      ["python2", "python3", "node", "apache2", "nginx"]
   - id: DATABASE_PROCESSES
     description: Database process names
     expression: >-
