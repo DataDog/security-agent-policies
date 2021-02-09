@@ -27,7 +27,7 @@ macros:
   - id: DATABASE_PROCESSES
     description: Database process names
     expression: >-
-      ["mysqld", "mongod"]
+      ["mysqld", "mongod", "postgres"]
   - id: SHELLS
     description: Shell processes
     expression: >-
@@ -67,7 +67,7 @@ rules:
   - id: suspicious_database_process
     description: Shell or shell utilites spawned by a database process
     expression: >-
-      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && (process.ancestors.name in DATABASE_PROCESSES || process.ancestors.name =~ "postgres*")
+      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && process.ancestors.name in DATABASE_PROCESSES
   
   - id: suspicious_java_process
     description: Shell or shell utilites spawned by a java process
