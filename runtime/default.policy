@@ -47,7 +47,7 @@ macros:
   - id: PACKAGE_MANAGERS
     description: Package managers
     expression: >-
-      ["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/dpkg"]
+      ["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/dpkg", "/usr/bin/aptitude-curses"]
 # Add allow-listed process filenames to this list. Uncomment to use.
 # Add to rules in order to apply this allow list.
 #  - id: ALLOWED_PROCESSES
