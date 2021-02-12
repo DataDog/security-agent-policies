@@ -97,7 +97,7 @@ rules:
   - id: net_util
     description: Network utility executed
     expression: >-
-      exec.filename in NET_UTILS
+      (exec.filename in NET_UTILS || exec.filename in HTTP_UTILS) && container.id == ""
 
   - id: common_net_intrusion_util
     description: Common network intrusion utility executed
