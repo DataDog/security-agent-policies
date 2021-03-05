@@ -1,5 +1,5 @@
 ---
-version: 1.1.0
+version: 1.2.0
 
 #################################################################
 # Macros are a way to define reusable expressions and/or lists. #
@@ -63,12 +63,12 @@ rules:
     description: Potential webshell execution
     expression: >-
       (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && (process.ancestors.basename in WEBAPP_PROCESSES || process.ancestors.basename =~ "php*")
-  
+
   - id: database_shell_execution
     description: Shell or shell utilites spawned by a database process
     expression: >-
       (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && process.ancestors.basename in DATABASE_PROCESSES
-  
+
   - id: java_shell_execution
     description: Shell or shell utilites spawned by a java process
     expression: >-
