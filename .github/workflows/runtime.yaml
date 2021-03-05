@@ -13,7 +13,14 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v1
 
+      - name: Install the datadog-agent package
+        run: |
+          sudo bash -c 'echo "deb https://apt.datadoghq.com stable 7" > /etc/apt//sources.list.d/datadog.list'
+          sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 A2923DFF56EDA6E76E55E492D3A80E30382E94DE
+          sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 D75CEA17048B9ACBF186794B32637D44F14F620E
+          sudo apt update
+          sudo apt install datadog-agent
+
       - name: Check the policies
         run: |
-          docker run -v `pwd`/runtime:/policies datadog/agent-dev:master /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
-          docker run -v `pwd`/runtime:/policies datadog/agent:7 /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
+          /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir runtime
