@@ -62,17 +62,17 @@ rules:
   - id: potential_web_shell
     description: Potential webshell execution
     expression: >-
-      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && (process.ancestors.name in WEBAPP_PROCESSES || process.ancestors.name =~ "php*")
+      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && (process.ancestors.basename in WEBAPP_PROCESSES || process.ancestors.basename =~ "php*")
   
   - id: database_shell_execution
     description: Shell or shell utilites spawned by a database process
     expression: >-
-      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && process.ancestors.name in DATABASE_PROCESSES
+      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && process.ancestors.basename in DATABASE_PROCESSES
   
   - id: java_shell_execution
     description: Shell or shell utilites spawned by a java process
     expression: >-
-      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && process.ancestors.name == "java"
+      (exec.filename in SHELLS || exec.filename in HTTP_UTILS || exec.filename in SHELL_UTILS) && process.ancestors.basename == "java"
 
   - id: passwd_execution
     description: passwd process detected
