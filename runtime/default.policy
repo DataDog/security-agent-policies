@@ -120,12 +120,12 @@ rules:
   - id: net_util_in_container
     description: Network utility executed in container
     expression: >-
-      (exec.filename in NET_UTILS || exec.filename in HTTP_UTILS) && container.id != ""
+      (exec.filename in NET_UTILS || exec.filename in HTTP_UTILS) && container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*" ]
 
   - id: net_util
     description: Network utility executed
     expression: >-
-      (exec.filename in NET_UTILS || exec.filename in HTTP_UTILS) && container.id == ""
+      (exec.filename in NET_UTILS || exec.filename in HTTP_UTILS) && container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*" ]
 
   - id: common_net_intrusion_util
     description: Common network intrusion utility executed
