@@ -146,12 +146,13 @@ rules:
   - id: logs_altered
     description: Log data was deleted
     expression: >-
-      (open.file.path in [~"/var/log/pods/*", ~"/var/log/containers/*"] && open.flags&OPEN_WRITE_FLAGS > 0 && process.file.path not in KUBELET_PROCESSES) ||
-      (open.file.path =~ "/var/log/journal/*" && open.flags&OPEN_WRITE_FLAGS > 0 && process.file.path not in SYSTEMD_JOURNALD_PROCESSES) ||
-      (open.file.path =~ "/var/log/fondationdb/*" && open.flags&OPEN_WRITE_FLAGS > 0 && process.file.path not in FDB_SERVER_PROCESSES) ||
-      (open.file.path =~ "/var/log/apt/*" && open.flags&OPEN_WRITE_FLAGS > 0 && process.file.path not in APT_PROCESSES) ||
-      (open.file.path =~ "/var/log/datadog/*" && open.flags&OPEN_WRITE_FLAGS > 0 && process.file.path not in DD_AGENT_PROCESSES) ||
-      (open.file.path =~ "/var/log/*" && open.flags&OPEN_WRITE_FLAGS > 0 &&
+      (open.flags&OPEN_WRITE_FLAGS > 0) &&
+      (open.file.path in [~"/var/log/pods/*", ~"/var/log/containers/*"] && process.file.path not in KUBELET_PROCESSES) ||
+      (open.file.path =~ "/var/log/journal/*" && process.file.path not in SYSTEMD_JOURNALD_PROCESSES) ||
+      (open.file.path =~ "/var/log/fondationdb/*" && process.file.path not in FDB_SERVER_PROCESSES) ||
+      (open.file.path =~ "/var/log/apt/*" && process.file.path not in APT_PROCESSES) ||
+      (open.file.path =~ "/var/log/datadog/*" && process.file.path not in DD_AGENT_PROCESSES) ||
+      (open.file.path =~ "/var/log/*" &&
        process.file.path not in KUBELET_PROCESSES &&
        process.file.path not in SYSTEMD_JOURNALD_PROCESSES &&
        process.file.path not in FDB_SERVER_PROCESSES &&
@@ -180,13 +181,14 @@ rules:
       chmod.file.path =~ "/sbin/*" || chmod.file.path =~ "/usr/sbin/*" ||
       chmod.file.path =~ "/usr/local/sbin/*" || chmod.file.path =~ "/usr/local/bin/*" ||
       chmod.file.path =~ "/var/log/*" || chmod.file.path =~ "/usr/lib/*") &&
-      process.file.path not in CONTAINER_PROCESSES
+      process.file.path not in CONTAINER_PROCESSES &&
+      process.file.path not in PACKAGE_MANAGERS
 
   - id: kernel_module
     description: A new kernel module was added
     expression: >-
       (open.file.path =~ "/lib/modules/*" || open.file.path =~ "/usr/lib/modules/*") && open.flags & O_CREAT > 0
-      && process.file.path not in ["/usr/bin/dpkg"]
+      && process.file.path not in PACKAGE_MANAGERS
 
   - id: kernel_modification
     description: Unauthorized kernel modification
