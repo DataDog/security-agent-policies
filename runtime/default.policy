@@ -1,6 +1,10 @@
 ---
 version: 1.2.1
 
+##############################################################
+# This rule set requires Datadog Agent version 7.27 or later #
+##############################################################
+
 #################################################################
 # Macros are a way to define reusable expressions and/or lists. #
 # Macros are used within rules. Macros do not monitor alone.    #
