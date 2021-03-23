@@ -94,7 +94,7 @@ rules:
   - id: potential_web_shell
     description: Potential webshell execution
     expression: >-
-      (exec.file.path in SHELLS || exec.file.path in HTTP_UTILS || exec.file.path in SHELL_UTILS) && (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*")
+      (exec.file.path in SHELLS || exec.file.path in HTTP_UTILS || exec.file.path in SHELL_UTILS) && (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*") && process.tty_name != ""
 
   - id: database_shell_execution
     description: Shell or shell utilites spawned by a database process
@@ -141,7 +141,8 @@ rules:
     description: Sensitive credential files were accessed using a non-standard tool
     expression: >-
       (open.file.path == "/etc/shadow" || open.file.path == "/etc/gshadow") &&
-      process.file.path not in CREDENTIAL_PROCESSES
+      process.file.path not in CREDENTIAL_PROCESSES &&
+      process.ancestors.file.path not in PACKAGE_MANAGERS
 
   - id: logs_altered
     description: Log data was deleted
@@ -153,11 +154,11 @@ rules:
       (open.file.path =~ "/var/log/apt/*" && process.file.path not in APT_PROCESSES) ||
       (open.file.path =~ "/var/log/datadog/*" && process.file.path not in DD_AGENT_PROCESSES) ||
       (open.file.path =~ "/var/log/*" &&
-       process.file.path not in KUBELET_PROCESSES &&
-       process.file.path not in SYSTEMD_JOURNALD_PROCESSES &&
-       process.file.path not in FDB_SERVER_PROCESSES &&
-       process.file.path not in APT_PROCESSES &&
-       process.file.path not in DD_AGENT_PROCESSES)
+      process.file.path not in KUBELET_PROCESSES &&
+      process.file.path not in SYSTEMD_JOURNALD_PROCESSES &&
+      process.file.path not in FDB_SERVER_PROCESSES &&
+      process.file.path not in APT_PROCESSES &&
+      process.file.path not in DD_AGENT_PROCESSES)
 
   - id: logs_removed
     description: Log data was deleted
@@ -168,11 +169,11 @@ rules:
       (unlink.file.path =~ "/var/log/apt/*" && process.file.path not in APT_PROCESSES) ||
       (unlink.file.path =~ "/var/log/datadog/*" && process.file.path not in DD_AGENT_PROCESSES) ||
       (unlink.file.path =~ "/var/log/*" &&
-       process.file.path not in KUBELET_PROCESSES &&
-       process.file.path not in SYSTEMD_JOURNALD_PROCESSES &&
-       process.file.path not in FDB_SERVER_PROCESSES &&
-       process.file.path not in APT_PROCESSES &&
-       process.file.path not in DD_AGENT_PROCESSES)
+      process.file.path not in KUBELET_PROCESSES &&
+      process.file.path not in SYSTEMD_JOURNALD_PROCESSES &&
+      process.file.path not in FDB_SERVER_PROCESSES &&
+      process.file.path not in APT_PROCESSES &&
+      process.file.path not in DD_AGENT_PROCESSES)
 
   - id: permissions_changed
     description: Permissions were changed on sensitive files
@@ -187,8 +188,10 @@ rules:
   - id: kernel_module
     description: A new kernel module was added
     expression: >-
-      (open.file.path =~ "/lib/modules/*" || open.file.path =~ "/usr/lib/modules/*") && open.flags & O_CREAT > 0
-      && process.file.path not in PACKAGE_MANAGERS
+      (open.file.path =~ "/lib/modules/*" || open.file.path =~ "/usr/lib/modules/*") && open.flags & O_CREAT > 0 &&
+      process.file.path not in PACKAGE_MANAGERS &&
+      process.ancestors.file.path not in PACKAGE_MANAGERS &&
+      process.ancestors.file.path != "/usr/bin/kmod"
 
   - id: kernel_modification
     description: Unauthorized kernel modification
@@ -216,13 +219,14 @@ rules:
     description: Unauthorized modification of a service
     expression: >-
       (open.file.path =~ "/lib/systemd/system/*" || open.file.path =~ "/usr/lib/systemd/system/*") &&
-      open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0
+      open.flags & (O_CREAT | O_RDWR | O_WRONLY) > 0 &&
+      process.file.path not in PACKAGE_MANAGERS
 
   - id: authentication_logs_accessed
     description: unauthorized file accessing access logs
     expression: >-
       open.file.path in ["/run/utmp", "/var/run/utmp", "/var/log/wtmp"] &&
-      process.file.path not in ["/usr/bin/login", "/usr/sbin/sshd", "/usr/bin/last", "/usr/bin/who", "/usr/bin/w", "/usr/bin/sudo", "/usr/sbin/cron"]
+      process.file.path not in ["/usr/bin/login", "/usr/sbin/sshd", "/usr/bin/last", "/usr/bin/who", "/usr/bin/w", "/usr/bin/sudo", "/usr/sbin/cron", "/usr/bin/systemd-tmpfiles"]
 
   - id: ssh_authorized_keys
     description: attempts to create or modify an authorized_keys file
