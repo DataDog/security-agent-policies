@@ -683,11 +683,16 @@ rules:
     description: '[CIS Kubernetes] Ensure that the --read-only-port argument is set to 0'
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     resources:
       - process:
           name: kubelet
-        condition: '!process.hasFlag("--read-only-port") || process.flag("--read-only-port") == "0"'
+        condition: 'process.flag("--read-only-port") == "0"'
+        fallback:
+          condition: '!process.hasFlag("--read-only-port")'
+          resource:
+            file:
+              path: /var/lib/kubelet/config.yaml
+            condition: file.yaml(".readOnlyPort") == "0"
   - id: cis-kubernetes-1.5.1-4.2.5
     description: '[CIS Kubernetes] Ensure that the --streaming-connection-idle-timeout argument is not set to 0'
     scope:
