@@ -192,7 +192,7 @@ rules:
     resources:
       - process:
           name: kube-apiserver
-        condition: process.flag("--kubelet-https") == "true"
+        condition: '!process.hasFlag("--kubelet-https") || process.flag("--kubelet-https") == "true"'
   - id: cis-kubernetes-1.5.1-1.2.5
     description: '[CIS Kubernetes] Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate'
     scope:
