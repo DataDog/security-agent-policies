@@ -192,7 +192,7 @@ rules:
     resources:
       - process:
           name: kube-apiserver
-        condition: process.flag("--kubelet-https") == "true"
+        condition: '!process.hasFlag("--kubelet-https") || process.flag("--kubelet-https") == "true"'
   - id: cis-kubernetes-1.5.1-1.2.5
     description: '[CIS Kubernetes] Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate'
     scope:
@@ -683,56 +683,86 @@ rules:
     description: '[CIS Kubernetes] Ensure that the --read-only-port argument is set to 0'
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     resources:
       - process:
           name: kubelet
-        condition: '!process.hasFlag("--read-only-port") || process.flag("--read-only-port") == "0"'
+        condition: 'process.flag("--read-only-port") == "0"'
+        fallback:
+          condition: 'process.hasFlag("--config") && !process.hasFlag("--read-only-port")'
+          resource:
+            file:
+              path: process.flag("kubelet", "--config")
+            condition: file.yaml(".readOnlyPort") == "0"
   - id: cis-kubernetes-1.5.1-4.2.5
     description: '[CIS Kubernetes] Ensure that the --streaming-connection-idle-timeout argument is not set to 0'
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     resources:
       - process:
           name: kubelet
         condition: process.flag("--streaming-connection-idle-timeout") != "0"
+        fallback:
+          condition: 'process.hasFlag("--config") && !process.hasFlag("--streaming-connection-idle-timeout")'
+          resource:
+            file:
+              path: process.flag("kubelet", "--config")
+            condition: 'file.yaml(".streamingConnectionIdleTimeout") !~ "0+[[:lower:]]?"'
   - id: cis-kubernetes-1.5.1-4.2.6
     description: '[CIS Kubernetes] Ensure that the --protect-kernel-defaults argument is set to true'
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     resources:
       - process:
           name: kubelet
         condition: process.flag("--protect-kernel-defaults") == "true"
+        fallback:
+          condition: 'process.hasFlag("--config") && !process.hasFlag("--protect-kernel-defaults")'
+          resource:
+            file:
+              path: process.flag("kubelet", "--config")
+            condition: 'file.yaml(".protectKernelDefaults") == "true"'
   - id: cis-kubernetes-1.5.1-4.2.7
     description: '[CIS Kubernetes] Ensure that the --make-iptables-util-chains argument is set to true'
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     resources:
       - process:
           name: kubelet
         condition: '!process.hasFlag("--make-iptables-util-chains") || process.flag("--make-iptables-util-chains") == "true"'
+        fallback:
+          condition: 'process.hasFlag("--config") && !process.hasFlag("--make-iptables-util-chains")'
+          resource:
+            file:
+              path: process.flag("kubelet", "--config")
+            condition: 'file.yaml(".makeIPTablesUtilChains") != "false"'
   - id: cis-kubernetes-1.5.1-4.2.10
     description: '[CIS Kubernetes] Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Kubelet)'
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     resources:
       - process:
           name: kubelet
         condition: process.flag("--tls-cert-file") != "" && process.flag("--tls-private-key-file") != ""
+        fallback:
+          condition: 'process.hasFlag("--config") && !process.hasFlag("--tls-cert-file") && !process.hasFlag("--tls-private-key-file")'
+          resource:
+            file:
+              path: process.flag("kubelet", "--config")
+            condition: 'file.yaml(".tlsCertFile") != "" && file.yaml(".tlsPrivateKeyFile") != ""'
   - id: cis-kubernetes-1.5.1-4.2.11
     description: '[CIS Kubernetes] Ensure that the --rotate-certificates argument is not set to false'
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     resources:
       - process:
           name: kubelet
-        condition: '!process.hasFlag("--rotate-certificates") || process.flag("--rotate-certificates") == "true"'
+        condition: 'process.flag("--rotate-certificates") != "false"'
+        fallback:
+          condition: 'process.hasFlag("--config") && !process.hasFlag("--rotate-certificates")'
+          resource:
+            file:
+              path: process.flag("kubelet", "--config")
+            condition: 'file.yaml(".rotateCertificates") != "false"'
   - id: cis-kubernetes-1.5.1-4.2.12
     description: '[CIS Kubernetes] Ensure that the RotateKubeletServerCertificate argument is set to true (Kubelet)'
     scope:
