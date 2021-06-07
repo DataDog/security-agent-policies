@@ -296,7 +296,7 @@ rules:
     description: unauthorized file accessing access logs
     expression: >-
       open.file.path in ["/run/utmp", "/var/run/utmp", "/var/log/wtmp"] &&
-      process.file.path not in ["/usr/bin/login", "/usr/sbin/sshd", "/usr/bin/last", "/usr/bin/who", "/usr/bin/w", "/usr/bin/sudo", "/usr/sbin/cron", "/usr/bin/systemd-tmpfiles"]
+      process.file.path not in ["/usr/bin/login", "/usr/sbin/sshd", "/usr/bin/last", "/usr/bin/who", "/usr/bin/w", "/usr/bin/sudo", "/usr/sbin/cron", "/usr/bin/systemd-tmpfiles", "/usr/sbin/snmpd"]
 
   - id: ssh_authorized_keys
     description: attempts to create or modify an authorized_keys file
