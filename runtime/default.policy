@@ -126,12 +126,12 @@ rules:
   - id: compiler_in_container
     description: Compiler usage in a container
     expression: >-
-      (exec.file.name in COMPILERS || (exec.file.name = "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !=""
+      (exec.file.name in COMPILERS || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !=""
   
   - id: selinux_enforcement_disabled
     description: SELinux enforcement disabled
     expression: >-
-      exec.file.path = "/usr/sbin/setenforce" && exec.args in [~"*0*"]
+      exec.file.path == "/usr/sbin/setenforce" && exec.args in [~"*0*"]
   
   - id: user_created_tty
     description: User was created in interactive session
