@@ -9,7 +9,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/manifests/kube-apiserver.yaml
@@ -19,7 +19,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/manifests/kube-apiserver.yaml
@@ -29,7 +29,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/manifests/kube-controller-manager.yaml
@@ -39,7 +39,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/manifests/kube-controller-manager.yaml
@@ -49,7 +49,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/manifests/kube-scheduler.yaml
@@ -59,7 +59,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/manifests/kube-scheduler.yaml
@@ -69,7 +69,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/manifests/etcd.yaml
@@ -79,7 +79,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/manifests/etcd.yaml
@@ -89,7 +89,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: process.flag("etcd", "--data-dir")
@@ -99,7 +99,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: process.flag("etcd", "--data-dir")
@@ -109,7 +109,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/admin.conf
@@ -119,7 +119,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/admin.conf
@@ -129,7 +129,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/scheduler.conf
@@ -139,7 +139,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/scheduler.conf
@@ -149,7 +149,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/controller-manager.conf
@@ -159,7 +159,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/controller-manager.conf
@@ -169,7 +169,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/pki/
@@ -179,7 +179,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - file:
           path: /etc/kubernetes/pki/*.crt
@@ -189,7 +189,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -199,7 +199,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -209,7 +209,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -219,7 +219,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -229,7 +229,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -239,7 +239,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -249,7 +249,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -259,7 +259,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -269,7 +269,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -279,7 +279,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -289,7 +289,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -299,7 +299,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -309,7 +309,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -319,7 +319,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -329,7 +329,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -339,7 +339,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -349,7 +349,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -359,7 +359,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -369,7 +369,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -379,7 +379,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -389,7 +389,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -399,7 +399,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -409,7 +409,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -419,7 +419,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -429,7 +429,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -439,7 +439,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -449,7 +449,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -459,7 +459,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -469,7 +469,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -497,7 +497,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-controller-manager
@@ -507,7 +507,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-controller-manager
@@ -517,7 +517,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-controller-manager
@@ -527,7 +527,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-controller-manager
@@ -537,7 +537,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-scheduler
@@ -547,7 +547,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-scheduler
@@ -557,7 +557,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: etcd
@@ -567,7 +567,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: etcd
@@ -577,7 +577,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: etcd
@@ -587,7 +587,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: etcd
@@ -597,7 +597,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: etcd
@@ -607,7 +607,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: etcd
@@ -617,7 +617,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-apiserver
@@ -627,7 +627,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: /usr/lib/systemd/system/kubelet.service
@@ -637,7 +637,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: /usr/lib/systemd/system/kubelet.service
@@ -647,7 +647,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: /var/lib/kube-proxy/kubeconfig
@@ -657,7 +657,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: /var/lib/kube-proxy/kubeconfig
@@ -667,7 +667,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: /etc/kubernetes/kubelet.conf
@@ -677,7 +677,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: /etc/kubernetes/kubelet.conf
@@ -687,7 +687,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: process.flag("kubelet", "--client-ca-file")
@@ -697,7 +697,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: process.flag("kubelet", "--client-ca-file")
@@ -707,7 +707,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: process.flag("kubelet", "--config")
@@ -717,7 +717,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - file:
           path: process.flag("kubelet", "--config")
@@ -727,7 +727,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -737,7 +737,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -747,7 +747,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -756,7 +756,7 @@ rules:
     description: '[CIS Kubernetes] Ensure that the --read-only-port argument is set to 0'
     scope:
       - kubernetesNode
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -771,7 +771,7 @@ rules:
     description: '[CIS Kubernetes] Ensure that the --streaming-connection-idle-timeout argument is not set to 0'
     scope:
       - kubernetesNode
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -786,7 +786,7 @@ rules:
     description: '[CIS Kubernetes] Ensure that the --protect-kernel-defaults argument is set to true'
     scope:
       - kubernetesNode
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -801,7 +801,7 @@ rules:
     description: '[CIS Kubernetes] Ensure that the --make-iptables-util-chains argument is set to true'
     scope:
       - kubernetesNode
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -816,7 +816,7 @@ rules:
     description: '[CIS Kubernetes] Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Kubelet)'
     scope:
       - kubernetesNode
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -831,7 +831,7 @@ rules:
     description: '[CIS Kubernetes] Ensure that the --rotate-certificates argument is not set to false'
     scope:
       - kubernetesNode
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
@@ -847,7 +847,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker
+    resourceType: kubernetes_worker_node
     resources:
       - process:
           name: kubelet
