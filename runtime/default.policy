@@ -42,7 +42,7 @@ macros:
   - id: WEBAPP_PROCESSES
     description: Processes that commonly run web applications
     expression: >-
-      ["python2", "python3", "node", "apache2", "nginx"]
+      [~"python2*", ~"python3*", "node", "apache2", "nginx"]
 
   - id: DATABASE_PROCESSES
     description: Common database process names
@@ -52,7 +52,7 @@ macros:
   - id: SHELLS
     description: Common Linux shell executables
     expression: >-
-      ["/bin/dash", "/bin/sh", "/usr/bin/sh", "/usr/bin/bash", "/usr/bin/zsh", "/usr/bin/ash", "/usr/bin/csh", "/usr/bin/ksh", "/usr/bin/tcsh", "/usr/bin/dash", "/bin/bash-static", "/usr/lib/initramfs-tools/bin/busybox", "/bin/busybox", "/bin/static-sh", "/usr/bin/fish", "/bin/ksh93", "/bin/rksh", "/bin/rksh93", "/bin/lksh", "/bin/mksh", "/bin/mksh-static", "/usr/bin/csharp", "/bin/posh", "/usr/bin/rc", "/bin/sash", "/usr/bin/yash", "/bin/zsh5", "/bin/zsh5-static"]
+      ["/bin/dash", "/bin/sh", "/usr/bin/dash", "/usr/bin/sh", "/usr/bin/bash", "/usr/bin/zsh", "/usr/bin/ash", "/usr/bin/csh", "/usr/bin/ksh", "/usr/bin/tcsh", "/usr/bin/dash", "/bin/bash-static", "/usr/lib/initramfs-tools/bin/busybox", "/bin/busybox", "/bin/static-sh", "/usr/bin/fish", "/bin/ksh93", "/bin/rksh", "/bin/rksh93", "/bin/lksh", "/bin/mksh", "/bin/mksh-static", "/usr/bin/csharp", "/bin/posh", "/usr/bin/rc", "/bin/sash", "/usr/bin/yash", "/bin/zsh5", "/bin/zsh5-static"]
 
   - id: SHELL_UTILS
     description: Executables in the coreutils
