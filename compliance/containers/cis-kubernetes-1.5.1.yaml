@@ -913,6 +913,12 @@ rules:
       - process:
           name: kube-scheduler
         condition: process.flag("--profiling") == "false"
+        fallback:
+          condition: process.hasFlag("--config") && !process.hasFlag("--profiling")
+          resource:
+            file:
+              path: process.flag("kube-scheduler", "--config")
+              condition: file.yaml(".enableProfiling") == "false"
     info:
       index:
         - 1. Control Plane Components
