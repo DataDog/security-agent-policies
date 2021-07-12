@@ -946,7 +946,7 @@ rules:
     resources:
       - process:
           name: etcd
-        condition: process.flag("--cert-file") != "" && process.flag("--key-file") != ""
+        condition: (process.flag("--cert-file") != "" || process.flag("-cert-file") != "") && (process.flag("--key-file") != "") || process.flag("-key-file") != "")
     info:
       index:
         - 2. etcd
