@@ -1373,7 +1373,7 @@ rules:
           resource:
             file:
               path: process.flag("kubelet", "--config")
-            condition: 'file.yaml(".tlsCertFile") != "" && file.yaml(".tlsPrivateKeyFile") != ""'
+            condition: '(file.yaml(".tlsCertFile") != "" && file.yaml(".tlsPrivateKeyFile") != "") || (process.flag("--feature-gates") =~ "RotateKubeletServerCertificate=true" && file.yaml(".serverTLSBootstrap") != "")'
     info:
       index:
         - 4. Worker Nodes
