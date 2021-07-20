@@ -1,4 +1,4 @@
-version: 1.4.0
+version: 1.4.1
 macros:
   - id: SYSTEMD_JOURNALD_PROCESSES
     expression: '["/usr/lib/systemd/systemd-journald"]'
@@ -102,6 +102,7 @@ rules:
       (
           (chmod.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && chmod.mode != chmod.file.mode
   - id: credential_modified_chown
     description: Sensitive credential files were modified using a non-standard tool
@@ -109,6 +110,7 @@ rules:
       (
           (chown.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
   - id: credential_modified_link
     description: Sensitive credential files were modified using a non-standard tool
@@ -117,6 +119,7 @@ rules:
           (link.file.path in [ "/etc/shadow", "/etc/gshadow" ]
           || link.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: credential_modified_open
     description: Sensitive credential files were modified using a non-standard tool
@@ -125,6 +128,7 @@ rules:
           open.flags & ((O_CREAT|O_RDWR|O_WRONLY|O_TRUNC)) > 0 &&
           (open.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: credential_modified_rename
     description: Sensitive credential files were modified using a non-standard tool
@@ -133,6 +137,7 @@ rules:
           (rename.file.path in [ "/etc/shadow", "/etc/gshadow" ]
           || rename.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: credential_modified_unlink
     description: Sensitive credential files were modified using a non-standard tool
@@ -140,6 +145,7 @@ rules:
       (
           (unlink.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: credential_modified_utimes
     description: Sensitive credential files were modified using a non-standard tool
@@ -147,6 +153,7 @@ rules:
       (
           (utimes.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: cron_at_job_creation_chmod
     description: An unauthorized job was added to cron scheduling
@@ -390,6 +397,7 @@ rules:
       (
           (chmod.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && chmod.mode != chmod.file.mode
   - id: pci_11_5_critical_binaries_chown
     description: Critical system binaries may have been modified
@@ -397,6 +405,7 @@ rules:
       (
           (chown.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
   - id: pci_11_5_critical_binaries_link
     description: Critical system binaries may have been modified
@@ -405,6 +414,7 @@ rules:
           (link.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ]
           || link.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: pci_11_5_critical_binaries_open
     description: Critical system binaries may have been modified
@@ -413,6 +423,7 @@ rules:
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           (open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: pci_11_5_critical_binaries_rename
     description: Critical system binaries may have been modified
@@ -421,6 +432,7 @@ rules:
           (rename.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ]
           || rename.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: pci_11_5_critical_binaries_unlink
     description: Critical system binaries may have been modified
@@ -428,6 +440,7 @@ rules:
       (
           (unlink.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: pci_11_5_critical_binaries_utimes
     description: Critical system binaries may have been modified
@@ -435,6 +448,7 @@ rules:
       (
           (utimes.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/*" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: potential_web_shell
     description: A webapp process (language engine or webserver) spawned a shell, shell utility, or HTTP utility
