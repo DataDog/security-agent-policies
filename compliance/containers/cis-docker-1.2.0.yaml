@@ -407,8 +407,7 @@ rules:
     resources:
       - docker:
           kind: container
-        condition: docker.template("{{ range $k, $_ := $.NetworkSettings.Ports }}{{ with $p := (regexReplaceAllLiteral \"/.*\" ($k | toString) \"\") | atoi }}{{ if lt $p 1024}}failed{{ end }}{{ end }}{{
-          end }}") == ""
+        condition: docker.template("{{ range $k, $_ := $.NetworkSettings.Ports }}{{ with $p := (regexReplaceAllLiteral \"/.*\" ($k | toString) \"\") | atoi }}{{ if lt $p 1024}}failed{{ end }}{{ end }}{{ end }}") == ""
   - id: cis-docker-1.2.0-5.9
     description: '[CIS Docker] Ensure that the host''s network namespace is not shared'
     scope:
