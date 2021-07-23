@@ -1,12 +1,13 @@
 version: 1.4.2
 macros:
-  - id: SYSTEMD_JOURNALD_PROCESSES
-    expression: '["/usr/lib/systemd/systemd-journald"]'
-  - id: SYSTEM_PACKAGE_MANAGERS
-    description: Package managers
-    expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm"]'
-  - id: FDB_SERVER_PROCESSES
-    expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
+  - id: APT_PROCESSES
+    expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
+  - id: COMPILER_PROCESSES
+    expression: '["javac", "clang", "gcc","bcc"]'
+  - id: CONTAINER_CLIENTS
+    expression: |-
+      ["/usr/bin/docker", "/usr/local/bin/docker",
+       "/usr/bin/kubectl", "/usr/local/bin/kubectl"]
   - id: CONTAINER_PROCESSES
     description: Processes related to operating containers and kubernetes clusters
     expression: |-
@@ -23,41 +24,26 @@ macros:
   - id: DATABASE_PROCESSES
     description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
-  - id: COMPILER_PROCESSES
-    expression: '["javac", "clang", "gcc","bcc"]'
   - id: DD_AGENT_PROCESSES
     description: Processes that are a part of the Datadog Agent
     expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent"]'
-  - id: CONTAINER_CLIENTS
-    expression: |-
-      ["/usr/bin/docker", "/usr/local/bin/docker",
-       "/usr/bin/kubectl", "/usr/local/bin/kubectl"]
-  - id: OPEN_CREATE_FLAGS
-    expression: O_CREAT|O_RDWR|O_WRONLY
+  - id: FDB_SERVER_PROCESSES
+    expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
   - id: GITLAB_PROCESSES
     expression: '["/opt/gitlab/embedded/bin/bundle", "/opt/gitlab/embedded/bin/svlogd"]'
-  - id: WEBAPP_PROCESSES
-    description: Processes that commonly run web applications
-    expression: '[~"python2*", ~"python3*", "node", "apache2", "nginx"]'
-  - id: PACKAGE_MANAGERS
-    description: Package managers
-    expression: '["pip3", "pip", "npm"]'
-  - id: OPEN_WRITE_FLAGS
-    expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
-  - id: SYSTEMD_FOLDERS
-    description: Package managers
-    expression: '[ ~"/lib/systemd/system/*", ~"/usr/lib/systemd/system/*", ~"/etc/systemd/system/*" ]'
-  - id: APT_PROCESSES
-    expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
-  - id: SHELL_UTILS
-    description: Executables in the coreutils
-    expression: '["/bin/cat","/bin/chgrp","/bin/chmod","/bin/chown","/bin/cp","/bin/date","/bin/dd","/bin/df","/bin/dir","/bin/echo","/bin/ln","/bin/ls","/bin/mkdir","/bin/mknod","/bin/mktemp","/bin/mv","/bin/pwd","/bin/readlink","/bin/rm","/bin/rmdir","/bin/sleep","/bin/stty","/bin/sync","/bin/touch","/bin/uname","/bin/vdir","/usr/bin/arch","/usr/bin/b2sum","/usr/bin/base32","/usr/bin/base64","/usr/bin/basename","/usr/bin/chcon","/usr/bin/cksum","/usr/bin/comm","/usr/bin/csplit","/usr/bin/cut","/usr/bin/dircolors","/usr/bin/dirname","/usr/bin/du","/usr/bin/env","/usr/bin/expand","/usr/bin/expr","/usr/bin/factor","/usr/bin/fmt","/usr/bin/fold","/usr/bin/groups","/usr/bin/head","/usr/bin/hostid","/usr/bin/id","/usr/bin/install","/usr/bin/join","/usr/bin/link","/usr/bin/logname","/usr/bin/md5sum","/usr/bin/md5sum.textutils","/usr/bin/mkfifo","/usr/bin/nice","/usr/bin/nl","/usr/bin/nohup","/usr/bin/nproc","/usr/bin/numfmt","/usr/bin/od","/usr/bin/paste","/usr/bin/pathchk","/usr/bin/pinky","/usr/bin/pr","/usr/bin/printenv","/usr/bin/printf","/usr/bin/ptx","/usr/bin/realpath","/usr/bin/runcon","/usr/bin/seq","/usr/bin/sha1sum","/usr/bin/sha224sum","/usr/bin/sha256sum","/usr/bin/sha384sum","/usr/bin/sha512sum","/usr/bin/shred","/usr/bin/shuf","/usr/bin/sort","/usr/bin/split","/usr/bin/stat","/usr/bin/stdbuf","/usr/bin/sum","/usr/bin/tac","/usr/bin/tail","/usr/bin/tee","/usr/bin/test","/usr/bin/timeout","/usr/bin/tr","/usr/bin/truncate","/usr/bin/tsort","/usr/bin/tty","/usr/bin/unexpand","/usr/bin/uniq","/usr/bin/unlink","/usr/bin/users","/usr/bin/wc","/usr/bin/who","/usr/bin/whoami","/usr/sbin/chroot"]'
   - id: HTTP_UTILS
     description: Executables commonly used to fetch data over HTTP
     expression: '["/usr/bin/wget", "/usr/bin/curl"]'
   - id: NET_UTILS
     description: Executables of common network utilites
     expression: '["/usr/bin/socat", "/usr/bin/dig", "/usr/bin/nslookup", "/usr/bin/netcat", "/usr/bin/nc"]'
+  - id: OPEN_CREATE_FLAGS
+    expression: O_CREAT|O_RDWR|O_WRONLY
+  - id: OPEN_WRITE_FLAGS
+    expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
+  - id: PACKAGE_MANAGERS
+    description: Package managers
+    expression: '["pip3", "pip", "npm"]'
   - id: SHELLS
     description: Common Linux shell executables
     expression: |-
@@ -83,6 +69,20 @@ macros:
         "/bin/sash",
         "/usr/bin/yash",
         "/bin/zsh5", "/bin/zsh5-static" ]
+  - id: SHELL_UTILS
+    description: Executables in the coreutils
+    expression: '["/bin/cat","/bin/chgrp","/bin/chmod","/bin/chown","/bin/cp","/bin/date","/bin/dd","/bin/df","/bin/dir","/bin/echo","/bin/ln","/bin/ls","/bin/mkdir","/bin/mknod","/bin/mktemp","/bin/mv","/bin/pwd","/bin/readlink","/bin/rm","/bin/rmdir","/bin/sleep","/bin/stty","/bin/sync","/bin/touch","/bin/uname","/bin/vdir","/usr/bin/arch","/usr/bin/b2sum","/usr/bin/base32","/usr/bin/base64","/usr/bin/basename","/usr/bin/chcon","/usr/bin/cksum","/usr/bin/comm","/usr/bin/csplit","/usr/bin/cut","/usr/bin/dircolors","/usr/bin/dirname","/usr/bin/du","/usr/bin/env","/usr/bin/expand","/usr/bin/expr","/usr/bin/factor","/usr/bin/fmt","/usr/bin/fold","/usr/bin/groups","/usr/bin/head","/usr/bin/hostid","/usr/bin/id","/usr/bin/install","/usr/bin/join","/usr/bin/link","/usr/bin/logname","/usr/bin/md5sum","/usr/bin/md5sum.textutils","/usr/bin/mkfifo","/usr/bin/nice","/usr/bin/nl","/usr/bin/nohup","/usr/bin/nproc","/usr/bin/numfmt","/usr/bin/od","/usr/bin/paste","/usr/bin/pathchk","/usr/bin/pinky","/usr/bin/pr","/usr/bin/printenv","/usr/bin/printf","/usr/bin/ptx","/usr/bin/realpath","/usr/bin/runcon","/usr/bin/seq","/usr/bin/sha1sum","/usr/bin/sha224sum","/usr/bin/sha256sum","/usr/bin/sha384sum","/usr/bin/sha512sum","/usr/bin/shred","/usr/bin/shuf","/usr/bin/sort","/usr/bin/split","/usr/bin/stat","/usr/bin/stdbuf","/usr/bin/sum","/usr/bin/tac","/usr/bin/tail","/usr/bin/tee","/usr/bin/test","/usr/bin/timeout","/usr/bin/tr","/usr/bin/truncate","/usr/bin/tsort","/usr/bin/tty","/usr/bin/unexpand","/usr/bin/uniq","/usr/bin/unlink","/usr/bin/users","/usr/bin/wc","/usr/bin/who","/usr/bin/whoami","/usr/sbin/chroot"]'
+  - id: SYSTEMD_FOLDERS
+    description: Package managers
+    expression: '[ ~"/lib/systemd/system/*", ~"/usr/lib/systemd/system/*", ~"/etc/systemd/system/*" ]'
+  - id: SYSTEMD_JOURNALD_PROCESSES
+    expression: '["/usr/lib/systemd/systemd-journald"]'
+  - id: SYSTEM_PACKAGE_MANAGERS
+    description: Package managers
+    expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm"]'
+  - id: WEBAPP_PROCESSES
+    description: Processes that commonly run web applications
+    expression: '[~"python2*", ~"python3*", "node", "apache2", "nginx"]'
 rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
