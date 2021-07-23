@@ -1,4 +1,4 @@
-version: 1.4.1
+version: 1.4.2
 macros:
   - id: SYSTEMD_JOURNALD_PROCESSES
     expression: '["/usr/lib/systemd/systemd-journald"]'
@@ -20,11 +20,11 @@ macros:
        "/usr/bin/exechealthz", "/usr/local/bin/exechealthz",
        "/usr/bin/weave-net", "/usr/local/bin/weave-net",
        "/opt/cni/bin/loopback", "/opt/cni/bin/bridge"]
-  - id: COMPILER_PROCESSES
-    expression: '["javac", "clang", "gcc","bcc"]'
   - id: DATABASE_PROCESSES
     description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
+  - id: COMPILER_PROCESSES
+    expression: '["javac", "clang", "gcc","bcc"]'
   - id: DD_AGENT_PROCESSES
     description: Processes that are a part of the Datadog Agent
     expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent"]'
@@ -34,16 +34,16 @@ macros:
        "/usr/bin/kubectl", "/usr/local/bin/kubectl"]
   - id: OPEN_CREATE_FLAGS
     expression: O_CREAT|O_RDWR|O_WRONLY
+  - id: GITLAB_PROCESSES
+    expression: '["/opt/gitlab/embedded/bin/bundle", "/opt/gitlab/embedded/bin/svlogd"]'
   - id: WEBAPP_PROCESSES
     description: Processes that commonly run web applications
     expression: '[~"python2*", ~"python3*", "node", "apache2", "nginx"]'
-  - id: OPEN_WRITE_FLAGS
-    expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
-  - id: GITLAB_PROCESSES
-    expression: '["/opt/gitlab/embedded/bin/bundle", "/opt/gitlab/embedded/bin/svlogd"]'
   - id: PACKAGE_MANAGERS
     description: Package managers
     expression: '["pip3", "pip", "npm"]'
+  - id: OPEN_WRITE_FLAGS
+    expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
   - id: SYSTEMD_FOLDERS
     description: Package managers
     expression: '[ ~"/lib/systemd/system/*", ~"/usr/lib/systemd/system/*", ~"/etc/systemd/system/*" ]'
@@ -463,6 +463,9 @@ rules:
       && open.flags & OPEN_WRITE_FLAGS > 0
       && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+  - id: selinux_modified_permissive
+    description: SELinux enforcement status was set to permissive
+    expression: selinux.enforce.status in ["permissive", "disabled"]
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
