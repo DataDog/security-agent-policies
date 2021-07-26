@@ -13,7 +13,11 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v1
 
-      - name: Check the policies
+      - name: Check the policies - datadog/agent-dev:master
         run: |
           docker run -v `pwd`/runtime:/policies datadog/agent-dev:master /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
+
+      - name: Check the policies - datadog/agent:7
+        if: ${{ always() }}
+        run: |
           docker run -v `pwd`/runtime:/policies datadog/agent:7 /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
