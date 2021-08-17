@@ -808,6 +808,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-controller-manager
@@ -824,6 +825,7 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
+    resourceType: kubernetes_master_node
     resources:
       - process:
           name: kube-controller-manager
