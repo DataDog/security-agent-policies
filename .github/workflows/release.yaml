@@ -13,12 +13,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create Compliance Benchmarks ConfigMap
-        uses: steebchen/kubectl@v2
+        uses: steebchen/kubectl@v2.0.0
         with:
           command: create configmap datadog-compliance-benchmarks --dry-run -o yaml --from-file=./compliance/containers > ./datadog-compliance-benchmarks.yaml
 
       - name: Create Runtime Security Policies ConfigMap
-        uses: steebchen/kubectl@v2
+        uses: steebchen/kubectl@v2.0.0
         with:
           command: create configmap datadog-runtime-policies --dry-run -o yaml --from-file=./runtime > ./datadog-runtime-policies.yaml
 
