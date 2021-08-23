@@ -1,23 +1,27 @@
 name: Runtime Policies Checks
 
 on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+  push
+  # on:
+  #push:
+  #  branches: [master]
+  #pull_request:
+  #  branches: [master]
 
 jobs:
   check_policies:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ["datadog/agent-dev:master", "datadog/agent:7"]
+    container:
+      image: ${{ matrix.image }}
+      volumes:
+        - ${{ github.workspace }}/runtimes:/policies
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
-      - name: Check the policies - datadog/agent-dev:master
+      - name: Check the policies - ${{ matrix.image }}
         run: |
-          docker run -v `pwd`/runtime:/policies datadog/agent-dev:master /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
-
-      - name: Check the policies - datadog/agent:7
-        if: ${{ always() }}
-        run: |
-          docker run -v `pwd`/runtime:/policies datadog/agent:7 /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
+          /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
