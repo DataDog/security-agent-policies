@@ -15,14 +15,10 @@ jobs:
       fail-fast: false
       matrix:
         image: ["datadog/agent-dev:master", "datadog/agent:7"]
-    container:
-      image: ${{ matrix.image }}
-      volumes:
-        - ${{ github.workspace }}/runtime:/policies
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
       - name: Check the policies - ${{ matrix.image }}
         run: |
-          /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
+          docker run -v ${{ github.workspace }}/runtime:/policies ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
