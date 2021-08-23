@@ -17,7 +17,7 @@ jobs:
     container:
       image: ${{ matrix.image }}
       volumes:
-        - ${{ github.workspace }}/runtimes:/policies
+        - ${{ github.workspace }}/runtime:/policies
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
