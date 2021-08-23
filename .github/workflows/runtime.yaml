@@ -12,6 +12,7 @@ jobs:
   check_policies:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         image: ["datadog/agent-dev:master", "datadog/agent:7"]
     container:
