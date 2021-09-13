@@ -1376,6 +1376,12 @@ rules:
             file:
               path: process.flag("kubelet", "--config")
             condition: 'file.yaml(".tlsCertFile") != "" && file.yaml(".tlsPrivateKeyFile") != ""'
+            fallback:
+              condition: 'file.yaml(".tlsCertFile") == "" || file.yaml(".tlsPrivateKeyFile") == ""'
+              resource:
+                file:
+                  path: process.flag("kubelet", "--config")
+                condition: 'file.yaml(".serverTLSBootstrap") != "" || file.yaml(".featureGates.RotateKubeletServerCertificate") != ""'
     info:
       index:
         - 4. Worker Nodes
