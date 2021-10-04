@@ -10,53 +10,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
-      - name: Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Create Compliance Benchmarks ConfigMap
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          command: create configmap datadog-compliance-benchmarks --dry-run=client -o yaml --from-file=./compliance/containers > ./datadog-compliance-benchmarks.yaml
+
+      - name: Create Runtime Security Policies ConfigMap
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          command: create configmap datadog-runtime-policies --dry-run=client -o yaml --from-file=./runtime > ./datadog-runtime-policies.yaml
+
+      - name: Extract Tag name
+        id: tag_name_extractor
+        run: echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
 
       - name: Create Release
+        uses: softprops/action-gh-release@v1
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          name: Release ${{ steps.tag_name_extractor.outputs.TAG_NAME }}
           body: |
             Changes in this Release
             - Updated compliance benchmarks and runtime security policies for Datadog Security Agent.
           draft: false
           prerelease: false
-
-      - name: Create Compliance Benchmarks ConfigMap
-        uses: steebchen/kubectl@master
-        with:
-          args: create configmap datadog-compliance-benchmarks --dry-run -o yaml --from-file=./compliance/containers > ./datadog-compliance-benchmarks.yaml
-
-      - name: Create Runtime Security Policies ConfigMap
-        uses: steebchen/kubectl@master
-        with:
-          args: create configmap datadog-runtime-policies --dry-run -o yaml --from-file=./runtime > ./datadog-runtime-policies.yaml
-
-      - name: Upload Compliance Benchmarks ConfigMap
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./datadog-compliance-benchmarks.yaml
-          asset_name: datadog-compliance-benchmarks.yaml
-          asset_content_type: application/yaml
-
-      - name: Upload Runtime Security Policies ConfigMap
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./datadog-runtime-policies.yaml
-          asset_name: datadog-runtime-policies.yaml
-          asset_content_type: application/yaml
+          files: |
+            datadog-compliance-benchmarks.yaml
+            datadog-runtime-policies.yaml
