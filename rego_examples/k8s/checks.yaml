@@ -1,0 +1,40 @@
+schema:
+  version: 1.0.0
+name: CIS Kubernetes
+framework: cis-kubernetes
+version: 1.5.1
+rules:
+  - id: cis-kubernetes-1.5.1-5.2.3
+    description: '[CIS Kubernetes] Minimize the admission of containers wishing to share the host IPC namespace'
+    scope:
+      - kubernetesCluster
+    resourceType: kubernetes_cluster
+    resources:
+      - kubeApiserver:
+          kind: podsecuritypolicies
+          version: v1beta1
+          group: policy
+          apiRequest:
+            verb: list
+        condition: count(kube.resource.jq(".spec.hostIPC") != "true") > 0
+  - id: cis-kubernetes-1.5.1-5.2.3-rego
+    description: '[CIS Kubernetes] Minimize the admission of containers wishing to share the host IPC namespace'
+    scope:
+      - kubernetesCluster
+    resourceType: kubernetes_cluster
+    inputs:
+      - tag: api_responses
+        kubeApiserver:
+          kind: podsecuritypolicies
+          version: v1beta1
+          group: policy
+          apiRequest:
+            verb: list
+    module: |
+      package demo
+
+      findings[f] {
+        f := {}
+      }
+
+    findings: data.demo.findings
