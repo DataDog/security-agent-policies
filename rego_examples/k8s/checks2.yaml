@@ -1,0 +1,55 @@
+schema:
+  version: 1.0.0
+name: CIS Kubernetes
+framework: cis-kubernetes
+version: 1.5.1
+rules:
+  - id: cis-kubernetes-1.5.1-5.7.4
+    description: '[CIS Kubernetes] The default namespace should not be used'
+    scope:
+      - kubernetesCluster
+    resourceType: kubernetes_cluster
+    resources:
+      - kubeApiserver:
+          kind: pods
+          version: v1
+          namespace: default
+          apiRequest:
+            verb: list
+        condition: count(_) == 0
+      - kubeApiserver:
+          kind: services
+          version: v1
+          namespace: default
+          fieldSelector: metadata.name!=kubernetes,metadata.name!=openshift
+          apiRequest:
+            verb: list
+        condition: count(_) == 0
+  - id: cis-kubernetes-1.5.1-5.7.4-rego
+    description: '[CIS Kubernetes] The default namespace should not be used'
+    scope:
+      - kubernetesCluster
+    inputs:
+      - tag: pods
+        kubeApiserver:
+          kind: pods
+          version: v1
+          namespace: default
+          apiRequest:
+            verb: list
+      - tag: services
+        kubeApiserver:
+          kind: services
+          version: v1
+          namespace: default
+          fieldSelector: metadata.name!=kubernetes,metadata.name!=openshift
+          apiRequest:
+            verb: list
+    module: |
+      package demo
+
+      findings[f] {
+        f := {}
+      }
+
+    findings: data.demo.findings
