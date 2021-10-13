@@ -24,82 +24,112 @@ rules:
     description: Auditing is configured for the Docker daemon
     scope:
       - docker
-    resources:
-      - audit:
-          path: /usr/bin/dockerd
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.4
     description: /var/lib/docker auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
-          path: /var/lib/docker
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.5
     description: /etc/docker auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
-          path: /etc/docker
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.6
     description: docker.service auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
-          path: /usr/lib/systemd/system/docker.service
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.7
     description: docker.socket auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
-          path: /usr/lib/systemd/system/docker.socket
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.8
     description: /etc/default/docker auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
-          path: /etc/default/docker
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.9
     description: /etc/sysconfig/docker auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
-          path: /etc/sysconfig/docker
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.10
     description: /etc/docker/daemon.json auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
+    inputs:
+      - tag: audit
+        audit:
           path: /etc/docker/daemon.json
-        condition: audit.enabled
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.11
     description: /usr/bin/containerd auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
-          path: /usr/bin/containerd
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-1.2.12
     description: /usr/sbin/runc auditing is configured
     scope:
       - docker
-    resources:
-      - audit:
-          path: /usr/sbin/runc
-        condition: audit.enabled
+    inputs:
+      - tag: audit
+        audit:
+          path: /etc/docker/daemon.json
+    imports:
+      - rego/audit-rule-common.rego
+    findings: data.docker_audit.findings
   - id: cis-docker-1.2.0-2.1
     description: Network traffic is restricted between containers on the default bridge
     scope:
@@ -526,4 +556,3 @@ rules:
       - docker:
           kind: container
         condition: docker.template("{{ range $.Mounts }}{{ if eq .Source \"/var/run/docker.sock\" }}{{ .Source }}{{ end }}{{ end }}") == ""
-
