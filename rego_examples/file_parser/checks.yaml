@@ -1,0 +1,43 @@
+schema:
+  version: 1.0.0
+name: CIS Docker Generic
+framework: cis-docker
+version: 1.2.0
+rules:
+  - id: cis-docker-rego
+    description: 'Docker rego check'
+    scope:
+      - docker
+    inputs:
+      - tag: files
+        file:
+          path: /tmp/test.json
+          parser: json
+    module: |
+      package parser
+
+      import data.datadog as dd
+
+      findings[f] {
+        file := input.files[_]
+        valid_file(file)
+        f := dd.passed_finding(
+          "docker_daemon",
+          dd.docker_daemon_resource_id,
+          dd.file_data(file)
+        )
+      } {
+        file := input.files[_]
+        not valid_file(file)
+        f := dd.failing_finding(
+          "docker_daemon",
+          dd.docker_daemon_resource_id,
+          dd.file_data(file)
+        )
+      }
+
+      valid_file(f) {
+        f.content.test == "helloworld"
+      }
+
+    findings: data.parser.findings

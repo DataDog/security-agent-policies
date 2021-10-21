@@ -1,0 +1,20 @@
+{
+	"cis-docker-rego": {
+		"context": {
+			"constants": null,
+			"hostname": "ubuntu-hirsute"
+		},
+		"files": [
+			{
+				"content": {
+					"test": "helloworld"
+				},
+				"glob": "/tmp/test.json",
+				"group": "vagrant",
+				"path": "/tmp/test.json",
+				"permissions": 436,
+				"user": "vagrant"
+			}
+		]
+	}
+}
