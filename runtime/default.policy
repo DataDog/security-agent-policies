@@ -1,3 +1,4 @@
+# IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
 version: 1.4.2
 macros:
   - id: APT_PROCESSES
@@ -463,9 +464,6 @@ rules:
       && open.flags & OPEN_WRITE_FLAGS > 0
       && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-  - id: selinux_modified_permissive
-    description: SELinux enforcement status was set to permissive
-    expression: selinux.enforce.status in ["permissive", "disabled"]
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
