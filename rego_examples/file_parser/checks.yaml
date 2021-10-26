@@ -8,7 +8,7 @@ rules:
     description: 'Docker rego check'
     scope:
       - docker
-    inputs:
+    input:
       - tag: files
         file:
           path: /tmp/test.json

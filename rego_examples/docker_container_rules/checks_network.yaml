@@ -16,7 +16,7 @@ rules:
     description: '[CIS Docker] Ensure network traffic is restricted between containers on the default bridge'
     scope:
       - docker
-    inputs:
+    input:
       - tag: networks
         docker:
           kind: network

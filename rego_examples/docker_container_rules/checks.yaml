@@ -16,7 +16,7 @@ rules:
     description: '[CIS Docker] Ensure that the host''s user namespaces are not shared'
     scope:
       - docker
-    inputs:
+    input:
       - tag: containers
         docker:
           kind: container

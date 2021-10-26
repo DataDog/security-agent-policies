@@ -16,7 +16,7 @@ rules:
     description: '[CIS Docker] Ensure that HEALTHCHECK instructions have been added to container images'
     scope:
       - docker
-    inputs:
+    input:
       - tag: images
         docker:
           kind: image

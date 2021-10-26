@@ -16,7 +16,7 @@ rules:
     description: '[CIS Docker] Ensure that the memory usage for containers is limited'
     scope:
       - docker
-    inputs:
+    input:
       - tag: containers
         docker:
           kind: container

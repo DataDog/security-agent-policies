@@ -19,7 +19,7 @@ rules:
       - docker
     constants:
       permissions: "0644"
-    inputs:
+    input:
       - tag: docker_sockets
         file:
           path: /usr/lib/systemd/system/docker.socket
