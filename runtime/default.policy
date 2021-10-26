@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.4.2
+version: 1.4.3
 macros:
   - id: APT_PROCESSES
     expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
