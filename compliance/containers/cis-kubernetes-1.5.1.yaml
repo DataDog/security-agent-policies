@@ -957,4 +957,3 @@ rules:
           apiRequest:
             verb: list
         condition: count(_) == 0
-
