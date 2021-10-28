@@ -371,9 +371,15 @@ rules:
     scope:
       - docker
     resources:
-      - docker:
-          kind: container
-        condition: docker.template("{{- has \"selinux\" $.HostConfig.SecurityOpt -}}") == "true"
+      - file:
+          path: /sys/fs/selinux/enforce
+        condition: _selinux_disabled_ignore_event_
+        fallback:
+          condition: file.regex("1") != ""
+          resource:
+            docker:
+              kind: container
+            condition: docker.template("{{ if not $.HostConfig.SecurityOpt }}fail{{ end }}") == ""
   - id: cis-docker-1.2.0-5.3
     description: Linux kernel capabilities are restricted within containers
     scope:
@@ -526,4 +532,3 @@ rules:
       - docker:
           kind: container
         condition: docker.template("{{ range $.Mounts }}{{ if eq .Source \"/var/run/docker.sock\" }}{{ .Source }}{{ end }}{{ end }}") == ""
-
