@@ -371,12 +371,11 @@ rules:
     scope:
       - docker
     resources:
-      - command:
-          binary:
-            name: getenforce
+      - file:
+          path: /sys/fs/selinux/enforce
         condition: _selinux_disabled_ignore_event_
         fallback:
-          condition: command.stdout == "Enforcing\n"
+          condition: file.regex("1") != ""
           resource:
             docker:
               kind: container
