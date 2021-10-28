@@ -371,9 +371,10 @@ rules:
     scope:
       - docker
     resources:
-      - docker:
-          kind: container
-        condition: docker.template("{{- has \"selinux\" $.HostConfig.SecurityOpt -}}") == "true"
+      - command:
+          binary:
+            name: getenforce
+        condition: _selinux_disabled_ignore_event_
         fallback:
           condition: command.stdout == "Enforcing\n"
           resource:
