@@ -464,6 +464,9 @@ rules:
       && open.flags & OPEN_WRITE_FLAGS > 0
       && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+  - id: selinux_disable_enforcement
+    description: SELinux enforcement status was disabled
+    expression: selinux.enforce.status in ["permissive", "disabled"]
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
