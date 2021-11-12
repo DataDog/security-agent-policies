@@ -80,7 +80,7 @@ macros:
     expression: '["/usr/lib/systemd/systemd-journald"]'
   - id: SYSTEM_PACKAGE_MANAGERS
     description: Package managers
-    expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm"]'
+    expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm", "/usr/bin/unattended-upgrade"]'
   - id: WEBAPP_PROCESSES
     description: Processes that commonly run web applications
     expression: '[~"python2*", ~"python3*", "node", "apache2", "nginx"]'
@@ -96,7 +96,7 @@ rules:
     expression: exec.file.path == "/usr/bin/nmap"
   - id: compiler_in_container
     description: A compiler was executed inside of a container
-    expression: (exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !=""
+    expression: (exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
   - id: credential_modified_chmod
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -289,13 +289,13 @@ rules:
     expression: |-
       (exec.file.path in NET_UTILS ||
        exec.file.path in HTTP_UTILS) &&
-      container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+      container.id == "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news")
   - id: net_util_in_container
     description: A network utility execution was detected in a container
     expression: |-
       (exec.file.path in NET_UTILS ||
        exec.file.path in HTTP_UTILS) &&
-      container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+      container.id != "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news")
   - id: nsswitch_conf_mod_chmod
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -341,6 +341,9 @@ rules:
       (
           (utimes.file.path in [ "/etc/nsswitch.conf" ])
       )
+  - id: omigod
+    description: Omiagent spawns a privileged child process
+    expression: exec.uid >= 0 && process.ancestors.file.name == "omiagent"
   - id: package_management_in_container
     description: Package management was detected in a container
     expression: exec.file.path in SYSTEM_PACKAGE_MANAGERS && container.id != ""

@@ -1,0 +1,14 @@
+{
+ "cis-docker-1.2.0-1.2.10": {
+  "audit": [
+   {
+    "enabled": true,
+    "path": "/etc/docker/daemon.json",
+    "permissions": "rwea"
+   }
+  ],
+  "context": {
+   "hostname": "unittest"
+  }
+ }
+}
