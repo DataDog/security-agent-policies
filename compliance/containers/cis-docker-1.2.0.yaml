@@ -8,527 +8,683 @@ rules:
     description: A separate partition for containers has been created
     scope:
       - docker
-    resources:
+    input:
       - file:
           path: /proc/mounts
-        condition: file.regexp("[a-zA-Z0-9-_/]+ /var/lib/docker [a-zA-Z0-9-_/]+") != ""
+      - constants:
+          regexp: '[a-zA-Z0-9-_/]+ /var/lib/docker [a-zA-Z0-9-_/]+'
+    imports:
+      - file-matches-regexp.rego
   - id: cis-docker-1.2.0-1.2.2
     description: Only trusted users are allowed to control Docker daemon
     scope:
       - docker
-    resources:
+    input:
       - group:
           name: docker
-        condition: '"docker" in group.users'
   - id: cis-docker-1.2.0-1.2.3
     description: Auditing is configured for the Docker daemon
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /usr/bin/dockerd
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-1.2.4
     description: /var/lib/docker auditing is configured
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /var/lib/docker
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-1.2.5
     description: /etc/docker auditing is configured
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /etc/docker
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-1.2.6
     description: docker.service auditing is configured
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /usr/lib/systemd/system/docker.service
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-1.2.7
     description: docker.socket auditing is configured
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /usr/lib/systemd/system/docker.socket
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-1.2.8
     description: /etc/default/docker auditing is configured
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /etc/default/docker
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-1.2.9
     description: /etc/sysconfig/docker auditing is configured
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /etc/sysconfig/docker
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-1.2.10
     description: /etc/docker/daemon.json auditing is configured
     scope:
       - docker
-    resources:
+    imports:
+      - audit-rule-common.rego
+    input:
       - audit:
           path: /etc/docker/daemon.json
-        condition: audit.enabled
+        type: array
   - id: cis-docker-1.2.0-1.2.11
     description: /usr/bin/containerd auditing is configured
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /usr/bin/containerd
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-1.2.12
     description: /usr/sbin/runc auditing is configured
     scope:
       - docker
-    resources:
+    input:
       - audit:
           path: /usr/sbin/runc
-        condition: audit.enabled
+        type: array
+    imports:
+      - audit-rule-common.rego
   - id: cis-docker-1.2.0-2.1
     description: Network traffic is restricted between containers on the default bridge
     scope:
       - docker
-    resources:
-      - docker:
+    input:
+      - tag: networks
+        docker:
           kind: network
-        condition: docker.template("{{- index $.Options \"com.docker.network.bridge.default_bridge\" -}}") != "true" || docker.template("{{- index $.Options \"com.docker.network.bridge.enable_icc\" -}}") == "true"
+        type: array
   - id: cis-docker-1.2.0-2.2
     description: Logging level is set to 'info'
     scope:
       - docker
-    resources:
+    input:
+      - file:
+          path: /etc/docker/daemon.json
+          parser: json
       - process:
           name: dockerd
-        condition: process.flag("--log-level") == "info"
-        fallback:
-          condition: '!process.hasFlag("--log-level")'
-          resource:
-            file:
-              path: /etc/docker/daemon.json
-            condition: file.jq(".\"log-level\"") == "info"
   - id: cis-docker-1.2.0-2.3
     description: Docker is allowed to make changes to iptables
     scope:
       - docker
-    resources:
+    input:
+      - file:
+          path: /etc/docker/daemon.json
+          parser: json
       - process:
           name: dockerd
-        condition: _
-        fallback:
-          condition: '!process.hasFlag("--iptables")'
-          resource:
-            file:
-              path: /etc/docker/daemon.json
-            condition: file.jq(".iptables") != ""
   - id: cis-docker-1.2.0-2.4
     description: Insecure registries are not used
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - docker-info-rule-common.rego
+    input:
+      - tag: infos
+        docker:
           kind: info
-        condition: docker.template("{{- $.RegistryConfig.InsecureRegistryCIDRs | join \",\" -}}") == ""
+        type: array
   - id: cis-docker-1.2.0-2.5
     description: aufs storage driver is not used
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - docker-info-rule-common.rego
+    input:
+      - tag: infos
+        docker:
           kind: info
-        condition: docker.template("{{- $.Driver -}}") != "aufs"
+        type: array
   - id: cis-docker-1.2.0-2.6
     description: TLS authentication for Docker daemon is configured
     scope:
       - docker
-    resources:
+    input:
       - process:
-          name: dockerd
-        condition: process.flag("--tlscacert") != "" && process.flag("--tlscert") != "" && process.flag("--tlskey") != ""
-        fallback:
-          condition: '!process.hasFlag("--tlsverify")'
-          resource:
-            file:
-              path: /etc/docker/daemon.json
-            condition: file.jq(".tlsverify") == "true" && file.jq(".tlscacert") != "" && file.jq(".tlscert") != "" && file.jq(".tlskey") != ""
+          name: kubelet
+      - file:
+          path: process.flag("kubelet", "--config")
+      - tag: config
+        file:
+          path: /etc/docker/daemon.json
+        parser: yaml
   - id: cis-docker-1.2.0-3.1
     description: docker.service file ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: /usr/lib/systemd/system/docker.service
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.2
     description: docker.service file permissions are appropriately set
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: /usr/lib/systemd/system/docker.service
-        condition: (file.permissions & 0644) == file.permissions
+      - constants:
+          max_permissions: '644'
   - id: cis-docker-1.2.0-3.3
     description: docker.socket file ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: /usr/lib/systemd/system/docker.socket
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.4
     description: docker.socket file permissions are set to 644 or more restrictive
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: /usr/lib/systemd/system/docker.socket
-        condition: (file.permissions & 0644) == file.permissions
+      - constants:
+          max_permissions: '644'
   - id: cis-docker-1.2.0-3.5
     description: /etc/docker directory ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: /etc/docker
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.6
     description: /etc/docker directory permissions are set to 755 or more restrictively
     scope:
       - docker
-    resources:
+    input:
       - file:
           path: /etc/docker
-        condition: (file.permissions & 0755) == file.permissions
+      - constants:
+          max_permissions: '755'
+    imports:
+      - file-permissions-common.rego
   - id: cis-docker-1.2.0-3.7
     description: Registry certificate file ownership is set to root:root
     scope:
       - docker
-    resources:
+    input:
       - file:
           path: /etc/docker/certs.d/*.crt
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.8
     description: Registry certificate file permissions are set to 444 or more restrictively
     scope:
       - docker
-    resources:
+    input:
       - file:
           path: /etc/docker/certs.d/*.crt
-        condition: (file.permissions & 0444) == file.permissions
+        type: array
+        tag: files
+      - constants:
+          max_permissions: '444'
   - id: cis-docker-1.2.0-3.9
     description: TLS CA certificate file ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: process.flag("dockerd", "--tlscacert")
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.10
     description: TLS CA certificate file permissions are set to 444 or more restrictively
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: process.flag("dockerd", "--tlscacert")
-        condition: (file.permissions & 0444) == file.permissions
+      - constants:
+          max_permissions: '444'
   - id: cis-docker-1.2.0-3.11
     description: Docker server certificate file ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: process.flag("dockerd", "--tlscert")
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.12
     description: Docker server certificate file permissions are set to 444 or more restrictively
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: process.flag("dockerd", "--tlscert")
-        condition: (file.permissions & 0444) == file.permissions
+      - constants:
+          max_permissions: '444'
   - id: cis-docker-1.2.0-3.13
     description: Docker server certificate key file ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: process.flag("dockerd", "--tlskey")
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.14
     description: Docker server certificate key file permissions are set to 400
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: process.flag("dockerd", "--tlskey")
-        condition: (file.permissions & 0400) == file.permissions
+      - constants:
+          max_permissions: '400'
   - id: cis-docker-1.2.0-3.15
     description: Docker socket file ownership is set to root:docker
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: /var/run/docker.sock
-        condition: file.user == "root" && file.group == "docker"
+      - constants:
+          user: root
+          group: docker
   - id: cis-docker-1.2.0-3.16
     description: Docker socket file permissions are set to 660 or more restrictively
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: /var/run/docker.sock
-        condition: (file.permissions & 0660) == file.permissions
+      - constants:
+          max_permissions: '660'
   - id: cis-docker-1.2.0-3.17
     description: daemon.json file ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: /etc/docker/daemon.json
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.18
     description: daemon.json file permissions are set to 644 or more restrictive
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: /etc/docker/daemon.json
-        condition: (file.permissions & 0644) == file.permissions
+      - constants:
+          max_permissions: '644'
   - id: cis-docker-1.2.0-3.19
     description: /etc/default/docker file ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: /etc/default/docker
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.20
     description: /etc/sysconfig/docker file ownership is set to root:root
     scope:
       - docker
-    resources:
+    imports:
+      - file-owner-rule-common.rego
+    input:
       - file:
           path: /etc/sysconfig/docker
-        condition: file.user == "root" && file.group == "root"
+      - constants:
+          user: root
+          group: root
   - id: cis-docker-1.2.0-3.21
     description: /etc/sysconfig/docker file permissions are set to 644 or more restrictively
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: /etc/sysconfig/docker
-        condition: (file.permissions & 0644) == file.permissions
+      - constants:
+          max_permissions: '644'
   - id: cis-docker-1.2.0-3.22
     description: /etc/default/docker file permissions are set to 644 or more restrictively
     scope:
       - docker
-    resources:
+    imports:
+      - file-permissions-common.rego
+    input:
       - file:
           path: /etc/default/docker
-        condition: (file.permissions & 0644) == file.permissions
+      - constants:
+          max_permissions: '644'
   - id: cis-docker-1.2.0-4.1
     description: A user for the container has been created
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.Config.User -}}") != ""
+        type: array
   - id: cis-docker-1.2.0-4.6
     description: HEALTHCHECK instructions have been added to container images
     scope:
       - docker
-    resources:
-      - docker:
+    input:
+      - tag: images
+        docker:
           kind: image
-        condition: docker.template("{{- $.Config.Healthcheck.Test -}}") != ""
+        type: array
   - id: cis-docker-1.2.0-5.1
     description: An AppArmor Profile is enabled
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.AppArmorProfile -}}") not in ["", "unconfined"]
+        type: array
   - id: cis-docker-1.2.0-5.2
     description: SELinux security options are set
     scope:
       - docker
-    resources:
+    input:
       - file:
           path: /sys/fs/selinux/enforce
-        condition: _selinux_disabled_ignore_event_
-        fallback:
-          condition: file.regexp("1") != ""
-          resource:
-            docker:
-              kind: container
-            condition: docker.template("{{ if not $.HostConfig.SecurityOpt }}fail{{ end }}") == ""
+      - tag: containers
+        docker:
+          kind: container
+        type: array
   - id: cis-docker-1.2.0-5.3
     description: Linux kernel capabilities are restricted within containers
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{ range $.HostConfig.CapAdd }}{{ if regexMatch \"AUDIT_WRITE|CHOWN|DAC_OVERRIDE|FOWNER|FSETID|KILL|MKNOD|NET_BIND_SERVICE|NET_RAW|SETFCAP|SETGID|SETPCAP|SETUID|SYS_CHROOT\" . }}failed{{ end }}{{ end }}") == ""
+        type: array
   - id: cis-docker-1.2.0-5.4
     description: Privileged containers are not used
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.Privileged -}}") != "true"
+        type: array
   - id: cis-docker-1.2.0-5.5
     description: Sensitive host system directories are not mounted on containers
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{ range $.Mounts }}{{ if has .Source (list \"/\" \"/boot\" \"/dev\" \"/etc\" \"/lib\" \"/proc\" \"/sys\" \"/usr\") }}{{ .Source }}{{ end }}{{ end }}") == ""
+        type: array
   - id: cis-docker-1.2.0-5.7
     description: Privileged ports are not mapped within containers
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{ range $k, $_ := $.NetworkSettings.Ports }}{{ with $p := (regexReplaceAllLiteral \"/.*\" ($k | toString) \"\") | atoi }}{{ if lt $p 1024}}failed{{ end }}{{ end }}{{ end }}") == ""
+        type: array
   - id: cis-docker-1.2.0-5.9
     description: Host's network namespace is not shared
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.NetworkMode -}}") != "host"
+        type: array
   - id: cis-docker-1.2.0-5.10
     description: Memory usage for containers is limited
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.Memory -}}") != "0"
+        type: array
   - id: cis-docker-1.2.0-5.11
     description: CPU priority is set appropriately on containers
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.CpuShares -}}") not in ["0", "1024", ""]
+        type: array
   - id: cis-docker-1.2.0-5.12
     description: Container's root filesystem is mounted as read only
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.ReadonlyRootfs -}}") == "true"
+        type: array
   - id: cis-docker-1.2.0-5.14
     description: '''on-failure'' container restart policy is set to ''5'''
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.RestartPolicy.Name -}}") == "on-failure" && docker.template("{{- eq $.HostConfig.RestartPolicy.MaximumRetryCount 5 -}}") != "false"
+        type: array
   - id: cis-docker-1.2.0-5.15
     description: Host's process namespace is not shared
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.PidMode -}}") != "host"
+        type: array
   - id: cis-docker-1.2.0-5.16
     description: Host's IPC namespace is not shared
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.IpcMode -}}") != "host"
+        type: array
   - id: cis-docker-1.2.0-5.20
     description: Host's UTS namespace is not shared
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.UTSMode -}}") != "host"
+        type: array
   - id: cis-docker-1.2.0-5.21
     description: Default seccomp profile is not Disabled
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- has \"seccomp:unconfined\" $.HostConfig.SecurityOpt -}}") == "false"
+        type: array
   - id: cis-docker-1.2.0-5.24
     description: cgroup usage is confirmed
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.CgroupParent -}}") == ""
+        type: array
   - id: cis-docker-1.2.0-5.25
     description: Container is restricted from acquiring additional privileges
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- has \"no-new-privileges\" $.HostConfig.SecurityOpt -}}") == "true"
+        type: array
   - id: cis-docker-1.2.0-5.26
     description: Container health is checked at runtime
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.State.Health.Status -}}") != ""
+        type: array
   - id: cis-docker-1.2.0-5.28
     description: PIDs cgroup limit is used
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.PidsLimit -}}") not in ["", "<nil>", "0"]
+        type: array
   - id: cis-docker-1.2.0-5.30
     description: Host's user namespaces are not shared
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{- $.HostConfig.UsernsMode -}}") != "host"
+        type: array
   - id: cis-docker-1.2.0-5.31
     description: Docker socket is not mounted inside any containers
     scope:
       - docker
-    resources:
-      - docker:
+    imports:
+      - container-generic-rule.rego
+    input:
+      - tag: containers
+        docker:
           kind: container
-        condition: docker.template("{{ range $.Mounts }}{{ if eq .Source \"/var/run/docker.sock\" }}{{ .Source }}{{ end }}{{ end }}") == ""
+        type: array
