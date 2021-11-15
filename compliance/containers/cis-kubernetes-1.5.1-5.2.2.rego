@@ -2,16 +2,17 @@ package datadog
 import data.datadog as dd
 
 findings[f] {
-  input.policies[_].resource.Object.spec.hostPID
+  count([p | p := input.policies[_]; p.resource.Object.spec.hostPID!=true]) > 0
   f := dd.passed_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    "kubernetes_cluster",
+    dd.kubernetes_cluster_resource_id,
     {}
   )
 } {
+  count([p | p := input.policies[_]; p.resource.Object.spec.hostPID!=true]) == 0
   f := dd.failing_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    "kubernetes_cluster",
+    dd.kubernetes_cluster_resource_id,
     {}
   )
 }

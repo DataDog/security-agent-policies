@@ -11,7 +11,7 @@ valid_process_args(p) {
 }
 
 valid_process_and_config(p, f) {
-  not has_key(p, "--read-only-port")
+  not has_key(p, "--streaming-connection-idle-timeout")
   has_key(p, "--config")
   f.path == p.flags["--config"]
   to_number(f.content.streamingConnectionIdleTimeout) > 0
@@ -26,14 +26,14 @@ compliant {
 findings[f] {
   compliant
   f := dd.passed_finding(
-    "docker_daemon",
+    "kubernetes_worker_node",
     dd.docker_daemon_resource_id,
     dd.process_data(input.process)
   )
 } {
   not compliant
   f := dd.failing_finding(
-    "docker_daemon",
+    "kubernetes_worker_node",
     dd.docker_daemon_resource_id,
     dd.process_data(input.process)
   )

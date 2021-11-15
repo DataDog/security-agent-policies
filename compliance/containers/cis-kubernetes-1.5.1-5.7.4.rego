@@ -12,15 +12,15 @@ resources_in_default(in) {
 findings[f] {
   not resources_in_default(input)
   f := dd.passed_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    "kubernetes_cluster",
+    dd.kubernetes_cluster_resource_id,
     {}
   )
 } {
   resources_in_default(input)
   f := dd.failing_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    "kubernetes_cluster",
+    dd.kubernetes_cluster_resource_id,
     {}
   )
 }

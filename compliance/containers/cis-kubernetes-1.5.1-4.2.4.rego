@@ -27,15 +27,15 @@ valid_process_and_config(p, f) {
 findings[f] {
   compliant
   f := dd.passed_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    "kubernetes_worker_node",
+    dd.kubernetes_worker_node_resource_id,
     dd.process_data(input.process)
   )
 } {
   not compliant
   f := dd.failing_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    "kubernetes_worker_node",
+    dd.kubernetes_worker_node_resource_id,
     dd.process_data(input.process)
   )
 }
