@@ -1,5 +1,6 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 match(file, const) {
   regex.match(const.regexp, file.content)
@@ -8,9 +9,9 @@ match(file, const) {
 findings[f] {
   match(input.file, input.constants)
   f := dd.passed_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
-    dd.file_data(input.file)
+    h.resource_type,
+    h.resource_id,
+    h.file_data(input.file)
   )
 }
 
@@ -18,8 +19,8 @@ findings[f] {
 findings[f] {
   not match(input.file, input.constants)
   f := dd.failing_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
-    dd.file_data(input.file)
+    h.resource_type,
+    h.resource_id,
+    h.file_data(input.file)
   )
 }

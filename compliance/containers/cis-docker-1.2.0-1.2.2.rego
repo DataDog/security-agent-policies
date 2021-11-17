@@ -1,21 +1,21 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 findings[f] {
    user_in_group(input.group)
    f := dd.passed_finding(
-     "docker_daemon",
-     dd.docker_daemon_resource_id,
-     dd.group_data(input.group)
+     h.resource_type,
+     h.resource_id,
+     h.group_data(input.group)
    )
 } {
    not user_in_group(input.group)
    f := dd.failing_finding(
-     "docker_daemon",
-     dd.docker_daemon_resource_id,
-     dd.group_data(input.group)
+     h.resource_type,
+     h.resource_id,
+     h.group_data(input.group)
    )
-
 }
 
 user_in_group(group) {

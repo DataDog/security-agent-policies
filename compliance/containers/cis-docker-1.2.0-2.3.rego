@@ -1,5 +1,6 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 has_key(x, key) {
   _ := x[key]
@@ -32,23 +33,23 @@ compliant(in) {
 findings[f] {
   compliant(input)
   f := dd.passed_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    h.resource_type,
+    h.resource_id,
     {}
   )
 } {
   not compliant(input)
   f := dd.failing_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    h.resource_type,
+    h.resource_id,
     {}
   )
 } {
   # if dockerd process doesn't exist then error
   not has_key(input, "process")
   f := dd.error_finding(
-     "docker_daemon",
-     dd.docker_daemon_resource_id,
+     h.resource_type,
+     h.resource_id,
      "process resource does not exist"
   )
 }

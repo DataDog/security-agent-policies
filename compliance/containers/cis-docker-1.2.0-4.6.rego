@@ -1,14 +1,15 @@
 package datadog
 
 import data.datadog as dd
+import data.helpers as h
 
 findings[f] {
   image := input.images[_]
   valid_image[image]
   f := dd.passed_finding(
-    "docker_image",
-    dd.docker_image_resource_id(image),
-    dd.docker_image_data(image)
+    h.resource_type,
+    h.docker_image_resource_id(image),
+    h.docker_image_data(image)
   )
 }
 
@@ -16,9 +17,9 @@ findings[f] {
   image := input.images[_]
   not valid_image[image]
   f := dd.failing_finding(
-    "docker_image",
-    dd.docker_image_resource_id(image),
-    dd.docker_image_data(image)
+    h.resource_type,
+    h.docker_image_resource_id(image),
+    h.docker_image_data(image)
   )
 }
 

@@ -1,5 +1,6 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 compliant_config(file) {
   file.content["log-level"] == "info"
@@ -30,15 +31,15 @@ has_key(o, k) {
 findings[f] {
   compliant(input)
   f := dd.passed_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    h.resource_type,
+    h.resource_id,
     {}
   )
 } {
   not compliant(input)
   f := dd.failing_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    h.resource_type,
+    h.resource_id,
     {}
   )
 }

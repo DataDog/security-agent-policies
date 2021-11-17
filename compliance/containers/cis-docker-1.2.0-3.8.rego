@@ -1,5 +1,6 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 max_permissions(file, consts) {
   file.permissions == bits.and(file.permissions, parse_octal(consts.max_permissions))
@@ -17,30 +18,30 @@ findings[f] {
   count(input.files) > 0
   all_files_ok(input)
   f := dd.passed_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
-    {"files": [dd.file_data(f) | f := input.files[_]]}
+    h.resource_type,
+    h.resource_id,
+    {"files": [h.file_data(f) | f := input.files[_]]}
   )
 } {
   count(input.files) > 0
   not all_files_ok(input)
   f := dd.failing_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
-    {"files": [dd.file_data(f) | f := input.files[_]]}
+    h.resource_type,
+    h.resource_id,
+    {"files": [h.file_data(f) | f := input.files[_]]}
   )
 } {
   count(input.files) == 0
   f := dd.error_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    h.resource_type,
+    h.resource_id,
     sprintf("no files found for file check \"%s\"", [input.context.input.files.file.path])
   )
 } {
   not has_key(input, "files")
   f := dd.error_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    h.resource_type,
+    h.resource_id,
     sprintf("no files found for file check \"%s\"", [input.context.input.files.file.path])
   )
 }
