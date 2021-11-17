@@ -4,13 +4,13 @@
 # Rules are matched bottom-to-top, so one team can own subdirectories
 # and another the rest of the directory.
 
-*                               @DataDog/container-integrations @DataDog/agent-security
+*                               @DataDog/agent-security
 
 # Container compliance benchmarks
-/compliance/containers          @DataDog/container-integrations
+/compliance/containers          @DataDog/agent-security
 
 # Runtime security policies
 /runtime                        @DataDog/agent-security
 
 # Documentation
-*.md                            @DataDog/documentation @DataDog/container-integrations @DataDog/agent-security
+*.md                            @DataDog/documentation @DataDog/agent-security
