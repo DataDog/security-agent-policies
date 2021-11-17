@@ -1,5 +1,6 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 failed_clusterrolebindings[serviceaccount] {
   serviceaccount := input.serviceaccounts[_]
@@ -25,31 +26,31 @@ service_account_with_token[serviceaccount] {
 findings[f] {
   count(input.serviceaccounts) == 0
   f := dd.passed_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     { "reason": "no service account" }
   )
 } {
   count(service_account_with_token) > 0
   f := dd.failing_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     { "reason": "automountServiceAccountToken is set",
       "serviceAccounts": kubernetes_resource_names(service_account_with_token[_]) }
   )
 } {
   count(failed_clusterrolebindings) > 0
   f := dd.failing_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     { "reason": "incorrect cluster role bindings",
       "serviceAccounts": kubernetes_resource_names(failed_clusterrolebindings[_]) }
   )
 } {
   count(failed_rolebindings) > 0
   f := dd.failing_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     { "reason": "incorrect role bindings",
       "serviceAccounts": kubernetes_resource_names(failed_rolebindings[_]) }
   )
@@ -59,8 +60,8 @@ findings[f] {
   count(failed_clusterrolebindings) == 0
   count(failed_rolebindings) == 0
   f := dd.passed_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     {}
   )
 }

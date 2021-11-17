@@ -1,5 +1,6 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 failed_namespaces[namespaces] {
   some i, j
@@ -11,15 +12,15 @@ failed_namespaces[namespaces] {
 findings[f] {
   count(failed_namespaces) == 0
   f := dd.passed_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     {}
   )
 } {
   count(failed_namespaces) > 0
   f := dd.failing_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     { "namespaces": [ name | name := failed_namespaces[_].name ]}
   )
 }

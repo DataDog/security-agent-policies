@@ -1,5 +1,6 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 has_key(p, k) {
   _ := p.flags[k]
@@ -26,15 +27,15 @@ compliant {
 findings[f] {
   compliant
   f := dd.passed_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    h.resource_type,
+    h.resource_id,
     dd.process_data(input.process)
   )
 } {
   not compliant
   f := dd.failing_finding(
-    "docker_daemon",
-    dd.docker_daemon_resource_id,
+    h.resource_type,
+    h.resource_id,
     dd.process_data(input.process)
   )
 }

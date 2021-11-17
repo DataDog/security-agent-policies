@@ -1,18 +1,19 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 findings[f] {
   count([p | p := input.policies[_]; p.resource.Object.spec.allowPrivilegeEscalation!=true]) > 0
   f := dd.passed_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     {}
   )
 } {
   count([p | p := input.policies[_]; p.resource.Object.spec.allowPrivilegeEscalation!=true]) == 0
   f := dd.failing_finding(
-    "kubernetes_cluster",
-    dd.kubernetes_cluster_resource_id,
+    h.resource_type,
+    h.resource_id,
     {}
   )
 }
