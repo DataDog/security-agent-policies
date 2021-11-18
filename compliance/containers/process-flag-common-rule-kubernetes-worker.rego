@@ -2,26 +2,18 @@ package datadog
 import data.datadog as dd
 import data.helpers as h
 
-resources_in_default(in) {
-  count(in.pods) > 0
-}
-
-resources_in_default(in) {
-  count(in.services) > 0
-}
-
 findings[f] {
-  not resources_in_default(input)
+  valid_process(input.process)
   f := dd.passed_finding(
     h.resource_type,
     h.resource_id,
-    {}
+    dd.process_data(input.process)
   )
 } {
-  resources_in_default(input)
+  not valid_process(input.process)
   f := dd.failing_finding(
     h.resource_type,
     h.resource_id,
-    {}
+    dd.process_data(input.process)
   )
 }

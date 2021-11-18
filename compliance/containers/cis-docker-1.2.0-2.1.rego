@@ -1,5 +1,6 @@
 package datadog
 import data.datadog as dd
+import data.helpers as h
 
 has_key(o, k) {
   _ := o[k]
@@ -19,7 +20,7 @@ findings[f] {
   network := input.networks[_]
   compliant_network(network)
   f := dd.passed_finding(
-    "docker_network",
+    h.resource_type,
     dd.docker_network_resource_id(network),
     dd.docker_network_data(network)
   )
@@ -27,7 +28,7 @@ findings[f] {
   network := input.networks[_]
   not compliant_network(network)
   f := dd.failing_finding(
-    "docker_network",
+    h.resource_type,
     dd.docker_network_resource_id(network),
     dd.docker_network_data(network)
   )

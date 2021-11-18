@@ -9,237 +9,253 @@ rules:
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/manifests/kube-apiserver.yaml
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.2
     description: API server pod specification file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/manifests/kube-apiserver.yaml
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.3
     description: Controller manager pod specification file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/manifests/kube-controller-manager.yaml
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.4
     description: Controller manager pod specification file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/manifests/kube-controller-manager.yaml
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.5
     description: Scheduler pod specification file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/manifests/kube-scheduler.yaml
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.6
     description: Scheduler pod specification file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/manifests/kube-scheduler.yaml
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.7
     description: etcd pod specification file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/manifests/etcd.yaml
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.8
     description: etcd pod specification file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/manifests/etcd.yaml
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.11
     description: etcd data directory permissions are set to 700 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: process.flag("etcd", "--data-dir")
       - constants:
           max_permissions: '700'
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.12
     description: etcd data directory ownership is set to etcd:etcd
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: process.flag("etcd", "--data-dir")
       - constants:
           user: etcd
           group: etcd
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.13
     description: admin.conf file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/admin.conf
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.14
     description: admin.conf file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/admin.conf
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.15
     description: scheduler.conf file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/scheduler.conf
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.16
     description: scheduler.conf file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/scheduler.conf
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.17
     description: controller-manager.conf file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/controller-manager.conf
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.18
     description: controller-manager.conf file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/controller-manager.conf
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.19
     description: Kubernetes PKI directory and file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/pki/
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.20
     description: Kubernetes PKI certificate file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     input:
       - tag: files
         file:
@@ -247,757 +263,907 @@ rules:
         type: array
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_master_node
     imports:
       - cis-docker-1.2.0-3.8.rego
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-1.2.2
     description: --basic-auth-file argument is not set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.3
     description: --token-auth-file parameter is not set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.4
     description: --kubelet-https argument is set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.5
     description: --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.6
     description: --kubelet-certificate-authority argument is set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.7
     description: --authorization-mode argument is not set to AlwaysAllow (API server)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.8
     description: --authorization-mode argument includes Node
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.9
     description: --authorization-mode argument includes RBAC
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.11
     description: Admission control plugin AlwaysAdmit is not set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.14
     description: Admission control plugin ServiceAccount is set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.15
     description: Admission control plugin NamespaceLifecycle is set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.16
     description: Admission control plugin PodSecurityPolicy is set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.17
     description: Admission control plugin NodeRestriction is set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.18
     description: --insecure-bind-address argument is not set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.19
     description: --insecure-port argument is set to 0
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.20
     description: --secure-port argument is not set to 0
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.21
     description: --profiling argument is set to false (API server)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.22
     description: --audit-log-path argument is set
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.23
     description: --audit-log-maxage argument is set to 30 or as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.24
     description: --audit-log-maxbackup argument is set to 10 or as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.25
     description: --audit-log-maxsize argument is set to 100 or as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.26
     description: --request-timeout argument is set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.27
     description: --service-account-lookup argument is set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.28
     description: --service-account-key-file argument is set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.29
     description: --etcd-certfile and --etcd-keyfile arguments are set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.30
     description: --tls-cert-file and --tls-private-key-file arguments are set as appropriate (API server)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.31
     description: --client-ca-file argument is set as appropriate (API server)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.32
     description: --etcd-cafile argument is set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.33
     description: --encryption-provider-config argument is set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.2
     description: --profiling argument is set to false (Controller Manager)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-controller-manager
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.3
     description: --use-service-account-credentials argument is set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-controller-manager
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.4
     description: --service-account-private-key-file argument is set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-controller-manager
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.5
     description: --root-ca-file argument is set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-controller-manager
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.6
     description: RotateKubeletServerCertificate argument is set to true (Controller Manager)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-controller-manager
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.7
     description: --bind-address argument is set to 127.0.0.1 (Controller Manager)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-controller-manager
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.4.1
     description: --profiling argument is set to false (Scheduler)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-scheduler
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.4.2
     description: --bind-address argument is set to 127.0.0.1 (Scheduler)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-scheduler
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.1
     description: --cert-file and --key-file arguments are set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: etcd
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.2
     description: --client-cert-auth argument is set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: etcd
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.3
     description: --auto-tls argument is not set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: etcd
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.4
     description: --peer-cert-file and --peer-key-file arguments are set as appropriate
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: etcd
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.5
     description: --peer-client-cert-auth argument is set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: etcd
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.6
     description: --peer-auto-tls argument is not set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: etcd
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-3.2.1
     description: Minimal audit policy is created
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
-    resourceType: kubernetes_master_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-master.rego
+      - helpers.rego
     input:
       - process:
           name: kube-apiserver
+      - constants:
+          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-4.1.1
     description: Kubelet service file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /usr/lib/systemd/system/kubelet.service
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.2
     description: Kubelet service file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /usr/lib/systemd/system/kubelet.service
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.3
     description: Proxy kubeconfig file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /var/lib/kube-proxy/kubeconfig
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.4
     description: Proxy kubeconfig file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /var/lib/kube-proxy/kubeconfig
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.5
     description: kubelet.conf file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/kubelet.conf
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.6
     description: kubelet.conf file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: /etc/kubernetes/kubelet.conf
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.7
     description: Certificate authorities file permissions are set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: process.flag("kubelet", "--client-ca-file")
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.8
     description: Client certificate authorities file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: process.flag("kubelet", "--client-ca-file")
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.9
     description: Kubelet configuration file has permissions set to 644 or more restrictive
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-permissions-common.rego
+      - helpers.rego
     input:
       - file:
           path: process.flag("kubelet", "--config")
       - constants:
           max_permissions: '644'
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.10
     description: Kubelet configuration file ownership is set to root:root
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
       - file-owner-rule-common.rego
+      - helpers.rego
     input:
       - file:
           path: process.flag("kubelet", "--config")
       - constants:
           user: root
           group: root
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.2.1
     description: Anonymous-auth argument is set to false
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-worker.rego
+      - helpers.rego
     input:
       - process:
           name: kubelet
+      - constants:
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.2.2
     description: --authorization-mode argument is not set to AlwaysAllow (Kubelet)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-worker.rego
+      - helpers.rego
     input:
       - process:
           name: kubelet
+      - constants:
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.2.3
     description: --client-ca-file argument is set as appropriate (Kubelet)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-worker.rego
+      - helpers.rego
     input:
       - process:
           name: kubelet
+      - constants:
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.2.4
     description: --read-only-port argument is set to 0
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     input:
       - process:
           name: kubelet
       - file:
           path: process("kubelet", "--config")
           parser: yaml
+      - constants:
+          resource_type: kubernetes_worker_node
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.5
     description: --streaming-connection-idle-timeout argument is not set to 0
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     input:
       - process:
           name: kubelet
       - file:
           path: process("kubelet", "--config")
           parser: yaml
+      - constants:
+          resource_type: kubernetes_worker_node
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.6
     description: --protect-kernel-defaults argument is set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     input:
       - process:
           name: kubelet
       - file:
           path: process("kubelet", "--config")
           parser: yaml
+      - constants:
+          resource_type: kubernetes_worker_node
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.7
     description: --make-iptables-util-chains argument is set to true
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     input:
       - process:
           name: kubelet
       - file:
           path: process("kubelet", "--config")
           parser: yaml
+      - constants:
+          resource_type: kubernetes_worker_node
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.10
     description: --tls-cert-file and --tls-private-key-file arguments are set as appropriate (Kubelet)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     input:
       - process:
           name: kubelet
       - file:
           path: process("kubelet", "--config")
           parser: yaml
+      - constants:
+          resource_type: kubernetes_worker_node
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.11
     description: --rotate-certificates argument is not set to false
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     input:
       - process:
           name: kubelet
       - file:
           path: process("kubelet", "--config")
           parser: yaml
+      - constants:
+          resource_type: kubernetes_worker_node
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.12
     description: RotateKubeletServerCertificate argument is set to true (Kubelet)
     scope:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
-    resourceType: kubernetes_worker_node
     imports:
-      - process-flag-common-rule.rego
+      - process-flag-common-rule-kubernetes-worker.rego
+      - helpers.rego
     input:
       - process:
           name: kubelet
+      - constants:
+          resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-5.1.5
     description: Default service accounts are not actively used
     scope:
       - kubernetesCluster
-    resourceType: kubernetes_cluster
-    resources:
-      - custom:
-          name: kubernetesDefaultServiceAccounts
-        condition: _
+    imports:
+      - kubernetes-rule-common.rego
+      - helpers.rego
+    input:
+      - kubeApiserver:
+          kind: serviceaccounts
+          version: v1
+          fieldSelector: metadata.name=default
+          apiRequest:
+            verb: list
+        type: array
+        tag: serviceaccounts
+      - kubeApiserver:
+          kind: clusterrolebindings
+          version: v1
+          group: rbac.authorization.k8s.io
+          apiRequest:
+            verb: list
+        type: array
+        tag: clusterrolebindings
+      - kubeApiserver:
+          kind: rolebindings
+          version: v1
+          group: rbac.authorization.k8s.io
+          apiRequest:
+            verb: list
+        type: array
+        tag: rolebindings
+      - constants:
+          resource_type: kubernetes_cluster
   - id: cis-kubernetes-1.5.1-5.2.2
     description: Minimize the admission of containers wishing to share the host process ID namespace
     scope:
       - kubernetesCluster
-    resourceType: kubernetes_cluster
     input:
       - tag: policies
         type: array
@@ -1007,11 +1173,14 @@ rules:
           group: policy
           apiRequest:
             verb: list
+      - constants:
+          resource_type: kubernetes_cluster
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.3
     description: Minimize the admission of containers wishing to share the host IPC namespace
     scope:
       - kubernetesCluster
-    resourceType: kubernetes_cluster
     input:
       - tag: policies
         type: array
@@ -1021,11 +1190,14 @@ rules:
           group: policy
           apiRequest:
             verb: list
+      - constants:
+          resource_type: kubernetes_cluster
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.4
     description: Minimize the admission of containers wishing to share the host network namespace
     scope:
       - kubernetesCluster
-    resourceType: kubernetes_cluster
     input:
       - tag: policies
         type: array
@@ -1035,11 +1207,14 @@ rules:
           group: policy
           apiRequest:
             verb: list
+      - constants:
+          resource_type: kubernetes_cluster
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.5
     description: Minimize the admission of containers with allowPrivilegeEscalation
     scope:
       - kubernetesCluster
-    resourceType: kubernetes_cluster
     input:
       - tag: policies
         type: array
@@ -1049,20 +1224,39 @@ rules:
           group: policy
           apiRequest:
             verb: list
+      - constants:
+          resource_type: kubernetes_cluster
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-5.3.2
     description: All namespaces have network policies defined
     scope:
       - kubernetesCluster
-    resourceType: kubernetes_cluster
-    resources:
-      - custom:
-          name: kubernetesNetworkPolicies
-        condition: _
+    imports:
+      - kubernetes-rule-common.rego
+      - helpers.rego
+    input:
+      - kubeApiserver:
+          kind: namespaces
+          version: v1
+          apiRequest:
+            verb: list
+        type: array
+        tag: namespaces
+      - kubeApiserver:
+          kind: networkpolicies
+          version: v1
+          group: networking.k8s.io
+          apiRequest:
+            verb: list
+        type: array
+        tag: networkpolicies
+      - constants:
+          resource_type: kubernetes_cluster
   - id: cis-kubernetes-1.5.1-5.7.4
     description: The default namespace should not be used
     scope:
       - kubernetesCluster
-    resourceType: kubernetes_cluster
     input:
       - tag: pods
         type: array
@@ -1082,3 +1276,7 @@ rules:
           fieldSelector: metadata.name!=kubernetes,metadata.name!=openshift
           apiRequest:
             verb: list
+      - constants:
+          resource_type: kubernetes_cluster
+    imports:
+      - helpers.rego
