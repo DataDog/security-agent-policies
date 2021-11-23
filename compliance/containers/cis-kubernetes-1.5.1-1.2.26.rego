@@ -1,5 +1,5 @@
 package datadog
 
 valid_process(process) {
-  not process.flags["--request-timeout"] == ""
+	not process.flags["--request-timeout"] == ""
 }

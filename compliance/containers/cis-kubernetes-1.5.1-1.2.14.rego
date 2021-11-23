@@ -1,5 +1,5 @@
 package datadog
 
 valid_process(process) {
-  not regex.match("ServiceAccount", process.flags["--disable-admission-plugins"])
+	not regex.match("ServiceAccount", process.flags["--disable-admission-plugins"])
 }

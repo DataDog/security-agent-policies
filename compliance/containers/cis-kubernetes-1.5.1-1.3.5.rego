@@ -1,5 +1,5 @@
 package datadog
 
 valid_process(process) {
-  process.flags["--root-ca-file"] != ""
+	process.flags["--root-ca-file"] != ""
 }

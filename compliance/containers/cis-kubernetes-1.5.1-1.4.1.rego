@@ -1,5 +1,5 @@
 package datadog
 
 valid_process(process) {
-  process.flags["--profiling"] == "false"
+	process.flags["--profiling"] == "false"
 }
