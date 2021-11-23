@@ -1,5 +1,5 @@
 package datadog
 
 valid_container(c) {
-  c.inspect.HostConfig.Memory != 0
+	c.inspect.HostConfig.Memory != 0
 }

@@ -273,7 +273,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -286,7 +286,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -299,7 +299,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -312,7 +312,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -325,7 +325,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -338,7 +338,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -351,7 +351,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -364,7 +364,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -377,7 +377,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -390,7 +390,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -403,7 +403,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -416,7 +416,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -429,7 +429,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -442,7 +442,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -455,7 +455,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -468,7 +468,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -481,7 +481,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -494,7 +494,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -507,7 +507,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -520,7 +520,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -533,7 +533,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -546,7 +546,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -559,7 +559,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -572,7 +572,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -585,7 +585,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -598,7 +598,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -611,7 +611,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -624,7 +624,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -637,7 +637,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -650,7 +650,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -663,7 +663,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -676,7 +676,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -689,7 +689,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -702,7 +702,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -715,7 +715,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -728,7 +728,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -741,7 +741,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -754,7 +754,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -767,7 +767,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -780,7 +780,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -793,7 +793,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -806,7 +806,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -819,7 +819,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -832,7 +832,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
-      - process-flag-common-rule-kubernetes-master.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -990,7 +990,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
-      - process-flag-common-rule-kubernetes-worker.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -1003,7 +1003,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
-      - process-flag-common-rule-kubernetes-worker.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -1016,7 +1016,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
-      - process-flag-common-rule-kubernetes-worker.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:
@@ -1119,7 +1119,7 @@ rules:
       - kubernetesNode
     hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
-      - process-flag-common-rule-kubernetes-worker.rego
+      - process-common-rule.rego
       - helpers.rego
     input:
       - process:

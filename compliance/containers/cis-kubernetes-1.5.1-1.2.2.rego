@@ -1,9 +1,7 @@
 package datadog
 
-has_key(p, k) {
-  _ = p.flags[k]
-}
+import data.helpers as h
 
 valid_process(process) {
-  not has_key(process, "--basic-auth-file")
+	not h.has_key(process.flags, "--basic-auth-file")
 }

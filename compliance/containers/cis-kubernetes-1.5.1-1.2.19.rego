@@ -1,5 +1,5 @@
 package datadog
 
 valid_process(process) {
-  process.flags["--insecure-port"] == "0"
+	process.flags["--insecure-port"] == "0"
 }

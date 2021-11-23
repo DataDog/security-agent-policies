@@ -4,19 +4,19 @@ import data.datadog as dd
 import data.helpers as h
 
 findings[f] {
-	count([p | p := input.policies[_]; p.resource.Object.spec.hostIPC != true]) > 0
+	valid_process(input.process)
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		{},
+		dd.process_data(input.process),
 	)
 }
 
 findings[f] {
-	count([p | p := input.policies[_]; p.resource.Object.spec.hostIPC != true]) == 0
+	not valid_process(input.process)
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		{},
+		dd.process_data(input.process),
 	)
 }

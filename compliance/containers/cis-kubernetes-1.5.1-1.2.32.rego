@@ -1,5 +1,5 @@
 package datadog
 
 valid_process(process) {
-  process.flags["--etcd-cafile"] != ""
+	process.flags["--etcd-cafile"] != ""
 }

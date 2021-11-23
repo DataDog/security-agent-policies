@@ -1,9 +1,5 @@
 package datadog
 
-has_key(p, k) {
-  _ = p.flags[k]
-}
-
 valid_process(process) {
-  has_key(process, "--request-timeout")
+	not process.flags["--request-timeout"] == ""
 }

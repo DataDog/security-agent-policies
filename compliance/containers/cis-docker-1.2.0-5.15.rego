@@ -1,5 +1,5 @@
 package datadog
 
 valid_container(c) {
-  c.inspect.HostConfig.PidMode != "host"
+	c.inspect.HostConfig.PidMode != "host"
 }

@@ -1,5 +1,5 @@
 package datadog
 
 valid_container(c) {
-  c.inspect.HostConfig.ReadonlyRootfs
+	c.inspect.HostConfig.ReadonlyRootfs
 }
