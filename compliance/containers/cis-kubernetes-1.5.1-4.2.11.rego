@@ -2,11 +2,6 @@ package datadog
 import data.datadog as dd
 import data.helpers as h
 
-has_flag(p, k) {
-  _ := p.flags[k]
-}
-
-
 compliant {
   valid_process_args(input.process)
 } {
@@ -14,13 +9,13 @@ compliant {
 }
 
 valid_process_args(p) {
-  has_flag(p, "--rotate-certificates")
+  h.has_key(p.flags, "--rotate-certificates")
   p.flags["--rotate-certificates"] != "false"
 }
 
 valid_process_and_config(p, f) {
-  not has_flag(p, "--rotate-certificates")
-  has_flag(p, "--config")
+  not h.has_key(p.flags, "--rotate-certificates")
+  h.has_key(p.flags, "--config")
   f.content.rotateCertificates == true
 }
 

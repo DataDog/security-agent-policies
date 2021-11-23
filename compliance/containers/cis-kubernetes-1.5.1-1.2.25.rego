@@ -1,9 +1,6 @@
 package datadog
-
-has_key(p, k) {
-  _ = p.flags[k]
-}
+import data.helpers as h
 
 valid_process(process) {
-  has_key(process, "--audit-log-maxsize")
+  h.has_key(process.flags, "--audit-log-maxsize")
 }

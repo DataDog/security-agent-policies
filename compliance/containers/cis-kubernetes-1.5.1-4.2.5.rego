@@ -2,18 +2,14 @@ package datadog
 import data.datadog as dd
 import data.helpers as h
 
-has_key(p, k) {
-  _ := p.flags[k]
-}
-
 valid_process_args(p) {
-  has_key(p, "--streaming-connection-idle-timeout")
-  to_number(p["--streaming-connection-idle-timeout"]) > 0
+  h.has_key(p.flags, "--streaming-connection-idle-timeout")
+  to_number(p.flags["--streaming-connection-idle-timeout"]) > 0
 }
 
 valid_process_and_config(p, f) {
-  not has_key(p, "--streaming-connection-idle-timeout")
-  has_key(p, "--config")
+  not h.has_key(p.flags, "--streaming-connection-idle-timeout")
+  h.has_key(p.flags, "--config")
   f.path == p.flags["--config"]
   to_number(f.content.streamingConnectionIdleTimeout) > 0
 }

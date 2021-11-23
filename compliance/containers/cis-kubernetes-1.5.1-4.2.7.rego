@@ -2,18 +2,17 @@ package datadog
 import data.datadog as dd
 import data.helpers as h
 
-has_key(p, k) {
-  _ := p.flags[k]
-}
-
 valid_process_args(p) {
-  has_key(p, "--make-iptables-util-chains")
+  h.has_key(p.flags, "--make-iptables-util-chains")
   lower(p.flags["--make-iptables-util-chains"]) == "true"
-}
+}{
+   not h.has_key(p.flags, "--make-iptables-util-chains")
+   not h.has_key(p.flags, "--config")
+ }
 
 valid_process_and_config(p, f) {
-  not has_key(p, "--make-iptables-util-chains")
-  has_key(p, "--config")
+  not h.has_key(p.flags, "--make-iptables-util-chains")
+  h.has_key(p.flags, "--config")
   f.path == p.flags["--config"]
   f.content.makeIPTablesUtilChains
 }
