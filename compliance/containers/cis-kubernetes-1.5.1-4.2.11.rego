@@ -27,7 +27,7 @@ findings[f] {
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.process_data(input.process),
+		h.process_data(input.process),
 	)
 }
 
@@ -36,6 +36,6 @@ findings[f] {
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.process_data(input.process),
+		h.process_data(input.process),
 	)
 }

@@ -8,8 +8,8 @@ findings[f] {
 	valid_image[image]
 	f := dd.passed_finding(
 		h.resource_type,
-		dd.docker_image_resource_id(image),
-		dd.docker_image_data(image),
+		h.docker_image_resource_id(image),
+		h.docker_image_data(image),
 	)
 }
 
@@ -18,8 +18,8 @@ findings[f] {
 	not valid_image[image]
 	f := dd.failing_finding(
 		h.resource_type,
-		dd.docker_image_resource_id(image),
-		dd.docker_image_data(image),
+		h.docker_image_resource_id(image),
+		h.docker_image_data(image),
 	)
 }
 

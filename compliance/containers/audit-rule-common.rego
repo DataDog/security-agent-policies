@@ -8,7 +8,7 @@ findings[f] {
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.audit_data(input.audit[0]),
+		h.audit_data(input.audit[0]),
 	)
 }
 

@@ -17,7 +17,7 @@ findings[f] {
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		{"files": [dd.file_data(f) | f := input.files[_]]},
+		{"files": [h.file_data(f) | f := input.files[_]]},
 	)
 }
 
@@ -27,7 +27,7 @@ findings[f] {
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		{"files": [dd.file_data(f) | f := input.files[_]]},
+		{"files": [h.file_data(f) | f := input.files[_]]},
 	)
 }
 

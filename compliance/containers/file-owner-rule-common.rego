@@ -9,7 +9,7 @@ findings[f] {
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.file_data(input.file),
+		h.file_data(input.file),
 	)
 }
 
@@ -19,7 +19,7 @@ findings[f] {
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.file_data(input.file),
+		h.file_data(input.file),
 	)
 }
 

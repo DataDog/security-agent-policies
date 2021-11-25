@@ -8,7 +8,7 @@ findings[f] {
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.group_data(input.group),
+		h.group_data(input.group),
 	)
 }
 
@@ -17,7 +17,7 @@ findings[f] {
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.group_data(input.group),
+		h.group_data(input.group),
 	)
 }
 

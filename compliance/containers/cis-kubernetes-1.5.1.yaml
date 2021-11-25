@@ -1032,7 +1032,7 @@ rules:
       - process:
           name: kubelet
       - file:
-          path: process("kubelet", "--config")
+          path: process.flag("kubelet", "--config")
           parser: yaml
       - constants:
           resource_type: kubernetes_worker_node
@@ -1047,7 +1047,7 @@ rules:
       - process:
           name: kubelet
       - file:
-          path: process("kubelet", "--config")
+          path: process.flag("kubelet", "--config")
           parser: yaml
       - constants:
           resource_type: kubernetes_worker_node
@@ -1062,7 +1062,7 @@ rules:
       - process:
           name: kubelet
       - file:
-          path: process("kubelet", "--config")
+          path: process.flag("kubelet", "--config")
           parser: yaml
       - constants:
           resource_type: kubernetes_worker_node
@@ -1077,7 +1077,7 @@ rules:
       - process:
           name: kubelet
       - file:
-          path: process("kubelet", "--config")
+          path: process.flag("kubelet", "--config")
           parser: yaml
       - constants:
           resource_type: kubernetes_worker_node
@@ -1092,7 +1092,7 @@ rules:
       - process:
           name: kubelet
       - file:
-          path: process("kubelet", "--config")
+          path: process.flag("kubelet", "--config")
           parser: yaml
       - constants:
           resource_type: kubernetes_worker_node
@@ -1107,7 +1107,7 @@ rules:
       - process:
           name: kubelet
       - file:
-          path: process("kubelet", "--config")
+          path: process.flag("kubelet", "--config")
           parser: yaml
       - constants:
           resource_type: kubernetes_worker_node
@@ -1130,9 +1130,6 @@ rules:
     description: Default service accounts are not actively used
     scope:
       - kubernetesCluster
-    imports:
-      - kubernetes-rule-common.rego
-      - helpers.rego
     input:
       - kubeApiserver:
           kind: serviceaccounts
@@ -1160,6 +1157,8 @@ rules:
         tag: rolebindings
       - constants:
           resource_type: kubernetes_cluster
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.2
     description: Minimize the admission of containers wishing to share the host process ID namespace
     scope:
@@ -1232,9 +1231,6 @@ rules:
     description: All namespaces have network policies defined
     scope:
       - kubernetesCluster
-    imports:
-      - kubernetes-rule-common.rego
-      - helpers.rego
     input:
       - kubeApiserver:
           kind: namespaces
@@ -1253,6 +1249,8 @@ rules:
         tag: networkpolicies
       - constants:
           resource_type: kubernetes_cluster
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-5.7.4
     description: The default namespace should not be used
     scope:

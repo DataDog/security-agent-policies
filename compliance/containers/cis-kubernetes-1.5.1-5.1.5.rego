@@ -40,7 +40,7 @@ findings[f] {
 		h.resource_id,
 		{
 			"reason": "automountServiceAccountToken is set",
-			"serviceAccounts": kubernetes_resource_names(service_account_with_token[_]),
+			"serviceAccounts": h.kubernetes_resource_names(service_account_with_token[_]),
 		},
 	)
 }
@@ -52,7 +52,7 @@ findings[f] {
 		h.resource_id,
 		{
 			"reason": "incorrect cluster role bindings",
-			"serviceAccounts": kubernetes_resource_names(failed_clusterrolebindings[_]),
+			"serviceAccounts": h.kubernetes_resource_names(failed_clusterrolebindings[_]),
 		},
 	)
 }
@@ -64,7 +64,7 @@ findings[f] {
 		h.resource_id,
 		{
 			"reason": "incorrect role bindings",
-			"serviceAccounts": kubernetes_resource_names(failed_rolebindings[_]),
+			"serviceAccounts": h.kubernetes_resource_names(failed_rolebindings[_]),
 		},
 	)
 }

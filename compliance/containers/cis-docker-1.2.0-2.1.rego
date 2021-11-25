@@ -24,8 +24,8 @@ findings[f] {
 	compliant_network(network)
 	f := dd.passed_finding(
 		h.resource_type,
-		dd.docker_network_resource_id(network),
-		dd.docker_network_data(network),
+		h.docker_network_resource_id(network),
+		h.docker_network_data(network),
 	)
 }
 
@@ -34,7 +34,7 @@ findings[f] {
 	not compliant_network(network)
 	f := dd.failing_finding(
 		h.resource_type,
-		dd.docker_network_resource_id(network),
-		dd.docker_network_data(network),
+		h.docker_network_resource_id(network),
+		h.docker_network_data(network),
 	)
 }
