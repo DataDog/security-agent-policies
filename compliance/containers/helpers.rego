@@ -7,13 +7,7 @@ has_key(o, k) {
 }
 
 resource_type = rt {
-	not input.constants.resource_type == "docker_info"
 	rt := input.constants.resource_type
-}
-
-resource_type = rt {
-	input.constants.resource_type == "docker_info"
-	rt := "docker_daemon"
 }
 
 resource_id = rid {
@@ -34,11 +28,6 @@ resource_id = rid {
 resource_id = rid {
 	input.constants.resource_type == "kubernetes_master_node"
 	rid := kubernetes_master_node_resource_id
-}
-
-resource_id = rid {
-	input.constants.resource_type == "docker_info"
-	rid := docker_daemon_resource_id
 }
 
 resource_id = rid {

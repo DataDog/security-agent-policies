@@ -19,7 +19,15 @@ valid_process_args(p) {
 valid_process_and_config(p, f) {
 	not h.has_key(p.flags, "--rotate-certificates")
 	h.has_key(p.flags, "--config")
-	f.content.rotateCertificates == true
+	valid_file(f)
+}
+
+valid_file(f) {
+	f.content.rotateCertificates != false
+}
+
+valid_file(f) {
+	not h.has_key(f.content, "rotateCertificates")
 }
 
 findings[f] {

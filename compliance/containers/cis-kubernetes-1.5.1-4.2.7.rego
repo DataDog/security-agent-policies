@@ -17,7 +17,15 @@ valid_process_and_config(p, f) {
 	not h.has_key(p.flags, "--make-iptables-util-chains")
 	h.has_key(p.flags, "--config")
 	f.path == p.flags["--config"]
+	valid_config(f)
+}
+
+valid_config(f) {
 	f.content.makeIPTablesUtilChains
+}
+
+valid_config(f) {
+	not h.has_key(f.content, "makeIPTablesUtilChains")
 }
 
 compliant {

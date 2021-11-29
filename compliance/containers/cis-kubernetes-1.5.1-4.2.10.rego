@@ -12,7 +12,6 @@ compliant {
 }
 
 valid_process_args(p) {
-	not h.has_key(p.flags, "--config")
 	p.flags["--tls-cert-file"] != ""
 	p.flags["--tls-private-key-file"] != ""
 }
