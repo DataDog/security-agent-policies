@@ -17,7 +17,15 @@ valid_process_and_config(p, f) {
 	not h.has_key(p.flags, "--make-iptables-util-chains")
 	h.has_key(p.flags, "--config")
 	f.path == p.flags["--config"]
+	valid_config(f)
+}
+
+valid_config(f) {
 	f.content.makeIPTablesUtilChains
+}
+
+valid_config(f) {
+	not h.has_key(f.content, "makeIPTablesUtilChains")
 }
 
 compliant {
@@ -33,7 +41,7 @@ findings[f] {
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.process_data(input.process),
+		h.process_data(input.process),
 	)
 }
 
@@ -42,6 +50,6 @@ findings[f] {
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.process_data(input.process),
+		h.process_data(input.process),
 	)
 }

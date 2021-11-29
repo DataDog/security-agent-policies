@@ -226,7 +226,7 @@ rules:
           kind: info
         type: array
       - constants:
-          resource_type: docker_info
+          resource_type: docker_daemon
   - id: cis-docker-1.2.0-2.6
     description: TLS authentication for Docker daemon is configured
     scope:

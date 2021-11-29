@@ -12,7 +12,15 @@ valid_process_and_config(p, f) {
 	not h.has_key(p.flags, "--streaming-connection-idle-timeout")
 	h.has_key(p.flags, "--config")
 	f.path == p.flags["--config"]
-	to_number(f.content.streamingConnectionIdleTimeout) > 0
+	valid_file(f)
+}
+
+valid_file(f) {
+	to_number(f.content.streamingConnectionIdleTimeout) != 0
+}
+
+valid_file(f) {
+	not h.has_key(f.content, "streamingConnectionIdleTimeout")
 }
 
 compliant {
@@ -28,7 +36,7 @@ findings[f] {
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.process_data(input.process),
+		h.process_data(input.process),
 	)
 }
 
@@ -37,6 +45,6 @@ findings[f] {
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.process_data(input.process),
+		h.process_data(input.process),
 	)
 }

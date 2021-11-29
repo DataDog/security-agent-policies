@@ -12,7 +12,6 @@ compliant {
 }
 
 valid_process_args(p) {
-	not h.has_key(p.flags, "--config")
 	p.flags["--tls-cert-file"] != ""
 	p.flags["--tls-private-key-file"] != ""
 }
@@ -42,7 +41,7 @@ findings[f] {
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.process_data(input.process),
+		h.process_data(input.process),
 	)
 }
 
@@ -51,6 +50,6 @@ findings[f] {
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		dd.process_data(input.process),
+		h.process_data(input.process),
 	)
 }

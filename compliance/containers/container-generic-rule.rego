@@ -8,8 +8,8 @@ findings[f] {
 	valid_container(c)
 	f := dd.passed_finding(
 		h.resource_type,
-		dd.docker_container_resource_id(c),
-		dd.docker_container_data(c),
+		h.docker_container_resource_id(c),
+		h.docker_container_data(c),
 	)
 }
 
@@ -18,7 +18,7 @@ findings[f] {
 	not valid_container(c)
 	f := dd.failing_finding(
 		h.resource_type,
-		dd.docker_container_resource_id(c),
-		dd.docker_container_data(c),
+		h.docker_container_resource_id(c),
+		h.docker_container_data(c),
 	)
 }
