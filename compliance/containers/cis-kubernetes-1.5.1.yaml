@@ -1174,7 +1174,9 @@ rules:
             verb: list
       - constants:
           resource_type: kubernetes_cluster
+          spec: hostPID
     imports:
+      - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.3
     description: Minimize the admission of containers wishing to share the host IPC namespace
@@ -1191,7 +1193,9 @@ rules:
             verb: list
       - constants:
           resource_type: kubernetes_cluster
+          spec: hostIPC
     imports:
+      - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.4
     description: Minimize the admission of containers wishing to share the host network namespace
@@ -1208,7 +1212,9 @@ rules:
             verb: list
       - constants:
           resource_type: kubernetes_cluster
+          spec: hostNetwork
     imports:
+      - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.5
     description: Minimize the admission of containers with allowPrivilegeEscalation
@@ -1225,7 +1231,9 @@ rules:
             verb: list
       - constants:
           resource_type: kubernetes_cluster
+          spec: allowPrivilegeEscalation
     imports:
+      - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.3.2
     description: All namespaces have network policies defined

@@ -1,5 +1,9 @@
 package datadog
 
+import data.helpers as h
+
 valid_process(process) {
-	not process.flags["--request-timeout"] == ""
+	# we assume that if value is explicit then it's compliant
+	# default value is not ok
+	h.has_key(process.flags, "--request-timeout")
 }

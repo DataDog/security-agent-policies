@@ -3,15 +3,17 @@ package datadog
 import data.datadog as dd
 import data.helpers as h
 
-failed_namespaces[namespaces] {
-	some i, j
-	networkpolicies := input.networkpolicies[i]
-	namespaces := input.namespaces[j]
-	namespaces.name != networkpolicies.namespace
+compliant_namespace(n) {
+	np := input.networkpolicies[_]
+	np.namespace == n.name
+}
+
+all_namespaces_compliant {
+	count([n | n := input.namespaces[_]; compliant_namespace(n)]) == count(input.namespaces)
 }
 
 findings[f] {
-	count(failed_namespaces) == 0
+	all_namespaces_compliant
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
@@ -20,10 +22,10 @@ findings[f] {
 }
 
 findings[f] {
-	count(failed_namespaces) > 0
+	not all_namespaces_compliant
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		{"namespaces": [name | name := failed_namespaces[_].name]},
+		{"namespaces": [n.name | n := input.namespaces[_]; not compliant_namespace(n)]},
 	)
 }
