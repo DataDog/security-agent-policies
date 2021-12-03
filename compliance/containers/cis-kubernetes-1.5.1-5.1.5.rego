@@ -19,9 +19,17 @@ failed_rolebindings[serviceaccount] {
 	rolebinding.resource.Object.subjects[i].name == serviceaccount.name
 }
 
+invalid_serviceaccount(serviceaccount) {
+	serviceaccount.resource.Object.automountServiceAccountToken == true
+}
+
+invalid_serviceaccount(serviceaccount) {
+	not h.has_key(serviceaccount.resource.Object, "automountServiceAccountToken")
+}
+
 service_account_with_token[serviceaccount] {
 	serviceaccount := input.serviceaccounts[_]
-	serviceaccount.resource.Object.automountServiceAccountToken == true
+	invalid_serviceaccount(serviceaccount)
 }
 
 findings[f] {
