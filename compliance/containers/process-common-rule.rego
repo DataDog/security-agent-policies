@@ -20,3 +20,21 @@ findings[f] {
 		h.process_data(input.process),
 	)
 }
+
+findings[f] {
+	count(input.process) == 0
+	f := dd.error_finding(
+		h.resource_type,
+		h.resource_id,
+		sprintf("no process found for process check \"%s\"", [input.context.input.process.process.name]),
+	)
+}
+
+findings[f] {
+	not h.has_key(input, "process")
+	f := dd.error_finding(
+		h.resource_type,
+		h.resource_id,
+		sprintf("failed to resolve path: empty path from %s", [input.context.input.process.process.name]),
+	)
+}
