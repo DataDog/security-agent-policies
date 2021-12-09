@@ -35,6 +35,6 @@ findings[f] {
 	f := dd.error_finding(
 		h.resource_type,
 		h.resource_id,
-		sprintf("failed to resolve path: empty path from %s", [input.context.input.process.process.name]),
+		sprintf("failed to resolve process name: %s", [input.context.input.process.process.name]),
 	)
 }
