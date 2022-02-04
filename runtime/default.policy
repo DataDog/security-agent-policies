@@ -460,6 +460,9 @@ rules:
       (exec.file.path in SHELLS || exec.file.path in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*") &&
       process.ancestors.comm not in PACKAGE_MANAGERS
+  - id: pwnkit_privilege_escalation
+    description: A process was spawned with indicators of exploitation of CVE-2021-4034
+    expression: (exec.file.path == "/usr/bin/pkexec" && exec.envs in [~"*SHELL*", ~"*PATH*"] && exec.uid != 0)
   - id: runc_modification
     description: The runc binary was modified in a non-standard way
     expression: |-
