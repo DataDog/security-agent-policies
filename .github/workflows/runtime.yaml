@@ -19,10 +19,10 @@ jobs:
 
       - name: Create testdata config
         run: |
-          mkdir -p testdata
-          touch testdata/datadog.yaml
-          touch testdata/security-agent.yaml
+          mkdir -p testconfig
+          touch testconfig/datadog.yaml
+          touch testconfig/security-agent.yaml
 
       - name: Check the policies - ${{ matrix.image }}
         run: |
-          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testdata:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig
+          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig
