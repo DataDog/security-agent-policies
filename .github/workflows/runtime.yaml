@@ -17,6 +17,12 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
+      - name: Create testdata config
+        run: |
+          mkdir -p testconfig
+          touch testconfig/datadog.yaml
+          touch testconfig/security-agent.yaml
+
       - name: Check the policies - ${{ matrix.image }}
         run: |
-          docker run -v ${{ github.workspace }}/runtime:/policies ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies
+          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig
