@@ -16,7 +16,8 @@ valid_process_and_config(p, f) {
 }
 
 valid_file(f) {
-	to_number(f.content.streamingConnectionIdleTimeout) != 0
+	# matches time units like 0s, 0m, etc
+	not regex.match("^0+[a-z]?$", sprintf("%v", [f.content.streamingConnectionIdleTimeout]))
 }
 
 valid_file(f) {
