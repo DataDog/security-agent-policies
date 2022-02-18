@@ -285,11 +285,11 @@ rules:
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
   - id: net_util
-    description: A network utility execution was detected
+    description: A network utility was executed from a suspicious location
     expression: |-
       (exec.file.path in NET_UTILS ||
        exec.file.path in HTTP_UTILS) &&
-      container.id == "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news")
+      container.id == "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news") && process.ancestors.file.path in [ ~"/tmp/**", ~"/var/tmp/**", ~"/home/**", ~"/run/user/**" ]
   - id: net_util_in_container
     description: A network utility execution was detected in a container
     expression: |-
