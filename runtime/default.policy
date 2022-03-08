@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.4.3
+version: 1.4.4
 macros:
   - id: APT_PROCESSES
     expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
@@ -295,7 +295,7 @@ rules:
     expression: |-
       (exec.file.path in NET_UTILS ||
        exec.file.path in HTTP_UTILS) &&
-      container.id != "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news")
+      container.id != "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news") && process.ancestors.file.path in [ ~"/tmp/**", ~"/var/tmp/**", ~"/home/**", ~"/run/user/**" ]
   - id: nsswitch_conf_mod_chmod
     description: nsswitch may have been modified without authorization
     expression: |-
