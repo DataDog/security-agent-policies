@@ -291,11 +291,11 @@ rules:
        exec.file.path in HTTP_UTILS) &&
       container.id == "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news") && process.ancestors.file.path in [ ~"/tmp/**", ~"/var/tmp/**", ~"/home/**", ~"/run/user/**" ]
   - id: net_util_in_container
-    description: A network utility execution was detected in a container
+    description: A network utility was executed from a suspicious location in a container
     expression: |-
       (exec.file.path in NET_UTILS ||
        exec.file.path in HTTP_UTILS) &&
-      container.id != "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news")
+      container.id != "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news") && process.ancestors.file.path in [ ~"/tmp/**", ~"/var/tmp/**", ~"/home/**", ~"/run/user/**" ]
   - id: nsswitch_conf_mod_chmod
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -477,19 +477,19 @@ rules:
     description: SSH modified keys may have been modified
     expression: |-
       (
-          chmod.file.name == "authorized_keys" && (chmod.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+          chmod.file.name in [ "authorized_keys", "authorized_keys2" ] && (chmod.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       ) && chmod.mode != chmod.file.mode
   - id: ssh_authorized_keys_chown
     description: SSH modified keys may have been modified
     expression: |-
       (
-          chown.file.name == "authorized_keys" && (chown.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+          chown.file.name in [ "authorized_keys", "authorized_keys2" ] && (chown.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
   - id: ssh_authorized_keys_link
     description: SSH modified keys may have been modified
     expression: |-
       (
-          link.file.name == "authorized_keys" && (link.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
+          link.file.name in [ "authorized_keys", "authorized_keys2" ] && (link.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
           || link.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
   - id: ssh_authorized_keys_open
@@ -497,26 +497,26 @@ rules:
     expression: |-
       (
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-          open.file.name == "authorized_keys" && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+          open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
   - id: ssh_authorized_keys_rename
     description: SSH modified keys may have been modified
     expression: |-
       (
-          rename.file.name == "authorized_keys" && (rename.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
+          rename.file.name in [ "authorized_keys", "authorized_keys2" ] && (rename.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
           || rename.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
   - id: ssh_authorized_keys_unlink
     description: SSH modified keys may have been modified
     expression: |-
       (
-          unlink.file.name == "authorized_keys" && (unlink.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+          unlink.file.name in [ "authorized_keys", "authorized_keys2" ] && (unlink.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
   - id: ssh_authorized_keys_utimes
     description: SSH modified keys may have been modified
     expression: |-
       (
-          utimes.file.name == "authorized_keys" && (utimes.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+          utimes.file.name in [ "authorized_keys", "authorized_keys2" ] && (utimes.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
   - id: ssl_certificate_tampering_chmod
     description: SSL certificates may have been tampered with
