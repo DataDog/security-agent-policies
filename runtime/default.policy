@@ -215,6 +215,12 @@ rules:
        exec.file.path in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS) &&
       process.ancestors.file.name in DATABASE_PROCESSES
+  - id: dirty_pipe_attempt
+    description: Potential Dirty pipe exploitation attempt
+    expression: (splice.pipe_entry_flag & PIPE_BUF_FLAG_CAN_MERGE) != 0 && (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) == 0
+  - id: dirty_pipe_exploitation
+    description: Potential Dirty pipe exploitation
+    expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
