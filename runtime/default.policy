@@ -89,7 +89,7 @@ macros:
     expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm", "/usr/bin/unattended-upgrade"]'
   - id: WEBAPP_PROCESSES
     description: Processes that commonly run web applications
-    expression: '[~"python2*", ~"python3*", "node", "apache2", "nginx"]'
+    expression: '[~"python2*", ~"python3*", "node", "apache2", "nginx", ~"tomcat*"]'
 rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
