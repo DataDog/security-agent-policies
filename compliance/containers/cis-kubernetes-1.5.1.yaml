@@ -1048,11 +1048,35 @@ rules:
     description: Default service accounts are not actively used
     scope:
       - kubernetesCluster
-    resourceType: kubernetes_cluster
-    resources:
-      - custom:
-          name: kubernetesDefaultServiceAccounts
-        condition: _
+    input:
+      - kubeApiserver:
+          kind: serviceaccounts
+          version: v1
+          fieldSelector: metadata.name=default
+          apiRequest:
+            verb: list
+        type: array
+        tag: serviceaccounts
+      - kubeApiserver:
+          kind: clusterrolebindings
+          version: v1
+          group: rbac.authorization.k8s.io
+          apiRequest:
+            verb: list
+        type: array
+        tag: clusterrolebindings
+      - kubeApiserver:
+          kind: rolebindings
+          version: v1
+          group: rbac.authorization.k8s.io
+          apiRequest:
+            verb: list
+        type: array
+        tag: rolebindings
+      - constants:
+          resource_type: kubernetes_cluster
+    imports:
+      - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.2
     description: Minimize the admission of containers wishing to share the host process ID namespace
     scope:
