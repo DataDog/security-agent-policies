@@ -1,6 +1,9 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
 version: 1.4.3
 macros:
+  - id: APP_PACKAGE_MANAGERS
+    description: Package managers
+    expression: '["pip3", "pip", "npm"]'
   - id: APT_PROCESSES
     expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
   - id: COMPILER_PROCESSES
@@ -22,6 +25,8 @@ macros:
        "/usr/bin/exechealthz", "/usr/local/bin/exechealthz",
        "/usr/bin/weave-net", "/usr/local/bin/weave-net",
        "/opt/cni/bin/loopback", "/opt/cni/bin/bridge"]
+  - id: CREDENTIAL_BINARIES
+    expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd" ]'
   - id: CRYPTOMINER_DOMAINS
     expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me"]'
   - id: DATABASE_PROCESSES
@@ -47,8 +52,11 @@ macros:
   - id: OPEN_WRITE_FLAGS
     expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
   - id: PACKAGE_MANAGERS
-    description: Package managers
-    expression: '["pip3", "pip", "npm"]'
+    description: Package managers and container runtimes
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*"]'
+  - id: PACKAGE_MANAGERS_AND_RUNTIMES
+    description: Package managers and container runtimes
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*"]'
   - id: PASTE_SITES
     expression: '["pastebin.com", "ghostbin.com", "termbin.com", "klgrth.io"]'
   - id: SHELLS
@@ -108,7 +116,7 @@ rules:
     expression: |-
       (
           (chmod.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && chmod.mode != chmod.file.mode
   - id: credential_modified_chown
@@ -116,7 +124,7 @@ rules:
     expression: |-
       (
           (chown.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
   - id: credential_modified_link
@@ -125,7 +133,7 @@ rules:
       (
           (link.file.path in [ "/etc/shadow", "/etc/gshadow" ]
           || link.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: credential_modified_open
@@ -134,7 +142,7 @@ rules:
       (
           open.flags & ((O_CREAT|O_RDWR|O_WRONLY|O_TRUNC)) > 0 &&
           (open.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: credential_modified_rename
@@ -143,7 +151,7 @@ rules:
       (
           (rename.file.path in [ "/etc/shadow", "/etc/gshadow" ]
           || rename.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: credential_modified_unlink
@@ -151,7 +159,7 @@ rules:
     expression: |-
       (
           (unlink.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: credential_modified_utimes
@@ -159,7 +167,7 @@ rules:
     expression: |-
       (
           (utimes.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in [ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr" ]
+          && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
   - id: cron_at_job_creation_chmod
@@ -418,16 +426,16 @@ rules:
     expression: |-
       (
           (chmod.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       ) && chmod.mode != chmod.file.mode
   - id: pci_11_5_critical_binaries_chown
     description: Critical system binaries may have been modified
     expression: |-
       (
           (chown.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
   - id: pci_11_5_critical_binaries_link
     description: Critical system binaries may have been modified
@@ -435,17 +443,17 @@ rules:
       (
           (link.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
           || link.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       )
   - id: pci_11_5_critical_binaries_open
     description: Critical system binaries may have been modified
     expression: |-
       (
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: pci_11_5_critical_binaries_rename
     description: Critical system binaries may have been modified
@@ -453,24 +461,24 @@ rules:
       (
           (rename.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
           || rename.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       )
   - id: pci_11_5_critical_binaries_unlink
     description: Critical system binaries may have been modified
     expression: |-
       (
           (unlink.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       )
   - id: pci_11_5_critical_binaries_utimes
     description: Critical system binaries may have been modified
     expression: |-
       (
           (utimes.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       )
   - id: potential_cryptominer
     description: A process resolved a DNS name associated with cryptomining activity
@@ -480,7 +488,7 @@ rules:
     expression: |-
       (exec.file.path in SHELLS || exec.file.path in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*") &&
-      process.ancestors.comm not in PACKAGE_MANAGERS
+      process.ancestors.comm not in APP_PACKAGE_MANAGERS
   - id: pwnkit_privilege_escalation
     description: A process was spawned with indicators of exploitation of CVE-2021-4034
     expression: (exec.file.path == "/usr/bin/pkexec" && exec.envs in [~"*SHELL*", ~"*PATH*"] && exec.uid != 0)
