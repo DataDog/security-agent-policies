@@ -3,20 +3,26 @@ package datadog
 import data.datadog as dd
 import data.helpers as h
 
+clusterrolebinding_serviceaccount_subjects = [subject |
+	subject := input.clusterrolebindings[_].resource.Object.subjects[_]
+	subject.kind == "ServiceAccount"
+]
+
 failed_clusterrolebindings[serviceaccount] {
 	serviceaccount := input.serviceaccounts[_]
-	clusterrolebinding := input.clusterrolebindings[_]
-	clusterrolebinding.resource.Object.subjects[i].kind == "ServiceAccount"
-	clusterrolebinding.resource.Object.subjects[i].namespace == serviceaccount.namespace
-	clusterrolebinding.resource.Object.subjects[i].name == serviceaccount.name
+	clusterrolebinding_serviceaccount_subjects[i].namespace == serviceaccount.namespace
+	clusterrolebinding_serviceaccount_subjects[i].name == serviceaccount.name
 }
+
+rolebinding_serviceaccount_subjects = [subject |
+	subject := input.rolebindings[_].resource.Object.subjects[_]
+	subject.kind == "ServiceAccount"
+]
 
 failed_rolebindings[serviceaccount] {
 	serviceaccount := input.serviceaccounts[_]
-	rolebinding := input.rolebindings[_]
-	rolebinding.resource.Object.subjects[i].kind == "ServiceAccount"
-	rolebinding.resource.Object.subjects[i].namespace == serviceaccount.namespace
-	rolebinding.resource.Object.subjects[i].name == serviceaccount.name
+	rolebinding_serviceaccount_subjects[i].namespace == serviceaccount.namespace
+	rolebinding_serviceaccount_subjects[i].name == serviceaccount.name
 }
 
 invalid_serviceaccount(serviceaccount) {
