@@ -2,6 +2,7 @@ package datadog
 
 import data.datadog as dd
 import data.helpers as h
+import future.keywords.in
 
 findings[f] {
 	user_in_group(input.group)
@@ -22,5 +23,5 @@ findings[f] {
 }
 
 user_in_group(group) {
-	count([u | u := group.users[_]; u == "docker"]) == 1
+	"docker" in group.users
 }
