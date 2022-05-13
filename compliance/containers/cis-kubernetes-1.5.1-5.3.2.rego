@@ -2,6 +2,7 @@ package datadog
 
 import data.datadog as dd
 import data.helpers as h
+import future.keywords.every
 
 compliant_namespace(n) {
 	np := input.networkpolicies[_]
@@ -9,7 +10,9 @@ compliant_namespace(n) {
 }
 
 all_namespaces_compliant {
-	count([n | n := input.namespaces[_]; compliant_namespace(n)]) == count(input.namespaces)
+	every n in input.namespaces {
+		compliant_namespace(n)
+	}
 }
 
 findings[f] {

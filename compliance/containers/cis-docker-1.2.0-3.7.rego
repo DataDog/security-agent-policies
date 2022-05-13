@@ -2,10 +2,15 @@ package datadog
 
 import data.datadog as dd
 import data.helpers as h
+import future.keywords.every
 
 compliant(files) {
 	c := input.constants
-	count([f | f := files[_]; f.user == c.user; f.group == c.group]) == count(files)
+
+	every f in files {
+		f.user == c.user
+		f.group == c.group
+	}
 }
 
 findings[f] {
