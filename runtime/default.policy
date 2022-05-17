@@ -9,9 +9,7 @@ macros:
   - id: COMPILER_PROCESSES
     expression: '["javac", "clang", "gcc","bcc"]'
   - id: CONTAINER_CLIENTS
-    expression: |-
-      ["/usr/bin/docker", "/usr/local/bin/docker",
-       "/usr/bin/kubectl", "/usr/local/bin/kubectl"]
+    expression: '["docker", "kubectl"]'
   - id: CONTAINER_PROCESSES
     description: Processes related to operating containers and kubernetes clusters
     expression: |-
@@ -228,7 +226,9 @@ rules:
       (exec.file.path in SHELLS ||
        exec.file.path in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS) &&
-      process.ancestors.file.name in DATABASE_PROCESSES
+      process.ancestors.file.name in DATABASE_PROCESSES &&
+      !(process.ancestors.file.name == "initdb" &&
+      exec.args == ~"*locale -a*")
   - id: dirty_pipe_attempt
     description: Potential Dirty pipe exploitation attempt
     expression: (splice.pipe_entry_flag & PIPE_BUF_FLAG_CAN_MERGE) != 0 && (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) == 0
@@ -273,6 +273,18 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+  - id: kernel_module_load
+    description: A kernel module was loaded
+    expression: load_module.name != ""
+  - id: kernel_module_load_container
+    description: A container loaded a new kernel module
+    expression: load_module.name != "" && container.id !=""
+  - id: kernel_module_load_from_memory
+    description: A kernel module was loaded from memory
+    expression: load_module.loaded_from_memory == true
+  - id: kernel_module_load_from_memory_container
+    description: A kernel module was loaded from memory inside a container
+    expression: load_module.loaded_from_memory == true && container.id !=""
   - id: kernel_module_open
     description: A new kernel module was added
     expression: |-
@@ -319,6 +331,15 @@ rules:
       (exec.file.path in NET_UTILS ||
        exec.file.path in HTTP_UTILS) &&
       container.id != "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news") && process.ancestors.file.path in [ ~"/tmp/**", ~"/var/tmp/**", ~"/home/**", ~"/run/user/**" ]
+  - id: new_binary_execution_in_container
+    description: A container executed a new a binary not found in the container image
+    expression: container.id !="" && !process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name !=""
+  - id: new_kernel_module_audit
+    description: A kernel module was loaded
+    expression: load_module.name != ""
+  - id: new_kernel_module_audit_container
+    description: A kernel module was loaded
+    expression: load_module.name != "" && container.id !=""
   - id: nsswitch_conf_mod_chmod
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -489,6 +510,12 @@ rules:
       (exec.file.path in SHELLS || exec.file.path in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*") &&
       process.ancestors.comm not in APP_PACKAGE_MANAGERS
+  - id: ptrace_antidebug
+    description: A process uses an anti-debugging technique to block debuggers
+    expression: ptrace.request == PTRACE_TRACEME
+  - id: ptrace_injection
+    description: A process attempted to inject code into another process
+    expression: ptrace.request == PTRACE_POKETEXT || ptrace.request == PTRACE_POKEDATA || ptrace.request == PTRACE_POKEUSR
   - id: pwnkit_privilege_escalation
     description: A process was spawned with indicators of exploitation of CVE-2021-4034
     expression: (exec.file.path == "/usr/bin/pkexec" && exec.envs in [~"*SHELL*", ~"*PATH*"] && exec.uid != 0)
@@ -601,7 +628,7 @@ rules:
       )
   - id: suspicious_container_client
     description: A container management utility was executed in a container
-    expression: exec.file.path in CONTAINER_CLIENTS && container.id != ""
+    expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
   - id: systemd_modification_chmod
     description: A service may have been modified without authorization
     expression: |-
