@@ -333,7 +333,7 @@ rules:
       container.id != "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news") && process.ancestors.file.path in [ ~"/tmp/**", ~"/var/tmp/**", ~"/home/**", ~"/run/user/**" ]
   - id: new_binary_execution_in_container
     description: A container executed a new a binary not found in the container image
-    expression: container.id !="" && !process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name !=""
+    expression: container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
   - id: new_kernel_module_audit
     description: A kernel module was loaded
     expression: load_module.name != ""
