@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create Compliance Benchmarks ConfigMap
         uses: steebchen/kubectl@v2.0.0
@@ -28,7 +28,6 @@ jobs:
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
-        id: create_release
         with:
           name: Release ${{ steps.tag_name_extractor.outputs.TAG_NAME }}
           body: |
