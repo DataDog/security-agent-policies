@@ -240,7 +240,7 @@ rules:
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
   - id: ip_check_domain
     description: A DNS lookup was done for a IP check service
-    expression: dns.question.name in IPCHECK_DOMAINS
+    expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
   - id: java_shell_execution
     description: A java process spawned a shell, shell utility, or HTTP utility
     expression: |-
@@ -441,7 +441,7 @@ rules:
     expression: exec.file.path == "/usr/bin/passwd"
   - id: paste_site
     description: A DNS lookup was done for a pastebin-like site
-    expression: dns.question.name in PASTE_SITES
+    expression: dns.question.name in PASTE_SITES && process.file.name != ""
   - id: pci_11_5_critical_binaries_chmod
     description: Critical system binaries may have been modified
     expression: |-
@@ -503,7 +503,7 @@ rules:
       )
   - id: potential_cryptominer
     description: A process resolved a DNS name associated with cryptomining activity
-    expression: dns.question.name in CRYPTOMINER_DOMAINS
+    expression: dns.question.name in CRYPTOMINER_DOMAINS && process.file.name != ""
   - id: potential_web_shell
     description: A webapp process (language engine or webserver) spawned a shell, shell utility, or HTTP utility
     expression: |-
@@ -683,4 +683,4 @@ rules:
       )
   - id: user_created_tty
     description: A user was created via an interactive session
-    expression: exec.file.name in ["useradd", "newusers"] && exec.tty_name !=""
+    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !=""
