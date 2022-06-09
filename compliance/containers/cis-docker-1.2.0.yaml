@@ -11,6 +11,7 @@ rules:
     input:
       - file:
           path: /proc/mounts
+          parser: raw
       - constants:
           regexp: '[a-zA-Z0-9-_/]+ /var/lib/docker [a-zA-Z0-9-_/]+'
           resource_type: docker_daemon
@@ -589,6 +590,7 @@ rules:
     input:
       - file:
           path: /sys/fs/selinux/enforce
+          parser: raw
       - tag: containers
         docker:
           kind: container
