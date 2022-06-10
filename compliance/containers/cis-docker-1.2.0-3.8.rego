@@ -2,21 +2,18 @@ package datadog
 
 import data.datadog as dd
 import data.helpers as h
-import future.keywords.every
 
-max_permissions(file) {
-	file.permissions == bits.and(file.permissions, parse_octal(input.constants.max_permissions))
+max_permissions(file, consts) {
+	file.permissions == bits.and(file.permissions, parse_octal(consts.max_permissions))
 }
 
-all_files_ok {
-	every f in input.files {
-		max_permissions(f)
-	}
+all_files_ok(in) {
+	count([f | f := in.files[_]; max_permissions(f, in.constants)]) == count(in.files)
 }
 
 findings[f] {
 	count(input.files) > 0
-	all_files_ok
+	all_files_ok(input)
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
@@ -26,7 +23,7 @@ findings[f] {
 
 findings[f] {
 	count(input.files) > 0
-	not all_files_ok
+	not all_files_ok(input)
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
