@@ -35,6 +35,12 @@ jobs:
           touch testconfig/datadog.yaml
           touch testconfig/security-agent.yaml
 
+      - name: Compute docker tag
+        id: tagextractor
+        run: |
+          TAG=$(echo "${{ matrix.image }}" | cut -d ":" -f 2)
+          echo "::set-output name=TAG::$TAG"
+
       - name: ${{ matrix.image }} - check policies
         id: checkpolicies
         continue-on-error: true
@@ -44,4 +50,5 @@ jobs:
       - name: Check failures
         if: steps.checkpolicies.outcome != 'success'
         run: |
+          echo ${{ steps.tagextractor.outputs.TAG }}
           exit 1
