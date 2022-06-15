@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["datadog/agent-dev:master", "datadog/agent:7"]
+        image: ["datadog/agent-dev:master", "datadog/agent:7", "datadog/agent:7.27.0"]
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
