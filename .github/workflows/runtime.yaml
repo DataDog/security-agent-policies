@@ -35,6 +35,6 @@ jobs:
           touch testconfig/datadog.yaml
           touch testconfig/security-agent.yaml
 
-      - name: Check the policies - ${{ matrix.image }}
+      - name: ${{ matrix.image }} - check policies
         run: |
           docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig
