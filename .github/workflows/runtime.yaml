@@ -45,10 +45,10 @@ jobs:
         id: checkpolicies
         continue-on-error: true
         run: |
-          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig
+          set -o pipefail
+          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig | tee stdout.log
 
       - name: Check failures
         if: steps.checkpolicies.outcome != 'success'
         run: |
-          echo ${{ steps.tagextractor.outputs.TAG }}
-          exit 1
+          diff ./testdata/cws/${{ steps.tagextractor.outputs.TAG }}.expected stdout.log
