@@ -1,0 +1,15 @@
+Error: 14 errors occurred:
+	* rule `dirty_pipe_attempt` definition error: rule compilation error: field `splice.pipe_entry_flag` not found
+	* rule `dirty_pipe_exploitation` definition error: rule compilation error: field `splice.pipe_exit_flag` not found
+	* rule `ip_check_domain` definition error: rule compilation error: field `dns.question.name` not found
+	* rule `kernel_module_load` definition error: rule compilation error: field `load_module.name` not found
+	* rule `kernel_module_load_container` definition error: rule compilation error: field `load_module.name` not found
+	* rule `kernel_module_load_from_memory` definition error: rule compilation error: field `load_module.loaded_from_memory` not found
+	* rule `kernel_module_load_from_memory_container` definition error: rule compilation error: field `load_module.loaded_from_memory` not found
+	* rule `new_binary_execution_in_container` definition error: rule compilation error: field `process.file.modification_time` not found
+	* rule `new_kernel_module_audit` definition error: rule compilation error: field `load_module.name` not found
+	* rule `new_kernel_module_audit_container` definition error: rule compilation error: field `load_module.name` not found
+	* rule `paste_site` definition error: rule compilation error: field `dns.question.name` not found
+	* rule `potential_cryptominer` definition error: rule compilation error: field `dns.question.name` not found
+	* rule `ptrace_antidebug` definition error: rule compilation error: field `ptrace.request` not found
+	* rule `ptrace_injection` definition error: rule compilation error: field `ptrace.request` not found
