@@ -16,4 +16,3 @@ Error: 17 errors occurred:
 	* rule `ptrace_antidebug` definition error: rule compilation error: field `ptrace.request` not found
 	* rule `ptrace_injection` definition error: rule compilation error: field `ptrace.request` not found
 	* rule `selinux_disable_enforcement` definition error: rule compilation error: field `selinux.enforce.status` not found
-	

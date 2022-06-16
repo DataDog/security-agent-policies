@@ -47,12 +47,9 @@ jobs:
         run: |
           set -o pipefail
           docker pull ${{ matrix.image }}
-          echo TEST
-          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig | tee stdout.log
+          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig |& tee stdout.log
 
       - name: Check failures
         if: steps.checkpolicies.outcome != 'success'
         run: |
-          cat ./testdata/cws/${{ steps.tagextractor.outputs.TAG }}.expected
-          cat stdout.log
-          diff ./testdata/cws/${{ steps.tagextractor.outputs.TAG }}.expected stdout.log
+          diff -w -B ./testdata/cws/${{ steps.tagextractor.outputs.TAG }}.expected stdout.log
