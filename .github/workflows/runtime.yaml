@@ -12,7 +12,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["datadog/agent-dev:master", "datadog/agent:7"]
+        image:
+          - datadog/agent:7.27.0
+          - datadog/agent:7.28.1
+          - datadog/agent:7.29.1
+          - datadog/agent:7.30.1
+          - datadog/agent:7.31.1
+          - datadog/agent:7.32.4
+          - datadog/agent:7.33.1
+          - datadog/agent:7.34.0
+          - datadog/agent:7.35.2
+          - datadog/agent:7.36.1
+          - datadog/agent:7
+          - datadog/agent-dev:master
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
@@ -23,6 +35,21 @@ jobs:
           touch testconfig/datadog.yaml
           touch testconfig/security-agent.yaml
 
-      - name: Check the policies - ${{ matrix.image }}
+      - name: Compute docker tag
+        id: tagextractor
         run: |
-          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig
+          TAG=$(echo "${{ matrix.image }}" | cut -d ":" -f 2)
+          echo "::set-output name=TAG::$TAG"
+
+      - name: ${{ matrix.image }} - check policies
+        id: checkpolicies
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          docker pull ${{ matrix.image }}
+          docker run -v ${{ github.workspace }}/runtime:/policies -v ${{ github.workspace }}/testconfig:/testconfig ${{ matrix.image }} /opt/datadog-agent/embedded/bin/security-agent runtime check-policies --policies-dir /policies --cfgpath /testconfig |& tee stdout.log
+
+      - name: Check failures
+        if: steps.checkpolicies.outcome != 'success'
+        run: |
+          diff -w -B ./testdata/cws/${{ steps.tagextractor.outputs.TAG }}.expected stdout.log
