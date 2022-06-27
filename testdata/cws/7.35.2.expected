@@ -1,5 +1,6 @@
 Command "check-policies" is deprecated, please use `security-agent runtime policy check` instead
-Error: 3 errors occurred:
+Error: 4 errors occurred:
+	* rule `dns_txt_lookup` definition error: rule compilation error: field `dns.question.type` not found
 	* rule `ip_check_domain` definition error: rule compilation error: field `dns.question.name` not found
 	* rule `paste_site` definition error: rule compilation error: field `dns.question.name` not found
 	* rule `potential_cryptominer` definition error: rule compilation error: field `dns.question.name` not found
