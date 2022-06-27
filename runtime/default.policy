@@ -92,7 +92,7 @@ macros:
     expression: '["/usr/lib/systemd/systemd-journald"]'
   - id: SYSTEM_PACKAGE_MANAGERS
     description: Package managers
-    expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm", "/usr/bin/unattended-upgrade"]'
+    expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/sbin/apk"]'
   - id: WEBAPP_PROCESSES
     description: Processes that commonly run web applications
     expression: '[~"python2*", ~"python3*", "node", "apache2", "nginx", ~"tomcat*"]'
@@ -100,12 +100,15 @@ rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
+  - id: aws_eks_service_account_token_accessed
+    description: The AWS EKS service account token has been accessed via unusual means
+    expression: open.file.path == "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
   - id: aws_metadata_service
     description: The EC2 instance metadata service was called via a network utility using an interactive session
     expression: exec.file.path in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
   - id: common_net_intrusion_util
     description: A network utility (nmap) commonly used in intrusion attacks was executed
-    expression: exec.file.path == "/usr/bin/nmap"
+    expression: exec.file.name == "nmap"
   - id: compiler_in_container
     description: A compiler was executed inside of a container
     expression: (exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
@@ -235,6 +238,9 @@ rules:
   - id: dirty_pipe_exploitation
     description: Potential Dirty pipe exploitation
     expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0
+  - id: dns_txt_lookup
+    description: A DNS lookup was done for a TXT record
+    expression: dns.question.type == TXT && process.file.name != ""
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
@@ -248,6 +254,9 @@ rules:
        exec.file.path in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS)
       && process.ancestors.file.name == "java"
+  - id: k8_pod_service_account_token_accessed
+    description: The Kubernetes pod service account token has been accessed via unusual means
+    expression: open.file.path == "/var/run/secrets/kubernetes.io/serviceaccount/token"
   - id: kernel_module_chmod
     description: A new kernel module was added
     expression: |-
@@ -334,12 +343,6 @@ rules:
   - id: new_binary_execution_in_container
     description: A container executed a new a binary not found in the container image
     expression: container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
-  - id: new_kernel_module_audit
-    description: A kernel module was loaded
-    expression: load_module.name != ""
-  - id: new_kernel_module_audit_container
-    description: A kernel module was loaded
-    expression: load_module.name != "" && container.id !=""
   - id: nsswitch_conf_mod_chmod
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -519,6 +522,9 @@ rules:
   - id: pwnkit_privilege_escalation
     description: A process was spawned with indicators of exploitation of CVE-2021-4034
     expression: (exec.file.path == "/usr/bin/pkexec" && exec.envs in [~"*SHELL*", ~"*PATH*"] && exec.uid != 0)
+  - id: python_cli_code
+    description: Python code was provided on the command line
+    expression: exec.file.name == ~"python*" && exec.args_flags in ["c"]
   - id: runc_modification
     description: The runc binary was modified in a non-standard way
     expression: |-
