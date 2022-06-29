@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.4.3
+version: 1.5.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -32,7 +32,7 @@ macros:
     expression: '["mysqld", "mongod", "postgres"]'
   - id: DD_AGENT_PROCESSES
     description: Processes that are a part of the Datadog Agent
-    expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent"]'
+    expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/bin/agent/agent"]'
   - id: FDB_SERVER_PROCESSES
     expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
   - id: GITLAB_PROCESSES
@@ -101,8 +101,8 @@ rules:
     description: An AppArmor profile was modified in an interactive session
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
   - id: aws_eks_service_account_token_accessed
-    description: The AWS EKS service account token has been accessed via unusual means
-    expression: open.file.path == "/var/run/secrets/eks.amazonaws.com/serviceaccount/token"
+    description: The AWS EKS service account token was accessed
+    expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
   - id: aws_metadata_service
     description: The EC2 instance metadata service was called via a network utility using an interactive session
     expression: exec.file.path in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
@@ -238,9 +238,6 @@ rules:
   - id: dirty_pipe_exploitation
     description: Potential Dirty pipe exploitation
     expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0
-  - id: dns_txt_lookup
-    description: A DNS lookup was done for a TXT record
-    expression: dns.question.type == TXT && process.file.name != ""
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
@@ -254,9 +251,9 @@ rules:
        exec.file.path in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS)
       && process.ancestors.file.name == "java"
-  - id: k8_pod_service_account_token_accessed
-    description: The Kubernetes pod service account token has been accessed via unusual means
-    expression: open.file.path == "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  - id: k8s_pod_service_account_token_accessed
+    description: The Kubernetes pod service account token was accessed
+    expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
   - id: kernel_module_chmod
     description: A new kernel module was added
     expression: |-

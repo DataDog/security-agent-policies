@@ -811,6 +811,7 @@ rules:
     description: Container health is checked at runtime
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
