@@ -102,7 +102,7 @@ rules:
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
   - id: aws_eks_service_account_token_accessed
     description: The AWS EKS service account token was accessed
-    expression: open.file.path =~ ~"/var/run/secrets/eks.amazonaws.com/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
   - id: aws_metadata_service
     description: The EC2 instance metadata service was called via a network utility using an interactive session
     expression: exec.file.path in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
@@ -253,7 +253,7 @@ rules:
       && process.ancestors.file.name == "java"
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
-    expression: open.file.path =~ ~"/var/run/secrets/kubernetes.io/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
   - id: kernel_module_chmod
     description: A new kernel module was added
     expression: |-
