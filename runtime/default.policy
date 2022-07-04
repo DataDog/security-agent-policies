@@ -26,7 +26,7 @@ macros:
   - id: CREDENTIAL_BINARIES
     expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd" ]'
   - id: CRYPTOMINER_DOMAINS
-    expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me"]'
+    expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me", ~"*rplant.xyz"]'
   - id: DATABASE_PROCESSES
     description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
