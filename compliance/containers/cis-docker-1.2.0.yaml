@@ -11,6 +11,7 @@ rules:
     input:
       - file:
           path: /proc/mounts
+          parser: raw
       - constants:
           regexp: '[a-zA-Z0-9-_/]+ /var/lib/docker [a-zA-Z0-9-_/]+'
           resource_type: docker_daemon
@@ -189,6 +190,7 @@ rules:
     description: Docker is allowed to make changes to iptables
     scope:
       - docker
+    skipOnKubernetes: true
     input:
       - file:
           path: /etc/docker/daemon.json
@@ -231,6 +233,7 @@ rules:
     description: TLS authentication for Docker daemon is configured
     scope:
       - docker
+    skipOnKubernetes: true
     input:
       - process:
           name: kubelet
@@ -356,6 +359,7 @@ rules:
     description: TLS CA certificate file ownership is set to root:root
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -370,6 +374,7 @@ rules:
     description: TLS CA certificate file permissions are set to 444 or more restrictively
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -383,6 +388,7 @@ rules:
     description: Docker server certificate file ownership is set to root:root
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -397,6 +403,7 @@ rules:
     description: Docker server certificate file permissions are set to 444 or more restrictively
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -410,6 +417,7 @@ rules:
     description: Docker server certificate key file ownership is set to root:root
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -424,6 +432,7 @@ rules:
     description: Docker server certificate key file permissions are set to 400
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -545,6 +554,7 @@ rules:
     description: A user for the container has been created
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -559,6 +569,7 @@ rules:
     description: HEALTHCHECK instructions have been added to container images
     scope:
       - docker
+    skipOnKubernetes: true
     input:
       - tag: images
         docker:
@@ -572,6 +583,7 @@ rules:
     description: An AppArmor Profile is enabled
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -586,9 +598,11 @@ rules:
     description: SELinux security options are set
     scope:
       - docker
+    skipOnKubernetes: true
     input:
       - file:
           path: /sys/fs/selinux/enforce
+          parser: raw
       - tag: containers
         docker:
           kind: container
@@ -601,6 +615,7 @@ rules:
     description: Linux kernel capabilities are restricted within containers
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -615,6 +630,7 @@ rules:
     description: Privileged containers are not used
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -629,6 +645,7 @@ rules:
     description: Sensitive host system directories are not mounted on containers
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -643,6 +660,7 @@ rules:
     description: Privileged ports are not mapped within containers
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -671,6 +689,7 @@ rules:
     description: Memory usage for containers is limited
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -685,6 +704,7 @@ rules:
     description: CPU priority is set appropriately on containers
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -699,6 +719,7 @@ rules:
     description: Container's root filesystem is mounted as read only
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -713,6 +734,7 @@ rules:
     description: '''on-failure'' container restart policy is set to ''5'''
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -727,6 +749,7 @@ rules:
     description: Host's process namespace is not shared
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -741,6 +764,7 @@ rules:
     description: Host's IPC namespace is not shared
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -755,6 +779,7 @@ rules:
     description: Host's UTS namespace is not shared
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -769,6 +794,7 @@ rules:
     description: Default seccomp profile is not Disabled
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -783,6 +809,7 @@ rules:
     description: cgroup usage is confirmed
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -797,6 +824,7 @@ rules:
     description: Container is restricted from acquiring additional privileges
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -826,6 +854,7 @@ rules:
     description: PIDs cgroup limit is used
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -840,6 +869,7 @@ rules:
     description: Host's user namespaces are not shared
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
@@ -854,6 +884,7 @@ rules:
     description: Docker socket is not mounted inside any containers
     scope:
       - docker
+    skipOnKubernetes: true
     imports:
       - container-generic-rule.rego
       - helpers.rego
