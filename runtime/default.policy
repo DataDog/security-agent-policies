@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.5.0
+version: 1.6.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -26,7 +26,7 @@ macros:
   - id: CREDENTIAL_BINARIES
     expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd" ]'
   - id: CRYPTOMINER_DOMAINS
-    expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me"]'
+    expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me", ~"*rplant.xyz"]'
   - id: DATABASE_PROCESSES
     description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
@@ -39,12 +39,15 @@ macros:
     expression: '["/opt/gitlab/embedded/bin/bundle", "/opt/gitlab/embedded/bin/svlogd"]'
   - id: HTTP_UTILS
     description: Executables commonly used to fetch data over HTTP
-    expression: '["/usr/bin/wget", "/usr/bin/curl"]'
+    expression: '["wget", "curl", "lwp-download"]'
+  - id: INTERPRETER_PROCESSES
+    description: Processes associated with interpreted programming languages (Python, Node.js)
+    expression: '[~"python2*", ~"python3*", "node", "perl", ~"ruby*"]'
   - id: IPCHECK_DOMAINS
     expression: '["icanhazip.com", "ip-api.com", "myip.opendns.com", "checkip.amazonaws.com", "whatismyip.akamai.com"]'
   - id: NET_UTILS
     description: Executables of common network utilites
-    expression: '["/usr/bin/socat", "/usr/bin/dig", "/usr/bin/nslookup", "/usr/bin/netcat", "/usr/bin/nc"]'
+    expression: '["socat", "dig", "nslookup", "host", ~"netcat*", ~"nc*", "ncat"]'
   - id: OPEN_CREATE_FLAGS
     expression: O_CREAT|O_RDWR|O_WRONLY
   - id: OPEN_WRITE_FLAGS
@@ -95,7 +98,7 @@ macros:
     expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/sbin/apk"]'
   - id: WEBAPP_PROCESSES
     description: Processes that commonly run web applications
-    expression: '[~"python2*", ~"python3*", "node", "apache2", "nginx", ~"tomcat*"]'
+    expression: '["apache2", "nginx", ~"tomcat*", "httpd"]'
 rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
@@ -105,7 +108,7 @@ rules:
     expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
   - id: aws_metadata_service
     description: The EC2 instance metadata service was called via a network utility using an interactive session
-    expression: exec.file.path in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
+    expression: exec.comm in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
   - id: common_net_intrusion_util
     description: A network utility (nmap) commonly used in intrusion attacks was executed
     expression: exec.file.name == "nmap"
@@ -227,7 +230,7 @@ rules:
     description: A database application spawned a shell, shell utility, or HTTP utility
     expression: |-
       (exec.file.path in SHELLS ||
-       exec.file.path in HTTP_UTILS ||
+       exec.comm in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS) &&
       process.ancestors.file.name in DATABASE_PROCESSES &&
       !(process.ancestors.file.name == "initdb" &&
@@ -241,6 +244,11 @@ rules:
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
+  - id: interpreter_spawned_shell
+    description: An interpreted language spawned a shell or shell utility
+    expression: |-
+      (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
+      process.ancestors.file.name in INTERPRETER_PROCESSES
   - id: ip_check_domain
     description: A DNS lookup was done for a IP check service
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
@@ -248,7 +256,7 @@ rules:
     description: A java process spawned a shell, shell utility, or HTTP utility
     expression: |-
       (exec.file.path in SHELLS ||
-       exec.file.path in HTTP_UTILS ||
+       exec.comm in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS)
       && process.ancestors.file.name == "java"
   - id: k8s_pod_service_account_token_accessed
@@ -327,16 +335,10 @@ rules:
       )
   - id: net_util
     description: A network utility was executed from a suspicious location
-    expression: |-
-      (exec.file.path in NET_UTILS ||
-       exec.file.path in HTTP_UTILS) &&
-      container.id == "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news") && process.ancestors.file.path in [ ~"/tmp/**", ~"/var/tmp/**", ~"/home/**", ~"/run/user/**" ]
+    expression: "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id == \"\" && (exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ] || process.ancestors.comm != \"50-motd-news\") "
   - id: net_util_in_container
     description: A network utility was executed from a suspicious location in a container
-    expression: |-
-      (exec.file.path in NET_UTILS ||
-       exec.file.path in HTTP_UTILS) &&
-      container.id != "" && (exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] || process.ancestors.comm != "50-motd-news") && process.ancestors.file.path in [ ~"/tmp/**", ~"/var/tmp/**", ~"/home/**", ~"/run/user/**" ]
+    expression: "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id != \"\" && (exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ] || process.ancestors.comm != \"50-motd-news\") "
   - id: new_binary_execution_in_container
     description: A container executed a new a binary not found in the container image
     expression: container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
@@ -505,9 +507,9 @@ rules:
     description: A process resolved a DNS name associated with cryptomining activity
     expression: dns.question.name in CRYPTOMINER_DOMAINS && process.file.name != ""
   - id: potential_web_shell
-    description: A webapp process (language engine or webserver) spawned a shell, shell utility, or HTTP utility
+    description: A web application spawned a shell or shell utility
     expression: |-
-      (exec.file.path in SHELLS || exec.file.path in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
+      (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*") &&
       process.ancestors.comm not in APP_PACKAGE_MANAGERS
   - id: ptrace_antidebug
@@ -584,6 +586,8 @@ rules:
           (chmod.file.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && chmod.mode != chmod.file.mode
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
   - id: ssl_certificate_tampering_chown
     description: SSL certificates may have been tampered with
     expression: |-
@@ -591,6 +595,8 @@ rules:
           (chown.file.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
   - id: ssl_certificate_tampering_link
     description: SSL certificates may have been tampered with
     expression: |-
@@ -598,6 +604,8 @@ rules:
           (link.file.path in [ ~"/etc/ssl/certs/**" ]
           || link.file.destination.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path != "/usr/sbin/update-ca-certificates"
+          && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       )
   - id: ssl_certificate_tampering_open
     description: SSL certificates may have been tampered with
@@ -607,6 +615,8 @@ rules:
           (open.file.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
   - id: ssl_certificate_tampering_rename
     description: SSL certificates may have been tampered with
     expression: |-
@@ -615,6 +625,8 @@ rules:
           || rename.file.destination.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
   - id: ssl_certificate_tampering_unlink
     description: SSL certificates may have been tampered with
     expression: |-
@@ -622,6 +634,8 @@ rules:
           (unlink.file.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
   - id: ssl_certificate_tampering_utimes
     description: SSL certificates may have been tampered with
     expression: |-
@@ -629,6 +643,8 @@ rules:
           (utimes.file.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
   - id: suspicious_container_client
     description: A container management utility was executed in a container
     expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
