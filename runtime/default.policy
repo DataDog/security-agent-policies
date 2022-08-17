@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.6.0
+version: 1.6.1
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -54,7 +54,7 @@ macros:
     expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
   - id: PACKAGE_MANAGERS
     description: Package managers and container runtimes
-    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*"]'
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", "/usr/bin/yum", "/sbin/apk"]'
   - id: PACKAGE_MANAGERS_AND_RUNTIMES
     description: Package managers and container runtimes
     expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*"]'
@@ -226,6 +226,9 @@ rules:
           (utimes.file.path in [ ~"/var/spool/cron/*" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+  - id: cryptominer_args
+    description: A process launched with arguments associated with cryptominers
+    expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args in [~"*stratum*"]
   - id: database_shell_execution
     description: A database application spawned a shell, shell utility, or HTTP utility
     expression: |-

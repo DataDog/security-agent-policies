@@ -1,4 +1,5 @@
-Error: 16 errors occurred:
+Error: 17 errors occurred:
+	* rule `cryptominer_args` definition error: rule compilation error: field `exec.args_options` not found
 	* rule `dirty_pipe_attempt` definition error: rule compilation error: field `splice.pipe_entry_flag` not found
 	* rule `dirty_pipe_exploitation` definition error: rule compilation error: field `splice.pipe_exit_flag` not found
 	* rule `interactive_shell_in_container` definition error: rule compilation error: field `exec.args_flags` not found
