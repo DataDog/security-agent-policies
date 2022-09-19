@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.6.1
+version: 1.7.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -24,7 +24,8 @@ macros:
        "/usr/bin/weave-net", "/usr/local/bin/weave-net",
        "/opt/cni/bin/loopback", "/opt/cni/bin/bridge"]
   - id: CREDENTIAL_BINARIES
-    expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd" ]'
+    expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd", "/usr/sbin/groupadd", "/usr/sbin/useradd", "/usr/sbin/usermod", "/usr/sbin/userdel",
+      "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
   - id: CRYPTOMINER_DOMAINS
     expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me", ~"*rplant.xyz"]'
   - id: DATABASE_PROCESSES
@@ -103,18 +104,23 @@ rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
+    agent_version: ''
   - id: aws_eks_service_account_token_accessed
     description: The AWS EKS service account token was accessed
-    expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
+    agent_version: ''
   - id: aws_metadata_service
     description: The EC2 instance metadata service was called via a network utility using an interactive session
     expression: exec.comm in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
+    agent_version: ''
   - id: common_net_intrusion_util
     description: A network utility (nmap) commonly used in intrusion attacks was executed
     expression: exec.file.name == "nmap"
+    agent_version: ''
   - id: compiler_in_container
     description: A compiler was executed inside of a container
     expression: (exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
+    agent_version: ''
   - id: credential_modified_chmod
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -123,6 +129,7 @@ rules:
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && chmod.mode != chmod.file.mode
+    agent_version: ''
   - id: credential_modified_chown
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -131,6 +138,7 @@ rules:
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+    agent_version: ''
   - id: credential_modified_link
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -140,6 +148,7 @@ rules:
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: credential_modified_open
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -149,6 +158,7 @@ rules:
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: credential_modified_rename
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -158,6 +168,7 @@ rules:
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: credential_modified_unlink
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -166,6 +177,7 @@ rules:
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: credential_modified_utimes
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -174,61 +186,70 @@ rules:
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: cron_at_job_creation_chmod
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (chmod.file.path in [ ~"/var/spool/cron/*" ])
+          (chmod.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && chmod.mode != chmod.file.mode
+    agent_version: ''
   - id: cron_at_job_creation_chown
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (chown.file.path in [ ~"/var/spool/cron/*" ])
+          (chown.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+    agent_version: ''
   - id: cron_at_job_creation_link
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (link.file.path in [ ~"/var/spool/cron/*" ]
-          || link.file.destination.path in [ ~"/var/spool/cron/*" ])
+          (link.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ]
+          || link.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+    agent_version: ''
   - id: cron_at_job_creation_open
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
           open.flags & (OPEN_CREATE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/var/spool/cron/*" ])
+          (open.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+    agent_version: ''
   - id: cron_at_job_creation_rename
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (rename.file.path in [ ~"/var/spool/cron/*" ]
-          || rename.file.destination.path in [ ~"/var/spool/cron/*" ])
+          (rename.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ]
+          || rename.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+    agent_version: ''
   - id: cron_at_job_creation_unlink
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (unlink.file.path in [ ~"/var/spool/cron/*" ])
+          (unlink.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+    agent_version: ''
   - id: cron_at_job_creation_utimes
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (utimes.file.path in [ ~"/var/spool/cron/*" ])
+          (utimes.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+    agent_version: ''
   - id: cryptominer_args
     description: A process launched with arguments associated with cryptominers
     expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args in [~"*stratum*"]
+    agent_version: ''
   - id: database_shell_execution
     description: A database application spawned a shell, shell utility, or HTTP utility
     expression: |-
@@ -238,23 +259,37 @@ rules:
       process.ancestors.file.name in DATABASE_PROCESSES &&
       !(process.ancestors.file.name == "initdb" &&
       exec.args == ~"*locale -a*")
+    agent_version: ''
   - id: dirty_pipe_attempt
     description: Potential Dirty pipe exploitation attempt
     expression: (splice.pipe_entry_flag & PIPE_BUF_FLAG_CAN_MERGE) != 0 && (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) == 0
+    agent_version: ''
   - id: dirty_pipe_exploitation
     description: Potential Dirty pipe exploitation
     expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0
+    agent_version: ''
+  - id: dynamic_linker_config_unlink
+    description: A process unlinked a dynamic linker config file
+    expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"]
+    agent_version: ''
+  - id: dynamic_linker_config_write
+    description: A process wrote to a dynamic linker config file
+    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0
+    agent_version: ''
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
+    agent_version: ''
   - id: interpreter_spawned_shell
     description: An interpreted language spawned a shell or shell utility
     expression: |-
       (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       process.ancestors.file.name in INTERPRETER_PROCESSES
+    agent_version: ''
   - id: ip_check_domain
     description: A DNS lookup was done for a IP check service
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
+    agent_version: ''
   - id: java_shell_execution
     description: A java process spawned a shell, shell utility, or HTTP utility
     expression: |-
@@ -262,9 +297,11 @@ rules:
        exec.comm in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS)
       && process.ancestors.file.name == "java"
+    agent_version: ''
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
-    expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
+    agent_version: ''
   - id: kernel_module_chmod
     description: A new kernel module was added
     expression: |-
@@ -273,6 +310,7 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       ) && chmod.mode != chmod.file.mode
+    agent_version: ''
   - id: kernel_module_chown
     description: A new kernel module was added
     expression: |-
@@ -281,6 +319,7 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+    agent_version: ''
   - id: kernel_module_link
     description: A new kernel module was added
     expression: |-
@@ -290,18 +329,23 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    agent_version: ''
   - id: kernel_module_load
     description: A kernel module was loaded
     expression: load_module.name != ""
+    agent_version: ''
   - id: kernel_module_load_container
     description: A container loaded a new kernel module
     expression: load_module.name != "" && container.id !=""
+    agent_version: ''
   - id: kernel_module_load_from_memory
     description: A kernel module was loaded from memory
     expression: load_module.loaded_from_memory == true
+    agent_version: ''
   - id: kernel_module_load_from_memory_container
     description: A kernel module was loaded from memory inside a container
     expression: load_module.loaded_from_memory == true && container.id !=""
+    agent_version: ''
   - id: kernel_module_open
     description: A new kernel module was added
     expression: |-
@@ -311,6 +355,7 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    agent_version: ''
   - id: kernel_module_rename
     description: A new kernel module was added
     expression: |-
@@ -320,6 +365,7 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    agent_version: ''
   - id: kernel_module_unlink
     description: A new kernel module was added
     expression: |-
@@ -328,6 +374,7 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    agent_version: ''
   - id: kernel_module_utimes
     description: A new kernel module was added
     expression: |-
@@ -336,27 +383,37 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    agent_version: ''
+  - id: ld_preload_unusual_library_path
+    description: The LD_PRELOAD variable is populated by a link to a suspicious file directory
+    expression: exec.envs in [~"LD_PRELOAD=*/tmp/*" ,~"LD_PRELOAD=/dev/shm/*" ]
+    agent_version: ''
   - id: net_util
-    description: A network utility was executed from a suspicious location
+    description: A network utility was executed
     expression: "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id == \"\" && (exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ] || process.ancestors.comm != \"50-motd-news\") "
+    agent_version: ''
   - id: net_util_in_container
-    description: A network utility was executed from a suspicious location in a container
+    description: A network utility was executed in a container
     expression: "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id != \"\" && (exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ] || process.ancestors.comm != \"50-motd-news\") "
+    agent_version: ''
   - id: new_binary_execution_in_container
     description: A container executed a new a binary not found in the container image
     expression: container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
+    agent_version: ''
   - id: nsswitch_conf_mod_chmod
     description: nsswitch may have been modified without authorization
     expression: |-
       (
           (chmod.file.path in [ "/etc/nsswitch.conf" ])
       ) && chmod.mode != chmod.file.mode
+    agent_version: ''
   - id: nsswitch_conf_mod_chown
     description: nsswitch may have been modified without authorization
     expression: |-
       (
           (chown.file.path in [ "/etc/nsswitch.conf" ])
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+    agent_version: ''
   - id: nsswitch_conf_mod_link
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -364,6 +421,7 @@ rules:
           (link.file.path in [ "/etc/nsswitch.conf" ]
           || link.file.destination.path in [ "/etc/nsswitch.conf" ])
       )
+    agent_version: ''
   - id: nsswitch_conf_mod_open
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -371,6 +429,7 @@ rules:
           open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
           (open.file.path in [ "/etc/nsswitch.conf" ])
       )
+    agent_version: ''
   - id: nsswitch_conf_mod_rename
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -378,36 +437,43 @@ rules:
           (rename.file.path in [ "/etc/nsswitch.conf" ]
           || rename.file.destination.path in [ "/etc/nsswitch.conf" ])
       )
+    agent_version: ''
   - id: nsswitch_conf_mod_unlink
     description: nsswitch may have been modified without authorization
     expression: |-
       (
           (unlink.file.path in [ "/etc/nsswitch.conf" ])
       )
+    agent_version: ''
   - id: nsswitch_conf_mod_utimes
     description: nsswitch may have been modified without authorization
     expression: |-
       (
           (utimes.file.path in [ "/etc/nsswitch.conf" ])
       )
+    agent_version: ''
   - id: omigod
     description: Omiagent spawns a privileged child process
     expression: exec.uid >= 0 && process.ancestors.file.name == "omiagent"
+    agent_version: ''
   - id: package_management_in_container
     description: Package management was detected in a container
     expression: exec.file.path in SYSTEM_PACKAGE_MANAGERS && container.id != ""
+    agent_version: ''
   - id: pam_modification_chmod
     description: PAM may have been modified without authorization
     expression: |-
       (
           (chmod.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       ) && chmod.mode != chmod.file.mode
+    agent_version: ''
   - id: pam_modification_chown
     description: PAM may have been modified without authorization
     expression: |-
       (
           (chown.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+    agent_version: ''
   - id: pam_modification_link
     description: PAM may have been modified without authorization
     expression: |-
@@ -415,6 +481,7 @@ rules:
           (link.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
           || link.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    agent_version: ''
   - id: pam_modification_open
     description: PAM may have been modified without authorization
     expression: |-
@@ -422,6 +489,7 @@ rules:
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           (open.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    agent_version: ''
   - id: pam_modification_rename
     description: PAM may have been modified without authorization
     expression: |-
@@ -429,24 +497,29 @@ rules:
           (rename.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
           || rename.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    agent_version: ''
   - id: pam_modification_unlink
     description: PAM may have been modified without authorization
     expression: |-
       (
           (unlink.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    agent_version: ''
   - id: pam_modification_utimes
     description: PAM may have been modified without authorization
     expression: |-
       (
           (utimes.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    agent_version: ''
   - id: passwd_execution
-    description: The passwd utility (commonly for account credential manipuation) was executed
-    expression: exec.file.path == "/usr/bin/passwd"
+    description: The passwd or chpasswd utility (commonly for account credential manipuation) was executed
+    expression: exec.file.path in ["/usr/bin/passwd", "/usr/sbin/chpasswd"]
+    agent_version: ''
   - id: paste_site
     description: A DNS lookup was done for a pastebin-like site
     expression: dns.question.name in PASTE_SITES && process.file.name != ""
+    agent_version: ''
   - id: pci_11_5_critical_binaries_chmod
     description: Critical system binaries may have been modified
     expression: |-
@@ -455,6 +528,7 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       ) && chmod.mode != chmod.file.mode
+    agent_version: ''
   - id: pci_11_5_critical_binaries_chown
     description: Critical system binaries may have been modified
     expression: |-
@@ -463,6 +537,7 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+    agent_version: ''
   - id: pci_11_5_critical_binaries_link
     description: Critical system binaries may have been modified
     expression: |-
@@ -472,6 +547,7 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       )
+    agent_version: ''
   - id: pci_11_5_critical_binaries_open
     description: Critical system binaries may have been modified
     expression: |-
@@ -481,6 +557,7 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: pci_11_5_critical_binaries_rename
     description: Critical system binaries may have been modified
     expression: |-
@@ -490,6 +567,7 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       )
+    agent_version: ''
   - id: pci_11_5_critical_binaries_unlink
     description: Critical system binaries may have been modified
     expression: |-
@@ -498,6 +576,7 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       )
+    agent_version: ''
   - id: pci_11_5_critical_binaries_utimes
     description: Critical system binaries may have been modified
     expression: |-
@@ -506,27 +585,34 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       )
+    agent_version: ''
   - id: potential_cryptominer
     description: A process resolved a DNS name associated with cryptomining activity
     expression: dns.question.name in CRYPTOMINER_DOMAINS && process.file.name != ""
+    agent_version: ''
   - id: potential_web_shell
     description: A web application spawned a shell or shell utility
     expression: |-
       (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*") &&
       process.ancestors.comm not in APP_PACKAGE_MANAGERS
+    agent_version: ''
   - id: ptrace_antidebug
     description: A process uses an anti-debugging technique to block debuggers
     expression: ptrace.request == PTRACE_TRACEME
+    agent_version: ''
   - id: ptrace_injection
     description: A process attempted to inject code into another process
     expression: ptrace.request == PTRACE_POKETEXT || ptrace.request == PTRACE_POKEDATA || ptrace.request == PTRACE_POKEUSR
+    agent_version: ''
   - id: pwnkit_privilege_escalation
     description: A process was spawned with indicators of exploitation of CVE-2021-4034
     expression: (exec.file.path == "/usr/bin/pkexec" && exec.envs in [~"*SHELL*", ~"*PATH*"] && exec.uid != 0)
+    agent_version: ''
   - id: python_cli_code
     description: Python code was provided on the command line
     expression: exec.file.name == ~"python*" && exec.args_flags in ["c"]
+    agent_version: ''
   - id: runc_modification
     description: The runc binary was modified in a non-standard way
     expression: |-
@@ -534,21 +620,37 @@ rules:
       && open.flags & OPEN_WRITE_FLAGS > 0
       && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+    agent_version: ''
   - id: selinux_disable_enforcement
     description: SELinux enforcement status was disabled
     expression: selinux.enforce.status in ["permissive", "disabled"]
+    agent_version: ''
+  - id: shell_history_deleted
+    description: Shell History was Deleted
+    expression: (unlink.file.name =~ ".*history") && process.comm not in  ["dockerd", "containerd"]
+    agent_version: ''
+  - id: shell_history_symlink
+    description: A symbolic link for shell history was created targeting /dev/null
+    expression: exec.comm == "ln" && exec.args in [~"*.*history*", "/dev/null"]
+    agent_version: ''
+  - id: shell_history_truncated
+    description: Shell History was Deleted
+    expression: (open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ ".*history" && process.comm == "truncate")
+    agent_version: ''
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
       (
           chmod.file.name in [ "authorized_keys", "authorized_keys2" ] && (chmod.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       ) && chmod.mode != chmod.file.mode
+    agent_version: ''
   - id: ssh_authorized_keys_chown
     description: SSH modified keys may have been modified
     expression: |-
       (
           chown.file.name in [ "authorized_keys", "authorized_keys2" ] && (chown.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+    agent_version: ''
   - id: ssh_authorized_keys_link
     description: SSH modified keys may have been modified
     expression: |-
@@ -556,6 +658,7 @@ rules:
           link.file.name in [ "authorized_keys", "authorized_keys2" ] && (link.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
           || link.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    agent_version: ''
   - id: ssh_authorized_keys_open
     description: SSH modified keys may have been modified
     expression: |-
@@ -563,6 +666,7 @@ rules:
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    agent_version: ''
   - id: ssh_authorized_keys_rename
     description: SSH modified keys may have been modified
     expression: |-
@@ -570,18 +674,21 @@ rules:
           rename.file.name in [ "authorized_keys", "authorized_keys2" ] && (rename.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
           || rename.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    agent_version: ''
   - id: ssh_authorized_keys_unlink
     description: SSH modified keys may have been modified
     expression: |-
       (
           unlink.file.name in [ "authorized_keys", "authorized_keys2" ] && (unlink.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    agent_version: ''
   - id: ssh_authorized_keys_utimes
     description: SSH modified keys may have been modified
     expression: |-
       (
           utimes.file.name in [ "authorized_keys", "authorized_keys2" ] && (utimes.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    agent_version: ''
   - id: ssl_certificate_tampering_chmod
     description: SSL certificates may have been tampered with
     expression: |-
@@ -591,6 +698,7 @@ rules:
       ) && chmod.mode != chmod.file.mode
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+    agent_version: ''
   - id: ssl_certificate_tampering_chown
     description: SSL certificates may have been tampered with
     expression: |-
@@ -600,6 +708,7 @@ rules:
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+    agent_version: ''
   - id: ssl_certificate_tampering_link
     description: SSL certificates may have been tampered with
     expression: |-
@@ -610,6 +719,7 @@ rules:
           && process.file.path != "/usr/sbin/update-ca-certificates"
           && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       )
+    agent_version: ''
   - id: ssl_certificate_tampering_open
     description: SSL certificates may have been tampered with
     expression: |-
@@ -620,6 +730,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+    agent_version: ''
   - id: ssl_certificate_tampering_rename
     description: SSL certificates may have been tampered with
     expression: |-
@@ -630,6 +741,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+    agent_version: ''
   - id: ssl_certificate_tampering_unlink
     description: SSL certificates may have been tampered with
     expression: |-
@@ -639,6 +751,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+    agent_version: ''
   - id: ssl_certificate_tampering_utimes
     description: SSL certificates may have been tampered with
     expression: |-
@@ -648,9 +761,11 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+    agent_version: ''
   - id: suspicious_container_client
     description: A container management utility was executed in a container
     expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
+    agent_version: ''
   - id: systemd_modification_chmod
     description: A service may have been modified without authorization
     expression: |-
@@ -658,6 +773,7 @@ rules:
           (chmod.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && chmod.mode != chmod.file.mode
+    agent_version: ''
   - id: systemd_modification_chown
     description: A service may have been modified without authorization
     expression: |-
@@ -665,6 +781,7 @@ rules:
           (chown.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+    agent_version: ''
   - id: systemd_modification_link
     description: A service may have been modified without authorization
     expression: |-
@@ -673,6 +790,7 @@ rules:
           || link.file.destination.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: systemd_modification_open
     description: A service may have been modified without authorization
     expression: |-
@@ -681,6 +799,7 @@ rules:
           (open.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: systemd_modification_rename
     description: A service may have been modified without authorization
     expression: |-
@@ -689,6 +808,7 @@ rules:
           || rename.file.destination.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: systemd_modification_unlink
     description: A service may have been modified without authorization
     expression: |-
@@ -696,6 +816,7 @@ rules:
           (unlink.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: systemd_modification_utimes
     description: A service may have been modified without authorization
     expression: |-
@@ -703,6 +824,8 @@ rules:
           (utimes.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
       )
+    agent_version: ''
   - id: user_created_tty
     description: A user was created via an interactive session
     expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !=""
+    agent_version: ''
