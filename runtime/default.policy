@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.6.1
+version: 1.7.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -24,7 +24,8 @@ macros:
        "/usr/bin/weave-net", "/usr/local/bin/weave-net",
        "/opt/cni/bin/loopback", "/opt/cni/bin/bridge"]
   - id: CREDENTIAL_BINARIES
-    expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd" ]'
+    expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd", "/usr/sbin/groupadd", "/usr/sbin/useradd", "/usr/sbin/usermod", "/usr/sbin/userdel",
+      "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
   - id: CRYPTOMINER_DOMAINS
     expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me", ~"*rplant.xyz"]'
   - id: DATABASE_PROCESSES
@@ -105,7 +106,7 @@ rules:
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
   - id: aws_eks_service_account_token_accessed
     description: The AWS EKS service account token was accessed
-    expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
   - id: aws_metadata_service
     description: The EC2 instance metadata service was called via a network utility using an interactive session
     expression: exec.comm in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
@@ -178,22 +179,22 @@ rules:
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (chmod.file.path in [ ~"/var/spool/cron/*" ])
+          (chmod.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && chmod.mode != chmod.file.mode
   - id: cron_at_job_creation_chown
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (chown.file.path in [ ~"/var/spool/cron/*" ])
+          (chown.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
   - id: cron_at_job_creation_link
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (link.file.path in [ ~"/var/spool/cron/*" ]
-          || link.file.destination.path in [ ~"/var/spool/cron/*" ])
+          (link.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ]
+          || link.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
   - id: cron_at_job_creation_open
@@ -201,29 +202,29 @@ rules:
     expression: |-
       (
           open.flags & (OPEN_CREATE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/var/spool/cron/*" ])
+          (open.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
   - id: cron_at_job_creation_rename
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (rename.file.path in [ ~"/var/spool/cron/*" ]
-          || rename.file.destination.path in [ ~"/var/spool/cron/*" ])
+          (rename.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ]
+          || rename.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
   - id: cron_at_job_creation_unlink
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (unlink.file.path in [ ~"/var/spool/cron/*" ])
+          (unlink.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
   - id: cron_at_job_creation_utimes
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (utimes.file.path in [ ~"/var/spool/cron/*" ])
+          (utimes.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
   - id: cryptominer_args
@@ -244,6 +245,12 @@ rules:
   - id: dirty_pipe_exploitation
     description: Potential Dirty pipe exploitation
     expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0
+  - id: dynamic_linker_config_unlink
+    description: A process unlinked a dynamic linker config file
+    expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"]
+  - id: dynamic_linker_config_write
+    description: A process wrote to a dynamic linker config file
+    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
@@ -264,7 +271,7 @@ rules:
       && process.ancestors.file.name == "java"
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
-    expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/*/token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
   - id: kernel_module_chmod
     description: A new kernel module was added
     expression: |-
@@ -336,11 +343,14 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+  - id: ld_preload_unusual_library_path
+    description: The LD_PRELOAD variable is populated by a link to a suspicious file directory
+    expression: exec.envs in [~"LD_PRELOAD=*/tmp/*" ,~"LD_PRELOAD=/dev/shm/*" ]
   - id: net_util
-    description: A network utility was executed from a suspicious location
+    description: A network utility was executed
     expression: "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id == \"\" && (exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ] || process.ancestors.comm != \"50-motd-news\") "
   - id: net_util_in_container
-    description: A network utility was executed from a suspicious location in a container
+    description: A network utility was executed in a container
     expression: "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id != \"\" && (exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ] || process.ancestors.comm != \"50-motd-news\") "
   - id: new_binary_execution_in_container
     description: A container executed a new a binary not found in the container image
@@ -442,8 +452,8 @@ rules:
           (utimes.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
   - id: passwd_execution
-    description: The passwd utility (commonly for account credential manipuation) was executed
-    expression: exec.file.path == "/usr/bin/passwd"
+    description: The passwd or chpasswd utility (commonly for account credential manipuation) was executed
+    expression: exec.file.path in ["/usr/bin/passwd", "/usr/sbin/chpasswd"]
   - id: paste_site
     description: A DNS lookup was done for a pastebin-like site
     expression: dns.question.name in PASTE_SITES && process.file.name != ""
@@ -537,6 +547,15 @@ rules:
   - id: selinux_disable_enforcement
     description: SELinux enforcement status was disabled
     expression: selinux.enforce.status in ["permissive", "disabled"]
+  - id: shell_history_deleted
+    description: Shell History was Deleted
+    expression: (unlink.file.name =~ ".*history") && process.comm not in  ["dockerd", "containerd"]
+  - id: shell_history_symlink
+    description: A symbolic link for shell history was created targeting /dev/null
+    expression: exec.comm == "ln" && exec.args in [~"*.*history*", "/dev/null"]
+  - id: shell_history_truncated
+    description: Shell History was Deleted
+    expression: (open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ ".*history" && process.comm == "truncate")
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
