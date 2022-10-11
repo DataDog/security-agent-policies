@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.7.0
+version: 1.7.1
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -123,7 +123,7 @@ rules:
           (chmod.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.destination.mode != chmod.file.mode
   - id: credential_modified_chown
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -131,7 +131,7 @@ rules:
           (chown.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: credential_modified_link
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -181,14 +181,18 @@ rules:
       (
           (chmod.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.destination.mode != chmod.file.mode
+      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+      && process.file.path != "/usr/bin/dockerd"
   - id: cron_at_job_creation_chown
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
           (chown.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+      && process.file.path != "/usr/bin/dockerd"
   - id: cron_at_job_creation_link
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -197,6 +201,8 @@ rules:
           || link.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+      && process.file.path != "/usr/bin/dockerd"
   - id: cron_at_job_creation_open
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -205,6 +211,8 @@ rules:
           (open.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+      && process.file.path != "/usr/bin/dockerd"
   - id: cron_at_job_creation_rename
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -213,6 +221,8 @@ rules:
           || rename.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+      && process.file.path != "/usr/bin/dockerd"
   - id: cron_at_job_creation_unlink
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -220,6 +230,8 @@ rules:
           (unlink.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+      && process.file.path != "/usr/bin/dockerd"
   - id: cron_at_job_creation_utimes
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -227,6 +239,8 @@ rules:
           (utimes.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
+      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+      && process.file.path != "/usr/bin/dockerd"
   - id: cryptominer_args
     description: A process launched with arguments associated with cryptominers
     expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args in [~"*stratum*"]
@@ -279,7 +293,7 @@ rules:
           (chmod.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.destination.mode != chmod.file.mode
   - id: kernel_module_chown
     description: A new kernel module was added
     expression: |-
@@ -287,7 +301,7 @@ rules:
           (chown.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: kernel_module_link
     description: A new kernel module was added
     expression: |-
@@ -360,13 +374,13 @@ rules:
     expression: |-
       (
           (chmod.file.path in [ "/etc/nsswitch.conf" ])
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.destination.mode != chmod.file.mode
   - id: nsswitch_conf_mod_chown
     description: nsswitch may have been modified without authorization
     expression: |-
       (
           (chown.file.path in [ "/etc/nsswitch.conf" ])
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: nsswitch_conf_mod_link
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -411,13 +425,13 @@ rules:
     expression: |-
       (
           (chmod.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.destination.mode != chmod.file.mode
   - id: pam_modification_chown
     description: PAM may have been modified without authorization
     expression: |-
       (
           (chown.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: pam_modification_link
     description: PAM may have been modified without authorization
     expression: |-
@@ -464,7 +478,7 @@ rules:
           (chmod.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.destination.mode != chmod.file.mode
   - id: pci_11_5_critical_binaries_chown
     description: Critical system binaries may have been modified
     expression: |-
@@ -472,7 +486,7 @@ rules:
           (chown.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: pci_11_5_critical_binaries_link
     description: Critical system binaries may have been modified
     expression: |-
@@ -555,19 +569,19 @@ rules:
     expression: exec.comm == "ln" && exec.args in [~"*.*history*", "/dev/null"]
   - id: shell_history_truncated
     description: Shell History was Deleted
-    expression: (open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ ".*history" && process.comm == "truncate")
+    expression: open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ ".*history" && open.file.path in [~"/root/*", ~"/home/**"] && process.file.name == "truncate"
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
       (
           chmod.file.name in [ "authorized_keys", "authorized_keys2" ] && (chmod.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.destination.mode != chmod.file.mode
   - id: ssh_authorized_keys_chown
     description: SSH modified keys may have been modified
     expression: |-
       (
           chown.file.name in [ "authorized_keys", "authorized_keys2" ] && (chown.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: ssh_authorized_keys_link
     description: SSH modified keys may have been modified
     expression: |-
@@ -607,18 +621,20 @@ rules:
       (
           (chmod.file.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.mode != chmod.file.destination.mode
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_chown
     description: SSL certificates may have been tampered with
     expression: |-
       (
           (chown.file.path in [ ~"/etc/ssl/certs/**" ])
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_link
     description: SSL certificates may have been tampered with
     expression: |-
@@ -628,6 +644,7 @@ rules:
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
           && process.file.path != "/usr/sbin/update-ca-certificates"
           && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+          && process.file.name !~ "runc*"
       )
   - id: ssl_certificate_tampering_open
     description: SSL certificates may have been tampered with
@@ -639,6 +656,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_rename
     description: SSL certificates may have been tampered with
     expression: |-
@@ -649,6 +667,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_unlink
     description: SSL certificates may have been tampered with
     expression: |-
@@ -658,6 +677,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_utimes
     description: SSL certificates may have been tampered with
     expression: |-
@@ -667,6 +687,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.file.name !~ "runc*"
   - id: suspicious_container_client
     description: A container management utility was executed in a container
     expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
@@ -676,14 +697,14 @@ rules:
       (
           (chmod.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && chmod.mode != chmod.file.mode
+      ) && chmod.file.destination.mode != chmod.file.mode
   - id: systemd_modification_chown
     description: A service may have been modified without authorization
     expression: |-
       (
           (chown.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && (chown.uid != chown.file.uid || chown.gid != chown.file.gid)
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: systemd_modification_link
     description: A service may have been modified without authorization
     expression: |-
