@@ -1,748 +1,655 @@
-# IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.7.1
-macros:
-  - id: APP_PACKAGE_MANAGERS
-    description: Package managers
-    expression: '["pip3", "pip", "npm"]'
-  - id: APT_PROCESSES
-    expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
-  - id: COMPILER_PROCESSES
-    expression: '["javac", "clang", "gcc","bcc"]'
-  - id: CONTAINER_CLIENTS
-    expression: '["docker", "kubectl"]'
-  - id: CONTAINER_PROCESSES
-    description: Processes related to operating containers and kubernetes clusters
-    expression: |-
-      ["/usr/bin/containerd", "/usr/local/bin/containerd",
-       "/usr/bin/docker", "/usr/local/bin/docker",
-       "/usr/bin/dockerd", "/usr/local/bin/dockerd",
-       "/usr/bin/docker-compose", "/usr/local/bin/docker-compose",
-       "/usr/bin/kubelet", "/usr/local/bin/kubelet",
-       "/usr/bin/kubectl", "/usr/local/bin/kubectl",
-       "/usr/bin/skydns", "/usr/local/bin/skydns",
-       "/usr/bin/exechealthz", "/usr/local/bin/exechealthz",
-       "/usr/bin/weave-net", "/usr/local/bin/weave-net",
-       "/opt/cni/bin/loopback", "/opt/cni/bin/bridge"]
-  - id: CREDENTIAL_BINARIES
-    expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd", "/usr/sbin/groupadd", "/usr/sbin/useradd", "/usr/sbin/usermod", "/usr/sbin/userdel",
-      "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
-  - id: CRYPTOMINER_DOMAINS
-    expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me", ~"*rplant.xyz"]'
-  - id: DATABASE_PROCESSES
-    description: Common database process names
-    expression: '["mysqld", "mongod", "postgres"]'
-  - id: DD_AGENT_PROCESSES
-    description: Processes that are a part of the Datadog Agent
-    expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/bin/agent/agent"]'
-  - id: FDB_SERVER_PROCESSES
-    expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
-  - id: GITLAB_PROCESSES
-    expression: '["/opt/gitlab/embedded/bin/bundle", "/opt/gitlab/embedded/bin/svlogd"]'
-  - id: HTTP_UTILS
-    description: Executables commonly used to fetch data over HTTP
-    expression: '["wget", "curl", "lwp-download"]'
-  - id: INTERPRETER_PROCESSES
-    description: Processes associated with interpreted programming languages (Python, Node.js)
-    expression: '[~"python2*", ~"python3*", "node", "perl", ~"ruby*"]'
-  - id: IPCHECK_DOMAINS
-    expression: '["icanhazip.com", "ip-api.com", "myip.opendns.com", "checkip.amazonaws.com", "whatismyip.akamai.com"]'
-  - id: NET_UTILS
-    description: Executables of common network utilites
-    expression: '["socat", "dig", "nslookup", "host", ~"netcat*", ~"nc*", "ncat"]'
-  - id: OPEN_CREATE_FLAGS
-    expression: O_CREAT|O_RDWR|O_WRONLY
-  - id: OPEN_WRITE_FLAGS
-    expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
-  - id: PACKAGE_MANAGERS
-    description: Package managers and container runtimes
-    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", "/usr/bin/yum", "/sbin/apk"]'
-  - id: PACKAGE_MANAGERS_AND_RUNTIMES
-    description: Package managers and container runtimes
-    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*"]'
-  - id: PASTE_SITES
-    expression: '["pastebin.com", "ghostbin.com", "termbin.com", "klgrth.io"]'
-  - id: SHELLS
-    description: Common Linux shell executables
-    expression: |-
-      [ "/bin/dash", "/usr/bin/dash",
-        "/bin/sh", "/bin/static-sh", "/usr/bin/sh",
-        "/usr/bin/bash",
-        "/bin/bash-static",
-        "/usr/bin/zsh",
-        "/usr/bin/ash",
-        "/usr/bin/csh",
-        "/usr/bin/ksh",
-        "/usr/bin/tcsh",
-        "/usr/lib/initramfs-tools/bin/busybox",
-        "/bin/busybox",
-        "/usr/bin/fish",
-        "/bin/ksh93",
-        "/bin/rksh", "/bin/rksh93",
-        "/bin/lksh",
-        "/bin/mksh", "/bin/mksh-static",
-        "/usr/bin/csharp",
-        "/bin/posh",
-        "/usr/bin/rc",
-        "/bin/sash",
-        "/usr/bin/yash",
-        "/bin/zsh5", "/bin/zsh5-static" ]
-  - id: SHELL_UTILS
-    description: Executables in the coreutils
-    expression: '["/bin/cat","/bin/chgrp","/bin/chmod","/bin/chown","/bin/cp","/bin/date","/bin/dd","/bin/df","/bin/dir","/bin/echo","/bin/ln","/bin/ls","/bin/mkdir","/bin/mknod","/bin/mktemp","/bin/mv","/bin/pwd","/bin/readlink","/bin/rm","/bin/rmdir","/bin/sleep","/bin/stty","/bin/sync","/bin/touch","/bin/uname","/bin/vdir","/usr/bin/arch","/usr/bin/b2sum","/usr/bin/base32","/usr/bin/base64","/usr/bin/basename","/usr/bin/chcon","/usr/bin/cksum","/usr/bin/comm","/usr/bin/csplit","/usr/bin/cut","/usr/bin/dircolors","/usr/bin/dirname","/usr/bin/du","/usr/bin/env","/usr/bin/expand","/usr/bin/expr","/usr/bin/factor","/usr/bin/fmt","/usr/bin/fold","/usr/bin/groups","/usr/bin/head","/usr/bin/hostid","/usr/bin/id","/usr/bin/install","/usr/bin/join","/usr/bin/link","/usr/bin/logname","/usr/bin/md5sum","/usr/bin/md5sum.textutils","/usr/bin/mkfifo","/usr/bin/nice","/usr/bin/nl","/usr/bin/nohup","/usr/bin/nproc","/usr/bin/numfmt","/usr/bin/od","/usr/bin/paste","/usr/bin/pathchk","/usr/bin/pinky","/usr/bin/pr","/usr/bin/printenv","/usr/bin/printf","/usr/bin/ptx","/usr/bin/realpath","/usr/bin/runcon","/usr/bin/seq","/usr/bin/sha1sum","/usr/bin/sha224sum","/usr/bin/sha256sum","/usr/bin/sha384sum","/usr/bin/sha512sum","/usr/bin/shred","/usr/bin/shuf","/usr/bin/sort","/usr/bin/split","/usr/bin/stat","/usr/bin/stdbuf","/usr/bin/sum","/usr/bin/tac","/usr/bin/tail","/usr/bin/tee","/usr/bin/test","/usr/bin/timeout","/usr/bin/tr","/usr/bin/truncate","/usr/bin/tsort","/usr/bin/tty","/usr/bin/unexpand","/usr/bin/uniq","/usr/bin/unlink","/usr/bin/users","/usr/bin/wc","/usr/bin/who","/usr/bin/whoami","/usr/sbin/chroot"]'
-  - id: SYSTEMD_FOLDERS
-    description: Package managers
-    expression: '[ ~"/lib/systemd/system/**", ~"/usr/lib/systemd/system/**", ~"/etc/systemd/system/**" ]'
-  - id: SYSTEMD_JOURNALD_PROCESSES
-    expression: '["/usr/lib/systemd/systemd-journald"]'
-  - id: SYSTEM_PACKAGE_MANAGERS
-    description: Package managers
-    expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/sbin/apk"]'
-  - id: WEBAPP_PROCESSES
-    description: Processes that commonly run web applications
-    expression: '["apache2", "nginx", ~"tomcat*", "httpd"]'
-rules:
-  - id: apparmor_modified_tty
-    description: An AppArmor profile was modified in an interactive session
-    expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
-  - id: aws_eks_service_account_token_accessed
-    description: The AWS EKS service account token was accessed
-    expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
-  - id: aws_metadata_service
-    description: The EC2 instance metadata service was called via a network utility using an interactive session
-    expression: exec.comm in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
-  - id: common_net_intrusion_util
-    description: A network utility (nmap) commonly used in intrusion attacks was executed
-    expression: exec.file.name == "nmap"
-  - id: compiler_in_container
-    description: A compiler was executed inside of a container
-    expression: (exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
-  - id: credential_modified_chmod
-    description: Sensitive credential files were modified using a non-standard tool
-    expression: |-
-      (
-          (chmod.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && chmod.file.destination.mode != chmod.file.mode
-  - id: credential_modified_chown
-    description: Sensitive credential files were modified using a non-standard tool
-    expression: |-
-      (
-          (chown.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-  - id: credential_modified_link
-    description: Sensitive credential files were modified using a non-standard tool
-    expression: |-
-      (
-          (link.file.path in [ "/etc/shadow", "/etc/gshadow" ]
-          || link.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: credential_modified_open
-    description: Sensitive credential files were modified using a non-standard tool
-    expression: |-
-      (
-          open.flags & ((O_CREAT|O_RDWR|O_WRONLY|O_TRUNC)) > 0 &&
-          (open.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: credential_modified_rename
-    description: Sensitive credential files were modified using a non-standard tool
-    expression: |-
-      (
-          (rename.file.path in [ "/etc/shadow", "/etc/gshadow" ]
-          || rename.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: credential_modified_unlink
-    description: Sensitive credential files were modified using a non-standard tool
-    expression: |-
-      (
-          (unlink.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: credential_modified_utimes
-    description: Sensitive credential files were modified using a non-standard tool
-    expression: |-
-      (
-          (utimes.file.path in [ "/etc/shadow", "/etc/gshadow" ])
-          && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: cron_at_job_creation_chmod
-    description: An unauthorized job was added to cron scheduling
-    expression: |-
-      (
-          (chmod.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
-          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      ) && chmod.file.destination.mode != chmod.file.mode
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
-  - id: cron_at_job_creation_chown
-    description: An unauthorized job was added to cron scheduling
-    expression: |-
-      (
-          (chown.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
-          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
-  - id: cron_at_job_creation_link
-    description: An unauthorized job was added to cron scheduling
-    expression: |-
-      (
-          (link.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ]
-          || link.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
-          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
-  - id: cron_at_job_creation_open
-    description: An unauthorized job was added to cron scheduling
-    expression: |-
-      (
-          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
-          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
-  - id: cron_at_job_creation_rename
-    description: An unauthorized job was added to cron scheduling
-    expression: |-
-      (
-          (rename.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ]
-          || rename.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
-          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
-  - id: cron_at_job_creation_unlink
-    description: An unauthorized job was added to cron scheduling
-    expression: |-
-      (
-          (unlink.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
-          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
-  - id: cron_at_job_creation_utimes
-    description: An unauthorized job was added to cron scheduling
-    expression: |-
-      (
-          (utimes.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
-          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
-      )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
-  - id: cryptominer_args
-    description: A process launched with arguments associated with cryptominers
-    expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args in [~"*stratum*"]
-  - id: database_shell_execution
-    description: A database application spawned a shell, shell utility, or HTTP utility
-    expression: |-
-      (exec.file.path in SHELLS ||
-       exec.comm in HTTP_UTILS ||
-       exec.file.path in SHELL_UTILS) &&
-      process.ancestors.file.name in DATABASE_PROCESSES &&
-      !(process.ancestors.file.name == "initdb" &&
-      exec.args == ~"*locale -a*")
-  - id: dirty_pipe_attempt
-    description: Potential Dirty pipe exploitation attempt
-    expression: (splice.pipe_entry_flag & PIPE_BUF_FLAG_CAN_MERGE) != 0 && (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) == 0
-  - id: dirty_pipe_exploitation
-    description: Potential Dirty pipe exploitation
-    expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0
-  - id: dynamic_linker_config_unlink
-    description: A process unlinked a dynamic linker config file
-    expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"]
-  - id: dynamic_linker_config_write
-    description: A process wrote to a dynamic linker config file
-    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0
-  - id: interactive_shell_in_container
-    description: An interactive shell was started inside of a container
-    expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
-  - id: interpreter_spawned_shell
-    description: An interpreted language spawned a shell or shell utility
-    expression: |-
-      (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
-      process.ancestors.file.name in INTERPRETER_PROCESSES
-  - id: ip_check_domain
-    description: A DNS lookup was done for a IP check service
-    expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
-  - id: java_shell_execution
-    description: A java process spawned a shell, shell utility, or HTTP utility
-    expression: |-
-      (exec.file.path in SHELLS ||
-       exec.comm in HTTP_UTILS ||
-       exec.file.path in SHELL_UTILS)
-      && process.ancestors.file.name == "java"
-  - id: k8s_pod_service_account_token_accessed
-    description: The Kubernetes pod service account token was accessed
-    expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
-  - id: kernel_module_chmod
-    description: A new kernel module was added
-    expression: |-
-      (
-          (chmod.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      ) && chmod.file.destination.mode != chmod.file.mode
-  - id: kernel_module_chown
-    description: A new kernel module was added
-    expression: |-
-      (
-          (chown.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-  - id: kernel_module_link
-    description: A new kernel module was added
-    expression: |-
-      (
-          (link.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ]
-          || link.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      )
-  - id: kernel_module_load
-    description: A kernel module was loaded
-    expression: load_module.name != ""
-  - id: kernel_module_load_container
-    description: A container loaded a new kernel module
-    expression: load_module.name != "" && container.id !=""
-  - id: kernel_module_load_from_memory
-    description: A kernel module was loaded from memory
-    expression: load_module.loaded_from_memory == true
-  - id: kernel_module_load_from_memory_container
-    description: A kernel module was loaded from memory inside a container
-    expression: load_module.loaded_from_memory == true && container.id !=""
-  - id: kernel_module_open
-    description: A new kernel module was added
-    expression: |-
-      (
-          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      )
-  - id: kernel_module_rename
-    description: A new kernel module was added
-    expression: |-
-      (
-          (rename.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ]
-          || rename.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      )
-  - id: kernel_module_unlink
-    description: A new kernel module was added
-    expression: |-
-      (
-          (unlink.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      )
-  - id: kernel_module_utimes
-    description: A new kernel module was added
-    expression: |-
-      (
-          (utimes.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
-      )
-  - id: ld_preload_unusual_library_path
-    description: The LD_PRELOAD variable is populated by a link to a suspicious file directory
-    expression: exec.envs in [~"LD_PRELOAD=*/tmp/*" ,~"LD_PRELOAD=/dev/shm/*" ]
-  - id: net_util
-    description: A network utility was executed
-    expression: "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id == \"\" && (exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ] || process.ancestors.comm != \"50-motd-news\") "
-  - id: net_util_in_container
-    description: A network utility was executed in a container
-    expression: "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id != \"\" && (exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ] || process.ancestors.comm != \"50-motd-news\") "
-  - id: new_binary_execution_in_container
-    description: A container executed a new a binary not found in the container image
-    expression: container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
-  - id: nsswitch_conf_mod_chmod
-    description: nsswitch may have been modified without authorization
-    expression: |-
-      (
-          (chmod.file.path in [ "/etc/nsswitch.conf" ])
-      ) && chmod.file.destination.mode != chmod.file.mode
-  - id: nsswitch_conf_mod_chown
-    description: nsswitch may have been modified without authorization
-    expression: |-
-      (
-          (chown.file.path in [ "/etc/nsswitch.conf" ])
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-  - id: nsswitch_conf_mod_link
-    description: nsswitch may have been modified without authorization
-    expression: |-
-      (
-          (link.file.path in [ "/etc/nsswitch.conf" ]
-          || link.file.destination.path in [ "/etc/nsswitch.conf" ])
-      )
-  - id: nsswitch_conf_mod_open
-    description: nsswitch may have been modified without authorization
-    expression: |-
-      (
-          open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
-          (open.file.path in [ "/etc/nsswitch.conf" ])
-      )
-  - id: nsswitch_conf_mod_rename
-    description: nsswitch may have been modified without authorization
-    expression: |-
-      (
-          (rename.file.path in [ "/etc/nsswitch.conf" ]
-          || rename.file.destination.path in [ "/etc/nsswitch.conf" ])
-      )
-  - id: nsswitch_conf_mod_unlink
-    description: nsswitch may have been modified without authorization
-    expression: |-
-      (
-          (unlink.file.path in [ "/etc/nsswitch.conf" ])
-      )
-  - id: nsswitch_conf_mod_utimes
-    description: nsswitch may have been modified without authorization
-    expression: |-
-      (
-          (utimes.file.path in [ "/etc/nsswitch.conf" ])
-      )
-  - id: omigod
-    description: Omiagent spawns a privileged child process
-    expression: exec.uid >= 0 && process.ancestors.file.name == "omiagent"
-  - id: package_management_in_container
-    description: Package management was detected in a container
-    expression: exec.file.path in SYSTEM_PACKAGE_MANAGERS && container.id != ""
-  - id: pam_modification_chmod
-    description: PAM may have been modified without authorization
-    expression: |-
-      (
-          (chmod.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      ) && chmod.file.destination.mode != chmod.file.mode
-  - id: pam_modification_chown
-    description: PAM may have been modified without authorization
-    expression: |-
-      (
-          (chown.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-  - id: pam_modification_link
-    description: PAM may have been modified without authorization
-    expression: |-
-      (
-          (link.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
-          || link.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      )
-  - id: pam_modification_open
-    description: PAM may have been modified without authorization
-    expression: |-
-      (
-          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      )
-  - id: pam_modification_rename
-    description: PAM may have been modified without authorization
-    expression: |-
-      (
-          (rename.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
-          || rename.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      )
-  - id: pam_modification_unlink
-    description: PAM may have been modified without authorization
-    expression: |-
-      (
-          (unlink.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      )
-  - id: pam_modification_utimes
-    description: PAM may have been modified without authorization
-    expression: |-
-      (
-          (utimes.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      )
-  - id: passwd_execution
-    description: The passwd or chpasswd utility (commonly for account credential manipuation) was executed
-    expression: exec.file.path in ["/usr/bin/passwd", "/usr/sbin/chpasswd"]
-  - id: paste_site
-    description: A DNS lookup was done for a pastebin-like site
-    expression: dns.question.name in PASTE_SITES && process.file.name != ""
-  - id: pci_11_5_critical_binaries_chmod
-    description: Critical system binaries may have been modified
-    expression: |-
-      (
-          (chmod.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-      ) && chmod.file.destination.mode != chmod.file.mode
-  - id: pci_11_5_critical_binaries_chown
-    description: Critical system binaries may have been modified
-    expression: |-
-      (
-          (chown.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-  - id: pci_11_5_critical_binaries_link
-    description: Critical system binaries may have been modified
-    expression: |-
-      (
-          (link.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
-          || link.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-      )
-  - id: pci_11_5_critical_binaries_open
-    description: Critical system binaries may have been modified
-    expression: |-
-      (
-          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-          open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
-          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS
-      )
-  - id: pci_11_5_critical_binaries_rename
-    description: Critical system binaries may have been modified
-    expression: |-
-      (
-          (rename.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
-          || rename.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-      )
-  - id: pci_11_5_critical_binaries_unlink
-    description: Critical system binaries may have been modified
-    expression: |-
-      (
-          (unlink.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-      )
-  - id: pci_11_5_critical_binaries_utimes
-    description: Critical system binaries may have been modified
-    expression: |-
-      (
-          (utimes.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
-          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-      )
-  - id: potential_cryptominer
-    description: A process resolved a DNS name associated with cryptomining activity
-    expression: dns.question.name in CRYPTOMINER_DOMAINS && process.file.name != ""
-  - id: potential_web_shell
-    description: A web application spawned a shell or shell utility
-    expression: |-
-      (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
-      (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*") &&
-      process.ancestors.comm not in APP_PACKAGE_MANAGERS
-  - id: ptrace_antidebug
-    description: A process uses an anti-debugging technique to block debuggers
-    expression: ptrace.request == PTRACE_TRACEME
-  - id: ptrace_injection
-    description: A process attempted to inject code into another process
-    expression: ptrace.request == PTRACE_POKETEXT || ptrace.request == PTRACE_POKEDATA || ptrace.request == PTRACE_POKEUSR
-  - id: pwnkit_privilege_escalation
-    description: A process was spawned with indicators of exploitation of CVE-2021-4034
-    expression: (exec.file.path == "/usr/bin/pkexec" && exec.envs in [~"*SHELL*", ~"*PATH*"] && exec.uid != 0)
-  - id: python_cli_code
-    description: Python code was provided on the command line
-    expression: exec.file.name == ~"python*" && exec.args_flags in ["c"]
-  - id: runc_modification
-    description: The runc binary was modified in a non-standard way
-    expression: |-
-      open.file.path in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc"]
-      && open.flags & OPEN_WRITE_FLAGS > 0
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
-  - id: selinux_disable_enforcement
-    description: SELinux enforcement status was disabled
-    expression: selinux.enforce.status in ["permissive", "disabled"]
-  - id: shell_history_deleted
-    description: Shell History was Deleted
-    expression: (unlink.file.name =~ ".*history") && process.comm not in  ["dockerd", "containerd"]
-  - id: shell_history_symlink
-    description: A symbolic link for shell history was created targeting /dev/null
-    expression: exec.comm == "ln" && exec.args in [~"*.*history*", "/dev/null"]
-  - id: shell_history_truncated
-    description: Shell History was Deleted
-    expression: open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ ".*history" && open.file.path in [~"/root/*", ~"/home/**"] && process.file.name == "truncate"
-  - id: ssh_authorized_keys_chmod
-    description: SSH modified keys may have been modified
-    expression: |-
-      (
-          chmod.file.name in [ "authorized_keys", "authorized_keys2" ] && (chmod.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      ) && chmod.file.destination.mode != chmod.file.mode
-  - id: ssh_authorized_keys_chown
-    description: SSH modified keys may have been modified
-    expression: |-
-      (
-          chown.file.name in [ "authorized_keys", "authorized_keys2" ] && (chown.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-  - id: ssh_authorized_keys_link
-    description: SSH modified keys may have been modified
-    expression: |-
-      (
-          link.file.name in [ "authorized_keys", "authorized_keys2" ] && (link.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
-          || link.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      )
-  - id: ssh_authorized_keys_open
-    description: SSH modified keys may have been modified
-    expression: |-
-      (
-          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-          open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      )
-  - id: ssh_authorized_keys_rename
-    description: SSH modified keys may have been modified
-    expression: |-
-      (
-          rename.file.name in [ "authorized_keys", "authorized_keys2" ] && (rename.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
-          || rename.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      )
-  - id: ssh_authorized_keys_unlink
-    description: SSH modified keys may have been modified
-    expression: |-
-      (
-          unlink.file.name in [ "authorized_keys", "authorized_keys2" ] && (unlink.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      )
-  - id: ssh_authorized_keys_utimes
-    description: SSH modified keys may have been modified
-    expression: |-
-      (
-          utimes.file.name in [ "authorized_keys", "authorized_keys2" ] && (utimes.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      )
-  - id: ssl_certificate_tampering_chmod
-    description: SSL certificates may have been tampered with
-    expression: |-
-      (
-          (chmod.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && chmod.file.mode != chmod.file.destination.mode
-      && process.file.path != "/usr/sbin/update-ca-certificates"
-      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
-      && process.file.name !~ "runc*"
-  - id: ssl_certificate_tampering_chown
-    description: SSL certificates may have been tampered with
-    expression: |-
-      (
-          (chown.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-      && process.file.path != "/usr/sbin/update-ca-certificates"
-      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
-      && process.file.name !~ "runc*"
-  - id: ssl_certificate_tampering_link
-    description: SSL certificates may have been tampered with
-    expression: |-
-      (
-          (link.file.path in [ ~"/etc/ssl/certs/**" ]
-          || link.file.destination.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.file.path != "/usr/sbin/update-ca-certificates"
-          && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
-          && process.file.name !~ "runc*"
-      )
-  - id: ssl_certificate_tampering_open
-    description: SSL certificates may have been tampered with
-    expression: |-
-      (
-          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-      && process.file.path != "/usr/sbin/update-ca-certificates"
-      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
-      && process.file.name !~ "runc*"
-  - id: ssl_certificate_tampering_rename
-    description: SSL certificates may have been tampered with
-    expression: |-
-      (
-          (rename.file.path in [ ~"/etc/ssl/certs/**" ]
-          || rename.file.destination.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-      && process.file.path != "/usr/sbin/update-ca-certificates"
-      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
-      && process.file.name !~ "runc*"
-  - id: ssl_certificate_tampering_unlink
-    description: SSL certificates may have been tampered with
-    expression: |-
-      (
-          (unlink.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-      && process.file.path != "/usr/sbin/update-ca-certificates"
-      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
-      && process.file.name !~ "runc*"
-  - id: ssl_certificate_tampering_utimes
-    description: SSL certificates may have been tampered with
-    expression: |-
-      (
-          (utimes.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-      && process.file.path != "/usr/sbin/update-ca-certificates"
-      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
-      && process.file.name !~ "runc*"
-  - id: suspicious_container_client
-    description: A container management utility was executed in a container
-    expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
-  - id: systemd_modification_chmod
-    description: A service may have been modified without authorization
-    expression: |-
-      (
-          (chmod.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && chmod.file.destination.mode != chmod.file.mode
-  - id: systemd_modification_chown
-    description: A service may have been modified without authorization
-    expression: |-
-      (
-          (chown.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-  - id: systemd_modification_link
-    description: A service may have been modified without authorization
-    expression: |-
-      (
-          (link.file.path in SYSTEMD_FOLDERS
-          || link.file.destination.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: systemd_modification_open
-    description: A service may have been modified without authorization
-    expression: |-
-      (
-          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
-          (open.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: systemd_modification_rename
-    description: A service may have been modified without authorization
-    expression: |-
-      (
-          (rename.file.path in SYSTEMD_FOLDERS
-          || rename.file.destination.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: systemd_modification_unlink
-    description: A service may have been modified without authorization
-    expression: |-
-      (
-          (unlink.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: systemd_modification_utimes
-    description: A service may have been modified without authorization
-    expression: |-
-      (
-          (utimes.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      )
-  - id: user_created_tty
-    description: A user was created via an interactive session
-    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !=""
+{
+  "version": "1.7.2",
+  "macros": [
+    {
+      "id": "APP_PACKAGE_MANAGERS",
+      "description": "Package managers",
+      "expression": "[\"pip3\", \"pip\", \"npm\"]"
+    },
+    {
+      "id": "APT_PROCESSES",
+      "expression": "[\"/usr/bin/unattended-upgrade\", \"/usr/bin/apt\"]"
+    },
+    {
+      "id": "COMMON_MODULES",
+      "description": "Common kernel modules",
+      "expression": "[\"nf_tables\", \"iptable_filter\", \"ip6tables_filter\", \"bpfilter\", \"ip6_tables\", \"ip6table_nat\", \"nf_reject_ipv4\", \"ipt_REJECT\"]"
+    },
+    {
+      "id": "COMPILER_PROCESSES",
+      "expression": "[\"javac\", \"clang\", \"gcc\",\"bcc\"]"
+    },
+    {
+      "id": "CONTAINER_CLIENTS",
+      "expression": "[\"docker\", \"kubectl\"]"
+    },
+    {
+      "id": "CONTAINER_PROCESSES",
+      "description": "Processes related to operating containers and kubernetes clusters",
+      "expression": "[\"/usr/bin/containerd\", \"/usr/local/bin/containerd\",\n \"/usr/bin/docker\", \"/usr/local/bin/docker\",\n \"/usr/bin/dockerd\", \"/usr/local/bin/dockerd\",\n \"/usr/bin/docker-compose\", \"/usr/local/bin/docker-compose\",\n \"/usr/bin/kubelet\", \"/usr/local/bin/kubelet\",\n \"/usr/bin/kubectl\", \"/usr/local/bin/kubectl\",\n \"/usr/bin/skydns\", \"/usr/local/bin/skydns\",\n \"/usr/bin/exechealthz\", \"/usr/local/bin/exechealthz\",\n \"/usr/bin/weave-net\", \"/usr/local/bin/weave-net\",\n \"/opt/cni/bin/loopback\", \"/opt/cni/bin/bridge\"]"
+    },
+    {
+      "id": "CREDENTIAL_BINARIES",
+      "expression": "[ \"/sbin/vipw\", \"/usr/sbin/vipw\", \"/sbin/vigr\", \"/usr/sbin/vigr\", \"/usr/bin/containerd\", \"/usr/local/bin/containerd\", \"/usr/bin/dockerd\", \"/usr/local/bin/dockerd\", \"/usr/sbin/groupadd\", \"/usr/sbin/useradd\", \"/usr/sbin/usermod\", \"/usr/sbin/userdel\", \"/usr/bin/gpasswd\", \"/usr/bin/chage\", \"/usr/sbin/chpasswd\", \"/usr/bin/passwd\" ]"
+    },
+    {
+      "id": "CRYPTOMINER_DOMAINS",
+      "expression": "[~\"*minexmr.com\", ~\"*nanopool.org\", ~\"*supportxmr.com\", ~\"*c3pool.com\", ~\"*p2pool.io\", ~\"*ethermine.org\", ~\"*f2pool.com\", ~\"*poolin.me\", ~\"*rplant.xyz\"]"
+    },
+    {
+      "id": "DATABASE_PROCESSES",
+      "description": "Common database process names",
+      "expression": "[\"mysqld\", \"mongod\", \"postgres\"]"
+    },
+    {
+      "id": "DD_AGENT_PROCESSES",
+      "description": "Processes that are a part of the Datadog Agent",
+      "expression": "[\"/opt/datadog-agent/embedded/bin/agent\", \"/opt/datadog-agent/embedded/bin/system-probe\", \"/opt/datadog-agent/embedded/bin/security-agent\", \"/opt/datadog-agent/embedded/bin/process-agent\", \"/opt/datadog-agent/bin/agent/agent\"]"
+    },
+    {
+      "id": "FDB_SERVER_PROCESSES",
+      "expression": "[\"/usr/sbin/fdbserver\", \"/usr/lib/foundationdb/backup_agent/backup_agent\"]"
+    },
+    {
+      "id": "GITLAB_PROCESSES",
+      "expression": "[\"/opt/gitlab/embedded/bin/bundle\", \"/opt/gitlab/embedded/bin/svlogd\"]"
+    },
+    {
+      "id": "HTTP_UTILS",
+      "description": "Executables commonly used to fetch data over HTTP",
+      "expression": "[\"wget\", \"curl\", \"lwp-download\"]"
+    },
+    {
+      "id": "INTERPRETER_PROCESSES",
+      "description": "Processes associated with interpreted programming languages (Python, Node.js)",
+      "expression": "[~\"python2*\", ~\"python3*\", \"node\", \"perl\", ~\"ruby*\"]"
+    },
+    {
+      "id": "IPCHECK_DOMAINS",
+      "expression": "[\"icanhazip.com\", \"ip-api.com\", \"myip.opendns.com\", \"checkip.amazonaws.com\", \"whatismyip.akamai.com\"]"
+    },
+    {
+      "id": "NETWORK_SCANNERS",
+      "description": "Commonly used network scanners",
+      "expression": "[\"nmap\", \"masscan\", \"fping\", \"zgrab\", \"zgrab2\", \"rustscan\"]"
+    },
+    {
+      "id": "NET_UTILS",
+      "description": "Executables of common network utilites",
+      "expression": "[\"socat\", \"dig\", \"nslookup\", \"host\", ~\"netcat*\", ~\"nc*\", \"ncat\"]"
+    },
+    {
+      "id": "OPEN_CREATE_FLAGS",
+      "expression": "O_CREAT|O_RDWR|O_WRONLY"
+    },
+    {
+      "id": "OPEN_WRITE_FLAGS",
+      "expression": "O_CREAT|O_TRUNC|O_RDWR|O_WRONLY"
+    },
+    {
+      "id": "PACKAGE_MANAGERS",
+      "description": "Package managers and container runtimes",
+      "expression": "[~\"/usr/bin/apt*\", \"/usr/bin/dpkg\", \"/usr/bin/rpm\", \"/usr/bin/unattended-upgrade\", \"/usr/bin/npm\", ~\"/usr/bin/pip*\", \"/usr/bin/yum\", \"/sbin/apk\"]"
+    },
+    {
+      "id": "PACKAGE_MANAGERS_AND_RUNTIMES",
+      "description": "Package managers and container runtimes",
+      "expression": "[~\"/usr/bin/apt*\", \"/usr/bin/dpkg\", \"/usr/bin/rpm\", \"/usr/bin/unattended-upgrade\", \"/usr/bin/containerd\", \"/usr/local/bin/containerd\", \"/usr/bin/dockerd\", \"/usr/bin/npm\", ~\"/usr/bin/pip*\"]"
+    },
+    {
+      "id": "PASTE_SITES",
+      "expression": "[\"pastebin.com\", \"ghostbin.com\", \"termbin.com\", \"klgrth.io\"]"
+    },
+    {
+      "id": "SHELLS",
+      "description": "Common Linux shell executables",
+      "expression": "[ \"/bin/dash\",\n  \"/usr/bin/dash\",\n  \"/bin/sh\",\n  \"/bin/static-sh\",\n  \"/usr/bin/sh\",\n  \"/bin/bash\",\n  \"/usr/bin/bash\",\n  \"/bin/bash-static\",\n  \"/usr/bin/zsh\",\n  \"/usr/bin/ash\",\n  \"/usr/bin/csh\",\n  \"/usr/bin/ksh\",\n  \"/usr/bin/tcsh\",\n  \"/usr/lib/initramfs-tools/bin/busybox\",\n  \"/bin/busybox\",\n  \"/usr/bin/fish\",\n  \"/bin/ksh93\",\n  \"/bin/rksh\",\n  \"/bin/rksh93\",\n  \"/bin/lksh\",\n  \"/bin/mksh\",\n  \"/bin/mksh-static\",\n  \"/usr/bin/csharp\",\n  \"/bin/posh\",\n  \"/usr/bin/rc\",\n  \"/bin/sash\",\n  \"/usr/bin/yash\",\n  \"/bin/zsh5\",\n  \"/bin/zsh5-static\" ]"
+    },
+    {
+      "id": "SHELL_UTILS",
+      "description": "Executables in the coreutils",
+      "expression": "[\"/bin/cat\",\"/bin/chgrp\",\"/bin/chmod\",\"/bin/chown\",\"/bin/cp\",\"/bin/date\",\"/bin/dd\",\"/bin/df\",\"/bin/dir\",\"/bin/echo\",\"/bin/ln\",\"/bin/ls\",\"/bin/mkdir\",\"/bin/mknod\",\"/bin/mktemp\",\"/bin/mv\",\"/bin/pwd\",\"/bin/readlink\",\"/bin/rm\",\"/bin/rmdir\",\"/bin/sleep\",\"/bin/stty\",\"/bin/sync\",\"/bin/touch\",\"/bin/uname\",\"/bin/vdir\",\"/usr/bin/arch\",\"/usr/bin/b2sum\",\"/usr/bin/base32\",\"/usr/bin/base64\",\"/usr/bin/basename\",\"/usr/bin/chcon\",\"/usr/bin/cksum\",\"/usr/bin/comm\",\"/usr/bin/csplit\",\"/usr/bin/cut\",\"/usr/bin/dircolors\",\"/usr/bin/dirname\",\"/usr/bin/du\",\"/usr/bin/env\",\"/usr/bin/expand\",\"/usr/bin/expr\",\"/usr/bin/factor\",\"/usr/bin/fmt\",\"/usr/bin/fold\",\"/usr/bin/groups\",\"/usr/bin/head\",\"/usr/bin/hostid\",\"/usr/bin/id\",\"/usr/bin/install\",\"/usr/bin/join\",\"/usr/bin/link\",\"/usr/bin/logname\",\"/usr/bin/md5sum\",\"/usr/bin/md5sum.textutils\",\"/usr/bin/mkfifo\",\"/usr/bin/nice\",\"/usr/bin/nl\",\"/usr/bin/nohup\",\"/usr/bin/nproc\",\"/usr/bin/numfmt\",\"/usr/bin/od\",\"/usr/bin/paste\",\"/usr/bin/pathchk\",\"/usr/bin/pinky\",\"/usr/bin/pr\",\"/usr/bin/printenv\",\"/usr/bin/printf\",\"/usr/bin/ptx\",\"/usr/bin/realpath\",\"/usr/bin/runcon\",\"/usr/bin/seq\",\"/usr/bin/sha1sum\",\"/usr/bin/sha224sum\",\"/usr/bin/sha256sum\",\"/usr/bin/sha384sum\",\"/usr/bin/sha512sum\",\"/usr/bin/shred\",\"/usr/bin/shuf\",\"/usr/bin/sort\",\"/usr/bin/split\",\"/usr/bin/stat\",\"/usr/bin/stdbuf\",\"/usr/bin/sum\",\"/usr/bin/tac\",\"/usr/bin/tail\",\"/usr/bin/tee\",\"/usr/bin/test\",\"/usr/bin/timeout\",\"/usr/bin/tr\",\"/usr/bin/truncate\",\"/usr/bin/tsort\",\"/usr/bin/tty\",\"/usr/bin/unexpand\",\"/usr/bin/uniq\",\"/usr/bin/unlink\",\"/usr/bin/users\",\"/usr/bin/wc\",\"/usr/bin/who\",\"/usr/bin/whoami\",\"/usr/sbin/chroot\"]"
+    },
+    {
+      "id": "SYSTEMD_FOLDERS",
+      "description": "Package managers",
+      "expression": "[ ~\"/lib/systemd/system/**\", ~\"/usr/lib/systemd/system/**\", ~\"/etc/systemd/system/**\" ]"
+    },
+    {
+      "id": "SYSTEMD_JOURNALD_PROCESSES",
+      "expression": "[\"/usr/lib/systemd/systemd-journald\"]"
+    },
+    {
+      "id": "SYSTEM_PACKAGE_MANAGERS",
+      "description": "Package managers",
+      "expression": "[\"/usr/bin/apt\", \"/usr/bin/apt-get\", \"/usr/bin/apt-config\", \"/usr/bin/dpkg\", \"/usr/bin/aptitude-curses\", \"/usr/bin/rpm\", \"/usr/bin/unattended-upgrade\", \"/sbin/apk\"]"
+    },
+    {
+      "id": "WEBAPP_PROCESSES",
+      "description": "Processes that commonly run web applications",
+      "expression": "[\"apache2\", \"nginx\", ~\"tomcat*\", \"httpd\"]"
+    }
+  ],
+  "rules": [
+    {
+      "id": "apparmor_modified_tty",
+      "description": "An AppArmor profile was modified in an interactive session",
+      "expression": "exec.file.name in [\"aa-disable\", \"aa-complain\", \"aa-audit\"] && exec.tty_name !=\"\""
+    },
+    {
+      "id": "aws_eks_service_account_token_accessed",
+      "description": "The AWS EKS service account token was accessed",
+      "expression": "open.file.path =~ \"/var/run/secrets/eks.amazonaws.com/serviceaccount/**\" && open.file.name == \"token\" && process.file.path not in DD_AGENT_PROCESSES"
+    },
+    {
+      "id": "aws_metadata_service",
+      "description": "The EC2 instance metadata service was called via a network utility using an interactive session",
+      "expression": "exec.comm in HTTP_UTILS && exec.args in [~\"*169.254.169.254*\"] && exec.tty_name != \"\""
+    },
+    {
+      "id": "common_net_intrusion_util",
+      "description": "A network utility (nmap) commonly used in intrusion attacks was executed",
+      "expression": "exec.file.name in NETWORK_SCANNERS && exec.args_flags not in [\"V\"]"
+    },
+    {
+      "id": "compiler_in_container",
+      "description": "A compiler was executed inside of a container",
+      "expression": "(exec.file.name in COMPILER_PROCESSES || (exec.file.name == \"go\" && exec.args in [~\"*build*\", ~\"*run*\"])) && container.id !=\"\" && process.ancestors.file.path != \"/usr/bin/cilium-agent\""
+    },
+    {
+      "id": "credential_modified_chmod",
+      "description": "Sensitive credential files were modified using a non-standard tool",
+      "expression": "(\n    (chmod.file.path in [ \"/etc/shadow\", \"/etc/gshadow\" ])\n    && process.file.path not in CREDENTIAL_BINARIES\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS\n) && chmod.file.destination.mode != chmod.file.mode"
+    },
+    {
+      "id": "credential_modified_chown",
+      "description": "Sensitive credential files were modified using a non-standard tool",
+      "expression": "(\n    (chown.file.path in [ \"/etc/shadow\", \"/etc/gshadow\" ])\n    && process.file.path not in CREDENTIAL_BINARIES\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)"
+    },
+    {
+      "id": "credential_modified_link",
+      "description": "Sensitive credential files were modified using a non-standard tool",
+      "expression": "(\n    (link.file.path in [ \"/etc/shadow\", \"/etc/gshadow\" ]\n    || link.file.destination.path in [ \"/etc/shadow\", \"/etc/gshadow\" ])\n    && process.file.path not in CREDENTIAL_BINARIES\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "credential_modified_open",
+      "description": "Sensitive credential files were modified using a non-standard tool",
+      "expression": "(\n    open.flags & ((O_CREAT|O_RDWR|O_WRONLY|O_TRUNC)) > 0 &&\n    (open.file.path in [ \"/etc/shadow\", \"/etc/gshadow\" ])\n    && process.file.path not in CREDENTIAL_BINARIES\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "credential_modified_rename",
+      "description": "Sensitive credential files were modified using a non-standard tool",
+      "expression": "(\n    (rename.file.path in [ \"/etc/shadow\", \"/etc/gshadow\" ]\n    || rename.file.destination.path in [ \"/etc/shadow\", \"/etc/gshadow\" ])\n    && process.file.path not in CREDENTIAL_BINARIES\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "credential_modified_unlink",
+      "description": "Sensitive credential files were modified using a non-standard tool",
+      "expression": "(\n    (unlink.file.path in [ \"/etc/shadow\", \"/etc/gshadow\" ])\n    && process.file.path not in CREDENTIAL_BINARIES\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "credential_modified_utimes",
+      "description": "Sensitive credential files were modified using a non-standard tool",
+      "expression": "(\n    (utimes.file.path in [ \"/etc/shadow\", \"/etc/gshadow\" ])\n    && process.file.path not in CREDENTIAL_BINARIES\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "cron_at_job_creation_chmod",
+      "description": "An unauthorized job was added to cron scheduling",
+      "expression": "(\n    (chmod.file.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ])\n    && process.file.path not in [ \"/usr/bin/at\", \"/usr/bin/crontab\" ]\n) && chmod.file.destination.mode != chmod.file.mode\n&& process.file.path not in SYSTEM_PACKAGE_MANAGERS\n&& process.file.path != \"/usr/bin/dockerd\""
+    },
+    {
+      "id": "cron_at_job_creation_chown",
+      "description": "An unauthorized job was added to cron scheduling",
+      "expression": "(\n    (chown.file.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ])\n    && process.file.path not in [ \"/usr/bin/at\", \"/usr/bin/crontab\" ]\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)\n&& process.file.path not in SYSTEM_PACKAGE_MANAGERS\n&& process.file.path != \"/usr/bin/dockerd\""
+    },
+    {
+      "id": "cron_at_job_creation_link",
+      "description": "An unauthorized job was added to cron scheduling",
+      "expression": "(\n    (link.file.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ]\n    || link.file.destination.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ])\n    && process.file.path not in [ \"/usr/bin/at\", \"/usr/bin/crontab\" ]\n)\n&& process.file.path not in SYSTEM_PACKAGE_MANAGERS\n&& process.file.path != \"/usr/bin/dockerd\""
+    },
+    {
+      "id": "cron_at_job_creation_open",
+      "description": "An unauthorized job was added to cron scheduling",
+      "expression": "(\n    open.flags & (OPEN_CREATE_FLAGS) > 0 &&\n    (open.file.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ])\n    && process.file.path not in [ \"/usr/bin/at\", \"/usr/bin/crontab\" ]\n)\n&& process.file.path not in SYSTEM_PACKAGE_MANAGERS\n&& process.file.path != \"/usr/bin/dockerd\""
+    },
+    {
+      "id": "cron_at_job_creation_rename",
+      "description": "An unauthorized job was added to cron scheduling",
+      "expression": "(\n    (rename.file.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ]\n    || rename.file.destination.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ])\n    && process.file.path not in [ \"/usr/bin/at\", \"/usr/bin/crontab\" ]\n)\n&& process.file.path not in SYSTEM_PACKAGE_MANAGERS\n&& process.file.path != \"/usr/bin/dockerd\""
+    },
+    {
+      "id": "cron_at_job_creation_unlink",
+      "description": "An unauthorized job was added to cron scheduling",
+      "expression": "(\n    (unlink.file.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ])\n    && process.file.path not in [ \"/usr/bin/at\", \"/usr/bin/crontab\" ]\n)\n&& process.file.path not in SYSTEM_PACKAGE_MANAGERS\n&& process.file.path != \"/usr/bin/dockerd\""
+    },
+    {
+      "id": "cron_at_job_creation_utimes",
+      "description": "An unauthorized job was added to cron scheduling",
+      "expression": "(\n    (utimes.file.path in [ ~\"/var/spool/cron/**\", ~\"/etc/cron.*/**\", ~\"/etc/crontab\" ])\n    && process.file.path not in [ \"/usr/bin/at\", \"/usr/bin/crontab\" ]\n)\n&& process.file.path not in SYSTEM_PACKAGE_MANAGERS\n&& process.file.path != \"/usr/bin/dockerd\""
+    },
+    {
+      "id": "cryptominer_args",
+      "description": "A process launched with arguments associated with cryptominers",
+      "expression": "exec.args_options in [~\"cpu-priority*\", ~\"donate-level*\"] || exec.args in [~\"*stratum+tcp*\"]"
+    },
+    {
+      "id": "database_shell_execution",
+      "description": "A database application spawned a shell, shell utility, or HTTP utility",
+      "expression": "(exec.file.path in SHELLS ||\n exec.comm in HTTP_UTILS ||\n exec.file.path in SHELL_UTILS) &&\nprocess.ancestors.file.name in DATABASE_PROCESSES &&\n!(process.ancestors.file.name == \"initdb\" &&\nexec.args == ~\"*locale -a*\") &&\n!(process.ancestors.file.name == \"postgres\" &&\nexec.args == ~\"*pg_wal*\")"
+    },
+    {
+      "id": "dirty_pipe_attempt",
+      "description": "Potential Dirty pipe exploitation attempt",
+      "expression": "(splice.pipe_entry_flag & PIPE_BUF_FLAG_CAN_MERGE) != 0 && (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) == 0 && (process.uid != 0 && process.gid != 0)"
+    },
+    {
+      "id": "dirty_pipe_exploitation",
+      "description": "Potential Dirty pipe exploitation",
+      "expression": "(splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0  && (process.uid != 0 && process.gid != 0)"
+    },
+    {
+      "id": "dynamic_linker_config_unlink",
+      "description": "A process unlinked a dynamic linker config file",
+      "expression": "unlink.file.path in [\"/etc/ld.so.preload\", \"/etc/ld.so.conf\", ~\"/etc/ld.so.conf.d/*.conf\"]"
+    },
+    {
+      "id": "dynamic_linker_config_write",
+      "description": "A process wrote to a dynamic linker config file",
+      "expression": "open.file.path in [\"/etc/ld.so.preload\", \"/etc/ld.so.conf\", \"/etc/ld.so.conf.d/*.conf\"] && open.flags & (OPEN_WRITE_FLAGS) > 0"
+    },
+    {
+      "id": "interactive_shell_in_container",
+      "description": "An interactive shell was started inside of a container",
+      "expression": "exec.file.path in SHELLS && exec.args_flags in [\"i\"] && container.id !=\"\""
+    },
+    {
+      "id": "interpreter_spawned_shell",
+      "description": "An interpreted language spawned a shell or shell utility",
+      "expression": "(exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&\nprocess.ancestors.file.name in INTERPRETER_PROCESSES"
+    },
+    {
+      "id": "ip_check_domain",
+      "description": "A DNS lookup was done for a IP check service",
+      "expression": "dns.question.name in IPCHECK_DOMAINS && process.file.name != \"\""
+    },
+    {
+      "id": "java_shell_execution",
+      "description": "A java process spawned a shell, shell utility, or HTTP utility",
+      "expression": "(exec.file.path in SHELLS ||\n exec.comm in HTTP_UTILS ||\n exec.file.path in SHELL_UTILS)\n&& process.ancestors.file.name == \"java\""
+    },
+    {
+      "id": "k8s_pod_service_account_token_accessed",
+      "description": "The Kubernetes pod service account token was accessed",
+      "expression": "open.file.path =~ \"/var/run/secrets/kubernetes.io/serviceaccount/**\" && open.file.name == \"token\" && process.file.path not in DD_AGENT_PROCESSES"
+    },
+    {
+      "id": "kernel_module_chmod",
+      "description": "A new kernel module was added",
+      "expression": "(\n    (chmod.file.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != \"/usr/bin/kmod\"\n) && chmod.file.destination.mode != chmod.file.mode"
+    },
+    {
+      "id": "kernel_module_chown",
+      "description": "A new kernel module was added",
+      "expression": "(\n    (chown.file.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != \"/usr/bin/kmod\"\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)"
+    },
+    {
+      "id": "kernel_module_link",
+      "description": "A new kernel module was added",
+      "expression": "(\n    (link.file.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ]\n    || link.file.destination.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != \"/usr/bin/kmod\"\n)"
+    },
+    {
+      "id": "kernel_module_load",
+      "description": "A kernel module was loaded",
+      "expression": "load_module.name not in COMMON_MODULES && process.ancestors.file.name not in [~\"falcon*\", \"unattended-upgrade\", \"apt.systemd.daily\", \"xtables-legacy-multi\", \"ssm-agent-worker\"]"
+    },
+    {
+      "id": "kernel_module_load_container",
+      "description": "A container loaded a new kernel module",
+      "expression": "load_module.name != \"\" && container.id !=\"\""
+    },
+    {
+      "id": "kernel_module_load_from_memory",
+      "description": "A kernel module was loaded from memory",
+      "expression": "load_module.loaded_from_memory == true"
+    },
+    {
+      "id": "kernel_module_load_from_memory_container",
+      "description": "A kernel module was loaded from memory inside a container",
+      "expression": "load_module.loaded_from_memory == true && container.id !=\"\""
+    },
+    {
+      "id": "kernel_module_open",
+      "description": "A new kernel module was added",
+      "expression": "(\n    open.flags & (OPEN_WRITE_FLAGS) > 0 &&\n    (open.file.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != \"/usr/bin/kmod\"\n)"
+    },
+    {
+      "id": "kernel_module_rename",
+      "description": "A new kernel module was added",
+      "expression": "(\n    (rename.file.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ]\n    || rename.file.destination.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != \"/usr/bin/kmod\"\n)"
+    },
+    {
+      "id": "kernel_module_unlink",
+      "description": "A new kernel module was added",
+      "expression": "(\n    (unlink.file.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != \"/usr/bin/kmod\"\n)"
+    },
+    {
+      "id": "kernel_module_utimes",
+      "description": "A new kernel module was added",
+      "expression": "(\n    (utimes.file.path in [ ~\"/lib/modules/**\", ~\"/usr/lib/modules/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n    && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != \"/usr/bin/kmod\"\n)"
+    },
+    {
+      "id": "ld_preload_unusual_library_path",
+      "description": "The LD_PRELOAD variable is populated by a link to a suspicious file directory",
+      "expression": "exec.envs in [~\"LD_PRELOAD=*/tmp/*\" ,~\"LD_PRELOAD=/dev/shm/*\" ]"
+    },
+    {
+      "id": "net_util",
+      "description": "A network utility was executed",
+      "expression": "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id == \"\" && exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ]"
+    },
+    {
+      "id": "net_util_in_container",
+      "description": "A network utility was executed in a container",
+      "expression": "(exec.comm in NET_UTILS ||\n exec.comm in HTTP_UTILS) &&\ncontainer.id != \"\" && exec.args not in [ ~\"*localhost*\", ~\"*127.0.0.1*\", ~\"*motd.ubuntu.com*\" ]"
+    },
+    {
+      "id": "new_binary_execution_in_container",
+      "description": "A container executed a new a binary not found in the container image",
+      "expression": "container.id != \"\" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != \"\""
+    },
+    {
+      "id": "nsswitch_conf_mod_chmod",
+      "description": "nsswitch may have been modified without authorization",
+      "expression": "(\n    (chmod.file.path in [ \"/etc/nsswitch.conf\" ])\n) && chmod.file.destination.mode != chmod.file.mode"
+    },
+    {
+      "id": "nsswitch_conf_mod_chown",
+      "description": "nsswitch may have been modified without authorization",
+      "expression": "(\n    (chown.file.path in [ \"/etc/nsswitch.conf\" ])\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)"
+    },
+    {
+      "id": "nsswitch_conf_mod_link",
+      "description": "nsswitch may have been modified without authorization",
+      "expression": "(\n    (link.file.path in [ \"/etc/nsswitch.conf\" ]\n    || link.file.destination.path in [ \"/etc/nsswitch.conf\" ])\n)"
+    },
+    {
+      "id": "nsswitch_conf_mod_open",
+      "description": "nsswitch may have been modified without authorization",
+      "expression": "(\n    open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&\n    (open.file.path in [ \"/etc/nsswitch.conf\" ])\n)"
+    },
+    {
+      "id": "nsswitch_conf_mod_rename",
+      "description": "nsswitch may have been modified without authorization",
+      "expression": "(\n    (rename.file.path in [ \"/etc/nsswitch.conf\" ]\n    || rename.file.destination.path in [ \"/etc/nsswitch.conf\" ])\n)"
+    },
+    {
+      "id": "nsswitch_conf_mod_unlink",
+      "description": "nsswitch may have been modified without authorization",
+      "expression": "(\n    (unlink.file.path in [ \"/etc/nsswitch.conf\" ])\n)"
+    },
+    {
+      "id": "nsswitch_conf_mod_utimes",
+      "description": "nsswitch may have been modified without authorization",
+      "expression": "(\n    (utimes.file.path in [ \"/etc/nsswitch.conf\" ])\n)"
+    },
+    {
+      "id": "omigod",
+      "description": "Omiagent spawns a privileged child process",
+      "expression": "exec.uid >= 0 && process.ancestors.file.name == \"omiagent\""
+    },
+    {
+      "id": "package_management_in_container",
+      "description": "Package management was detected in a container",
+      "expression": "exec.file.path in SYSTEM_PACKAGE_MANAGERS && container.id != \"\""
+    },
+    {
+      "id": "pam_modification_chmod",
+      "description": "PAM may have been modified without authorization",
+      "expression": "(\n    (chmod.file.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ])\n) && chmod.file.destination.mode != chmod.file.mode"
+    },
+    {
+      "id": "pam_modification_chown",
+      "description": "PAM may have been modified without authorization",
+      "expression": "(\n    (chown.file.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ])\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)"
+    },
+    {
+      "id": "pam_modification_link",
+      "description": "PAM may have been modified without authorization",
+      "expression": "(\n    (link.file.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ]\n    || link.file.destination.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ])\n)"
+    },
+    {
+      "id": "pam_modification_open",
+      "description": "PAM may have been modified without authorization",
+      "expression": "(\n    open.flags & (OPEN_WRITE_FLAGS) > 0 &&\n    (open.file.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ])\n)"
+    },
+    {
+      "id": "pam_modification_rename",
+      "description": "PAM may have been modified without authorization",
+      "expression": "(\n    (rename.file.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ]\n    || rename.file.destination.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ])\n)"
+    },
+    {
+      "id": "pam_modification_unlink",
+      "description": "PAM may have been modified without authorization",
+      "expression": "(\n    (unlink.file.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ])\n)"
+    },
+    {
+      "id": "pam_modification_utimes",
+      "description": "PAM may have been modified without authorization",
+      "expression": "(\n    (utimes.file.path in [ ~\"/etc/pam.d/**\", \"/etc/pam.conf\" ])\n)"
+    },
+    {
+      "id": "passwd_execution",
+      "description": "The passwd or chpasswd utility was used to modify an account password",
+      "expression": "exec.file.path in [\"/usr/bin/passwd\", \"/usr/sbin/chpasswd\"] && exec.args_flags not in [\"S\", \"status\"]"
+    },
+    {
+      "id": "paste_site",
+      "description": "A DNS lookup was done for a pastebin-like site",
+      "expression": "dns.question.name in PASTE_SITES && process.file.name != \"\""
+    },
+    {
+      "id": "pci_11_5_critical_binaries_chmod",
+      "description": "Critical system binaries may have been modified",
+      "expression": "(\n    (chmod.file.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ])\n    && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n    && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n) && chmod.file.destination.mode != chmod.file.mode"
+    },
+    {
+      "id": "pci_11_5_critical_binaries_chown",
+      "description": "Critical system binaries may have been modified",
+      "expression": "(\n    (chown.file.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ])\n    && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n    && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)"
+    },
+    {
+      "id": "pci_11_5_critical_binaries_link",
+      "description": "Critical system binaries may have been modified",
+      "expression": "(\n    (link.file.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ]\n    || link.file.destination.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ])\n    && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n    && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n)"
+    },
+    {
+      "id": "pci_11_5_critical_binaries_open",
+      "description": "Critical system binaries may have been modified",
+      "expression": "(\n    open.flags & (OPEN_WRITE_FLAGS) > 0 &&\n    open.file.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ]\n    && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n    && process.ancestors.file.path not in PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "pci_11_5_critical_binaries_rename",
+      "description": "Critical system binaries may have been modified",
+      "expression": "(\n    (rename.file.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ]\n    || rename.file.destination.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ])\n    && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n    && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n)"
+    },
+    {
+      "id": "pci_11_5_critical_binaries_unlink",
+      "description": "Critical system binaries may have been modified",
+      "expression": "(\n    (unlink.file.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ])\n    && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n    && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n)"
+    },
+    {
+      "id": "pci_11_5_critical_binaries_utimes",
+      "description": "Critical system binaries may have been modified",
+      "expression": "(\n    (utimes.file.path in [ ~\"/bin/*\", ~\"/sbin/*\", ~\"/usr/bin/*\", ~\"/usr/sbin/*\", ~\"/usr/local/bin/*\", ~\"/usr/local/sbin/*\", ~\"/boot/**\" ])\n    && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n    && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES\n)"
+    },
+    {
+      "id": "potential_cryptominer",
+      "description": "A process resolved a DNS name associated with cryptomining activity",
+      "expression": "dns.question.name in CRYPTOMINER_DOMAINS && process.file.name != \"\""
+    },
+    {
+      "id": "potential_web_shell",
+      "description": "A web application spawned a shell or shell utility",
+      "expression": "(exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&\n(process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ \"php*\") &&\nprocess.ancestors.comm not in APP_PACKAGE_MANAGERS"
+    },
+    {
+      "id": "ptrace_antidebug",
+      "description": "A process uses an anti-debugging technique to block debuggers",
+      "expression": "ptrace.request == PTRACE_TRACEME"
+    },
+    {
+      "id": "ptrace_injection",
+      "description": "A process attempted to inject code into another process",
+      "expression": "ptrace.request == PTRACE_POKETEXT || ptrace.request == PTRACE_POKEDATA || ptrace.request == PTRACE_POKEUSR"
+    },
+    {
+      "id": "pwnkit_privilege_escalation",
+      "description": "A process was spawned with indicators of exploitation of CVE-2021-4034",
+      "expression": "(exec.file.path == \"/usr/bin/pkexec\" && exec.envs in [~\"*SHELL*\", ~\"*PATH*\"] && exec.envs not in [~\"*DISPLAY*\", ~\"*DESKTOP_SESSION*\"] && exec.uid != 0)"
+    },
+    {
+      "id": "python_cli_code",
+      "description": "Python code was provided on the command line",
+      "expression": "exec.file.name == ~\"python*\" && exec.args_flags in [\"c\"] && exec.args in [~\"-c*SOCK_STREAM\", ~\"-c*subprocess\", \"-c*/bash\", \"-c*/bin/sh\", \"-c*pty.spawn\"]"
+    },
+    {
+      "id": "runc_modification",
+      "description": "The runc binary was modified in a non-standard way",
+      "expression": "open.file.path in [\"/usr/bin/runc\", \"/usr/sbin/runc\", \"/usr/bin/docker-runc\"]\n&& open.flags & OPEN_WRITE_FLAGS > 0\n&& process.file.path not in SYSTEM_PACKAGE_MANAGERS\n&& process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS"
+    },
+    {
+      "id": "selinux_disable_enforcement",
+      "description": "SELinux enforcement status was disabled",
+      "expression": "selinux.enforce.status in [\"permissive\", \"disabled\"]"
+    },
+    {
+      "id": "shell_history_deleted",
+      "description": "Shell History was Deleted",
+      "expression": "(unlink.file.name =~ \".*history\") && process.comm not in  [\"dockerd\", \"containerd\"]"
+    },
+    {
+      "id": "shell_history_symlink",
+      "description": "A symbolic link for shell history was created targeting /dev/null",
+      "expression": "exec.comm == \"ln\" && exec.args in [~\"*.*history*\", \"/dev/null\"]"
+    },
+    {
+      "id": "shell_history_truncated",
+      "description": "Shell History was Deleted",
+      "expression": "open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ \".*history\" && open.file.path in [~\"/root/*\", ~\"/home/**\"] && process.file.name == \"truncate\""
+    },
+    {
+      "id": "ssh_authorized_keys_chmod",
+      "description": "SSH modified keys may have been modified",
+      "expression": "(\n    chmod.file.name in [ \"authorized_keys\", \"authorized_keys2\" ] && (chmod.file.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ])\n) && chmod.file.destination.mode != chmod.file.mode"
+    },
+    {
+      "id": "ssh_authorized_keys_chown",
+      "description": "SSH modified keys may have been modified",
+      "expression": "(\n    chown.file.name in [ \"authorized_keys\", \"authorized_keys2\" ] && (chown.file.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ])\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)"
+    },
+    {
+      "id": "ssh_authorized_keys_link",
+      "description": "SSH modified keys may have been modified",
+      "expression": "(\n    link.file.name in [ \"authorized_keys\", \"authorized_keys2\" ] && (link.file.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ]\n    || link.file.destination.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ])\n)"
+    },
+    {
+      "id": "ssh_authorized_keys_open",
+      "description": "SSH modified keys may have been modified",
+      "expression": "(\n    open.flags & (OPEN_WRITE_FLAGS) > 0 &&\n    open.file.name in [ \"authorized_keys\", \"authorized_keys2\" ] && (open.file.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ])\n)"
+    },
+    {
+      "id": "ssh_authorized_keys_rename",
+      "description": "SSH modified keys may have been modified",
+      "expression": "(\n    rename.file.name in [ \"authorized_keys\", \"authorized_keys2\" ] && (rename.file.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ]\n    || rename.file.destination.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ])\n)"
+    },
+    {
+      "id": "ssh_authorized_keys_unlink",
+      "description": "SSH modified keys may have been modified",
+      "expression": "(\n    unlink.file.name in [ \"authorized_keys\", \"authorized_keys2\" ] && (unlink.file.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ])\n)"
+    },
+    {
+      "id": "ssh_authorized_keys_utimes",
+      "description": "SSH modified keys may have been modified",
+      "expression": "(\n    utimes.file.name in [ \"authorized_keys\", \"authorized_keys2\" ] && (utimes.file.path in [ ~\"/root/.ssh/*\", ~\"/home/*/.ssh/*\", ~\"/var/lib/*/.ssh/*\" ])\n)"
+    },
+    {
+      "id": "ssl_certificate_tampering_chmod",
+      "description": "SSL certificates may have been tampered with",
+      "expression": "(\n    (chmod.file.path in [ ~\"/etc/ssl/certs/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n) && chmod.file.mode != chmod.file.destination.mode\n&& process.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.file.name !~ \"runc*\""
+    },
+    {
+      "id": "ssl_certificate_tampering_chown",
+      "description": "SSL certificates may have been tampered with",
+      "expression": "(\n    (chown.file.path in [ ~\"/etc/ssl/certs/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)\n&& process.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.file.name !~ \"runc*\""
+    },
+    {
+      "id": "ssl_certificate_tampering_link",
+      "description": "SSL certificates may have been tampered with",
+      "expression": "(\n    (link.file.path in [ ~\"/etc/ssl/certs/**\" ]\n    || link.file.destination.path in [ ~\"/etc/ssl/certs/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n    && process.file.path != \"/usr/sbin/update-ca-certificates\"\n    && process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\n    && process.file.name !~ \"runc*\"\n)"
+    },
+    {
+      "id": "ssl_certificate_tampering_open",
+      "description": "SSL certificates may have been tampered with",
+      "expression": "(\n    open.flags & (OPEN_CREATE_FLAGS) > 0 &&\n    (open.file.path in [ ~\"/etc/ssl/certs/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)\n&& process.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.file.name !~ \"runc*\""
+    },
+    {
+      "id": "ssl_certificate_tampering_rename",
+      "description": "SSL certificates may have been tampered with",
+      "expression": "(\n    (rename.file.path in [ ~\"/etc/ssl/certs/**\" ]\n    || rename.file.destination.path in [ ~\"/etc/ssl/certs/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)\n&& process.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.file.name !~ \"runc*\""
+    },
+    {
+      "id": "ssl_certificate_tampering_unlink",
+      "description": "SSL certificates may have been tampered with",
+      "expression": "(\n    (unlink.file.path in [ ~\"/etc/ssl/certs/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)\n&& process.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.file.name !~ \"runc*\""
+    },
+    {
+      "id": "ssl_certificate_tampering_utimes",
+      "description": "SSL certificates may have been tampered with",
+      "expression": "(\n    (utimes.file.path in [ ~\"/etc/ssl/certs/**\" ])\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)\n&& process.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.file.name !~ \"runc*\""
+    },
+    {
+      "id": "suspicious_container_client",
+      "description": "A container management utility was executed in a container",
+      "expression": "exec.file.name in CONTAINER_CLIENTS && container.id != \"\""
+    },
+    {
+      "id": "systemd_modification_chmod",
+      "description": "A service may have been modified without authorization",
+      "expression": "(\n    (chmod.file.path in SYSTEMD_FOLDERS)\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n) && chmod.file.destination.mode != chmod.file.mode"
+    },
+    {
+      "id": "systemd_modification_chown",
+      "description": "A service may have been modified without authorization",
+      "expression": "(\n    (chown.file.path in SYSTEMD_FOLDERS)\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)"
+    },
+    {
+      "id": "systemd_modification_link",
+      "description": "A service may have been modified without authorization",
+      "expression": "(\n    (link.file.path in SYSTEMD_FOLDERS\n    || link.file.destination.path in SYSTEMD_FOLDERS)\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "systemd_modification_open",
+      "description": "A service may have been modified without authorization",
+      "expression": "(\n    open.flags & (OPEN_CREATE_FLAGS) > 0 &&\n    (open.file.path in SYSTEMD_FOLDERS)\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "systemd_modification_rename",
+      "description": "A service may have been modified without authorization",
+      "expression": "(\n    (rename.file.path in SYSTEMD_FOLDERS\n    || rename.file.destination.path in SYSTEMD_FOLDERS)\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "systemd_modification_unlink",
+      "description": "A service may have been modified without authorization",
+      "expression": "(\n    (unlink.file.path in SYSTEMD_FOLDERS)\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "systemd_modification_utimes",
+      "description": "A service may have been modified without authorization",
+      "expression": "(\n    (utimes.file.path in SYSTEMD_FOLDERS)\n    && process.file.path not in SYSTEM_PACKAGE_MANAGERS\n)"
+    },
+    {
+      "id": "user_created_tty",
+      "description": "A user was created via an interactive session",
+      "expression": "exec.file.name in [\"useradd\", \"newusers\", \"adduser\"] && exec.tty_name !=\"\""
+    }
+  ]
+}
