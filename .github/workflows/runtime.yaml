@@ -39,7 +39,7 @@ jobs:
         id: tagextractor
         run: |
           TAG=$(echo "${{ matrix.image }}" | cut -d ":" -f 2)
-          echo "::set-output name=TAG::$TAG"
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
       - name: ${{ matrix.image }} - check policies
         id: checkpolicies

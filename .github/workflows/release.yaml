@@ -24,7 +24,7 @@ jobs:
 
       - name: Extract Tag name
         id: tag_name_extractor
-        run: echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
+        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
