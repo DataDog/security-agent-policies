@@ -5,7 +5,7 @@ framework: cis-docker
 version: 1.2.0
 rules:
   - id: cis-docker-1.2.0-1.2.1
-    description: A separate partition for containers has been created
+    description: Docker local storage is mounted on a separate disk partition
     scope:
       - docker
     input:
@@ -19,7 +19,7 @@ rules:
       - file-matches-regexp.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.2
-    description: Only trusted users are allowed to control Docker daemon
+    description: Only the root account and Docker group members can control the Docker daemon
     scope:
       - docker
     input:
@@ -30,7 +30,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.3
-    description: Auditing is configured for the Docker daemon
+    description: Auditing for Docker Daemon executable is configured
     scope:
       - docker
     input:
@@ -43,7 +43,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.4
-    description: /var/lib/docker auditing is configured
+    description: Auditing for Docker local storage is configured
     scope:
       - docker
     input:
@@ -56,7 +56,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.5
-    description: /etc/docker auditing is configured
+    description: Auditing is configured for Docker-related files
     scope:
       - docker
     input:
@@ -69,7 +69,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.6
-    description: docker.service auditing is configured
+    description: Auditing for the docker.service file is configured
     scope:
       - docker
     input:
@@ -82,7 +82,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.7
-    description: docker.socket auditing is configured
+    description: Auditing for the docker.socket file is configured
     scope:
       - docker
     input:
@@ -95,7 +95,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.8
-    description: /etc/default/docker auditing is configured
+    description: Auditing for the default Docker configuration file is configured
     scope:
       - docker
     input:
@@ -108,7 +108,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.9
-    description: /etc/sysconfig/docker auditing is configured
+    description: Auditing for the default Docker configuration file is configured - RHEL
     scope:
       - docker
     input:
@@ -121,7 +121,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.10
-    description: /etc/docker/daemon.json auditing is configured
+    description: Auditing for the Docker daemon configuration file is configured
     scope:
       - docker
     imports:
@@ -134,7 +134,7 @@ rules:
       - constants:
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-1.2.11
-    description: /usr/bin/containerd auditing is configured
+    description: Auditing for the containerd executable is configured
     scope:
       - docker
     input:
@@ -147,7 +147,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-1.2.12
-    description: /usr/sbin/runc auditing is configured
+    description: Auditing for the runc executable is configured
     scope:
       - docker
     input:
@@ -160,7 +160,7 @@ rules:
       - audit-rule-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-2.1
-    description: Network traffic is restricted between containers on the default bridge
+    description: Network traffic is restricted between containers on the default network bridge
     scope:
       - docker
     input:
@@ -173,7 +173,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-2.2
-    description: Logging level is set to 'info'
+    description: Docker daemon logging level is set to 'info'
     scope:
       - docker
     input:
@@ -187,7 +187,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-2.3
-    description: Docker is allowed to make changes to iptables
+    description: Docker is authorized to make firewall configuration changes
     scope:
       - docker
     skipOnKubernetes: true
@@ -202,7 +202,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-2.4
-    description: Insecure registries are not used
+    description: Private registry uses TLS encryption
     scope:
       - docker
     imports:
@@ -216,7 +216,7 @@ rules:
       - constants:
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-2.5
-    description: aufs storage driver is not used
+    description: Docker does not use AUFS storage driver
     scope:
       - docker
     imports:
@@ -230,7 +230,7 @@ rules:
       - constants:
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-2.6
-    description: TLS authentication for Docker daemon is configured
+    description: TLS authentication is configured for Docker daemon
     scope:
       - docker
     skipOnKubernetes: true
@@ -248,7 +248,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-3.1
-    description: docker.service file ownership is set to root:root
+    description: Only the root account and group have ownership of the docker.service file
     scope:
       - docker
     imports:
@@ -262,7 +262,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.2
-    description: docker.service file permissions are appropriately set
+    description: Only the root account has write permissions to the docker.service file
     scope:
       - docker
     imports:
@@ -275,7 +275,7 @@ rules:
           max_permissions: '644'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.3
-    description: docker.socket file ownership is set to root:root
+    description: Only the root account and group have ownership over the docker.socket file
     scope:
       - docker
     imports:
@@ -289,7 +289,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.4
-    description: docker.socket file permissions are set to 644 or more restrictive
+    description: Only the root account has write permissions to the docker.socket file
     scope:
       - docker
     imports:
@@ -302,7 +302,7 @@ rules:
           max_permissions: '644'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.5
-    description: /etc/docker directory ownership is set to root:root
+    description: Docker related files are owned by the root account and group
     scope:
       - docker
     imports:
@@ -316,7 +316,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.6
-    description: /etc/docker directory permissions are set to 755 or more restrictively
+    description: Docker related files cannot be altered by non-owners
     scope:
       - docker
     input:
@@ -329,7 +329,7 @@ rules:
       - file-permissions-common.rego
       - helpers.rego
   - id: cis-docker-1.2.0-3.7
-    description: Registry certificate file ownership is set to root:root
+    description: Only the root account and group have ownership over the registry certificate file
     scope:
       - docker
     input:
@@ -342,7 +342,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-3.8
-    description: Registry certificate file permissions are set to 444 or more restrictively
+    description: Registry certificate file permissions are set to read-only or more restrictive
     scope:
       - docker
     input:
@@ -356,7 +356,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-3.9
-    description: TLS CA certificate file ownership is set to root:root
+    description: Only the root account and group have ownership of the TLS CA certificate file
     scope:
       - docker
     skipOnKubernetes: true
@@ -371,7 +371,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.10
-    description: TLS CA certificate file permissions are set to 444 or more restrictively
+    description: TLS CA certificate file permissions are set to read-only or more restrictive
     scope:
       - docker
     skipOnKubernetes: true
@@ -385,7 +385,7 @@ rules:
           max_permissions: '444'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.11
-    description: Docker server certificate file ownership is set to root:root
+    description: Only the root account and group have ownership of the Docker server certificate file
     scope:
       - docker
     skipOnKubernetes: true
@@ -400,7 +400,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.12
-    description: Docker server certificate file permissions are set to 444 or more restrictively
+    description: Docker server certificate file permissions are set to read-only or more restrictive
     scope:
       - docker
     skipOnKubernetes: true
@@ -414,7 +414,7 @@ rules:
           max_permissions: '444'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.13
-    description: Docker server certificate key file ownership is set to root:root
+    description: Only the root account and group have ownership of the Docker server certificate key file
     scope:
       - docker
     skipOnKubernetes: true
@@ -429,7 +429,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.14
-    description: Docker server certificate key file permissions are set to 400
+    description: Only the owner of the server certificate key file can read its contents
     scope:
       - docker
     skipOnKubernetes: true
@@ -443,7 +443,7 @@ rules:
           max_permissions: '400'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.15
-    description: Docker socket file ownership is set to root:docker
+    description: Only the root account and Docker group members have ownership of the Docker socket file
     scope:
       - docker
     imports:
@@ -457,7 +457,7 @@ rules:
           group: docker
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.16
-    description: Docker socket file permissions are set to 660 or more restrictively
+    description: Only the root account and Docker group members can read and write to the Docker socket file
     scope:
       - docker
     imports:
@@ -470,7 +470,7 @@ rules:
           max_permissions: '660'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.17
-    description: daemon.json file ownership is set to root:root
+    description: Only the root account and group have ownership of the daemon.json file
     scope:
       - docker
     imports:
@@ -484,7 +484,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.18
-    description: daemon.json file permissions are set to 644 or more restrictive
+    description: Only the root account has write permissions to the daemon.json file
     scope:
       - docker
     imports:
@@ -497,7 +497,7 @@ rules:
           max_permissions: '644'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.19
-    description: /etc/default/docker file ownership is set to root:root
+    description: Default Docker configuration file is owned by the root account and group
     scope:
       - docker
     imports:
@@ -511,7 +511,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.20
-    description: /etc/sysconfig/docker file ownership is set to root:root
+    description: Default Docker configuration file is owned by the root account and group - RHEL
     scope:
       - docker
     imports:
@@ -525,7 +525,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.21
-    description: /etc/sysconfig/docker file permissions are set to 644 or more restrictively
+    description: Default Docker configuration file cannot be altered by non-owners - RHEL
     scope:
       - docker
     imports:
@@ -538,7 +538,7 @@ rules:
           max_permissions: '644'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.22
-    description: /etc/default/docker file permissions are set to 644 or more restrictively
+    description: Default Docker configuration file cannot be altered by non-owners
     scope:
       - docker
     imports:
@@ -551,7 +551,7 @@ rules:
           max_permissions: '644'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-4.1
-    description: A user for the container has been created
+    description: Containers do not use the root user
     scope:
       - docker
     skipOnKubernetes: true
@@ -566,7 +566,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-4.6
-    description: HEALTHCHECK instructions have been added to container images
+    description: Container image includes HealthCheck instructions
     scope:
       - docker
     skipOnKubernetes: true
@@ -580,7 +580,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-5.1
-    description: An AppArmor Profile is enabled
+    description: Containers have an AppArmor profile enabled
     scope:
       - docker
     skipOnKubernetes: true
@@ -595,7 +595,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.2
-    description: SELinux security options are set
+    description: SELinux security options are configured
     scope:
       - docker
     skipOnKubernetes: true
@@ -612,7 +612,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-docker-1.2.0-5.3
-    description: Linux kernel capabilities are restricted within containers
+    description: Linux kernel capabilities are restricted to only those which are required
     scope:
       - docker
     skipOnKubernetes: true
@@ -672,7 +672,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.9
-    description: Host's network namespace is not shared
+    description: Host's network namespace is not shared with containers
     scope:
       - docker
     imports:
@@ -686,7 +686,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.10
-    description: Memory usage for containers is limited
+    description: Container has memory usage limits configured
     scope:
       - docker
     skipOnKubernetes: true
@@ -701,7 +701,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.11
-    description: CPU priority is set appropriately on containers
+    description: CPU priorities are set to ensure critical containers do not become unresponsive
     scope:
       - docker
     skipOnKubernetes: true
@@ -716,7 +716,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.12
-    description: Container's root filesystem is mounted as read only
+    description: Container root file sytem is set to read-only
     scope:
       - docker
     skipOnKubernetes: true
@@ -731,7 +731,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.14
-    description: '''on-failure'' container restart policy is set to ''5'''
+    description: Restart attempts on container failure is limited to 5 attempts
     scope:
       - docker
     skipOnKubernetes: true
@@ -746,7 +746,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.15
-    description: Host's process namespace is not shared
+    description: Host's process namespace is isolated from containers
     scope:
       - docker
     skipOnKubernetes: true
@@ -761,7 +761,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.16
-    description: Host's IPC namespace is not shared
+    description: Host's IPC namespace is isolated from containers
     scope:
       - docker
     skipOnKubernetes: true
@@ -791,7 +791,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.21
-    description: Default seccomp profile is not Disabled
+    description: Seccomp profiles are enabled for filtering incoming system calls
     scope:
       - docker
     skipOnKubernetes: true
@@ -806,7 +806,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.24
-    description: cgroup usage is confirmed
+    description: Containers use the cgroup configured in Docker
     scope:
       - docker
     skipOnKubernetes: true
@@ -836,7 +836,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.26
-    description: Container health is checked at runtime
+    description: Container health is monitored when not supported by default
     scope:
       - docker
     skipOnKubernetes: true
@@ -851,7 +851,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.28
-    description: PIDs cgroup limit is used
+    description: Container's PIDs cgroup limit parameter is set
     scope:
       - docker
     skipOnKubernetes: true
@@ -866,7 +866,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.30
-    description: Host's user namespaces are not shared
+    description: Host's user namespaces are not shared with containers
     scope:
       - docker
     skipOnKubernetes: true
@@ -881,7 +881,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.31
-    description: Docker socket is not mounted inside any containers
+    description: Docker socket is not allowed to mount inside any containers
     scope:
       - docker
     skipOnKubernetes: true
