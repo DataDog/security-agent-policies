@@ -1,4 +1,5 @@
-Error: 17 errors occurred:
+Error: 19 errors occurred:
+	* rule `common_net_intrusion_util` definition error: rule compilation error: field `exec.args_flags` not found
 	* rule `cryptominer_args` definition error: rule compilation error: field `exec.args_options` not found
 	* rule `dirty_pipe_attempt` definition error: rule compilation error: field `splice.pipe_entry_flag` not found
 	* rule `dirty_pipe_exploitation` definition error: rule compilation error: field `splice.pipe_exit_flag` not found
@@ -10,6 +11,7 @@ Error: 17 errors occurred:
 	* rule `kernel_module_load_from_memory_container` definition error: rule compilation error: field `load_module.loaded_from_memory` not found
 	* rule `new_binary_execution_in_container` definition error: syntax error: 1:89: unexpected token "s"
 	* rule `omigod` definition error: syntax error: 1:11: unexpected token "=" (expected "!" | "not" | "-" | "^" | <ident> | <int> | <string> | <pattern> | "(")
+	* rule `passwd_execution` definition error: rule compilation error: field `exec.args_flags` not found
 	* rule `paste_site` definition error: rule compilation error: field `dns.question.name` not found
 	* rule `potential_cryptominer` definition error: rule compilation error: field `dns.question.name` not found
 	* rule `ptrace_antidebug` definition error: rule compilation error: field `ptrace.request` not found
