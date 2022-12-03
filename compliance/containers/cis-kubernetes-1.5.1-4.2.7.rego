@@ -28,28 +28,30 @@ valid_config(f) {
 	not h.has_key(f.content, "makeIPTablesUtilChains")
 }
 
-compliant {
-	valid_process_args(input.process)
+compliant(process) {
+	valid_process_args(process)
 }
 
-compliant {
-	valid_process_and_config(input.process, input.file)
+compliant(process) {
+	valid_process_and_config(process, input.file)
 }
 
 findings[f] {
-	compliant
+	process := input.process[_]
+	compliant(process)
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		h.process_data(input.process),
+		h.process_data(process),
 	)
 }
 
 findings[f] {
-	not compliant
+	process := input.process[_]
+	not compliant(process)
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		h.process_data(input.process),
+		h.process_data(process),
 	)
 }

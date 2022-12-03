@@ -4,20 +4,22 @@ import data.datadog as dd
 import data.helpers as h
 
 findings[f] {
-	valid_process(input.process)
+	process := input.process[_]
+	valid_process(process)
 	f := dd.passed_finding(
 		h.resource_type,
 		h.resource_id,
-		h.process_data(input.process),
+		h.process_data(process),
 	)
 }
 
 findings[f] {
-	not valid_process(input.process)
+	process := input.process[_]
+	not valid_process(process)
 	f := dd.failing_finding(
 		h.resource_type,
 		h.resource_id,
-		h.process_data(input.process),
+		h.process_data(process),
 	)
 }
 
