@@ -22,7 +22,7 @@ findings[f] {
 }
 
 compliant {
-	p := input.process
+	p := input.process[_]
 	h.has_key(p.flags, "--tlsverify")
 	p.flags["--tlscacert"] != ""
 	p.flags["--tlscert"] != ""
@@ -30,7 +30,7 @@ compliant {
 }
 
 compliant {
-	p := input.process
+	p := input.process[_]
 	f := input.file
 	not h.has_key(p.flags, "--tlsverify")
 	f.content.tlsverify == true

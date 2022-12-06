@@ -21,7 +21,8 @@ compliant(file, process) {
 }
 
 findings[f] {
-	compliant(input.file, input.process)
+	process := input.process[_]
+	compliant(input.file, process)
 	f := dd.passed_finding(
 		"docker_daemon",
 		h.docker_daemon_resource_id,
@@ -30,7 +31,8 @@ findings[f] {
 }
 
 findings[f] {
-	not compliant(input.file, input.process)
+	process := input.process[_]
+	not compliant(input.file, process)
 	f := dd.failing_finding(
 		"docker_daemon",
 		h.docker_daemon_resource_id,
