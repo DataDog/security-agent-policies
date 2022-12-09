@@ -1,14 +1,23 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.7.2
+version: 1.8.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
     expression: '["pip3", "pip", "npm"]'
   - id: APT_PROCESSES
     expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
+  - id: AWS_RISKY_URI
+    description: AWS IMDS URI's known for exploitation
+    expression: '[~"*169.254.169.254/latest/meta-data/iam/security-credentials/*", "*169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI", ~"*169.254.170.2/*/credentials?id=*"]'
+  - id: AZURE_RISKY_URI
+    description: Azure IMDS URI's known for exploitation
+    expression: '[~"*169.254.169.254/metadata/identity/oauth2/token?api-version=*"]'
   - id: COMMON_MODULES
     description: Common kernel modules
-    expression: '["nf_tables", "iptable_filter", "ip6tables_filter", "bpfilter", "ip6_tables", "ip6table_nat", "nf_reject_ipv4", "ipt_REJECT"]'
+    expression: '["nf_tables", "iptable_filter", "ip6table_filter", "bpfilter", "ip6_tables", "ip6table_nat", "nf_reject_ipv4", "ipt_REJECT", "iptable_raw"]'
+  - id: COMMON_TRACERS
+    description: Common tracers
+    expression: '["dlv", "dlv-linux-amd64", "strace", "gdb", "lldb-server"]'
   - id: COMPILER_PROCESSES
     expression: '["javac", "clang", "gcc","bcc"]'
   - id: CONTAINER_CLIENTS
@@ -39,6 +48,9 @@ macros:
     expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/bin/agent/agent"]'
   - id: FDB_SERVER_PROCESSES
     expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
+  - id: GCP_RISKY_URI
+    description: GCP IMDS URI's known for exploitation
+    expression: '[~"*metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token", ~"*169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token"]'
   - id: GITLAB_PROCESSES
     expression: '["/opt/gitlab/embedded/bin/bundle", "/opt/gitlab/embedded/bin/svlogd"]'
   - id: HTTP_UTILS
@@ -120,12 +132,29 @@ rules:
   - id: aws_eks_service_account_token_accessed
     description: The AWS EKS service account token was accessed
     expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
+  - id: aws_imds
+    description: An AWS IMDS was called via a network utility
+    expression: exec.comm in HTTP_UTILS && exec.args in AWS_RISKY_URI
   - id: aws_metadata_service
     description: The EC2 instance metadata service was called via a network utility using an interactive session
     expression: exec.comm in HTTP_UTILS && exec.args in [~"*169.254.169.254*"] && exec.tty_name != ""
+  - id: azure_imds
+    description: An Azure IMDS was called via a network utility
+    expression: exec.comm in HTTP_UTILS && exec.args in AZURE_RISKY_URI
   - id: common_net_intrusion_util
     description: A network utility (nmap) commonly used in intrusion attacks was executed
-    expression: exec.file.name in NETWORK_SCANNERS && exec.args_flags not in ["V"]
+    expression: exec.file.name in NETWORK_SCANNERS && exec.args_flags not in ["V", "version"]
+  - id: compile_after_delivery
+    description: A compiler wrote a suspicious file in a container
+    expression: |-
+      open.flags & O_CREAT > 0
+      && (
+        (open.file.path =~ "/tmp/**" && open.file.name in [~"*.ko", ~".*"])
+        || open.file.path in [~"/var/tmp/**", ~"/dev/shm/**", ~"/root/**", ~"*/bin/*", ~"/usr/local/lib/**"]
+      )
+      && (process.comm in COMPILER_PROCESSES || process.ancestors.comm in COMPILER_PROCESSES)
+      && process.file.name not in ["pip", ~"python*"]
+      && container.id != ""
   - id: compiler_in_container
     description: A compiler was executed inside of a container
     expression: (exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
@@ -276,18 +305,16 @@ rules:
     expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0  && (process.uid != 0 && process.gid != 0)
   - id: dynamic_linker_config_unlink
     description: A process unlinked a dynamic linker config file
-    expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"]
+    expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && process.file.path != "/usr/bin/dpkg"
   - id: dynamic_linker_config_write
     description: A process wrote to a dynamic linker config file
     expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0
+  - id: gcp_imds
+    description: An GCP IMDS was called via a network utility
+    expression: exec.comm in HTTP_UTILS && exec.args in GCP_RISKY_URI
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
-  - id: interpreter_spawned_shell
-    description: An interpreted language spawned a shell or shell utility
-    expression: |-
-      (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
-      process.ancestors.file.name in INTERPRETER_PROCESSES
   - id: ip_check_domain
     description: A DNS lookup was done for a IP check service
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
@@ -375,12 +402,26 @@ rules:
   - id: ld_preload_unusual_library_path
     description: The LD_PRELOAD variable is populated by a link to a suspicious file directory
     expression: exec.envs in [~"LD_PRELOAD=*/tmp/*" ,~"LD_PRELOAD=/dev/shm/*" ]
+  - id: net_file_download
+    description: A suspicious file was written by a network utility
+    expression: |-
+      open.flags & O_CREAT > 0 && process.comm in HTTP_UTILS
+      && (
+        (open.file.path =~ "/tmp/**" && open.file.name in [~"*.sh", ~"*.c", ~"*.so", ~"*.ko"])
+        || open.file.path in [~"/usr/**", ~"/lib/**", ~"/etc/**", ~"/var/tmp/**", ~"/dev/shm/**"]
+      )
+  - id: net_unusual_request
+    description: Network utility executed with suspicious URI
+    expression: 'exec.comm in HTTP_UTILS && exec.args in [~"*.php*", ~"*.jpg*"] '
   - id: net_util
     description: A network utility was executed
     expression: |-
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+  - id: net_util_exfiltration
+    description: Exfiltration attempt via network utility
+    expression: "exec.comm in HTTP_UTILS && \nexec.args in [~\"*--post-file=*\", ~\"*--post-data*\", ~\"*-X POST*\", ~\"*--request POST*\", ~\"*-T*\", ~\"*--upload-file*\" ] "
   - id: net_util_in_container
     description: A network utility was executed in a container
     expression: |-
@@ -562,7 +603,7 @@ rules:
       process.ancestors.comm not in APP_PACKAGE_MANAGERS
   - id: ptrace_antidebug
     description: A process uses an anti-debugging technique to block debuggers
-    expression: ptrace.request == PTRACE_TRACEME
+    expression: ptrace.request == PTRACE_TRACEME && process.file.name != ""
   - id: ptrace_injection
     description: A process attempted to inject code into another process
     expression: ptrace.request == PTRACE_POKETEXT || ptrace.request == PTRACE_POKEDATA || ptrace.request == PTRACE_POKEUSR
@@ -571,7 +612,7 @@ rules:
     expression: (exec.file.path == "/usr/bin/pkexec" && exec.envs in [~"*SHELL*", ~"*PATH*"] && exec.envs not in [~"*DISPLAY*", ~"*DESKTOP_SESSION*"] && exec.uid != 0)
   - id: python_cli_code
     description: Python code was provided on the command line
-    expression: exec.file.name == ~"python*" && exec.args_flags in ["c"] && exec.args in [~"-c*SOCK_STREAM", ~"-c*subprocess", "-c*/bash", "-c*/bin/sh", "-c*pty.spawn"]
+    expression: exec.file.name == ~"python*" && exec.args_flags in ["c"] && exec.args in [~"*-c*SOCK_STREAM*", ~"*-c*subprocess*", "*-c*/bash*", "*-c*/bin/sh*", "*-c*pty.spawn*"]
   - id: runc_modification
     description: The runc binary was modified in a non-standard way
     expression: |-
@@ -766,4 +807,4 @@ rules:
       )
   - id: user_created_tty
     description: A user was created via an interactive session
-    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !=""
+    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS
