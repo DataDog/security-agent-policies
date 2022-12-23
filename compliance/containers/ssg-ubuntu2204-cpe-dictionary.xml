@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<cpe-dict:cpe-list xmlns:cpe-dict="http://cpe.mitre.org/dictionary/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd">
+  <cpe-dict:cpe-item name="cpe:/a:aarch64_arch">
+    <cpe-dict:title xml:lang="en-us">System architecture is AARCH64</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-proc_sys_kernel_osrelease_arch_aarch64:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:audit">
+    <cpe-dict:title xml:lang="en-us">Package audit is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_audit_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:chrony">
+    <cpe-dict:title xml:lang="en-us">Package chrony is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_chrony_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:gdm">
+    <cpe-dict:title xml:lang="en-us">Package gdm is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_gdm_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:grub2">
+    <cpe-dict:title xml:lang="en-us">Package grub2 is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_grub2_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:login_defs">
+    <cpe-dict:title xml:lang="en-us">Package providing /etc/login.defs is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_login_defs:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:machine">
+    <cpe-dict:title xml:lang="en-us">Bare-metal or Virtual Machine</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_is_a_machine:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:non-uefi">
+    <cpe-dict:title xml:lang="en-us">System boot mode is non-UEFI</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-system_boot_mode_is_non_uefi:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:not_s390x_arch">
+    <cpe-dict:title xml:lang="en-us">System architecture is not S390X</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-proc_sys_kernel_osrelease_arch_not_s390x:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:ntp">
+    <cpe-dict:title xml:lang="en-us">Package ntp is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_ntp_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:pam">
+    <cpe-dict:title xml:lang="en-us">Package pam is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_pam_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:postfix">
+    <cpe-dict:title xml:lang="en-us">Package postfix is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_postfix_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:s390x_arch">
+    <cpe-dict:title xml:lang="en-us">System architecture is S390X</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:sssd">
+    <cpe-dict:title xml:lang="en-us">Package sssd-common is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_sssd-common_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:sudo">
+    <cpe-dict:title xml:lang="en-us">Package sudo is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_sudo_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:systemd">
+    <cpe-dict:title xml:lang="en-us">Package systemd is installed</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_systemd_package:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:uefi">
+    <cpe-dict:title xml:lang="en-us">System boot mode is UEFI</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-system_boot_mode_is_uefi:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/a:wifi-iface">
+    <cpe-dict:title xml:lang="en-us">WiFi interface is present</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_env_has_wifi_interface:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+  <cpe-dict:cpe-item name="cpe:/o:canonical:ubuntu_linux:22.04::~~lts~~~">
+    <cpe-dict:title xml:lang="en-us">Ubuntu release 22.04 (Focal Fossa)</cpe-dict:title>
+    <cpe-dict:check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-ubuntu2204-cpe-oval.xml">oval:ssg-installed_OS_is_ubuntu2204:def:1</cpe-dict:check>
+  </cpe-dict:cpe-item>
+</cpe-dict:cpe-list>

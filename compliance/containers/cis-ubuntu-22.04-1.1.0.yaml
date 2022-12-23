@@ -1,0 +1,2073 @@
+schema:
+  version: 1.0.0
+name: CIS Ubuntu Linux 22.04
+framework: cis-ubuntu-22.04
+version: 1.1.0
+rules:
+  - id: xccdf_org.ssgproject.content_rule_no_duplicate_uids
+    description: Ensure no duplicate UIDs exist
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_duplicate_uids
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
+    description: Set Password Maximum Age
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_disable_tcp_forwarding
+    description: Disable SSH TCP Forwarding
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_tcp_forwarding
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_at
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - at
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_at
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_partition_for_var_log_audit
+    description: Ensure /var/log/audit Located On Separate Partition
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var_log_audit
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_creat
+    description: Record Unsuccessful Access Attempts to Files - creat
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_creat
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
+    description: Remove Rsh Trust Files
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
+    description: Set Password Warning Age
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_apparmor_installed
+    description: Ensure AppArmor is installed
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_apparmor_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_sctp_disabled
+    description: Disable SCTP Support
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_sctp_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
+    description: User Initialization Files Must Be Group-Owned By The Primary User
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
+    description: Use Only FIPS 140-2 Validated Ciphers
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
+    description: Uninstall vsftpd Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
+    description: Enable rsyslog Service
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
+    description: Verify Group Who Owns cron.hourly
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_dhcp_removed
+    description: Uninstall DHCP Server Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_dhcp_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_hfs_disabled
+    description: Disable Mounting of hfs
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_hfs_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
+    description: Ensure that System Accounts Do Not Run a Shell Upon Login
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_tipc_disabled
+    description: Disable TIPC Support
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_tipc_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_users_own_home_directories
+    description: Ensure users own their home directories
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_users_own_home_directories
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
+    description: Verify Permissions on SSH Server Public *.pub Key Files
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_ra
+    description: Configure Accepting Router Advertisements on All IPv6 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_ra
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
+    description: Ensure Sudo Logfile Exists - sudo logfile
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
+    description: Ensure the Default Bash Umask is Set Correctly
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
+    description: Add noexec Option to /dev/shm
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
+    description: Verify Group Who Owns /etc/cron.allow file
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
+    description: Disable SSH Access via Empty Passwords
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_info
+    description: Set LogLevel to INFO
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_info
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_sysadmin_actions
+    description: Ensure auditd Collects System Administrator Actions
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_sysadmin_actions
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
+    description: Deactivate Wireless Network Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_suid_privilege_function
+    description: Record Events When Privileged Executables Are Run
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_suid_privilege_function
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
+    description: Configure Periodic Execution of AIDE
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_immutable
+    description: Make the auditd Configuration Immutable
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_immutable
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_grub2_audit_argument
+    description: Enable Auditing for Processes Which Start Prior to the Audit Daemon
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_grub2_audit_argument
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
+    description: Verify Group Who Owns SSH Server config file
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_partition_for_tmp
+    description: Ensure /tmp Located On Separate Partition
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_tmp
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_rds_disabled
+    description: Disable RDS Support
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_rds_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_udf_disabled
+    description: Disable Mounting of udf
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_udf_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_auditd_data_retention_max_log_file_action
+    description: Configure auditd max_log_file_action Upon Reaching Maximum Log Size
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_max_log_file_action
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed_sha512
+    description: Verify All Account Password Hashes are Shadowed with SHA512
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed_sha512
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
+    description: Set Default iptables Policy for Incoming Packets
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct
+    description: Configure auditd mail_acct Action on Low Disk Space
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
+    description: Disable SSH Root Login
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_tally2
+    description: Set Deny For Failed Password Attempts
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_tally2
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_rsh_removed
+    description: Uninstall rsh Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_rsh_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs
+    description: Use Only FIPS 140-2 Validated MACs
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
+    description: Do Not Allow SSH Environment Options
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
+    description: Verify Permissions on SSH Server Private *_key Key Files
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_disable_host_auth
+    description: Disable Host-Based Authentication
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_disable_host_auth
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
+    description: All Interactive User Home Directories Must Have mode 0750 Or Less Permissive
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
+    description: Set SSH MaxSessions limit
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_rename
+    description: Ensure auditd Collects File Deletion Events by User - rename
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_rename
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_disable_users_coredumps
+    description: Disable Core Dumps for All Users
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_disable_users_coredumps
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
+    description: Verify User Who Owns Backup shadow File
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_use_pam_wheel_for_su
+    description: Enforce usage of pam_wheel for su authentication
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_for_su
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
+    description: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_partition_for_var
+    description: Ensure /var Located On Separate Partition
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_nis_removed
+    description: Uninstall the nis package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_nis_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
+    description: Set Password Minimum Age
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
+    description: Uninstall net-snmp Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
+    description: Add nosuid Option to /dev/shm
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chmod
+    description: Record Events that Modify the System's Discretionary Access Controls - chmod
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chmod
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_ntp_installed
+    description: Install the ntp service
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_ntp_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
+    description: Remove the X Windows Package Group
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_disable_x11_forwarding
+    description: Disable X11 Forwarding
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_x11_forwarding
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
+    description: Enable Kernel Parameter to Use TCP Syncookies on Network Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+    description: Enable Kernel Parameter to Ignore Bogus ICMP Error Responses on IPv4 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_xinetd_removed
+    description: Uninstall xinetd Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_xinetd_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_time_adjtimex
+    description: Record attempts to alter time through adjtimex
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_adjtimex
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
+    description: Verify Group Who Owns shadow File
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_no_netrc_files
+    description: Verify No netrc Files Exist
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_netrc_files
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_group
+    description: Verify Group Who Owns group File
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_group
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_tmout
+    description: Set Interactive Session Timeout
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_tmout
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_squid_removed
+    description: Uninstall squid Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_squid_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_disable_prelink
+    description: Disable Prelinking
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_disable_prelink
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
+    description: Uninstall openldap-servers Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_audit_installed
+    description: Ensure the audit Subsystem is Installed
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_audit_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
+    description: Verify Group Who Owns Backup passwd File
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_daily
+    description: Verify Group Who Owns cron.daily
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_daily
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
+    description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
+    description: Add nodev Option to /dev/shm
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_login_events_faillog
+    description: Record Attempts to Alter Logon and Logout Events - faillog
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_login_events_faillog
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_samba_removed
+    description: Uninstall Samba Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_samba_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_ufw_enabled
+    description: Verify ufw Enabled
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_ufw_enabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
+    description: Set SSH authentication attempt limit
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_session_events
+    description: Record Attempts to Alter Process and Session Initiation Information
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_session_events
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
+    description: Disable Modprobe Loading of USB Storage Driver
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_d
+    description: Verify Group Who Owns cron.d
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_d
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
+    description: Verify Group Who Owns /etc/at.allow file
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable
+    description: Ensure No World-Writable Files Exist
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_gshadow
+    description: Verify Group Who Owns Backup gshadow File
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_gshadow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_timesyncd_enabled
+    description: Enable systemd_timesyncd Service
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_timesyncd_enabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_gdm_removed
+    description: Remove the GDM Package Group
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_gdm_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
+    description: All Interactive Users Home Directories Must Exist
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
+    description: Enable SSH Warning Banner
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_disable_rhosts
+    description: Disable SSH Support for .rhosts Files
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_rhosts
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_rsyslog_remote_loghost
+    description: Ensure Logs Sent To Remote Host
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_rsyslog_remote_loghost
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_forwarding
+    description: Disable Kernel Parameter for IPv6 Forwarding
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_forwarding
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_partition_for_var_tmp
+    description: Ensure /var/tmp Located On Separate Partition
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var_tmp
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_hfsplus_disabled
+    description: Disable Mounting of hfsplus
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_hfsplus_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_cups_disabled
+    description: Disable the CUPS Service
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_cups_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_keepalive_0
+    description: Set SSH Client Alive Count Max to zero
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_keepalive_0
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_freevxfs_disabled
+    description: Disable Mounting of freevxfs
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_freevxfs_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_talk_removed
+    description: Uninstall talk Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_talk_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
+    description: Verify Only Root Has UID 0
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
+    description: Verify Group Who Owns cron.monthly
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_cron_installed
+    description: Install the cron service
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_cron_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit
+    description: Ensure PAM Enforces Password Requirements - Minimum Digit Characters
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
+    description: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_aide_installed
+    description: Install AIDE
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_aide_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_group
+    description: Record Events that Modify User/Group Information - /etc/group
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_group
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_httpd_removed
+    description: Uninstall httpd Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_httpd_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_no_empty_passwords
+    description: Prevent Login to Accounts With Empty Password
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_empty_passwords
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
+    description: Set Account Expiration Following Inactivity
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
+    description: Verify Group Ownership of Message of the Day Banner
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
+    description: Ensure that chronyd is running under chrony user account
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
+    description: Disable Avahi Server Software
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
+    description: Ensure SSH MaxStartups is configured
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
+    description: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_sudo_installed
+    description: Install sudo Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_sudo_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_partition_for_home
+    description: Ensure /home Located On Separate Partition
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_home
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
+    description: Verify Group Who Owns cron.weekly
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_bind_removed
+    description: Uninstall bind Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_bind_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_iptables_installed
+    description: Install iptables Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    description: Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
+    description: Verify that All World-Writable Directories Have Sticky Bits Set
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_ufw_installed
+    description: Install ufw Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_ufw_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_partition_for_var_log
+    description: Ensure /var/log Located On Separate Partition
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var_log
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
+    description: Set Default ip6tables Policy for Incoming Packets
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
+    description: Ensure that Root's Path Does Not Include World or Group-Writable Directories
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_enable_pam
+    description: Enable PAM
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_enable_pam
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
+    description: Verify Group Who Owns passwd File
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
+    description: Verify Group Ownership of System Login Banner
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_grub2_password
+    description: Set Boot Loader Password in grub2
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_grub2_password
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_telnet_removed
+    description: Remove telnet Clients
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_telnet_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_jffs2_disabled
+    description: Disable Mounting of jffs2
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_jffs2_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_delete
+    description: Ensure auditd Collects Information on Kernel Module Unloading - delete_module
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_delete
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_autofs_disabled
+    description: Disable the Automounter
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_ensure_logrotate_activated
+    description: Ensure Logrotate Runs Periodically
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_ensure_logrotate_activated
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
+    description: Verify /boot/grub/grub.cfg User Ownership
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_auditd_enabled
+    description: Enable auditd Service
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_auditd_enabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
+    description: Verify Group Who Owns Backup group File
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_dovecot_removed
+    description: Uninstall dovecot Package
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_dovecot_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_auditd_data_retention_max_log_file
+    description: Configure auditd Max Log File Size
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_max_log_file
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
+    description: Verify Group Who Owns Crontab
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
+    description: Ensure rsyslog is Installed
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_rp_filter
+    description: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_rp_filter
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
+    description: Verify Group Who Owns gshadow File
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_no_files_unowned_by_user
+    description: Ensure All Files Are Owned by a User
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_files_unowned_by_user
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
+    description: Ensure LDAP client is not installed
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_source_route
+    description: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv6 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_source_route
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_networkconfig_modification
+    description: Record Events that Modify the System's Network Environment
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_networkconfig_modification
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_redirects
+    description: Disable Accepting ICMP Redirects for All IPv6 Interfaces
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_redirects
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
+    description: Disable Mounting of cramfs
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_dccp_disabled
+    description: Disable DCCP Support
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_dccp_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_grub2_audit_backlog_limit_argument
+    description: Extend Audit Backlog Limit for the Audit Daemon
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_grub2_audit_backlog_limit_argument
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_chrony_installed
+    description: The Chrony package is installed
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_chrony_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
+    description: Enable Randomized Layout of Virtual Address Space
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember
+    description: Limit Password Reuse
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          cpe: ssg-ubuntu2204-cpe-dictionary.xml
+          name: ssg-ubuntu2204-xccdf.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember
+    scope:
+      - none
