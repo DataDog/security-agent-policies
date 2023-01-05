@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.8.0
+version: 1.8.2
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -419,9 +419,6 @@ rules:
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
-  - id: net_util_exfiltration
-    description: Exfiltration attempt via network utility
-    expression: "exec.comm in HTTP_UTILS && \nexec.args in [~\"*--post-file=*\", ~\"*--post-data*\", ~\"*-X POST*\", ~\"*--request POST*\", ~\"*-T*\", ~\"*--upload-file*\" ] "
   - id: net_util_in_container
     description: A network utility was executed in a container
     expression: |-
