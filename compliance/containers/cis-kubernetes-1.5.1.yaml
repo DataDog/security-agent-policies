@@ -8,7 +8,6 @@ rules:
     description: API server pod specification file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -22,7 +21,6 @@ rules:
     description: Only the root account and group have ownership of the API server pod specification file
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -37,7 +35,6 @@ rules:
     description: Controller manager pod specification file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -51,7 +48,6 @@ rules:
     description: Controller manager pod specification file is owned by root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -66,7 +62,6 @@ rules:
     description: Scheduler pod specification file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -80,7 +75,6 @@ rules:
     description: Scheduler pod specification file ownership is assigned to root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -95,7 +89,6 @@ rules:
     description: Etcd pod specification file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -109,7 +102,6 @@ rules:
     description: Etcd pod specification file is owned by root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -124,7 +116,6 @@ rules:
     description: Etcd data directory permissions cannot be accessed by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -138,7 +129,6 @@ rules:
     description: Etcd data directory is owned by the etcd user and group
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -153,7 +143,6 @@ rules:
     description: Only the root account has write permissions to the admin.conf file
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -167,7 +156,6 @@ rules:
     description: Only the root account and group have ownership of the admin.conf file
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -182,7 +170,6 @@ rules:
     description: Scheduler configuration file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -196,7 +183,6 @@ rules:
     description: Scheduler configuration file ownership is assigned to root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -211,7 +197,6 @@ rules:
     description: controller-manager.conf file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -225,7 +210,6 @@ rules:
     description: The controller-manager.conf file is owned by root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -240,7 +224,6 @@ rules:
     description: Kubernetes PKI directory is owned by root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -255,7 +238,6 @@ rules:
     description: Kubernetes PKI certificate file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     input:
       - tag: files
         file:
@@ -271,7 +253,6 @@ rules:
     description: Basic authentication is disabled for the API server
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -284,7 +265,6 @@ rules:
     description: API server does not use token based authentication
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -297,7 +277,6 @@ rules:
     description: Kubelet connections use HTTPS
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -310,7 +289,6 @@ rules:
     description: Certificate-based kubelet authentication is required
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -323,7 +301,6 @@ rules:
     description: API server verifies the kubelet's certificate before establishing connection
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -336,7 +313,6 @@ rules:
     description: API server only allows explicitly authorized requests
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -349,7 +325,6 @@ rules:
     description: Kubelet nodes are only authorized to read objects they are associated with
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -362,7 +337,6 @@ rules:
     description: RBAC is enabled for the API server
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -375,7 +349,6 @@ rules:
     description: Admission controller AlwaysAdmin is not enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -388,7 +361,6 @@ rules:
     description: Admission controller ServiceAccount is enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -401,7 +373,6 @@ rules:
     description: Admission controller NamespaceLifecycle is enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -414,7 +385,6 @@ rules:
     description: Admission controller PodSecurityPolicy is enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -427,7 +397,6 @@ rules:
     description: Admission controller NodeRestriction is enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -440,7 +409,6 @@ rules:
     description: API server does not bind to an insecure API service address
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -453,7 +421,6 @@ rules:
     description: API server does not bind the API service to an insecure port
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -466,7 +433,6 @@ rules:
     description: API server secure port is enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -479,7 +445,6 @@ rules:
     description: API server profiling is disabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -492,7 +457,6 @@ rules:
     description: API server audit logs are enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -505,7 +469,6 @@ rules:
     description: API server audit logs are retained for at least 30 days
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -518,7 +481,6 @@ rules:
     description: API server audit log files are retained for at least 10 log file rotations
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -531,7 +493,6 @@ rules:
     description: API server audit log files are rotated once the file reaches 100 MB or more
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -544,7 +505,6 @@ rules:
     description: API server request timeout exceeds 60 seconds only if required
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -557,7 +517,6 @@ rules:
     description: API server validates the service account token exists in etcd
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -570,7 +529,6 @@ rules:
     description: API server uses a service account public key file for service accounts
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -583,7 +541,6 @@ rules:
     description: etcd server requires API servers present a client certificate and key when connecting
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -596,7 +553,6 @@ rules:
     description: API Server requires HTTPS connections
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -609,7 +565,6 @@ rules:
     description: API server uses TLS certificate client authentication
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -622,7 +577,6 @@ rules:
     description: etcd server requires API servers present an SSL CA file when connecting
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -635,7 +589,6 @@ rules:
     description: etcd is encrypted at rest
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -648,7 +601,6 @@ rules:
     description: Controller Manager profiling is disabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -661,7 +613,6 @@ rules:
     description: Each controller uses individual service account credentials
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -674,7 +625,6 @@ rules:
     description: Controller manager has a service account private key file set
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -687,7 +637,6 @@ rules:
     description: Pods utilize `root-ca-file` to pass serving certificates to the API server
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -700,7 +649,6 @@ rules:
     description: Enable kubelet server certificate rotation on controller-manager
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -713,7 +661,6 @@ rules:
     description: Controller Manager API service is bound to localhost
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -726,7 +673,6 @@ rules:
     description: Scheduler profiling is disabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -739,7 +685,6 @@ rules:
     description: Scheduler API service is bound to localhost
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -752,7 +697,6 @@ rules:
     description: etcd is configured with TLS encryption
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -765,7 +709,6 @@ rules:
     description: Client authentication is enabled for etcd
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -778,7 +721,6 @@ rules:
     description: etcd does not allow the use of self-signed client certificates
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -791,7 +733,6 @@ rules:
     description: etcd uses TLS encryption for peer connections
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -804,7 +745,6 @@ rules:
     description: etcd is configured for peer authentication
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -817,7 +757,6 @@ rules:
     description: Prevent use of self-signed certificates for TLS connections between etcd peers
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "etcd"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -830,7 +769,6 @@ rules:
     description: A minimal audit policy exists
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") == "master"
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -843,7 +781,6 @@ rules:
     description: The kubelet service file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -857,7 +794,6 @@ rules:
     description: Kubelet service file is owned by root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -872,7 +808,6 @@ rules:
     description: Kube-proxy configuration file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -886,7 +821,6 @@ rules:
     description: Kube-proxy configuration file ownership is assigned to root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -901,7 +835,6 @@ rules:
     description: The kubelet.conf file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -915,7 +848,6 @@ rules:
     description: The kubelet.conf file is owned by root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -930,7 +862,6 @@ rules:
     description: Certificate authorities file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -944,7 +875,6 @@ rules:
     description: Client certificate authorities file is owned by root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -959,7 +889,6 @@ rules:
     description: The kubelet configuration file cannot be altered by non-owners
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-permissions-common.rego
       - helpers.rego
@@ -973,7 +902,6 @@ rules:
     description: Kubelet configuration file is owned by root
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - file-owner-rule-common.rego
       - helpers.rego
@@ -988,7 +916,6 @@ rules:
     description: API server anonymous-auth argument is set to false
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -1001,7 +928,6 @@ rules:
     description: Kubelet only allows explicitly authorized requests
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -1014,7 +940,6 @@ rules:
     description: Kubelet uses TLS certificate client authentication
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - process-common-rule.rego
       - helpers.rego
@@ -1027,7 +952,6 @@ rules:
     description: Kubelet read-only port is disabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     input:
       - process:
           name: kubelet
@@ -1042,7 +966,6 @@ rules:
     description: Timeouts on streaming connections are enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     input:
       - process:
           name: kubelet
@@ -1057,7 +980,6 @@ rules:
     description: Default Kubelet kernel parameter values are protected
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     input:
       - process:
           name: kubelet
@@ -1072,7 +994,6 @@ rules:
     description: Allow Kubelets to manage changes to the iptables
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     input:
       - process:
           name: kubelet
@@ -1087,7 +1008,6 @@ rules:
     description: Kubelet requires HTTPS connections
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     input:
       - process:
           name: kubelet
@@ -1102,7 +1022,6 @@ rules:
     description: Kubelet client certificate rotation is enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     input:
       - process:
           name: kubelet
@@ -1117,7 +1036,6 @@ rules:
     description: Kubelet server certificate rotation is enabled
     scope:
       - kubernetesNode
-    hostSelector: node.label("kubernetes.io/role") not in ["master", "etcd"]
     imports:
       - process-common-rule.rego
       - helpers.rego
