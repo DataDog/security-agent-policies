@@ -1,0 +1,3814 @@
+schema:
+  version: 1.0.0
+name: CIS Ubuntu Linux 22.04
+framework: cis-ubuntu2204
+version: 1.0.0
+rules:
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-cramfs-disabled
+    description: Disable Mounting of cramfs
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-freevxfs-disabled
+    description: Disable Mounting of freevxfs
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_freevxfs_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-jffs2-disabled
+    description: Disable Mounting of jffs2
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_jffs2_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-hfs-disabled
+    description: Disable Mounting of hfs
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_hfs_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-hfsplus-disabled
+    description: Disable Mounting of hfsplus
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_hfsplus_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-udf-disabled
+    description: Disable Mounting of udf
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_udf_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-partition-for-tmp
+    description: Ensure /tmp Located On Separate Partition
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_tmp
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-mount-option-dev-shm-nodev
+    description: Add nodev Option to /dev/shm
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-mount-option-dev-shm-nosuid
+    description: Add nosuid Option to /dev/shm
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-mount-option-dev-shm-noexec
+    description: Add noexec Option to /dev/shm
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-partition-for-var
+    description: Ensure /var Located On Separate Partition
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-partition-for-var-tmp
+    description: Ensure /var/tmp Located On Separate Partition
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var_tmp
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-partition-for-var-log
+    description: Ensure /var/log Located On Separate Partition
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var_log
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-partition-for-var-log-audit
+    description: Ensure /var/log/audit Located On Separate Partition
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var_log_audit
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-partition-for-home
+    description: Ensure /home Located On Separate Partition
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_partition_for_home
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-dir-perms-world-writable-sticky-bits
+    description: Verify that All World-Writable Directories Have Sticky Bits Set
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-service-autofs-disabled
+    description: Disable the Automounter
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-usb-storage-disabled
+    description: Disable Modprobe Loading of USB Storage Driver
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-sudo-installed
+    description: Install sudo Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_sudo_installed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sudo-add-use-pty
+    description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sudo-custom-logfile
+    description: Ensure Sudo Logfile Exists - sudo logfile
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-aide-installed
+    description: Install AIDE
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_aide_installed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-aide-build-database
+    description: Build and Test AIDE Database
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_aide_build_database
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-aide-periodic-cron-checking
+    description: Configure Periodic Execution of AIDE
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-grub2-password
+    description: Set Boot Loader Password in grub2
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_grub2_password
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-grub2-cfg
+    description: Verify /boot/grub/grub.cfg Permissions
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-grub2-cfg
+    description: Verify /boot/grub/grub.cfg User Ownership
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-kernel-randomize-va-space
+    description: Enable Randomized Layout of Virtual Address Space
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-disable-prelink
+    description: Disable Prelinking
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_disable_prelink
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-disable-users-coredumps
+    description: Disable Core Dumps for All Users
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_disable_users_coredumps
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-fs-suid-dumpable
+    description: Disable Core Dumps for SUID programs
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_fs_suid_dumpable
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-etc-motd
+    description: Verify Group Ownership of Message of the Day Banner
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-etc-motd
+    description: Verify ownership of Message of the Day Banner
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_motd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-etc-motd
+    description: Verify permissions on Message of the Day Banner
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_motd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-etc-issue
+    description: Verify ownership of System Login Banner
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_issue
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-etc-issue
+    description: Verify permissions on System Login Banner
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-etc-issue
+    description: Verify Group Ownership of System Login Banner
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-gdm-removed
+    description: Remove the GDM Package Group
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_gdm_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-xinetd-removed
+    description: Uninstall xinetd Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_xinetd_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-service-chronyd-or-ntpd-enabled
+    description: Enable the NTP Daemon
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_chronyd_or_ntpd_enabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-chrony-installed
+    description: The Chrony package is installed
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_chrony_installed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-chronyd-specify-remote-server
+    description: A remote time server for Chrony is configured
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-chronyd-run-as-chrony-user
+    description: Ensure that chronyd is running under chrony user account
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-ntp-installed
+    description: Install the ntp service
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_ntp_installed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-xorg-x11-server-common-removed
+    description: Remove the X Windows Package Group
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-service-avahi-daemon-disabled
+    description: Disable Avahi Server Software
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-service-cups-disabled
+    description: Disable the CUPS Service
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_cups_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-dhcp-removed
+    description: Uninstall DHCP Server Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_dhcp_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-openldap-servers-removed
+    description: Uninstall openldap-servers Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-bind-removed
+    description: Uninstall bind Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_bind_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-vsftpd-removed
+    description: Uninstall vsftpd Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-httpd-removed
+    description: Uninstall httpd Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_httpd_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-dovecot-removed
+    description: Uninstall dovecot Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_dovecot_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-samba-removed
+    description: Uninstall Samba Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_samba_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-squid-removed
+    description: Uninstall squid Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_squid_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-net-snmp-removed
+    description: Uninstall net-snmp Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-nis-removed
+    description: Uninstall the nis package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_nis_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-rsh-removed
+    description: Uninstall rsh Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_rsh_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-talk-removed
+    description: Uninstall talk Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_talk_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-telnet-removed
+    description: Remove telnet Clients
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_telnet_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-openldap-clients-removed
+    description: Ensure LDAP client is not installed
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-wireless-disable-interfaces
+    description: Deactivate Wireless Network Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-default-send-redirects
+    description: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4 Interfaces by Default
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_send_redirects
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-all-send-redirects
+    description: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-ip-forward
+    description: Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv6-conf-all-forwarding
+    description: Disable Kernel Parameter for IPv6 Forwarding
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_forwarding
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-default-accept-source-route
+    description: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv6-conf-default-accept-source-route
+    description: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv6 Interfaces by Default
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_source_route
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-all-accept-source-route
+    description: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv6-conf-all-accept-source-route
+    description: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv6 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_source_route
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv6-conf-all-accept-redirects
+    description: Disable Accepting ICMP Redirects for All IPv6 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_redirects
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv6-conf-default-accept-redirects
+    description: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv6 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_redirects
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-all-accept-redirects
+    description: Disable Accepting ICMP Redirects for All IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-default-accept-redirects
+    description: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_redirects
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-all-secure-redirects
+    description: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-default-secure-redirects
+    description: Configure Kernel Parameter for Accepting Secure Redirects By Default
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_secure_redirects
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-all-log-martians
+    description: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-default-log-martians
+    description: Enable Kernel Paremeter to Log Martian Packets on all IPv4 Interfaces by Default
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-icmp-echo-ignore-broadcasts
+    description: Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-icmp-ignore-bogus-error-responses
+    description: Enable Kernel Parameter to Ignore Bogus ICMP Error Responses on IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-default-rp-filter
+    description: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces by Default
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_rp_filter
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-conf-all-rp-filter
+    description: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_rp_filter
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv4-tcp-syncookies
+    description: Enable Kernel Parameter to Use TCP Syncookies on Network Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv6-conf-default-accept-ra
+    description: Disable Accepting Router Advertisements on all IPv6 Interfaces by Default
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_ra
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sysctl-net-ipv6-conf-all-accept-ra
+    description: Configure Accepting Router Advertisements on All IPv6 Interfaces
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_ra
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-dccp-disabled
+    description: Disable DCCP Support
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_dccp_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-sctp-disabled
+    description: Disable SCTP Support
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_sctp_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-rds-disabled
+    description: Disable RDS Support
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_rds_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-kernel-module-tipc-disabled
+    description: Disable TIPC Support
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_tipc_disabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-iptables-installed
+    description: Install iptables Package
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-service-iptables-enabled
+    description: Verify iptables Enabled
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_iptables_enabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-set-iptables-default-rule
+    description: Set Default iptables Policy for Incoming Packets
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-set-ip6tables-default-rule
+    description: Set Default ip6tables Policy for Incoming Packets
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-audit-installed
+    description: Ensure the audit Subsystem is Installed
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_package_audit_installed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-service-auditd-enabled
+    description: Enable auditd Service
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_service_auditd_enabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-grub2-audit-argument
+    description: Enable Auditing for Processes Which Start Prior to the Audit Daemon
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_grub2_audit_argument
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-grub2-audit-backlog-limit-argument
+    description: Extend Audit Backlog Limit for the Audit Daemon
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_grub2_audit_backlog_limit_argument
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-auditd-data-retention-max-log-file
+    description: Configure auditd Max Log File Size
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_max_log_file
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-auditd-data-retention-max-log-file-action
+    description: Configure auditd max_log_file_action Upon Reaching Maximum Log Size
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_max_log_file_action
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-auditd-data-retention-admin-space-left-action
+    description: Configure auditd admin_space_left Action on Low Disk Space
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_admin_space_left_action
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-auditd-data-retention-action-mail-acct
+    description: Configure auditd mail_acct Action on Low Disk Space
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-auditd-data-retention-space-left-action
+    description: Configure auditd space_left Action on Low Disk Space
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_space_left_action
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-time-watch-localtime
+    description: Record Attempts to Alter the localtime File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_watch_localtime
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-time-stime
+    description: Record Attempts to Alter Time Through stime
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_stime
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-time-settimeofday
+    description: Record attempts to alter time through settimeofday
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_settimeofday
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-time-clock-settime
+    description: Record Attempts to Alter Time Through clock_settime
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_clock_settime
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-time-adjtimex
+    description: Record attempts to alter time through adjtimex
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_adjtimex
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-usergroup-modification-gshadow
+    description: Record Events that Modify User/Group Information - /etc/gshadow
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_gshadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-usergroup-modification-group
+    description: Record Events that Modify User/Group Information - /etc/group
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_group
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-usergroup-modification-opasswd
+    description: Record Events that Modify User/Group Information - /etc/security/opasswd
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_opasswd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-usergroup-modification-passwd
+    description: Record Events that Modify User/Group Information - /etc/passwd
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_passwd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-usergroup-modification-shadow
+    description: Record Events that Modify User/Group Information - /etc/shadow
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_shadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-networkconfig-modification
+    description: Record Events that Modify the System's Network Environment
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_networkconfig_modification
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-login-events-faillog
+    description: Record Attempts to Alter Logon and Logout Events - faillog
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_login_events_faillog
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-login-events-lastlog
+    description: Record Attempts to Alter Logon and Logout Events - lastlog
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_login_events_lastlog
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-login-events-tallylog
+    description: Record Attempts to Alter Logon and Logout Events - tallylog
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_login_events_tallylog
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-session-events
+    description: Record Attempts to Alter Process and Session Initiation Information
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_session_events
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-fchownat
+    description: Record Events that Modify the System's Discretionary Access Controls - fchownat
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchownat
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-fchmodat
+    description: Record Events that Modify the System's Discretionary Access Controls - fchmodat
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmodat
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-chown
+    description: Record Events that Modify the System's Discretionary Access Controls - chown
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chown
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-setxattr
+    description: Record Events that Modify the System's Discretionary Access Controls - setxattr
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_setxattr
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-fremovexattr
+    description: Record Events that Modify the System's Discretionary Access Controls - fremovexattr
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fremovexattr
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-chmod
+    description: Record Events that Modify the System's Discretionary Access Controls - chmod
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chmod
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-lchown
+    description: Record Events that Modify the System's Discretionary Access Controls - lchown
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lchown
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-lremovexattr
+    description: Record Events that Modify the System's Discretionary Access Controls - lremovexattr
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lremovexattr
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-fsetxattr
+    description: Record Events that Modify the System's Discretionary Access Controls - fsetxattr
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fsetxattr
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-fchmod
+    description: Record Events that Modify the System's Discretionary Access Controls - fchmod
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmod
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-lsetxattr
+    description: Record Events that Modify the System's Discretionary Access Controls - lsetxattr
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lsetxattr
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-fchown
+    description: Record Events that Modify the System's Discretionary Access Controls - fchown
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchown
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-dac-modification-removexattr
+    description: Record Events that Modify the System's Discretionary Access Controls - removexattr
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_removexattr
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-unsuccessful-file-modification-openat
+    description: Record Unsuccessful Access Attempts to Files - openat
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_openat
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-unsuccessful-file-modification-truncate
+    description: Record Unsuccessful Access Attempts to Files - truncate
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_truncate
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-unsuccessful-file-modification-creat
+    description: Record Unsuccessful Access Attempts to Files - creat
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_creat
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-unsuccessful-file-modification-open
+    description: Record Unsuccessful Access Attempts to Files - open
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_open
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-unsuccessful-file-modification-ftruncate
+    description: Record Unsuccessful Access Attempts to Files - ftruncate
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_ftruncate
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-postqueue
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - postqueue
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_postqueue
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-su
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - su
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_su
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-chsh
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - chsh
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chsh
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-umount
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - umount
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_umount
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-newgrp
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - newgrp
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_newgrp
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-ssh-keysign
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - ssh-keysign
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_ssh_keysign
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-gpasswd
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - gpasswd
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_gpasswd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-sudo
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - sudo
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_sudo
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-ssh-agent
+    description: Record Any Attempts to Run ssh-agent
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_ssh_agent
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-newgidmap
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - newgidmap
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_newgidmap
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-mount
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - mount
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_mount
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-chfn
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - chfn
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chfn
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-at
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - at
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_at
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-crontab
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - crontab
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_crontab
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-newuidmap
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - newuidmap
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_newuidmap
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-sudoedit
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - sudoedit
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_sudoedit
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-postdrop
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - postdrop
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_postdrop
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-unix-chkpwd
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - unix_chkpwd
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_unix_chkpwd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-chage
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - chage
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chage
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-file-deletion-events-renameat
+    description: Ensure auditd Collects File Deletion Events by User - renameat
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_renameat
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-file-deletion-events-rename
+    description: Ensure auditd Collects File Deletion Events by User - rename
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_rename
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-file-deletion-events-unlinkat
+    description: Ensure auditd Collects File Deletion Events by User - unlinkat
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_unlinkat
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-file-deletion-events-unlink
+    description: Ensure auditd Collects File Deletion Events by User - unlink
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_unlink
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-sysadmin-actions
+    description: Ensure auditd Collects System Administrator Actions
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_sysadmin_actions
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-suid-privilege-function
+    description: Record Events When Privileged Executables Are Run
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_suid_privilege_function
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-rmmod
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - rmmod
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_rmmod
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-kernel-module-loading-init
+    description: Ensure auditd Collects Information on Kernel Module Loading - init_module
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_init
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-modprobe
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - modprobe
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_modprobe
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-privileged-commands-insmod
+    description: Ensure auditd Collects Information on the Use of Privileged Commands - insmod
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_insmod
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-kernel-module-loading-delete
+    description: Ensure auditd Collects Information on Kernel Module Unloading - delete_module
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_delete
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-audit-rules-immutable
+    description: Make the auditd Configuration Immutable
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_immutable
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-package-rsyslog-installed
+    description: Ensure rsyslog is Installed
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-service-rsyslog-enabled
+    description: Enable rsyslog Service
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-rsyslog-remote-loghost
+    description: Ensure Logs Sent To Remote Host
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_rsyslog_remote_loghost
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-service-cron-enabled
+    description: Enable cron Service
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_cron_enabled
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-crontab
+    description: Verify Permissions on crontab
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_crontab
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-crontab
+    description: Verify Owner on crontab
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_crontab
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-crontab
+    description: Verify Group Who Owns Crontab
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-cron-hourly
+    description: Verify Group Who Owns cron.hourly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-cron-hourly
+    description: Verify Owner on cron.hourly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_cron_hourly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-cron-hourly
+    description: Verify Permissions on cron.hourly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_hourly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-cron-daily
+    description: Verify Group Who Owns cron.daily
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_daily
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-cron-daily
+    description: Verify Permissions on cron.daily
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_daily
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-cron-daily
+    description: Verify Owner on cron.daily
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_cron_daily
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-cron-weekly
+    description: Verify Group Who Owns cron.weekly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-cron-weekly
+    description: Verify Owner on cron.weekly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_cron_weekly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-cron-weekly
+    description: Verify Permissions on cron.weekly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_weekly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-cron-monthly
+    description: Verify Permissions on cron.monthly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_monthly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-cron-monthly
+    description: Verify Group Who Owns cron.monthly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-cron-monthly
+    description: Verify Owner on cron.monthly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_cron_monthly
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-cron-d
+    description: Verify Permissions on cron.d
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_d
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-cron-d
+    description: Verify Owner on cron.d
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_cron_d
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-cron-d
+    description: Verify Group Who Owns cron.d
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_d
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-cron-allow
+    description: Verify Permissions on /etc/cron.allow file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_allow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-cron-allow
+    description: Verify Group Who Owns /etc/cron.allow file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-cron-allow
+    description: Verify User Who Owns /etc/cron.allow file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_cron_allow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-at-allow
+    description: Verify User Who Owns /etc/at.allow file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_at_allow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-at-allow
+    description: Verify Group Who Owns /etc/at.allow file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-at-allow
+    description: Verify Permissions on /etc/at.allow file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-sshd-config
+    description: Verify Owner on SSH Server config file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-sshd-config
+    description: Verify Permissions on SSH Server config file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-sshd-config
+    description: Verify Group Who Owns SSH Server config file
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-sshd-private-key
+    description: Verify Permissions on SSH Server Private *_key Key Files
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-sshd-pub-key
+    description: Verify Permissions on SSH Server Public *.pub Key Files
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-set-loglevel-info
+    description: Set LogLevel to INFO
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_info
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-disable-x11-forwarding
+    description: Disable X11 Forwarding
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_x11_forwarding
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-set-max-auth-tries
+    description: Set SSH authentication attempt limit
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-disable-rhosts
+    description: Disable SSH Support for .rhosts Files
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_rhosts
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-disable-host-auth
+    description: Disable Host-Based Authentication
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_disable_host_auth
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-disable-root-login
+    description: Disable SSH Root Login
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-disable-empty-passwords
+    description: Disable SSH Access via Empty Passwords
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-do-not-permit-user-env
+    description: Do Not Allow SSH Environment Options
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-use-approved-ciphers
+    description: Use Only FIPS 140-2 Validated Ciphers
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-use-approved-macs
+    description: Use Only FIPS 140-2 Validated MACs
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-set-keepalive
+    description: Set SSH Client Alive Count Max
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-set-idle-timeout
+    description: Set SSH Idle Timeout Interval
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-disable-tcp-forwarding
+    description: Disable SSH TCP Forwarding
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level2_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_disable_tcp_forwarding
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-sshd-set-max-sessions
+    description: Set SSH MaxSessions limit
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-pam-minclass
+    description: Ensure PAM Enforces Password Requirements - Minimum Different Categories
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-pam-ocredit
+    description: Ensure PAM Enforces Password Requirements - Minimum Special Characters
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ocredit
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-pam-minlen
+    description: Ensure PAM Enforces Password Requirements - Minimum Length
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-pam-dcredit
+    description: Ensure PAM Enforces Password Requirements - Minimum Digit Characters
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-pam-lcredit
+    description: Ensure PAM Enforces Password Requirements - Minimum Lowercase Characters
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_lcredit
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-pam-retry
+    description: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-pam-ucredit
+    description: Ensure PAM Enforces Password Requirements - Minimum Uppercase Characters
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-passwords-pam-tally2
+    description: Set Deny For Failed Password Attempts
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_tally2
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-pam-pwhistory-remember
+    description: Limit Password Reuse
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-all-shadowed-sha512
+    description: Verify All Account Password Hashes are Shadowed with SHA512
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed_sha512
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-set-max-life-existing
+    description: Set Existing Passwords Maximum Age
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-maximum-age-login-defs
+    description: Set Password Maximum Age
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-minimum-age-login-defs
+    description: Set Password Minimum Age
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-set-min-life-existing
+    description: Set Existing Passwords Minimum Age
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-password-warn-age-login-defs
+    description: Set Password Warning Age
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-account-disable-post-pw-expiration
+    description: Set Account Expiration Following Inactivity
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-no-shelllogin-for-systemaccounts
+    description: Ensure that System Accounts Do Not Run a Shell Upon Login
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-umask-etc-bashrc
+    description: Ensure the Default Bash Umask is Set Correctly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-umask-etc-csh-cshrc
+    description: Ensure the Default C Shell Umask is Set Correctly
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_csh_cshrc
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-umask-etc-profile
+    description: Ensure the Default Umask is Set Correctly in /etc/profile
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-umask-interactive-users
+    description: Ensure the Default Umask is Set Correctly For Interactive Users
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_umask_interactive_users
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-umask-etc-login-defs
+    description: Ensure the Default Umask is Set Correctly in login.defs
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-tmout
+    description: Set Interactive Session Timeout
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_tmout
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-use-pam-wheel-for-su
+    description: Enforce usage of pam_wheel for su authentication
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_for_su
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-etc-passwd
+    description: Verify User Who Owns passwd File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_passwd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-etc-passwd
+    description: Verify Group Who Owns passwd File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-etc-passwd
+    description: Verify Permissions on passwd File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_passwd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-backup-etc-gshadow
+    description: Verify Group Who Owns Backup gshadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_gshadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-backup-etc-gshadow
+    description: Verify Permissions on Backup gshadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_gshadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-backup-etc-gshadow
+    description: Verify User Who Owns Backup gshadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_gshadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-etc-shadow
+    description: Verify User Who Owns shadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-etc-shadow
+    description: Verify Permissions on shadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-etc-shadow
+    description: Verify Group Who Owns shadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-etc-group
+    description: Verify Permissions on group File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-etc-group
+    description: Verify Group Who Owns group File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_group
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-etc-group
+    description: Verify User Who Owns group File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_group
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-backup-etc-passwd
+    description: Verify Group Who Owns Backup passwd File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-backup-etc-passwd
+    description: Verify Permissions on Backup passwd File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_passwd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-backup-etc-passwd
+    description: Verify User Who Owns Backup passwd File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_passwd
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-backup-etc-shadow
+    description: Verify Permissions on Backup shadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_shadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-backup-etc-shadow
+    description: Verify Group Who Owns Backup shadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_shadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-backup-etc-shadow
+    description: Verify User Who Owns Backup shadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-backup-etc-group
+    description: Verify User Who Owns Backup group File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_group
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-backup-etc-group
+    description: Verify Group Who Owns Backup group File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-backup-etc-group
+    description: Verify Permissions on Backup group File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_group
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-groupowner-etc-gshadow
+    description: Verify Group Who Owns gshadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-owner-etc-gshadow
+    description: Verify User Who Owns gshadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-etc-gshadow
+    description: Verify Permissions on gshadow File
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_gshadow
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-unauthorized-world-writable
+    description: Ensure No World-Writable Files Exist
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-no-files-unowned-by-user
+    description: Ensure All Files Are Owned by a User
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_files_unowned_by_user
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-no-empty-passwords
+    description: Prevent Login to Accounts With Empty Password
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_empty_passwords
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-no-uid-except-zero
+    description: Verify Only Root Has UID 0
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-root-path-dirs-no-write
+    description: Ensure that Root's Path Does Not Include World or Group-Writable Directories
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-user-interactive-home-directory-exists
+    description: All Interactive Users Home Directories Must Exist
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-file-permissions-home-directories
+    description: All Interactive User Home Directories Must Have mode 0750 Or Less Permissive
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-user-dot-user-ownership
+    description: User Initialization Files Must Be Owned By the Primary User
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_user_ownership
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-accounts-user-dot-group-ownership
+    description: User Initialization Files Must Be Group-Owned By The Primary User
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-no-netrc-files
+    description: Verify No netrc Files Exist
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_netrc_files
+    scope:
+      - none
+  - id: cis-ubuntu2204-1.0.0-xccdf-org-ssgproject-content-rule-no-rsh-trust-files
+    description: Remove Rsh Trust Files
+    filters:
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2-020d4608.xml
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
+    scope:
+      - none
