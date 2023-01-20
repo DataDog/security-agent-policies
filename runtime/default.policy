@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.8.2
+version: 1.9.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -164,7 +164,7 @@ rules:
       (
           (chmod.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       ) && chmod.file.destination.mode != chmod.file.mode
   - id: credential_modified_chown
     description: Sensitive credential files were modified using a non-standard tool
@@ -172,7 +172,7 @@ rules:
       (
           (chown.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: credential_modified_link
     description: Sensitive credential files were modified using a non-standard tool
@@ -181,7 +181,7 @@ rules:
           (link.file.path in [ "/etc/shadow", "/etc/gshadow" ]
           || link.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: credential_modified_open
     description: Sensitive credential files were modified using a non-standard tool
@@ -190,7 +190,7 @@ rules:
           open.flags & ((O_CREAT|O_RDWR|O_WRONLY|O_TRUNC)) > 0 &&
           (open.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: credential_modified_rename
     description: Sensitive credential files were modified using a non-standard tool
@@ -199,7 +199,7 @@ rules:
           (rename.file.path in [ "/etc/shadow", "/etc/gshadow" ]
           || rename.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: credential_modified_unlink
     description: Sensitive credential files were modified using a non-standard tool
@@ -207,7 +207,7 @@ rules:
       (
           (unlink.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: credential_modified_utimes
     description: Sensitive credential files were modified using a non-standard tool
@@ -215,7 +215,7 @@ rules:
       (
           (utimes.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: cron_at_job_creation_chmod
     description: An unauthorized job was added to cron scheduling
@@ -224,8 +224,7 @@ rules:
           (chmod.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && chmod.file.destination.mode != chmod.file.mode
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: cron_at_job_creation_chown
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -233,8 +232,7 @@ rules:
           (chown.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: cron_at_job_creation_link
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -243,8 +241,7 @@ rules:
           || link.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: cron_at_job_creation_open
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -253,8 +250,7 @@ rules:
           (open.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: cron_at_job_creation_rename
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -263,8 +259,7 @@ rules:
           || rename.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: cron_at_job_creation_unlink
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -272,8 +267,7 @@ rules:
           (unlink.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: cron_at_job_creation_utimes
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -281,8 +275,7 @@ rules:
           (utimes.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.file.path != "/usr/bin/dockerd"
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: cryptominer_args
     description: A process launched with arguments associated with cryptominers
     expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args in [~"*stratum+tcp*"]
@@ -305,7 +298,7 @@ rules:
     expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0  && (process.uid != 0 && process.gid != 0)
   - id: dynamic_linker_config_unlink
     description: A process unlinked a dynamic linker config file
-    expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && process.file.path != "/usr/bin/dpkg"
+    expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && process.file.path not in PACKAGE_MANAGERS
   - id: dynamic_linker_config_write
     description: A process wrote to a dynamic linker config file
     expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0
@@ -325,6 +318,13 @@ rules:
        exec.comm in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS)
       && process.ancestors.file.name == "java"
+  - id: java_shell_execution_parent
+    description: A java process spawned a shell, shell utility, or HTTP utility
+    expression: |-
+      (exec.file.path in SHELLS ||
+       exec.comm in HTTP_UTILS ||
+       exec.file.path in SHELL_UTILS)
+      && process.parent.file.name == "java"
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
     expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
@@ -333,16 +333,16 @@ rules:
     expression: |-
       (
           (chmod.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       ) && chmod.file.destination.mode != chmod.file.mode
   - id: kernel_module_chown
     description: A new kernel module was added
     expression: |-
       (
           (chown.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: kernel_module_link
     description: A new kernel module was added
@@ -350,8 +350,8 @@ rules:
       (
           (link.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ]
           || link.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
   - id: kernel_module_load
     description: A kernel module was loaded
@@ -371,8 +371,8 @@ rules:
       (
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           (open.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
   - id: kernel_module_rename
     description: A new kernel module was added
@@ -380,28 +380,34 @@ rules:
       (
           (rename.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ]
           || rename.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
   - id: kernel_module_unlink
     description: A new kernel module was added
     expression: |-
       (
           (unlink.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
   - id: kernel_module_utimes
     description: A new kernel module was added
     expression: |-
       (
           (utimes.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-          && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
   - id: ld_preload_unusual_library_path
     description: The LD_PRELOAD variable is populated by a link to a suspicious file directory
     expression: exec.envs in [~"LD_PRELOAD=*/tmp/*" ,~"LD_PRELOAD=/dev/shm/*" ]
+  - id: memfd_create
+    description: memfd object created
+    expression: exec.file.name =~ "memfd*" && exec.file.path == ""
+  - id: mount_host_fs
+    description: The host file system was mounted in a container
+    expression: mount.source.path == "/" && mount.fs_type != "overlay" && container.id != ""
   - id: net_file_download
     description: A suspicious file was written by a network utility
     expression: |-
@@ -419,6 +425,9 @@ rules:
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+  - id: net_util_exfiltration
+    description: Exfiltration attempt via network utility
+    expression: "exec.comm in HTTP_UTILS && \nexec.args_options in [ ~\"post-file=*\", ~\"post-data=*\", \"X=POST\", \"request=POST\", ~\"upload-file=*\", ~\"F=file*\"] &&\nexec.args not in [~\"*localhost*\", ~\"*127.0.0.1*\"]"
   - id: net_util_in_container
     description: A network utility was executed in a container
     expression: |-
@@ -478,7 +487,7 @@ rules:
     expression: exec.uid >= 0 && process.ancestors.file.name == "omiagent"
   - id: package_management_in_container
     description: Package management was detected in a container
-    expression: exec.file.path in SYSTEM_PACKAGE_MANAGERS && container.id != ""
+    expression: exec.file.path in PACKAGE_MANAGERS && container.id != ""
   - id: pam_modification_chmod
     description: PAM may have been modified without authorization
     expression: |-
@@ -596,8 +605,12 @@ rules:
     description: A web application spawned a shell or shell utility
     expression: |-
       (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
-      (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*") &&
-      process.ancestors.comm not in APP_PACKAGE_MANAGERS
+      (process.ancestors.file.name in WEBAPP_PROCESSES || process.ancestors.file.name =~ "php*")
+  - id: potential_web_shell_parent
+    description: A web application spawned a shell or shell utility
+    expression: |-
+      (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
+      (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*")
   - id: ptrace_antidebug
     description: A process uses an anti-debugging technique to block debuggers
     expression: ptrace.request == PTRACE_TRACEME && process.file.name != ""
@@ -615,8 +628,8 @@ rules:
     expression: |-
       open.file.path in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc"]
       && open.flags & OPEN_WRITE_FLAGS > 0
-      && process.file.path not in SYSTEM_PACKAGE_MANAGERS
-      && process.ancestors.file.path not in SYSTEM_PACKAGE_MANAGERS
+      && process.file.path not in PACKAGE_MANAGERS
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
   - id: selinux_disable_enforcement
     description: SELinux enforcement status was disabled
     expression: selinux.enforce.status in ["permissive", "disabled"]
@@ -679,7 +692,7 @@ rules:
     expression: |-
       (
           (chmod.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       ) && chmod.file.mode != chmod.file.destination.mode
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
@@ -689,7 +702,7 @@ rules:
     expression: |-
       (
           (chown.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
@@ -700,7 +713,7 @@ rules:
       (
           (link.file.path in [ ~"/etc/ssl/certs/**" ]
           || link.file.destination.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
           && process.file.path != "/usr/sbin/update-ca-certificates"
           && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
           && process.file.name !~ "runc*"
@@ -711,7 +724,7 @@ rules:
       (
           open.flags & (OPEN_CREATE_FLAGS) > 0 &&
           (open.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
@@ -722,7 +735,7 @@ rules:
       (
           (rename.file.path in [ ~"/etc/ssl/certs/**" ]
           || rename.file.destination.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
@@ -732,7 +745,7 @@ rules:
     expression: |-
       (
           (unlink.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
@@ -742,7 +755,7 @@ rules:
     expression: |-
       (
           (utimes.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
@@ -755,14 +768,14 @@ rules:
     expression: |-
       (
           (chmod.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       ) && chmod.file.destination.mode != chmod.file.mode
   - id: systemd_modification_chown
     description: A service may have been modified without authorization
     expression: |-
       (
           (chown.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: systemd_modification_link
     description: A service may have been modified without authorization
@@ -770,7 +783,7 @@ rules:
       (
           (link.file.path in SYSTEMD_FOLDERS
           || link.file.destination.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
   - id: systemd_modification_open
     description: A service may have been modified without authorization
@@ -778,7 +791,7 @@ rules:
       (
           open.flags & (OPEN_CREATE_FLAGS) > 0 &&
           (open.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
   - id: systemd_modification_rename
     description: A service may have been modified without authorization
@@ -786,22 +799,22 @@ rules:
       (
           (rename.file.path in SYSTEMD_FOLDERS
           || rename.file.destination.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
   - id: systemd_modification_unlink
     description: A service may have been modified without authorization
     expression: |-
       (
           (unlink.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
   - id: systemd_modification_utimes
     description: A service may have been modified without authorization
     expression: |-
       (
           (utimes.file.path in SYSTEMD_FOLDERS)
-          && process.file.path not in SYSTEM_PACKAGE_MANAGERS
+          && process.file.path not in PACKAGE_MANAGERS
       )
   - id: user_created_tty
     description: A user was created via an interactive session
-    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS
+    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"]
