@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.9.1
+version: 1.10.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -12,6 +12,8 @@ macros:
   - id: AZURE_RISKY_URI
     description: Azure IMDS URI's known for exploitation
     expression: '[~"*169.254.169.254/metadata/identity/oauth2/token?api-version=*"]'
+  - id: CHMOD_EXEC_FLAGS
+    expression: S_IXUSR|S_IXGRP|S_IXOTH
   - id: COMMON_MODULES
     description: Common kernel modules
     expression: '["nf_tables", "iptable_filter", "ip6table_filter", "bpfilter", "ip6_tables", "ip6table_nat", "nf_reject_ipv4", "ipt_REJECT", "iptable_raw"]'
@@ -45,7 +47,8 @@ macros:
     expression: '["mysqld", "mongod", "postgres"]'
   - id: DD_AGENT_PROCESSES
     description: Processes that are a part of the Datadog Agent
-    expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/bin/agent/agent"]'
+    expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/bin/agent/agent", "/opt/datadog/apm/inject/auto_inject_runc",
+      "/usr/bin/dd-host-install", "/usr/bin/dd-host-container-install", "/usr/bin/dd-container-install"]'
   - id: FDB_SERVER_PROCESSES
     expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
   - id: GCP_RISKY_URI
@@ -61,9 +64,12 @@ macros:
     expression: '[~"python2*", ~"python3*", "node", "perl", ~"ruby*"]'
   - id: IPCHECK_DOMAINS
     expression: '["icanhazip.com", "ip-api.com", "myip.opendns.com", "checkip.amazonaws.com", "whatismyip.akamai.com"]'
+  - id: LIBC_VERSIONS
+    description: LIBC Library Versions
+    expression: '["libc-2.29.so", "libc-2.30.so", "libc-2.31.so", "libc-2.32.so", "libc-2.33.so", "libc-2.34.so", "libc-2.35.so", "libc-2.36.so", "libc-2.37.so"]'
   - id: NETWORK_SCANNERS
     description: Commonly used network scanners
-    expression: '["nmap", "masscan", "fping", "zgrab", "zgrab2", "rustscan"]'
+    expression: '["nmap", "masscan", "fping", "zgrab", "zgrab2", "rustscan", "pnscan"]'
   - id: NET_UTILS
     description: Executables of common network utilites
     expression: '["socat", "dig", "nslookup", "host", ~"netcat*", ~"nc*", "ncat"]'
@@ -73,7 +79,7 @@ macros:
     expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
   - id: PACKAGE_MANAGERS
     description: Package managers and container runtimes
-    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", "/usr/bin/yum", "/sbin/apk"]'
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", "/usr/bin/yum", "/sbin/apk", "/usr/lib/snapd/snapd"]'
   - id: PACKAGE_MANAGERS_AND_RUNTIMES
     description: Package managers and container runtimes
     expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*"]'
@@ -141,6 +147,9 @@ rules:
   - id: azure_imds
     description: An Azure IMDS was called via a network utility
     expression: exec.comm in HTTP_UTILS && exec.args in AZURE_RISKY_URI
+  - id: base64_decode
+    description: The base64 command was used to decode information
+    expression: exec.file.name == "base64" && exec.args_flags in ["d"]
   - id: common_net_intrusion_util
     description: A network utility (nmap) commonly used in intrusion attacks was executed
     expression: exec.file.name in NETWORK_SCANNERS && exec.args_flags not in ["V", "version"]
@@ -287,7 +296,7 @@ rules:
        exec.file.path in SHELL_UTILS) &&
       process.ancestors.file.name in DATABASE_PROCESSES &&
       !(process.ancestors.file.name == "initdb" &&
-      exec.args == ~"*locale -a*") &&
+      exec.args == "-c locale -a") &&
       !(process.ancestors.file.name == "postgres" &&
       exec.args == ~"*pg_wal*")
   - id: dirty_pipe_attempt
@@ -301,7 +310,16 @@ rules:
     expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && process.file.path not in PACKAGE_MANAGERS
   - id: dynamic_linker_config_write
     description: A process wrote to a dynamic linker config file
-    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0
+    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES && process.ancestors.file.path not in DD_AGENT_PROCESSES
+  - id: executable_bit_added
+    description: The executable bit was added to a newly created file
+    expression: |-
+      chmod.file.in_upper_layer &&
+      chmod.file.change_time < 30s &&
+      container.id != "" &&
+      chmod.file.destination.mode != chmod.file.mode &&
+      chmod.file.destination.mode & CHMOD_EXEC_FLAGS > 0 &&
+      process.argv in ["+x"]
   - id: gcp_imds
     description: An GCP IMDS was called via a network utility
     expression: exec.comm in HTTP_UTILS && exec.args in GCP_RISKY_URI
@@ -327,7 +345,7 @@ rules:
       && process.parent.file.name == "java"
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
-    expression: open.file.path =~ "/var/run/secrets/kubernetes.io/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"] && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
   - id: kernel_module_chmod
     description: A new kernel module was added
     expression: |-
@@ -399,6 +417,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+  - id: kubernetes_dns_enumeration
+    description: Kubernetes DNS enumeration
+    expression: dns.question.name == "any.any.svc.cluster.local" && dns.question.type == SRV && container.id != ""
   - id: ld_preload_unusual_library_path
     description: The LD_PRELOAD variable is populated by a link to a suspicious file directory
     expression: exec.envs in [~"LD_PRELOAD=*/tmp/*" ,~"LD_PRELOAD=/dev/shm/*" ]
@@ -435,7 +456,7 @@ rules:
        exec.comm in HTTP_UTILS) &&
       container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
   - id: new_binary_execution_in_container
-    description: A container executed a new a binary not found in the container image
+    description: A container executed a new binary not found in the container image
     expression: container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
   - id: nsswitch_conf_mod_chmod
     description: nsswitch may have been modified without authorization
@@ -532,7 +553,7 @@ rules:
     expression: |-
       (
           (utimes.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
-      )
+      ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: passwd_execution
     description: The passwd or chpasswd utility was used to modify an account password
     expression: exec.file.path in ["/usr/bin/passwd", "/usr/sbin/chpasswd"] && exec.args_flags not in ["S", "status"]
@@ -623,6 +644,9 @@ rules:
   - id: python_cli_code
     description: Python code was provided on the command line
     expression: exec.file.name == ~"python*" && exec.args_flags in ["c"] && exec.args in [~"*-c*SOCK_STREAM*", ~"*-c*subprocess*", "*-c*/bash*", "*-c*/bin/sh*", "*-c*pty.spawn*"]
+  - id: redis_sandbox_escape
+    description: Detects CVE-2022-0543
+    expression: (open.file.path =~ "/usr/lib/x86_64-linux-gnu/*" && open.file.name in LIBC_VERSIONS) && process.ancestors.comm in ["redis-check-rdb", "redis-server"]
   - id: runc_modification
     description: The runc binary was modified in a non-standard way
     expression: |-
@@ -815,6 +839,9 @@ rules:
           (utimes.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
+  - id: tty_shell_in_container
+    description: A shell with a TTY was executed in a container
+    expression: exec.file.path in SHELLS && process.tty_name != "" && process.container.id != ""
   - id: user_created_tty
     description: A user was created via an interactive session
     expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"]
