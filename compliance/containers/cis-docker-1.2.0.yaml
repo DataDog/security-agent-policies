@@ -716,7 +716,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.12
-    description: Container root file sytem is set to read-only
+    description: Container root file system is set to read-only
     scope:
       - docker
     skipOnKubernetes: true
