@@ -1175,19 +1175,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_passwd
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable
-    description: Ensure No World-Writable Files Exist
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_redirects
     description: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv6 Interfaces
     filters: *id001
@@ -1784,19 +1771,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_aide_installed
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
-    description: Verify that All World-Writable Directories Have Sticky Bits Set
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_partition_for_tmp
@@ -2473,19 +2447,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_no_files_unowned_by_user
-    description: Ensure All Files Are Owned by a User
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_no_files_unowned_by_user
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
