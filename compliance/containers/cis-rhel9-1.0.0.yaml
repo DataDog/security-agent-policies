@@ -1,34 +1,21 @@
 schema:
   version: 1.0.0
-name: CIS Red Hat Enterprise Linux 7 Benchmark for Level 1 - Server
-framework: cis-rhel7-level1
+name: CIS Red Hat Enterprise Linux 9 Benchmark for Level 1 - Server
+framework: cis-rhel9
 version: 1.0.0
 rules:
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_rp_filter
     description: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces by Default
     filters: &id001
-      - os.id == "rhel" && os.version_id == ~"7*"
+      - os.id == "rhel" && os.version_id == ~"9*"
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_rp_filter
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_setroubleshoot_removed
-    description: Uninstall setroubleshoot Package
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_setroubleshoot_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
@@ -39,7 +26,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
     scope:
@@ -52,7 +39,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_httpd_removed
     scope:
@@ -65,7 +52,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_nodev
     scope:
@@ -78,9 +65,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_rhosts
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_nosuid
+    description: Add nosuid Option to /var/log
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_nosuid
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_grub2_uefi_password
@@ -91,7 +91,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_grub2_uefi_password
     scope:
@@ -104,22 +104,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_rsyncd_disabled
-    description: Ensure rsyncd service is diabled
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_rsyncd_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
@@ -130,35 +117,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
-    description: Verify Group Ownership of Message of the Day Banner
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_ntpd_specify_remote_server
-    description: Specify a Remote NTP Server
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_ntpd_specify_remote_server
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_ra
@@ -169,7 +130,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_ra
     scope:
@@ -182,22 +143,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_group_unique_name
-    description: Ensure All Groups on the System Have Unique Group Names
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_group_unique_name
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
@@ -208,7 +156,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
     scope:
@@ -221,7 +169,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
     scope:
@@ -234,9 +182,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shadow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
+    description: Set Existing Passwords Maximum Age
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
@@ -247,7 +208,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
     scope:
@@ -260,7 +221,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_rsh_removed
     scope:
@@ -273,7 +234,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
     scope:
@@ -286,7 +247,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
     scope:
@@ -299,7 +260,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_unique_id
     scope:
@@ -312,7 +273,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_banner_enabled
     scope:
@@ -325,7 +286,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_journald_storage
     scope:
@@ -338,7 +299,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_allow
     scope:
@@ -351,9 +312,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_passwordauth
+    description: Set PAM''s Password Hashing Algorithm - password-auth
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_passwordauth
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_disable_host_auth
@@ -364,22 +338,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_disable_host_auth
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_mount_option_nodev_removable_partitions
-    description: Add nodev Option to Removable Media Partitions
+  - id: xccdf_org.ssgproject.content_rule_mount_option_home_nosuid
+    description: Add nosuid Option to /home
     filters: *id001
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_mount_option_nodev_removable_partitions
+          rule: xccdf_org.ssgproject.content_rule_mount_option_home_nosuid
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_shadow
@@ -390,7 +364,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_shadow
     scope:
@@ -403,7 +377,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_gshadow
     scope:
@@ -416,7 +390,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
     scope:
@@ -429,7 +403,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_telnet_removed
     scope:
@@ -442,7 +416,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_telnet-server_removed
     scope:
@@ -455,7 +429,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_login_banner_text
     scope:
@@ -468,7 +442,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_require_emergency_target_auth
     scope:
@@ -481,7 +455,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_daily
     scope:
@@ -494,7 +468,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
     scope:
@@ -507,7 +481,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
     scope:
@@ -520,7 +494,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
     scope:
@@ -533,7 +507,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_xinetd_removed
     scope:
@@ -546,7 +520,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_shadow
     scope:
@@ -559,7 +533,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_echo_ignore_broadcasts
     scope:
@@ -572,7 +546,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_firewalld_installed
     scope:
@@ -585,7 +559,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_journald_compress
     scope:
@@ -598,7 +572,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_ypserv_removed
     scope:
@@ -611,7 +585,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_source_route
     scope:
@@ -624,9 +598,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_nodev
+    description: Add nodev Option to /var/log
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_nodev
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
@@ -637,7 +624,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
     scope:
@@ -650,22 +637,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_nfs-utils_removed
-    description: Uninstall nfs-utils Package
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_nfs-utils_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_journald_forward_to_syslog
@@ -676,7 +650,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_journald_forward_to_syslog
     scope:
@@ -689,22 +663,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_ra
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_bind_removed
-    description: Uninstall bind Package
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_bind_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
@@ -715,7 +676,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
     scope:
@@ -728,7 +689,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
     scope:
@@ -741,22 +702,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_coredump_disable_backtraces
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_iptables_installed
-    description: Install iptables Package
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
@@ -767,22 +715,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_ntpd_configure_restrictions
-    description: Configure server restrictions for ntpd
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_ntpd_configure_restrictions
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_send_redirects
@@ -793,22 +728,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_send_redirects
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_file_groupowner_efi_grub2_cfg
-    description: Verify the UEFI Boot Loader grub.cfg Group Ownership
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupowner_efi_grub2_cfg
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
@@ -819,7 +741,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
     scope:
@@ -832,9 +754,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_tftp-server_removed
+    description: Uninstall tftp-server Package
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_tftp-server_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_noexec
@@ -845,22 +780,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_noexec
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_install_PAE_kernel_on_x86-32
-    description: Install PAE Kernel on Supported 32-bit x86 Systems
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_install_PAE_kernel_on_x86-32
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
@@ -871,22 +793,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_grub2_enable_selinux
-    description: Ensure SELinux Not Disabled in /etc/default/grub
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_grub2_enable_selinux
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_d
@@ -897,7 +806,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_d
     scope:
@@ -910,7 +819,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_redirects
     scope:
@@ -923,7 +832,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
     scope:
@@ -936,7 +845,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
     scope:
@@ -949,22 +858,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_ntpd_run_as_ntp_user
-    description: Configure ntpd To Run As ntp User
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_ntpd_run_as_ntp_user
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
@@ -975,9 +871,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_tftp_removed
+    description: Remove tftp Daemon
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_tftp_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_efi_grub2_cfg
@@ -988,7 +897,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_efi_grub2_cfg
     scope:
@@ -1001,9 +910,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
+    description: Set Lockout Time for Failed Password Attempts
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_d
@@ -1014,7 +936,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_d
     scope:
@@ -1027,7 +949,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_squid_removed
     scope:
@@ -1040,7 +962,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
     scope:
@@ -1053,35 +975,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_rp_filter
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_dhcp_removed
-    description: Uninstall DHCP Server Package
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_dhcp_removed
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
-    description: Uninstall openldap-servers Package
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_passwd
@@ -1092,7 +988,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_passwd
     scope:
@@ -1105,22 +1001,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_group
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_xwindows_remove_packages
-    description: Disable graphical user interface
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_xwindows_remove_packages
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
@@ -1131,9 +1014,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_configure_crypto_policy
+    description: Configure System Cryptography Policy
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_configure_crypto_policy
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
@@ -1144,7 +1040,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
     scope:
@@ -1157,35 +1053,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
-    description: Use Only FIPS 140-2 Validated Ciphers
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_noexec
+    description: Add noexec Option to /var/log
     filters: *id001
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_disable_users_coredumps
-    description: Disable Core Dumps for All Users
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_disable_users_coredumps
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_noexec
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_crontab
@@ -1196,7 +1079,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_crontab
     scope:
@@ -1209,22 +1092,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_root_path_no_dot
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_user_list
-    description: Disable the GNOME3 Login User List
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_user_list
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_monthly
@@ -1235,7 +1105,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_monthly
     scope:
@@ -1248,7 +1118,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
     scope:
@@ -1261,7 +1131,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_passwd
     scope:
@@ -1274,7 +1144,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_redirects
     scope:
@@ -1287,22 +1157,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_mcstrans_removed
-    description: Uninstall mcstrans Package
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_mcstrans_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
@@ -1313,9 +1170,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
+    description: Lock Accounts After Failed Password Attempts
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
@@ -1326,7 +1196,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
     scope:
@@ -1339,7 +1209,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
     scope:
@@ -1352,7 +1222,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nodev
     scope:
@@ -1365,7 +1235,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
     scope:
@@ -1378,7 +1248,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_passwd
     scope:
@@ -1391,22 +1261,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_selinux_confinement_of_daemons
-    description: Ensure No Daemons are Unconfined by SELinux
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_selinux_confinement_of_daemons
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
@@ -1417,22 +1274,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_file_owner_etc_motd
-    description: Verify ownership of Message of the Day Banner
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_motd
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
@@ -1443,9 +1287,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nodev
+    description: Add nodev Option to /var/log/audit
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nodev
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
@@ -1456,7 +1313,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
     scope:
@@ -1469,7 +1326,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_banner_etc_motd
     scope:
@@ -1482,7 +1339,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_daily
     scope:
@@ -1495,7 +1352,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
     scope:
@@ -1508,7 +1365,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_banner_etc_issue
     scope:
@@ -1521,9 +1378,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
+    description: Verify Group Who Owns /etc/at.allow file
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
@@ -1534,7 +1404,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
     scope:
@@ -1547,7 +1417,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_password_auth
     scope:
@@ -1560,7 +1430,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_group
     scope:
@@ -1573,7 +1443,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
     scope:
@@ -1586,7 +1456,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_unique_name
     scope:
@@ -1599,7 +1469,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
     scope:
@@ -1612,22 +1482,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_system_auth
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_file_owner_etc_issue
-    description: Verify ownership of System Login Banner
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_issue
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_package_samba_removed
@@ -1638,7 +1495,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_samba_removed
     scope:
@@ -1651,7 +1508,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_d
     scope:
@@ -1664,7 +1521,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
     scope:
@@ -1677,7 +1534,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
     scope:
@@ -1690,7 +1547,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_coredump_disable_storage
     scope:
@@ -1703,7 +1560,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
     scope:
@@ -1716,9 +1573,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
+    description: Remove the X Windows Package Group
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
@@ -1729,9 +1599,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
+    description: Configure SSH to use System Crypto Policy
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_accounts_tmout
@@ -1742,22 +1625,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_tmout
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_ntpd_enabled
-    description: Enable the NTP Daemon
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_nodev
+    description: Add nodev Option to /var
     filters: *id001
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_ntpd_enabled
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_nodev
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_pam
@@ -1768,9 +1651,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_pam
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_nfs_disabled
+    description: Disable Network File System (nfs)
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_service_nfs_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
@@ -1781,9 +1677,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
+    description: Verify Permissions on /etc/at.allow file
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_package_aide_installed
@@ -1794,22 +1703,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_aide_installed
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_bios_enable_execution_restrictions
-    description: Enable NX or XD Support in the BIOS
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_bios_enable_execution_restrictions
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_partition_for_tmp
@@ -1820,7 +1716,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_partition_for_tmp
     scope:
@@ -1833,7 +1729,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_kernel_module_udf_disabled
     scope:
@@ -1846,7 +1742,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_gshadow
     scope:
@@ -1859,7 +1755,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_group_unique_id
     scope:
@@ -1872,22 +1768,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_db_up_to_date
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_selinux_state
-    description: Ensure SELinux State is Enforcing
+  - id: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
+    description: All Interactive User Home Directories Must Be Group-Owned By The Primary User
     filters: *id001
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_selinux_state
+          rule: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
@@ -1898,7 +1794,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
     scope:
@@ -1911,7 +1807,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_group
     scope:
@@ -1924,7 +1820,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
     scope:
@@ -1937,9 +1833,35 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_no_world_writable_programs
+    description: User Initialization Files Must Not Run World-Writable Programs
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_no_world_writable_programs
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
+    description: Set Existing Passwords Minimum Age
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_service_autofs_disabled
@@ -1950,7 +1872,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
     scope:
@@ -1963,22 +1885,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_file_owner_efi_grub2_cfg
-    description: Verify the UEFI Boot Loader grub.cfg User Ownership
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_owner_efi_grub2_cfg
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
@@ -1989,7 +1898,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
     scope:
@@ -2002,7 +1911,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
     scope:
@@ -2015,7 +1924,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_monthly
     scope:
@@ -2028,7 +1937,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_noexec
     scope:
@@ -2041,7 +1950,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
     scope:
@@ -2054,7 +1963,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
     scope:
@@ -2067,7 +1976,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_crond_enabled
     scope:
@@ -2080,7 +1989,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_crontab
     scope:
@@ -2093,7 +2002,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_home_nodev
     scope:
@@ -2106,22 +2015,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_selinux_policytype
-    description: Configure SELinux Policy
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nosuid
+    description: Add nosuid Option to /var/log/audit
     filters: *id001
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_selinux_policytype
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nosuid
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
@@ -2132,7 +2041,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
     scope:
@@ -2145,7 +2054,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
     scope:
@@ -2158,7 +2067,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_allow
     scope:
@@ -2171,22 +2080,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
-    description: All Interactive User Home Directories Must Be Owned By The Primary User
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_nosuid
+    description: Add nosuid Option to /var
     filters: *id001
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_nosuid
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_grub2_password
@@ -2197,7 +2106,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_grub2_password
     scope:
@@ -2210,7 +2119,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
     scope:
@@ -2223,7 +2132,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
     scope:
@@ -2236,9 +2145,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_enable_authselect
+    description: Enable authselect
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_enable_authselect
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
@@ -2249,7 +2171,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
     scope:
@@ -2262,7 +2184,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_dovecot_removed
     scope:
@@ -2275,61 +2197,35 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_for_su
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_sysctl_fs_suid_dumpable
-    description: Disable Core Dumps for SUID programs
+  - id: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
+    description: Set Default ip6tables Policy for Incoming Packets
     filters: *id001
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sysctl_fs_suid_dumpable
+          rule: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_mount_option_nosuid_removable_partitions
-    description: Add nosuid Option to Removable Media Partitions
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
+    description: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session
     filters: *id001
     imports:
       - xccdf.rego
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_mount_option_nosuid_removable_partitions
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
-    description: Disable Avahi Server Software
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
-    description: Verify Group Ownership of System Login Banner
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
@@ -2340,35 +2236,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_libselinux_installed
-    description: Install libselinux Package
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_libselinux_installed
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_rpcbind_disabled
-    description: Disable rpcbind Service
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_rpcbind_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
@@ -2379,7 +2249,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
     scope:
@@ -2392,7 +2262,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
     scope:
@@ -2405,7 +2275,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
     scope:
@@ -2418,7 +2288,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
     scope:
@@ -2431,7 +2301,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_aide_build_database
     scope:
@@ -2444,7 +2314,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_daily
     scope:
@@ -2457,7 +2327,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_gshadow
     scope:
@@ -2470,22 +2340,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled
-    description: Ensure gpgcheck Enabled for All yum Package Repositories
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
@@ -2496,7 +2353,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
     scope:
@@ -2509,35 +2366,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_talk_removed
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_gnome_gdm_disable_xdmcp
-    description: Disable XDMCP in GDM
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_gnome_gdm_disable_xdmcp
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_mount_option_noexec_removable_partitions
-    description: Add noexec Option to Removable Media Partitions
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_mount_option_noexec_removable_partitions
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_package_ypbind_removed
@@ -2548,7 +2379,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_ypbind_removed
     scope:
@@ -2561,7 +2392,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_sudo_installed
     scope:
@@ -2574,9 +2405,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_gshadow
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_noexec
+    description: Add noexec Option to /var
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_noexec
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_secure_redirects
@@ -2587,7 +2431,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_secure_redirects
     scope:
@@ -2600,7 +2444,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
     scope:
@@ -2613,7 +2457,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_weekly
     scope:
@@ -2626,9 +2470,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_group
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
+    description: Ensure There Are No Accounts With Blank or Null Passwords
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
@@ -2639,7 +2496,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
     scope:
@@ -2652,9 +2509,35 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_redirects
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sudo_require_authentication
+    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sudo_require_authentication
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_noexec
+    description: Add noexec Option to /var/log/audit
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_noexec
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_hourly
@@ -2665,22 +2548,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_hourly
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed
-    description: Verify All Account Password Hashes are Shadowed
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_require_singleuser_auth
@@ -2691,7 +2561,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_require_singleuser_auth
     scope:
@@ -2704,22 +2574,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_netrc_files
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_rsyslog_remote_loghost
-    description: Ensure Logs Sent To Remote Host
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_rsyslog_remote_loghost
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
@@ -2730,7 +2587,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
     scope:
@@ -2743,7 +2600,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_weekly
     scope:
@@ -2756,7 +2613,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_nosuid
     scope:
@@ -2769,7 +2626,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_firewalld_default_zone
     scope:
@@ -2782,9 +2639,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_forwarding
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_squashfs_disabled
+    description: Disable Mounting of squashfs
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_squashfs_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_passwd
@@ -2795,7 +2665,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_passwd
     scope:
@@ -2808,7 +2678,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned
     scope:
@@ -2821,9 +2691,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
+    description: The operating system must require Re-Authentication when using the sudo command. Ensure sudo timestamp_timeout is appropriate - sudo timestamp_timeout
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
@@ -2834,9 +2717,22 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_rsyslog_files_permissions
+    description: Ensure System Log Files Have Correct Permissions
+    filters: *id001
+    imports:
+      - xccdf.rego
+      - helpers.rego
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_rsyslog_files_permissions
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_motd
@@ -2847,22 +2743,9 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_motd
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs
-    description: Use Only FIPS 140-2 Validated MACs
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_hourly
@@ -2873,7 +2756,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_hourly
     scope:
@@ -2886,7 +2769,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
     scope:
@@ -2899,7 +2782,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_source_route
     scope:
@@ -2912,7 +2795,7 @@ rules:
       - helpers.rego
     input:
       - xccdf:
-          name: ssg-rhel7-ds-1.2.xml
+          name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
     scope:
