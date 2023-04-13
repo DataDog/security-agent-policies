@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.10.1
+version: 1.11.2
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -48,7 +48,7 @@ macros:
   - id: DD_AGENT_PROCESSES
     description: Processes that are a part of the Datadog Agent
     expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/bin/agent/agent", "/opt/datadog/apm/inject/auto_inject_runc",
-      "/usr/bin/dd-host-install", "/usr/bin/dd-host-container-install", "/usr/bin/dd-container-install"]'
+      "/usr/bin/dd-host-install", "/usr/bin/dd-host-container-install", "/usr/bin/dd-container-install", "/opt/datadog-agent/bin/datadog-cluster-agent"]'
   - id: FDB_SERVER_PROCESSES
     expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
   - id: GCP_RISKY_URI
@@ -135,6 +135,15 @@ rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
+  - id: auditctl_usage
+    description: The auditctl command was used to modify auditd
+    expression: exec.file.name == "auditctl"
+  - id: auditd_config_modified
+    description: The auditd configuration file was modified without using auditctl
+    expression: open.file.path == "/etc/audit/auditd.conf" && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.name != "auditctl"
+  - id: auditd_rule_file_modified
+    description: The auditd rules file was modified without using auditctl
+    expression: open.file.path in ["/etc/audit/rules.d/audit.rules", "/etc/audit/audit.rules"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.name != "auditctl"
   - id: aws_eks_service_account_token_accessed
     description: The AWS EKS service account token was accessed
     expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
@@ -396,7 +405,8 @@ rules:
       threat_description: Java executing shell commands may indicate remote code execution (RCE)
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
-    expression: open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"] && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"] && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES && process.file.path not in  ["/usr/bin/cilium-agent",
+      "/coredns", "/usr/bin/cilium-operator"]
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
@@ -743,13 +753,13 @@ rules:
     expression: selinux.enforce.status in ["permissive", "disabled"]
   - id: shell_history_deleted
     description: Shell History was Deleted
-    expression: (unlink.file.name =~ ".*history") && process.comm not in  ["dockerd", "containerd"]
+    expression: (unlink.file.name  =~ r".([dbazfi]*sh)(_history)$") && process.comm not in  ["dockerd", "containerd"]
   - id: shell_history_symlink
     description: A symbolic link for shell history was created targeting /dev/null
     expression: exec.comm == "ln" && exec.args in [~"*.*history*", "/dev/null"]
   - id: shell_history_truncated
     description: Shell History was Deleted
-    expression: open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ ".*history" && open.file.path in [~"/root/*", ~"/home/**"] && process.file.name == "truncate"
+    expression: open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ r".([dbazfi]*sh)(_history)$" && open.file.path in [~"/root/*", ~"/home/**"] && process.file.name == "truncate"
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
@@ -799,54 +809,51 @@ rules:
     description: SSL certificates may have been tampered with
     expression: |-
       (
-          (chmod.file.path in [ ~"/etc/ssl/certs/**" ])
+          (chmod.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
           && process.file.path not in PACKAGE_MANAGERS
       ) && chmod.file.mode != chmod.file.destination.mode
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_chown
     description: SSL certificates may have been tampered with
     expression: |-
       (
-          (chown.file.path in [ ~"/etc/ssl/certs/**" ])
+          (chown.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
           && process.file.path not in PACKAGE_MANAGERS
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_link
     description: SSL certificates may have been tampered with
     expression: |-
       (
-          (link.file.path in [ ~"/etc/ssl/certs/**" ]
-          || link.file.destination.path in [ ~"/etc/ssl/certs/**" ])
+          (link.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ]
+          || link.file.destination.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
           && process.file.path not in PACKAGE_MANAGERS
           && process.file.path != "/usr/sbin/update-ca-certificates"
           && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
           && process.file.name !~ "runc*"
       )
   - id: ssl_certificate_tampering_open
     description: SSL certificates may have been tampered with
-    expression: |-
-      (
-          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/etc/ssl/certs/**" ])
-          && process.file.path not in PACKAGE_MANAGERS
-      )
-      && process.file.path != "/usr/sbin/update-ca-certificates"
-      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
-      && process.file.name !~ "runc*"
+    expression: "(\n    open.flags & (OPEN_CREATE_FLAGS) > 0 &&\n    (open.file.path in [ ~\"/etc/ssl/certs/**\", ~\"/etc/pki/**\"])\n)\n&& process.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\
+      \ \n&& process.ancestors.file.path not in PACKAGE_MANAGERS\n&& process.file.name !~ \"runc*\""
   - id: ssl_certificate_tampering_rename
     description: SSL certificates may have been tampered with
     expression: |-
       (
-          (rename.file.path in [ ~"/etc/ssl/certs/**" ]
-          || rename.file.destination.path in [ ~"/etc/ssl/certs/**" ])
+          (rename.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ]
+          || rename.file.destination.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
           && process.file.path not in PACKAGE_MANAGERS
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_unlink
     description: SSL certificates may have been tampered with
@@ -857,6 +864,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_utimes
     description: SSL certificates may have been tampered with
@@ -867,6 +875,7 @@ rules:
       )
       && process.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
   - id: suspicious_container_client
     description: A container management utility was executed in a container
