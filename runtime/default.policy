@@ -841,8 +841,15 @@ rules:
       )
   - id: ssl_certificate_tampering_open
     description: SSL certificates may have been tampered with
-    expression: "(\n    open.flags & (OPEN_CREATE_FLAGS) > 0 &&\n    (open.file.path in [ ~\"/etc/ssl/certs/**\", ~\"/etc/pki/**\"])\n)\n&& process.file.path != \"/usr/sbin/update-ca-certificates\"\n&& process.ancestors.file.path != \"/usr/sbin/update-ca-certificates\"\
-      \ \n&& process.ancestors.file.path not in PACKAGE_MANAGERS\n&& process.file.name !~ \"runc*\""
+    expression: |-
+      (
+          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
+          (open.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
+      )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
   - id: ssl_certificate_tampering_rename
     description: SSL certificates may have been tampered with
     expression: |-
