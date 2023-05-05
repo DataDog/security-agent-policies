@@ -499,19 +499,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
-    description: Verify firewalld Enabled
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
     description: Disable SSH Root Login
     filters: *id001
@@ -1630,19 +1617,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
-    description: Enable rsyslog Service
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
     description: Remove the X Windows Package Group
     filters: *id001
@@ -1719,19 +1693,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_pam
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_nfs_disabled
-    description: Disable Network File System (nfs)
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_nfs_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
@@ -1929,19 +1890,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_autofs_disabled
-    description: Disable the Automounter
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
     description: Verify Group Who Owns passwd File
     filters: *id001
@@ -2044,19 +1992,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_crond_enabled
-    description: Enable cron Daemon
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_crond_enabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_crontab
