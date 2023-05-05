@@ -31,19 +31,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_chronyd_or_ntpd_enabled
-    description: Enable the NTP or Chrony Daemon
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_chronyd_or_ntpd_enabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_package_httpd_removed
     description: Uninstall httpd Package
     filters: *id001
@@ -1032,19 +1019,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_motd
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_cron_enabled
-    description: Enable cron Service
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_cron_enabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
     description: Ensure that chronyd is running under chrony user account
     filters: *id001
@@ -1108,19 +1082,6 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_cups_disabled
-    description: Disable the CUPS Service
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_cups_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
@@ -1290,19 +1251,6 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
-    description: Enable rsyslog Service
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_kernel_module_jffs2_disabled
@@ -1552,19 +1500,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_autofs_disabled
-    description: Disable the Automounter
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
     description: Verify Group Who Owns passwd File
     filters: *id001
@@ -1654,19 +1589,6 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_crontab
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_ntp_enabled
-    description: Enable the NTP Service
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_ntp_enabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
@@ -1838,19 +1760,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_for_su
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_iptables_enabled
-    description: Verify iptables Enabled
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_iptables_enabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
     description: Set Default iptables Policy for Incoming Packets
     filters: *id001
@@ -1875,19 +1784,6 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_fs_suid_dumpable
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
-    description: Disable Avahi Server Software
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule

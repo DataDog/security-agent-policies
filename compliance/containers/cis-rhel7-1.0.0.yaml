@@ -109,19 +109,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_rsyncd_disabled
-    description: Ensure rsyncd service is diabled
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_rsyncd_disabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
     description: Enable Kernel Parameter to Use TCP Syncookies on Network Interfaces
     filters: *id001
@@ -497,19 +484,6 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
-    description: Verify firewalld Enabled
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
@@ -1708,19 +1682,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
-    description: Enable rsyslog Service
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
     description: Verify User Who Owns gshadow File
     filters: *id001
@@ -1745,19 +1706,6 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_tmout
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_ntpd_enabled
-    description: Enable the NTP Daemon
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_ntpd_enabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_pam
@@ -1942,19 +1890,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_autofs_disabled
-    description: Disable the Automounter
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
     description: Verify Group Who Owns passwd File
     filters: *id001
@@ -2057,19 +1992,6 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_crond_enabled
-    description: Enable cron Daemon
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_crond_enabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_crontab
@@ -2306,19 +2228,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_mount_option_nosuid_removable_partitions
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
-    description: Disable Avahi Server Software
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
     description: Verify Group Ownership of System Login Banner
     filters: *id001
@@ -2356,19 +2265,6 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_libselinux_installed
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_service_rpcbind_disabled
-    description: Disable rpcbind Service
-    filters: *id001
-    imports:
-      - xccdf.rego
-      - helpers.rego
-    input:
-      - xccdf:
-          name: ssg-rhel7-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_rpcbind_disabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
