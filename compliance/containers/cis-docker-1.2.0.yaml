@@ -216,7 +216,7 @@ rules:
       - constants:
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-2.5
-    description: Docker does not use AUFS storage driver
+    description: Docker uses a storage driver other than AUFS
     scope:
       - docker
     imports:
@@ -316,7 +316,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.6
-    description: Docker related files cannot be altered by non-owners
+    description: Docker related files can only be altered by owners
     scope:
       - docker
     input:
@@ -525,7 +525,7 @@ rules:
           group: root
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.21
-    description: Default Docker configuration file cannot be altered by non-owners - RHEL
+    description: Default Docker configuration file can only be altered by owners - RHEL
     scope:
       - docker
     imports:
@@ -538,7 +538,7 @@ rules:
           max_permissions: '644'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-3.22
-    description: Default Docker configuration file cannot be altered by non-owners
+    description: Default Docker configuration file can only be altered by owners
     scope:
       - docker
     imports:
@@ -551,7 +551,7 @@ rules:
           max_permissions: '644'
           resource_type: docker_daemon
   - id: cis-docker-1.2.0-4.1
-    description: Containers do not use the root user
+    description: Containers run using non-root user accounts
     scope:
       - docker
     skipOnKubernetes: true
@@ -627,7 +627,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.4
-    description: Privileged containers are not used
+    description: Containers only run in non-privileged mode
     scope:
       - docker
     skipOnKubernetes: true
@@ -657,7 +657,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.7
-    description: Privileged ports are not mapped within containers
+    description: Mapping of privileged ports within containers is restricted
     scope:
       - docker
     skipOnKubernetes: true
@@ -672,7 +672,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.9
-    description: Host's network namespace is not shared with containers
+    description: Host's network namespace is hidden from containers
     scope:
       - docker
     imports:
@@ -701,7 +701,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.11
-    description: CPU priorities are set to ensure critical containers do not become unresponsive
+    description: CPU priorities are set to ensure critical containers remain responsive
     scope:
       - docker
     skipOnKubernetes: true
@@ -776,7 +776,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.20
-    description: Host's UTS namespace is not shared
+    description: UTS Namespace is only allocated to the Host
     scope:
       - docker
     skipOnKubernetes: true
@@ -836,7 +836,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.26
-    description: Container health is monitored when not supported by default
+    description: Container health is always monitored
     scope:
       - docker
     skipOnKubernetes: true
@@ -866,7 +866,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.30
-    description: Host's user namespaces are not shared with containers
+    description: User namespaces isolated between host and containers
     scope:
       - docker
     skipOnKubernetes: true
@@ -881,7 +881,7 @@ rules:
       - constants:
           resource_type: docker_container
   - id: cis-docker-1.2.0-5.31
-    description: Docker socket is not allowed to mount inside any containers
+    description: Containers prohibit Docker socket mounting
     scope:
       - docker
     skipOnKubernetes: true
