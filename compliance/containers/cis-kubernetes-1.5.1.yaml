@@ -5,7 +5,7 @@ framework: cis-kubernetes
 version: 1.5.1
 rules:
   - id: cis-kubernetes-1.5.1-1.1.1
-    description: API server pod specification file cannot be altered by non-owners
+    description: API server pod specification file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -32,7 +32,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.3
-    description: Controller manager pod specification file cannot be altered by non-owners
+    description: Controller manager pod specification file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -59,7 +59,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.5
-    description: Scheduler pod specification file cannot be altered by non-owners
+    description: Scheduler pod specification file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -86,7 +86,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.7
-    description: Etcd pod specification file cannot be altered by non-owners
+    description: Etcd pod specification file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -113,7 +113,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.11
-    description: Etcd data directory permissions cannot be accessed by non-owners
+    description: Etcd data directory permissions can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -167,7 +167,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.15
-    description: Scheduler configuration file cannot be altered by non-owners
+    description: Scheduler configuration file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -194,7 +194,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.17
-    description: controller-manager.conf file cannot be altered by non-owners
+    description: controller-manager.conf file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -235,7 +235,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.20
-    description: Kubernetes PKI certificate file cannot be altered by non-owners
+    description: Kubernetes PKI certificate file can only be altered by owners
     scope:
       - kubernetesNode
     input:
@@ -262,7 +262,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.3
-    description: API server does not use token based authentication
+    description: API server uses secure authentication methods
     scope:
       - kubernetesNode
     imports:
@@ -346,7 +346,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.11
-    description: Admission controller AlwaysAdmin is not enabled
+    description: Admission controller AlwaysAdmin is disabled
     scope:
       - kubernetesNode
     imports:
@@ -406,7 +406,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.18
-    description: API server does not bind to an insecure API service address
+    description: API server only binds to secure API service addresses
     scope:
       - kubernetesNode
     imports:
@@ -418,7 +418,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.19
-    description: API server does not bind the API service to an insecure port
+    description: API server only binds the API service to secure, known ports
     scope:
       - kubernetesNode
     imports:
@@ -718,7 +718,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.3
-    description: etcd does not allow the use of self-signed client certificates
+    description: etcd only allows the use of valid client certificates
     scope:
       - kubernetesNode
     imports:
@@ -778,7 +778,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-4.1.1
-    description: The kubelet service file cannot be altered by non-owners
+    description: Kubelet service can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -805,7 +805,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.3
-    description: Kube-proxy configuration file cannot be altered by non-owners
+    description: Kube-proxy configuration file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -832,7 +832,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.5
-    description: The kubelet.conf file cannot be altered by non-owners
+    description: The kubelet.conf file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -859,7 +859,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.7
-    description: Certificate authorities file cannot be altered by non-owners
+    description: Certificate authorities file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -886,7 +886,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.9
-    description: The kubelet configuration file cannot be altered by non-owners
+    description: The kubelet configuration file can only be altered by owners
     scope:
       - kubernetesNode
     imports:
@@ -1045,7 +1045,7 @@ rules:
       - constants:
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-5.1.5
-    description: Default service accounts are not used
+    description: Only non-default service accounts are in use
     scope:
       - kubernetesCluster
     input:
@@ -1135,7 +1135,7 @@ rules:
       - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.5
-    description: Limit admission of containers that do not block privilege escalation
+    description: Containers are configured to block privilege escalation
     scope:
       - kubernetesCluster
     input:
@@ -1178,7 +1178,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.7.4
-    description: Resources are not created in the default namespace
+    description: Resources are created in a non-default namespace
     scope:
       - kubernetesCluster
     input:
