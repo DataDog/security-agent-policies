@@ -15,6 +15,26 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_account_unique_id
+    description: Ensure All Accounts on the System Have Unique User IDs
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_account_unique_id
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_account_unique_name
+    description: Ensure All Accounts on the System Have Unique Names
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_account_unique_name
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
     description: Set Password Maximum Age
     filters: *id001
@@ -53,6 +73,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed_sha512
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past
+    description: Ensure all users last password change date is in the past
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit
@@ -175,6 +205,16 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_tally2
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
+    description: Verify Root Has A Primary GID 0
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
     description: Ensure that Root's Path Does Not Include World or Group-Writable Directories
     filters: *id001
@@ -246,7 +286,7 @@ rules:
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
-    description: User Initialization Files Must Be Group-Owned By The Primary User
+    description: User Initialization Files Must Be Group-Owned By The Primary Group
     filters: *id001
     input:
       - xccdf:
@@ -295,6 +335,46 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_all_apparmor_profiles_in_enforce_complain_mode
+    description: All AppArmor Profiles are in enforce or complain mode
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_all_apparmor_profiles_in_enforce_complain_mode
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
+    description: Modify the System Login Banner for Remote Connections
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_banner_etc_issue
+    description: Modify the System Login Banner
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_banner_etc_issue
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_banner_etc_motd
+    description: Modify the System Message of the Day Banner
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_banner_etc_motd
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
     description: Ensure that chronyd is running under chrony user account
     filters: *id001
@@ -325,16 +405,6 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_disable_host_auth
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_disable_prelink
-    description: Disable Prelinking
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_disable_prelink
-    scope:
-      - none
   - id: xccdf_org.ssgproject.content_rule_disable_users_coredumps
     description: Disable Core Dumps for All Users
     filters: *id001
@@ -343,6 +413,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_disable_users_coredumps
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_ensure_shadow_group_empty
+    description: Ensure shadow group is empty
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_ensure_shadow_group_empty
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
@@ -485,6 +565,16 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue_net
+    description: Verify Group Ownership of System Login Banner for Remote Connections
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue_net
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
     description: Verify Group Ownership of System Login Banner
     filters: *id001
@@ -533,6 +623,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
+    description: All Interactive User Home Directories Must Be Group-Owned By The Primary Group
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_at_allow
@@ -675,6 +775,16 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_file_owner_etc_issue_net
+    description: Verify ownership of System Login Banner for Remote Connections
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_issue_net
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_issue
     description: Verify ownership of System Login Banner
     filters: *id001
@@ -733,6 +843,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
+    description: All Interactive User Home Directories Must Be Owned By The Primary User
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
@@ -875,6 +995,16 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_gshadow
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue_net
+    description: Verify permissions on System Login Banner for Remote Connections
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue_net
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue
     description: Verify permissions on System Login Banner
     filters: *id001
@@ -965,6 +1095,56 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned
+    description: Ensure All Files Are Owned by a Group
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
+    description: All GIDs referenced in /etc/passwd must be defined in /etc/group
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_group_unique_id
+    description: Ensure All Groups on the System Have Unique Group ID
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_group_unique_id
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_group_unique_name
+    description: Ensure All Groups on the System Have Unique Group Names
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_group_unique_name
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_grub2_enable_apparmor
+    description: Ensure AppArmor is enabled in the bootloader configuration
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_grub2_enable_apparmor
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_grub2_password
     description: Set Boot Loader Password in grub2
     filters: *id001
@@ -973,6 +1153,46 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_grub2_password
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_grub2_uefi_password
+    description: Set the UEFI Boot Loader Password
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_grub2_uefi_password
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_journald_compress
+    description: Ensure journald is configured to compress large log files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_journald_compress
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_journald_forward_to_syslog
+    description: Ensure journald is configured to send logs to rsyslog
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_journald_forward_to_syslog
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_journald_storage
+    description: Ensure journald is configured to write log files to persistent disk
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_journald_storage
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
@@ -1075,6 +1295,76 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_home_nodev
+    description: Add nodev Option to /home
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_home_nodev
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_nodev
+    description: Add nodev Option to /tmp
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_nodev
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_noexec
+    description: Add noexec Option to /tmp
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_noexec
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_nosuid
+    description: Add nosuid Option to /tmp
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_nosuid
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nodev
+    description: Add nodev Option to /var/tmp
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nodev
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_noexec
+    description: Add noexec Option to /var/tmp
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_noexec
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
+    description: Add nosuid Option to /var/tmp
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords
     description: Prevent Login to Accounts With Empty Password
     filters: *id001
@@ -1083,6 +1373,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_no_forward_files
+    description: Verify No .forward Files Exist
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_forward_files
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_no_netrc_files
@@ -1115,6 +1415,26 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_ntpd_configure_restrictions
+    description: Configure server restrictions for ntpd
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_ntpd_configure_restrictions
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_ntpd_run_as_ntp_user
+    description: Configure ntpd To Run As ntp User
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_ntpd_run_as_ntp_user
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_package_aide_installed
     description: Install AIDE
     filters: *id001
@@ -1123,6 +1443,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_aide_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_apparmor_installed
+    description: Ensure AppArmor is installed
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_apparmor_installed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_package_bind_removed
@@ -1143,6 +1473,26 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_chrony_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_cups_removed
+    description: Uninstall CUPS Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_cups_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_cyrus-imapd_removed
+    description: Uninstall cyrus-imapd Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_cyrus-imapd_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_package_dhcp_removed
@@ -1195,6 +1545,26 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_package_iptables-persistent_installed
+    description: Install iptables-persistent Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_iptables-persistent_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_iptables-persistent_removed
+    description: Remove iptables-persistent Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_iptables-persistent_removed
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
     description: Uninstall net-snmp Package
     filters: *id001
@@ -1205,6 +1575,46 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_package_nfs-kernel-server_removed
+    description: Uninstall nfs-kernel-server Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_nfs-kernel-server_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_nftables_installed
+    description: Install nftables Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_nftables_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_nftables_removed
+    description: Uninstall nftables package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_nftables_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_nginx_removed
+    description: Uninstall nginx Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_nginx_removed
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_package_nis_removed
     description: Uninstall the nis package
     filters: *id001
@@ -1213,16 +1623,6 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_nis_removed
-    scope:
-      - none
-  - id: xccdf_org.ssgproject.content_rule_package_ntp_installed
-    description: Install the ntp service
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_ntp_installed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
@@ -1245,6 +1645,36 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
+    description: Install pam_pwquality Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_prelink_removed
+    description: Package "prelink" Must not be Installed
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_prelink_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_rpcbind_removed
+    description: Uninstall rpcbind Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_rpcbind_removed
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_package_rsh_removed
     description: Uninstall rsh Package
     filters: *id001
@@ -1253,6 +1683,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_rsh_removed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_rsync_removed
+    description: Uninstall rsync Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_rsync_removed
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
@@ -1315,6 +1755,26 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_package_telnet_removed
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_package_ufw_installed
+    description: Install ufw Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_ufw_installed
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_package_ufw_removed
+    description: Remove ufw Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_ufw_removed
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
     description: Uninstall vsftpd Package
     filters: *id001
@@ -1355,6 +1815,36 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_partition_for_tmp
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_permissions_local_var_log
+    description: Verify permissions of log files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_permissions_local_var_log
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
+    description: Disable Postfix Network Listening
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
+    description: Ensure rsyslog Default File Permissions Configured
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_rsyslog_remote_loghost
     description: Ensure Logs Sent To Remote Host
     filters: *id001
@@ -1385,14 +1875,14 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_chronyd_or_ntpd_enabled
-    description: Enable the NTP or Chrony Daemon
+  - id: xccdf_org.ssgproject.content_rule_service_chronyd_enabled
+    description: The Chronyd service is enabled
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_chronyd_or_ntpd_enabled
+          rule: xccdf_org.ssgproject.content_rule_service_chronyd_enabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_service_cron_enabled
@@ -1415,14 +1905,24 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_service_cups_disabled
     scope:
       - none
-  - id: xccdf_org.ssgproject.content_rule_service_iptables_enabled
-    description: Verify iptables Enabled
+  - id: xccdf_org.ssgproject.content_rule_service_nftables_disabled
+    description: Verify nftables service disabled
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_iptables_enabled
+          rule: xccdf_org.ssgproject.content_rule_service_nftables_disabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_nftables_enabled
+    description: Verify nftables Service is Enabled
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_nftables_enabled
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_service_ntp_enabled
@@ -1445,6 +1945,26 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_service_timesyncd_enabled
+    description: Enable systemd_timesyncd Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_timesyncd_enabled
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_service_ufw_enabled
+    description: Verify ufw Enabled
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_ufw_enabled
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
     description: Set Default ip6tables Policy for Incoming Packets
     filters: *id001
@@ -1463,6 +1983,56 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_set_ipv6_loopback_traffic
+    description: Set configuration for IPv6 loopback traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_ipv6_loopback_traffic
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_set_loopback_traffic
+    description: Set configuration for loopback traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_loopback_traffic
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_set_nftables_table
+    description: Ensure a Table Exists for Nftables
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_nftables_table
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_set_ufw_default_rule
+    description: Ensure ufw Default Deny Firewall Policy
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_ufw_default_rule
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_set_ufw_loopback_traffic
+    description: Set UFW Loopback Traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_ufw_loopback_traffic
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
@@ -1505,8 +2075,28 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_enable_pam
+    description: Enable PAM
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_enable_pam
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
+    description: Enable SSH Warning Banner
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
-    description: Set SSH Idle Timeout Interval
+    description: Set SSH Client Alive Interval
     filters: *id001
     input:
       - xccdf:
@@ -1523,6 +2113,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
+    description: Ensure SSH LoginGraceTime is configured
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_info
@@ -1555,6 +2155,16 @@ rules:
           rule: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
     scope:
       - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
+    description: Ensure SSH MaxStartups is configured
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
+    scope:
+      - none
   - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
     description: Use Only FIPS 140-2 Validated Ciphers
     filters: *id001
@@ -1573,6 +2183,16 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs
+    scope:
+      - none
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
+    description: Use Only Strong Key Exchange algorithms
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
     scope:
       - none
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
