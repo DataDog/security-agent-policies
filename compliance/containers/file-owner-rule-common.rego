@@ -25,7 +25,7 @@ findings[f] {
 
 findings[f] {
 	count(input.file) == 0
-	f := dd.error_finding(
+	f := dd.skipped_finding(
 		h.resource_type,
 		h.resource_id,
 		sprintf("no files found for file check \"%s\"", [input.context.input.file.file.path]),
@@ -34,7 +34,7 @@ findings[f] {
 
 findings[f] {
 	not h.has_key(input, "file")
-	f := dd.error_finding(
+	f := dd.skipped_finding(
 		h.resource_type,
 		h.resource_id,
 		sprintf("failed to resolve path: empty path from %s", [input.context.input.file.file.path]),

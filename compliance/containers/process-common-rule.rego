@@ -25,7 +25,7 @@ findings[f] {
 
 findings[f] {
 	count(input.process) == 0
-	f := dd.error_finding(
+	f := dd.skipped_finding(
 		h.resource_type,
 		h.resource_id,
 		sprintf("no process found for process check \"%s\"", [input.context.input.process.process.name]),
@@ -34,7 +34,7 @@ findings[f] {
 
 findings[f] {
 	not h.has_key(input, "process")
-	f := dd.error_finding(
+	f := dd.skipped_finding(
 		h.resource_type,
 		h.resource_id,
 		sprintf("failed to resolve process name: %s", [input.context.input.process.process.name]),
