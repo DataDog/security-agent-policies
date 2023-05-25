@@ -1,0 +1,407 @@
+schema:
+  version: 1.0.0
+name: CIS Amazon Linux 2 Benchmark
+framework: cis-amzn2
+version: 1.0.0
+rules:
+  - id: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
+    description: Ensure that Root's Path Does Not Include World or Group-Writable Directories
+    filters: &id001
+      - os.id == "amzn" && os.version_id == "2"
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chmod
+    description: Record Events that Modify the System's Discretionary Access Controls - chmod
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chmod
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chown
+    description: Record Events that Modify the System's Discretionary Access Controls - chown
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chown
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmod
+    description: Record Events that Modify the System's Discretionary Access Controls - fchmod
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmod
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmodat
+    description: Record Events that Modify the System's Discretionary Access Controls - fchmodat
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmodat
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchown
+    description: Record Events that Modify the System's Discretionary Access Controls - fchown
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchown
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchownat
+    description: Record Events that Modify the System's Discretionary Access Controls - fchownat
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchownat
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fremovexattr
+    description: Record Events that Modify the System's Discretionary Access Controls - fremovexattr
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fremovexattr
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fsetxattr
+    description: Record Events that Modify the System's Discretionary Access Controls - fsetxattr
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fsetxattr
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lchown
+    description: Record Events that Modify the System's Discretionary Access Controls - lchown
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lchown
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lremovexattr
+    description: Record Events that Modify the System's Discretionary Access Controls - lremovexattr
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lremovexattr
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lsetxattr
+    description: Record Events that Modify the System's Discretionary Access Controls - lsetxattr
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lsetxattr
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_removexattr
+    description: Record Events that Modify the System's Discretionary Access Controls - removexattr
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_removexattr
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_setxattr
+    description: Record Events that Modify the System's Discretionary Access Controls - setxattr
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_setxattr
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events
+    description: Ensure auditd Collects File Deletion Events by User
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading
+    description: Ensure auditd Collects Information on Kernel Module Loading and Unloading
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_mac_modification
+    description: Record Events that Modify the System's Mandatory Access Controls
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_mac_modification
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_media_export
+    description: Ensure auditd Collects Information on Exporting to Media (successful)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_media_export
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_networkconfig_modification
+    description: Record Events that Modify the System's Network Environment
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_networkconfig_modification
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands
+    description: Ensure auditd Collects Information on the Use of Privileged Commands
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_sysadmin_actions
+    description: Ensure auditd Collects System Administrator Actions
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_sysadmin_actions
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_time_adjtimex
+    description: Record attempts to alter time through adjtimex
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_adjtimex
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_time_clock_settime
+    description: Record Attempts to Alter Time Through clock_settime
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_clock_settime
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_time_settimeofday
+    description: Record attempts to alter time through settimeofday
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_settimeofday
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_time_stime
+    description: Record Attempts to Alter Time Through stime
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_stime
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_time_watch_localtime
+    description: Record Attempts to Alter the localtime File
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_time_watch_localtime
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification
+    description: Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification
+    description: Record Events that Modify User/Group Information
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification
+  - id: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
+    description: Verify that All World-Writable Directories Have Sticky Bits Set
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
+  - id: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
+    description: Ensure gpgcheck Enabled In Main yum Configuration
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_sgid
+    description: Ensure All SGID Executables Are Authorized
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_sgid
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_suid
+    description: Ensure All SUID Executables Are Authorized
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_suid
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable
+    description: Ensure No World-Writable Files Exist
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable
+  - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
+    description: Add nodev Option to /dev/shm
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
+  - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
+    description: Add nosuid Option to /dev/shm
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
+  - id: xccdf_org.ssgproject.content_rule_no_empty_passwords
+    description: Prevent Login to Accounts With Empty Password
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_no_empty_passwords
+  - id: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
+    description: Ensure rsyslog is Installed
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
+  - id: xccdf_org.ssgproject.content_rule_partition_for_var_log_audit
+    description: Ensure /var/log/audit Located On Separate Partition
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var_log_audit
+  - id: xccdf_org.ssgproject.content_rule_partition_for_var_log
+    description: Ensure /var/log Located On Separate Partition
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_partition_for_var_log
+  - id: xccdf_org.ssgproject.content_rule_rpm_verify_hashes
+    description: Verify File Hashes with RPM
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_rpm_verify_hashes
+  - id: xccdf_org.ssgproject.content_rule_rpm_verify_permissions
+    description: Verify and Correct File Permissions with RPM
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_rpm_verify_permissions
+  - id: xccdf_org.ssgproject.content_rule_security_patches_up_to_date
+    description: Ensure Software Patches Installed
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_security_patches_up_to_date
+  - id: xccdf_org.ssgproject.content_rule_service_abrtd_disabled
+    description: Disable Automatic Bug Reporting Tool (abrtd)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_service_abrtd_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_atd_disabled
+    description: Disable At Service (atd)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_service_atd_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_autofs_disabled
+    description: Disable the Automounter
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_ntpdate_disabled
+    description: Disable ntpdate Service (ntpdate)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_service_ntpdate_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_oddjobd_disabled
+    description: Disable Odd Job Daemon (oddjobd)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_service_oddjobd_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_qpidd_disabled
+    description: Disable Apache Qpid (qpidd)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_service_qpidd_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_rdisc_disabled
+    description: Disable Network Router Discovery Daemon (rdisc)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_service_rdisc_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
+    description: Enable rsyslog Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_standard
+          rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
