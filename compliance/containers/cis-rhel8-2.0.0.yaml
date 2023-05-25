@@ -2,7 +2,7 @@ schema:
   version: 1.0.0
 name: CIS Red Hat Enterprise Linux 8 Benchmark for Level 1 - Server
 framework: cis-rhel8
-version: 1.0.0
+version: 2.0.0
 rules:
   - id: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
     description: Set Account Expiration Following Inactivity
