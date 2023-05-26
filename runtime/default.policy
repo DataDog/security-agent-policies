@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.11.2
+version: 1.14.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -330,6 +330,9 @@ rules:
     tags:
       threat_score: '9'
       threat_description: Cloud environments are a common target for cryptocurrency mining
+  - id: curl_docker_socket
+    description: The Docker socket was referenced in a cURL command
+    expression: exec.file.name == "curl" && exec.args_flags in ["unix-socket"] && exec.args in ["*docker.sock*"] && container.id != ""
   - id: database_shell_execution
     description: A database application spawned a shell, shell utility, or HTTP utility
     expression: |-
@@ -365,6 +368,12 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking global configurations the dynamic linker uses to load shared libraries.
+  - id: exec_lsmod
+    description: Kernel modules were listed using the lsmod command
+    expression: exec.comm == "lsmod"
+  - id: exec_whoami
+    description: The whoami command was executed
+    expression: exec.comm == "whoami"
   - id: executable_bit_added
     description: The executable bit was added to a newly created file
     expression: |-
@@ -487,6 +496,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+  - id: kmod_list
+    description: Kernel modules were listed using the kmod command
+    expression: exec.comm == "kmod" && exec.args in [~"*list*"]
   - id: kubernetes_dns_enumeration
     description: Kubernetes DNS enumeration
     expression: dns.question.name == "any.any.svc.cluster.local" && dns.question.type == SRV && container.id != ""
@@ -714,6 +726,9 @@ rules:
     expression: |-
       (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*")
+  - id: ps_discovery
+    description: Processes were listed using the ps command
+    expression: exec.comm == "ps" && exec.argv not in ["-p", "--pid"]
   - id: ptrace_antidebug
     description: A process uses an anti-debugging technique to block debuggers
     expression: ptrace.request == PTRACE_TRACEME && process.file.name != ""
@@ -738,6 +753,12 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Some Python packages are associated with malicious behavior, especially when code is provided as a command-line argument.
+  - id: read_kubeconfig
+    description: The kubeconfig file was accessed
+    expression: open.file.path in [~"/home/*/.kube/config", "/root/.kube/config"]
+  - id: read_release_info
+    description: OS information was read from the /etc/lsb-release file
+    expression: open.file.path == "/etc/lsb-release" && open.flags & O_RDONLY > 0
   - id: redis_sandbox_escape
     description: Detects CVE-2022-0543
     expression: (open.file.path =~ "/usr/lib/x86_64-linux-gnu/*" && open.file.name in LIBC_VERSIONS) && process.ancestors.comm in ["redis-check-rdb", "redis-server"]
@@ -751,6 +772,9 @@ rules:
   - id: selinux_disable_enforcement
     description: SELinux enforcement status was disabled
     expression: selinux.enforce.status in ["permissive", "disabled"]
+  - id: service_stop
+    description: systemctl used to stop a service
+    expression: exec.file.name == "systemctl" && exec.args in [~"*stop*"]
   - id: shell_history_deleted
     description: Shell History was Deleted
     expression: (unlink.file.name  =~ r".([dbazfi]*sh)(_history)$") && process.comm not in  ["dockerd", "containerd"]
@@ -884,9 +908,53 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+  - id: sudoers_policy_modified_chmod
+    description: Sudoers policy file may have been modified without authorization
+    expression: "(\n    (chmod.file.path == \"/etc/sudoers\") \n) && chmod.file.destination.mode != chmod.file.mode && process.ancestors.file.path not in PACKAGE_MANAGERS"
+  - id: sudoers_policy_modified_chown
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (chown.file.path == "/etc/sudoers")
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+  - id: sudoers_policy_modified_link
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (link.file.path == "/etc/sudoers"
+          || link.file.destination.path == "/etc/sudoers")
+      )
+  - id: sudoers_policy_modified_open
+    description: Sudoers policy file may have been modified without authorization
+    expression: |2-
+
+      (open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+      (open.file.path == "/etc/sudoers")) && process.file.path not in PACKAGE_MANAGERS
+  - id: sudoers_policy_modified_rename
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (rename.file.path == "/etc/sudoers"
+          || rename.file.destination.path == "/etc/sudoers")
+      )
+  - id: sudoers_policy_modified_unlink
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (unlink.file.path == "/etc/sudoers")
+      )
+  - id: sudoers_policy_modified_utimes
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (utimes.file.path == "/etc/sudoers")
+      ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: suspicious_container_client
     description: A container management utility was executed in a container
     expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
+  - id: suspicious_suid_execution
+    description: Recently written or modified suid file has been executed
+    expression: ((process.file.mode & S_ISUID > 0) && process.file.modification_time < 30s) && exec.file.name != ""
   - id: systemd_modification_chmod
     description: A service may have been modified without authorization
     expression: |-
@@ -945,3 +1013,6 @@ rules:
   - id: user_created_tty
     description: A user was created via an interactive session
     expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"]
+  - id: user_deleted_tty
+    description: A user was deleted via an interactive session
+    expression: exec.file.name in ["userdel", "deluser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS
