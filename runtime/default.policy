@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.14.0
+version: 1.15.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -728,7 +728,7 @@ rules:
       (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*")
   - id: ps_discovery
     description: Processes were listed using the ps command
-    expression: exec.comm == "ps" && exec.argv not in ["-p", "--pid"]
+    expression: exec.comm == "ps" && exec.argv not in ["-p", "--pid"] && process.ancestors.file.name not in ["qualys-cloud-agent", "amazon-ssm-agent"]
   - id: ptrace_antidebug
     description: A process uses an anti-debugging technique to block debuggers
     expression: ptrace.request == PTRACE_TRACEME && process.file.name != ""
@@ -753,6 +753,9 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Some Python packages are associated with malicious behavior, especially when code is provided as a command-line argument.
+  - id: rc_scripts_modified
+    description: RC scripts modified
+    expression: (open.flags & (OPEN_WRITE_FLAGS) > 0 && (open.file.path in ["/etc/rc.common", "/etc/rc.local"])) && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
   - id: read_kubeconfig
     description: The kubeconfig file was accessed
     expression: open.file.path in [~"/home/*/.kube/config", "/root/.kube/config"]
