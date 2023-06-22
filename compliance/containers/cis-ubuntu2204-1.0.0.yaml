@@ -109,14 +109,6 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ocredit
-  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember
-    description: Limit Password Reuse
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
     description: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session
     filters: *id001
@@ -133,6 +125,14 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
+    description: Limit Password Reuse (ubuntu2204)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
     description: Set Existing Passwords Maximum Age
     filters: *id001
@@ -421,8 +421,24 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_disable_users_coredumps
+  - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
+    description: Ensure the Group Used by pam_wheel Module Exists on System and is Empty
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
+  - id: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
+    description: Ensure Authentication Required for Single User Mode
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
   - id: xccdf_org.ssgproject.content_rule_ensure_shadow_group_empty
-    description: Ensure shadow group is empty
+    description: Ensure shadow Group is Empty
     filters: *id001
     input:
       - xccdf:
@@ -1125,6 +1141,14 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_grub2_uefi_password
+  - id: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
+    description: Ensure Mail Transfer Agent is not Listening on any non-loopback Address
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
   - id: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
     description: Ensure ip6tables Firewall Rules Exist for All Open Ports
     filters: *id001
@@ -1325,6 +1349,22 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
+  - id: xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy
+    description: Ensure nftables Default Deny Firewall Policy
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy
+  - id: xccdf_org.ssgproject.content_rule_nftables_rules_permanent
+    description: Ensure nftables Rules are Permanent
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_nftables_rules_permanent
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
     description: Ensure There Are No Accounts With Blank or Null Passwords
     filters: *id001
@@ -1389,6 +1429,14 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_apparmor_installed
+  - id: xccdf_org.ssgproject.content_rule_package_avahi_removed
+    description: Uninstall avahi Server Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_avahi_removed
   - id: xccdf_org.ssgproject.content_rule_package_bind_removed
     description: Uninstall bind Package
     filters: *id001
@@ -1445,14 +1493,6 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
-  - id: xccdf_org.ssgproject.content_rule_package_iptables-persistent_installed
-    description: Install iptables-persistent Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_iptables-persistent_installed
   - id: xccdf_org.ssgproject.content_rule_package_iptables-persistent_removed
     description: Remove iptables-persistent Package
     filters: *id001
@@ -1485,14 +1525,6 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_nftables_installed
-  - id: xccdf_org.ssgproject.content_rule_package_nftables_removed
-    description: Uninstall nftables package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_nftables_removed
   - id: xccdf_org.ssgproject.content_rule_package_nginx_removed
     description: Uninstall nginx Package
     filters: *id001
@@ -1621,14 +1653,6 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_timesyncd_installed
-  - id: xccdf_org.ssgproject.content_rule_package_ufw_installed
-    description: Install ufw Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_ufw_installed
   - id: xccdf_org.ssgproject.content_rule_package_ufw_removed
     description: Remove ufw Package
     filters: *id001
@@ -1757,14 +1781,6 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_cups_disabled
-  - id: xccdf_org.ssgproject.content_rule_service_nftables_disabled
-    description: Verify nftables service disabled
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_nftables_disabled
   - id: xccdf_org.ssgproject.content_rule_service_nftables_enabled
     description: Verify nftables Service is Enabled
     filters: *id001
@@ -1845,6 +1861,22 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_loopback_traffic
+  - id: xccdf_org.ssgproject.content_rule_set_nftables_base_chain
+    description: Ensure Base Chains Exist for Nftables
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_nftables_base_chain
+  - id: xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic
+    description: Set nftables Configuration for Loopback Traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic
   - id: xccdf_org.ssgproject.content_rule_set_nftables_table
     description: Ensure a Table Exists for Nftables
     filters: *id001
@@ -1933,6 +1965,14 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
+  - id: xccdf_org.ssgproject.content_rule_sshd_limit_user_access
+    description: Limit Users' SSH Access
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_limit_user_access
   - id: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
     description: Set SSH Client Alive Interval
     filters: *id001
@@ -1989,22 +2029,14 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
-    description: Use Only FIPS 140-2 Validated Ciphers
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_ciphers
+    description: Use Only Strong Ciphers
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs
-    description: Use Only FIPS 140-2 Validated MACs
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_ciphers
   - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
     description: Use Only Strong Key Exchange algorithms
     filters: *id001
@@ -2013,6 +2045,14 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
+    description: Use Only Strong MACs
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
     description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
     filters: *id001
@@ -2253,6 +2293,14 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_ufw_rules_for_open_ports
+  - id: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
+    description: Enforce Usage of pam_wheel with Group Parameter for su Authentication
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
   - id: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
     description: Deactivate Wireless Network Interfaces
     filters: *id001

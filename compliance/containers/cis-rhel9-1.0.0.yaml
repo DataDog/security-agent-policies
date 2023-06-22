@@ -237,6 +237,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_aide_build_database
+  - id: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
+    description: Configure AIDE to Verify the Audit Tools
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
   - id: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
     description: Configure Periodic Execution of AIDE
     filters: *id001
@@ -429,6 +437,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
+  - id: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
+    description: Ensure Authentication Required for Single User Mode
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
   - id: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
     description: Ensure that /etc/at.deny does not exist
     filters: *id001
@@ -797,6 +813,22 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_user_cfg
+  - id: xccdf_org.ssgproject.content_rule_file_ownership_sshd_private_key
+    description: Verify Ownership on SSH Server Private *_key Key Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_ownership_sshd_private_key
+  - id: xccdf_org.ssgproject.content_rule_file_ownership_sshd_pub_key
+    description: Verify Ownership on SSH Server Public *.pub Key Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_ownership_sshd_pub_key
   - id: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
     description: Verify Permissions on /etc/at.allow file
     filters: *id001
@@ -1005,6 +1037,22 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
+  - id: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_restricted
+    description: Configure Firewalld to Restrict Loopback Traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_restricted
+  - id: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_trusted
+    description: Configure Firewalld to Trust Loopback Traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_trusted
   - id: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
     description: All GIDs referenced in /etc/passwd must be defined in /etc/group
     filters: *id001
@@ -1045,6 +1093,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_grub2_password
+  - id: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
+    description: Ensure Mail Transfer Agent is not Listening on any non-loopback Address
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
   - id: xccdf_org.ssgproject.content_rule_journald_compress
     description: Ensure journald is configured to compress large log files
     filters: *id001
@@ -1277,6 +1333,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_netrc_files
+  - id: xccdf_org.ssgproject.content_rule_no_password_auth_for_systemaccounts
+    description: Ensure that System Accounts Are Locked
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_no_password_auth_for_systemaccounts
   - id: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
     description: Remove Rsh Trust Files
     filters: *id001
@@ -1589,6 +1653,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_selinux_confinement_of_daemons
+  - id: xccdf_org.ssgproject.content_rule_selinux_not_disabled
+    description: Ensure SELinux is Not Disabled
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_selinux_not_disabled
   - id: xccdf_org.ssgproject.content_rule_selinux_policytype
     description: Configure SELinux Policy
     filters: *id001
@@ -1621,6 +1693,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_nfs_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_nftables_disabled
+    description: Verify nftables Service is Disabled
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_service_nftables_disabled
   - id: xccdf_org.ssgproject.content_rule_service_rpcbind_disabled
     description: Disable rpcbind Service
     filters: *id001
@@ -1653,6 +1733,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_firewalld_default_zone
+  - id: xccdf_org.ssgproject.content_rule_set_nftables_table
+    description: Ensure a Table Exists for Nftables
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_set_nftables_table
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
     description: Set Password Hashing Algorithm in /etc/login.defs
     filters: *id001
@@ -1733,6 +1821,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
+  - id: xccdf_org.ssgproject.content_rule_sshd_limit_user_access
+    description: Limit Users' SSH Access
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sshd_limit_user_access
   - id: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
     description: Set SSH Client Alive Interval
     filters: *id001
