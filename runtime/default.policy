@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.15.0
+version: 1.16.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -231,6 +231,18 @@ rules:
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+  - id: credential_modified_open_v2
+    description: Sensitive credential files were modified using a non-standard tool
+    expression: |-
+      (
+          open.flags & ((O_CREAT|O_RDWR|O_WRONLY|O_TRUNC)) > 0 &&
+          (open.file.path in [ "/etc/shadow", "/etc/gshadow" ])
+          && process.file.path not in CREDENTIAL_BINARIES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      ) && container.created_at > 180s
+    tags:
+      threat_score: '5'
+      threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
   - id: credential_modified_rename
     description: Sensitive credential files were modified using a non-standard tool
     expression: |-
@@ -344,6 +356,9 @@ rules:
       exec.args == "-c locale -a") &&
       !(process.ancestors.file.name == "postgres" &&
       exec.args == ~"*pg_wal*")
+  - id: deploy_priv_container
+    description: A privileged container was created
+    expression: exec.file.name != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0
   - id: dirty_pipe_attempt
     description: Potential Dirty pipe exploitation attempt
     expression: (splice.pipe_entry_flag & PIPE_BUF_FLAG_CAN_MERGE) != 0 && (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) == 0 && (process.uid != 0 && process.gid != 0)
@@ -386,6 +401,9 @@ rules:
   - id: gcp_imds
     description: An GCP IMDS was called via a network utility
     expression: exec.comm in HTTP_UTILS && exec.args in GCP_RISKY_URI
+  - id: hidden_file_executed
+    description: A hidden file was executed in a suspicious folder
+    expression: exec.file.name =~ ".*" && exec.file.path in [~"/home/**", ~"/tmp/**", ~"/var/tmp/**", ~"/dev/shm/**"]
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
@@ -415,7 +433,7 @@ rules:
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
     expression: open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"] && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES && process.file.path not in  ["/usr/bin/cilium-agent",
-      "/coredns", "/usr/bin/cilium-operator"]
+      "/coredns", "/usr/bin/cilium-operator", "/manager", "/fluent-bit/bin/fluent-bit"]
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
@@ -540,6 +558,15 @@ rules:
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+  - id: net_util_in_container_v2
+    description: A network utility was executed in a container
+    expression: |-
+      (exec.comm in NET_UTILS ||
+       exec.comm in HTTP_UTILS) &&
+      container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] && container.created_at > 180s
+  - id: network_sniffing_tool
+    description: Local account groups were enumerated after container start up
+    expression: exec.file.name in ["tcpdump", "tshark"]
   - id: new_binary_execution_in_container
     description: A container executed a new binary not found in the container image
     expression: container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
@@ -572,6 +599,13 @@ rules:
           open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
           (open.file.path in [ "/etc/nsswitch.conf" ])
       )
+  - id: nsswitch_conf_mod_open_v2
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
+          (open.file.path in [ "/etc/nsswitch.conf" ])
+      ) && container.created_at > 180s
   - id: nsswitch_conf_mod_rename
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -597,6 +631,9 @@ rules:
   - id: package_management_in_container
     description: Package management was detected in a container
     expression: exec.file.path in PACKAGE_MANAGERS && container.id != ""
+  - id: package_management_in_container_v2
+    description: Package management was detected in a conatiner outside of container start_up
+    expression: exec.file.path in PACKAGE_MANAGERS && container.id != "" && container.created_at > 300s
   - id: pam_modification_chmod
     description: PAM may have been modified without authorization
     expression: |-
@@ -685,6 +722,15 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
+  - id: pci_11_5_critical_binaries_open_v2
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+          open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      ) && container.created_at > 180s
   - id: pci_11_5_critical_binaries_rename
     description: Critical system binaries may have been modified
     expression: |-
@@ -749,7 +795,7 @@ rules:
       threat_description: The vulnerability CVE-2021-4034 allows privilege escalation using the pkexec utility
   - id: python_cli_code
     description: Python code was provided on the command line
-    expression: exec.file.name == ~"python*" && exec.args_flags in ["c"] && exec.args in [~"*-c*SOCK_STREAM*", ~"*-c*subprocess*", "*-c*/bash*", "*-c*/bin/sh*", "*-c*pty.spawn*"]
+    expression: exec.file.name == ~"python*" && exec.args_flags in ["c"] && exec.args in [~"*-c*SOCK_STREAM*", ~"*-c*subprocess*", "*-c*/bash*", "*-c*/bin/sh*", "*-c*pty.spawn*"] && exec.args !~ "*setuptools*"
     tags:
       threat_score: '8'
       threat_description: Some Python packages are associated with malicious behavior, especially when code is provided as a command-line argument.
@@ -787,6 +833,9 @@ rules:
   - id: shell_history_truncated
     description: Shell History was Deleted
     expression: open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name =~ r".([dbazfi]*sh)(_history)$" && open.file.path in [~"/root/*", ~"/home/**"] && process.file.name == "truncate"
+  - id: shell_profile_modification
+    description: Shell profile was modified
+    expression: open.file.path in [~"/home/*/*profile", ~"/home/*/*rc"] && open.flags & ((O_CREAT|O_TRUNC|O_RDWR|O_WRONLY)) > 0
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
@@ -813,6 +862,13 @@ rules:
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+  - id: ssh_authorized_keys_open_v2
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+          open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      ) && container.created_at > 180s
   - id: ssh_authorized_keys_rename
     description: SSH modified keys may have been modified
     expression: |-
@@ -877,6 +933,18 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+  - id: ssl_certificate_tampering_open_v2
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
+          (open.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
+      )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
+      && container.created_at > 180s
   - id: ssl_certificate_tampering_rename
     description: SSL certificates may have been tampered with
     expression: |-
@@ -952,6 +1020,9 @@ rules:
       (
           (utimes.file.path == "/etc/sudoers")
       ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+  - id: suid_file_execution
+    description: a SUID file was executed
+    expression: (setuid.euid == 0 || setuid.uid  == 0)  && process.file.mode & S_ISUID > 0  && process.file.uid == 0  && process.uid != 0  && process.file.path != "/usr/bin/sudo"
   - id: suspicious_container_client
     description: A container management utility was executed in a container
     expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
@@ -1010,6 +1081,9 @@ rules:
           (utimes.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
+  - id: tar_execution
+    description: Tar archive created
+    expression: exec.file.path == "/usr/bin/tar" && exec.args_flags in ["create","c"]
   - id: tty_shell_in_container
     description: A shell with a TTY was executed in a container
     expression: exec.file.path in SHELLS && process.tty_name != "" && process.container.id != ""
