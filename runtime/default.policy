@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.16.0
+version: 1.16.1
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -694,7 +694,7 @@ rules:
       (
           (chmod.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       ) && chmod.file.destination.mode != chmod.file.mode
   - id: pci_11_5_critical_binaries_chown
     description: Critical system binaries may have been modified
@@ -702,7 +702,7 @@ rules:
       (
           (chown.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
   - id: pci_11_5_critical_binaries_link
     description: Critical system binaries may have been modified
@@ -711,7 +711,7 @@ rules:
           (link.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
           || link.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: pci_11_5_critical_binaries_open
     description: Critical system binaries may have been modified
@@ -738,7 +738,7 @@ rules:
           (rename.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
           || rename.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: pci_11_5_critical_binaries_unlink
     description: Critical system binaries may have been modified
@@ -746,7 +746,7 @@ rules:
       (
           (unlink.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: pci_11_5_critical_binaries_utimes
     description: Critical system binaries may have been modified
@@ -754,7 +754,7 @@ rules:
       (
           (utimes.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
-          && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
   - id: potential_cryptominer
     description: A process resolved a DNS name associated with cryptomining activity
@@ -801,7 +801,7 @@ rules:
       threat_description: Some Python packages are associated with malicious behavior, especially when code is provided as a command-line argument.
   - id: rc_scripts_modified
     description: RC scripts modified
-    expression: (open.flags & (OPEN_WRITE_FLAGS) > 0 && (open.file.path in ["/etc/rc.common", "/etc/rc.local"])) && process.ancestors.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    expression: (open.flags & (OPEN_WRITE_FLAGS) > 0 && (open.file.path in ["/etc/rc.common", "/etc/rc.local"])) && process.ancestors.file.path not in PACKAGE_MANAGERS
   - id: read_kubeconfig
     description: The kubeconfig file was accessed
     expression: open.file.path in [~"/home/*/.kube/config", "/root/.kube/config"]
