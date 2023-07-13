@@ -245,14 +245,6 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
-  - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_no_world_writable_programs
-    description: User Initialization Files Must Not Run World-Writable Programs
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_no_world_writable_programs
   - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_user_ownership
     description: User Initialization Files Must Be Owned By the Primary User
     filters: *id001
