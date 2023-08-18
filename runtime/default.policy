@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.16.1
+version: 1.17.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -433,7 +433,7 @@ rules:
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
     expression: open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"] && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES && process.file.path not in  ["/usr/bin/cilium-agent",
-      "/coredns", "/usr/bin/cilium-operator", "/manager", "/fluent-bit/bin/fluent-bit"]
+      "/coredns", "/usr/bin/cilium-operator", "/manager", "/fluent-bit/bin/fluent-bit", "/usr/local/bin/cloud-node-manager", "/secrets-store-csi", "/bin/secrets-store-csi-driver-provider-aws", "/usr/bin/calico-node"] && process.ancestors.file.path not in DD_AGENT_PROCESSES
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
@@ -816,7 +816,7 @@ rules:
     expression: |-
       open.file.path in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc"]
       && open.flags & OPEN_WRITE_FLAGS > 0
-      && process.file.path not in PACKAGE_MANAGERS
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       && process.ancestors.file.path not in PACKAGE_MANAGERS
   - id: selinux_disable_enforcement
     description: SELinux enforcement status was disabled
@@ -1028,7 +1028,7 @@ rules:
     expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
   - id: suspicious_suid_execution
     description: Recently written or modified suid file has been executed
-    expression: ((process.file.mode & S_ISUID > 0) && process.file.modification_time < 30s) && exec.file.name != ""
+    expression: ((process.file.mode & S_ISUID > 0) && process.file.modification_time < 30s) && exec.file.name != "" && process.ancestors.file.path in DD_AGENT_PROCESSES
   - id: systemd_modification_chmod
     description: A service may have been modified without authorization
     expression: |-
