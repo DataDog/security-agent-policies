@@ -893,14 +893,6 @@ rules:
           name: ssg-ubuntu2004-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned
-    description: Ensure All Files Are Owned by a Group
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned
   - id: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
     description: All GIDs referenced in /etc/passwd must be defined in /etc/group
     filters: *id001
