@@ -1013,14 +1013,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned
-    description: Ensure All Files Are Owned by a Group
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned
   - id: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
     description: Verify /boot/grub2/user.cfg Permissions
     filters: *id001
