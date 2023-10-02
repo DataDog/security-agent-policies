@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.17.0
+version: 1.18.1
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -433,7 +433,9 @@ rules:
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
     expression: open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"] && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES && process.file.path not in  ["/usr/bin/cilium-agent",
-      "/coredns", "/usr/bin/cilium-operator", "/manager", "/fluent-bit/bin/fluent-bit", "/usr/local/bin/cloud-node-manager", "/secrets-store-csi", "/bin/secrets-store-csi-driver-provider-aws", "/usr/bin/calico-node"] && process.ancestors.file.path not in DD_AGENT_PROCESSES
+      "/coredns", "/usr/bin/cilium-operator", "/manager", "/fluent-bit/bin/fluent-bit", "/usr/local/bin/cloud-node-manager", "/secrets-store-csi", "/bin/secrets-store-csi-driver-provider-aws", "/usr/bin/calico-node", "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent",
+      "/nginx-ingress-controller", "/cluster-autoscaler", "/cluster-proportional-autoscaler", "/haproxy-ingress-controller", "/kube-state-metrics", "/fluent-bit-gke-exporter", "/bin/external-secrets", "/node-termination-handler", "/fluent-bit-gke-exporter"]
+      && process.ancestors.file.path not in DD_AGENT_PROCESSES
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
@@ -625,6 +627,9 @@ rules:
       (
           (utimes.file.path in [ "/etc/nsswitch.conf" ])
       )
+  - id: offensive_k8s_tool
+    description: A known kubernetes pentesting tool has been executed
+    expression: (exec.file.name in [ ~"python*" ] && ("KubiScan.py" in exec.argv || "kubestriker" in exec.argv ) ) || exec.file.name in [ "kubiscan","kdigger","kube-hunter","rakkess","peirates","kubescape","kubeaudit","kube-linter","stratus",~"botb-*"]
   - id: omigod
     description: Omiagent spawns a privileged child process
     expression: exec.uid >= 0 && process.ancestors.file.name == "omiagent"
@@ -811,6 +816,9 @@ rules:
   - id: redis_sandbox_escape
     description: Detects CVE-2022-0543
     expression: (open.file.path =~ "/usr/lib/x86_64-linux-gnu/*" && open.file.name in LIBC_VERSIONS) && process.ancestors.comm in ["redis-check-rdb", "redis-server"]
+  - id: redis_save_module
+    description: Redis module has been created
+    expression: (open.flags & (O_CREAT|O_TRUNC|O_RDWR|O_WRONLY) > 0 && open.file.path =~ "/tmp/**" && open.file.name in [~"*.rdb", ~"*.aof", ~"*.so"]) && process.file.name in ["redis-check-rdb", "redis-server"]
   - id: runc_modification
     description: The runc binary was modified in a non-standard way
     expression: |-
@@ -820,7 +828,7 @@ rules:
       && process.ancestors.file.path not in PACKAGE_MANAGERS
   - id: selinux_disable_enforcement
     description: SELinux enforcement status was disabled
-    expression: selinux.enforce.status in ["permissive", "disabled"]
+    expression: selinux.enforce.status in ["permissive", "disabled"] && process.ancestors.args != ~"*BECOME-SUCCESS*"
   - id: service_stop
     description: systemctl used to stop a service
     expression: exec.file.name == "systemctl" && exec.args in [~"*stop*"]
