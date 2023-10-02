@@ -33,7 +33,7 @@ findings[f] {
 
 findings[f] {
 	count(input.files) == 0
-	f := dd.error_finding(
+	f := dd.skipped_finding(
 		h.resource_type,
 		h.resource_id,
 		sprintf("no files found for file check \"%s\"", [input.context.input.files.file.path]),
@@ -42,7 +42,7 @@ findings[f] {
 
 findings[f] {
 	not h.has_key(input, "files")
-	f := dd.error_finding(
+	f := dd.skipped_finding(
 		h.resource_type,
 		h.resource_id,
 		sprintf("no files found for file check \"%s\"", [input.context.input.files.file.path]),
