@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.18.4
+version: 1.18.5
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -175,6 +175,11 @@ rules:
     expression: exec.file.name == "base64" && exec.args_flags in ["d"]
     filters:
       - os == "linux"
+  - id: certutil_usage
+    description: Certutil was executed to transmit or decode a potentially malicious file
+    expression: exec.file.name == "certutil.exe" && ((exec.cmdline =~ "*urlcache*" && exec.cmdline =~ "*split*") || exec.cmdline =~ "*decode*")
+    filters:
+      - os == "windows"
   - id: common_net_intrusion_util
     description: A network utility (nmap) commonly used in intrusion attacks was executed
     expression: exec.file.name in NETWORK_SCANNERS && exec.args_flags not in ["V", "version"]
@@ -204,7 +209,7 @@ rules:
     expression: (exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
     filters:
       - os == "linux"
-  - id: crackmap_exec_usage
+  - id: crackmap_exec_executed
     description: Known offensive tool crackmap exec executed
     expression: exec.cmdline in [~"*crackmapexec*", ~"*cme*"]
     filters:
@@ -626,8 +631,8 @@ rules:
     filters:
       - os == "linux"
   - id: minidump_usage
-    description: A scheduled task was created
-    expression: exec.cmdline ~= "*MiniDump*"
+    description: Process memory was dumped using the minidump function from comsvcs.dll
+    expression: exec.cmdline =~ "*MiniDump*"
     filters:
       - os == "windows"
   - id: mount_host_fs
@@ -762,7 +767,7 @@ rules:
       - os == "linux"
   - id: ntds_in_commandline
     description: NTDS file referenced in commandline
-    expression: exec.cmdline ~= "*ntds.dit*"
+    expression: exec.cmdline =~ "*ntds.dit*"
     filters:
       - os == "windows"
   - id: offensive_k8s_tool
@@ -956,7 +961,7 @@ rules:
       (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*")
     filters:
       - os == "linux"
-  - id: procdump_usage
+  - id: procdump_execution
     description: A tool used to dump process memory has been executed
     expression: exec.file.name in ["procmon.exe","procdump.exe"]
     filters:
@@ -1314,7 +1319,7 @@ rules:
       - os == "linux"
   - id: suspicious_ntdsutil_usage
     description: Suspicious usage of ntdsutil
-    expression: exec.file.name == "ntdsutil.exe" && ((exec.cmdline ~= "*urlcache*" && exec.cmdline ~= "*split*") || exec.cmdline ~= "*decode*")
+    expression: exec.file.name == "ntdsutil.exe" && exec.cmdline in [~"*ntds*", ~"*create*"]
     filters:
       - os == "windows"
   - id: suspicious_suid_execution
