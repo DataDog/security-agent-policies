@@ -383,7 +383,7 @@ rules:
       - os == "linux"
   - id: cryptominer_args
     description: A process launched with arguments associated with cryptominers
-    expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args in [~"*stratum+tcp*", ~"*stratum+ssl*", ~"*stratum1+tcp*", ~"*stratum1+ssl*", ~"*stratum2+tcp*", ~"*stratum2+ssl*"]
+    expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args in [~"*stratum+tcp*"]
     tags:
       threat_score: '9'
       threat_description: Cloud environments are a common target for cryptocurrency mining
@@ -401,9 +401,9 @@ rules:
        exec.comm in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS) &&
       process.parent.file.name in DATABASE_PROCESSES &&
-      !(process.parent.file.name == "initdb" &&
+      !(process.ancestors.file.name == "initdb" &&
       exec.args == "-c locale -a") &&
-      !(process.parent.file.name == "postgres" &&
+      !(process.ancestors.file.name == "postgres" &&
       exec.args == ~"*pg_wal*")
     filters:
       - os == "linux"
