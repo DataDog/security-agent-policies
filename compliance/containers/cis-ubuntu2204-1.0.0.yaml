@@ -414,7 +414,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_disable_users_coredumps
   - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
-    description: Ensure the Group Used by pam_wheel Module Exists on System and is Empty
+    description: Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty
     filters: *id001
     input:
       - xccdf:
@@ -1357,6 +1357,14 @@ rules:
           name: ssg-ubuntu2204-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
+  - id: xccdf_org.ssgproject.content_rule_no_forward_files
+    description: Verify No .forward Files Exist
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_no_forward_files
   - id: xccdf_org.ssgproject.content_rule_no_netrc_files
     description: Verify No netrc Files Exist
     filters: *id001

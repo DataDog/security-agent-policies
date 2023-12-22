@@ -381,6 +381,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
+  - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
+    description: Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
   - id: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
     description: Ensure that /etc/at.deny does not exist
     filters: *id001
@@ -597,6 +605,22 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
+  - id: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_private_key
+    description: Verify Group Ownership on SSH Server Private *_key Key Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_private_key
+  - id: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_pub_key
+    description: Verify Group Ownership on SSH Server Public *.pub Key Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_pub_key
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_group
     description: Verify User Who Owns Backup group File
     filters: *id001
@@ -1453,6 +1477,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_httpd_removed
+  - id: xccdf_org.ssgproject.content_rule_package_iptables-services_removed
+    description: Remove iptables-services Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_iptables-services_removed
   - id: xccdf_org.ssgproject.content_rule_package_libselinux_installed
     description: Install libselinux Package
     filters: *id001
@@ -2181,14 +2213,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_source_route
-  - id: xccdf_org.ssgproject.content_rule_use_pam_wheel_for_su
-    description: Enforce usage of pam_wheel for su authentication
+  - id: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
+    description: Enforce Usage of pam_wheel with Group Parameter for su Authentication
     filters: *id001
     input:
       - xccdf:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_for_su
+          rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
   - id: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
     description: Deactivate Wireless Network Interfaces
     filters: *id001

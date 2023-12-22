@@ -334,7 +334,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_disable_users_coredumps
   - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
-    description: Ensure the Group Used by pam_wheel Module Exists on System and is Empty
+    description: Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty
     filters: *id001
     input:
       - xccdf:

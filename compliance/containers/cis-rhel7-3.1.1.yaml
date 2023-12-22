@@ -101,6 +101,22 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_system_auth
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
+    description: Set Existing Passwords Maximum Age
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
+    description: Set Existing Passwords Minimum Age
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_warn_age_existing
     description: Set Existing Passwords Warning Age
     filters: *id001
@@ -117,6 +133,22 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
+  - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
+    description: Lock Accounts After Failed Password Attempts
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
+  - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
+    description: Set Lockout Time for Failed Password Attempts
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
   - id: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
     description: Verify Root Has A Primary GID 0
     filters: *id001
@@ -533,6 +565,22 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_user_cfg
+  - id: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_private_key
+    description: Verify Group Ownership on SSH Server Private *_key Key Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_private_key
+  - id: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_pub_key
+    description: Verify Group Ownership on SSH Server Public *.pub Key Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_pub_key
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_group
     description: Verify User Who Owns Backup group File
     filters: *id001
@@ -1213,6 +1261,14 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_netrc_files
+  - id: xccdf_org.ssgproject.content_rule_no_password_auth_for_systemaccounts
+    description: Ensure that System Accounts Are Locked
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_no_password_auth_for_systemaccounts
   - id: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
     description: Remove Rsh Trust Files
     filters: *id001
@@ -1333,6 +1389,14 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
+  - id: xccdf_org.ssgproject.content_rule_package_iptables-services_removed
+    description: Remove iptables-services Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_iptables-services_removed
   - id: xccdf_org.ssgproject.content_rule_package_libselinux_installed
     description: Install libselinux Package
     filters: *id001
@@ -1365,6 +1429,14 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_nfs-utils_removed
+  - id: xccdf_org.ssgproject.content_rule_package_nftables_removed
+    description: Uninstall nftables package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_nftables_removed
   - id: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
     description: Ensure LDAP client is not installed
     filters: *id001
@@ -1621,6 +1693,14 @@ rules:
           name: ssg-rhel7-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
+  - id: xccdf_org.ssgproject.content_rule_service_nftables_disabled
+    description: Verify nftables Service is Disabled
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel7-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_service_nftables_disabled
   - id: xccdf_org.ssgproject.content_rule_service_ntpd_enabled
     description: Enable the NTP Daemon
     filters: *id001
