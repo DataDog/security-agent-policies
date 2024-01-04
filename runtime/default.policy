@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.18.5
+version: 1.19.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -12,6 +12,8 @@ macros:
   - id: AZURE_RISKY_URI
     description: Azure IMDS URI's known for exploitation
     expression: '[~"*169.254.169.254/metadata/identity/oauth2/token?api-version=*"]'
+  - id: CHAT_ROOM_SITES
+    expression: '["discord.com", "api.telegram.org", "cdn.discordapp.com"]'
   - id: CHMOD_EXEC_FLAGS
     expression: S_IXUSR|S_IXGRP|S_IXOTH
   - id: COMMON_MODULES
@@ -173,6 +175,8 @@ rules:
   - id: base64_decode
     description: The base64 command was used to decode information
     expression: exec.file.name == "base64" && exec.args_flags in ["d"]
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: certutil_usage
@@ -180,6 +184,11 @@ rules:
     expression: exec.file.name == "certutil.exe" && ((exec.cmdline =~ "*urlcache*" && exec.cmdline =~ "*split*") || exec.cmdline =~ "*decode*")
     filters:
       - os == "windows"
+  - id: chatroom_request
+    description: A newly created file contacted a chatroom domain
+    expression: dns.question.name in CHAT_ROOM_SITES && process.file.in_upper_layer && process.file.change_time < 60s
+    filters:
+      - os == "linux"
   - id: common_net_intrusion_util
     description: A network utility (nmap) commonly used in intrusion attacks was executed
     expression: exec.file.name in NETWORK_SCANNERS && exec.args_flags not in ["V", "version"]
@@ -383,10 +392,15 @@ rules:
       - os == "linux"
   - id: cryptominer_args
     description: A process launched with arguments associated with cryptominers
-    expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args in [~"*stratum+tcp*"]
+    expression: exec.args_flags in ["cpu-priority", "donate-level", ~"randomx-1gb-pages"] || exec.args in [~"*stratum+tcp*", ~"*stratum+ssl*", ~"*stratum1+tcp*", ~"*stratum1+ssl*", ~"*stratum2+tcp*", ~"*stratum2+ssl*", ~"*nicehash*", ~"*yespower*"]
     tags:
       threat_score: '9'
       threat_description: Cloud environments are a common target for cryptocurrency mining
+    filters:
+      - os == "linux"
+  - id: cryptominer_envs
+    description: Process environment variables match cryptocurrency miner
+    expression: exec.envs in [~"*POOL_USER*", ~"*POOL_URL*", ~"*POOL_PASS*", ~"*DONATE_LEVEL*"]
     filters:
       - os == "linux"
   - id: curl_docker_socket
@@ -401,10 +415,18 @@ rules:
        exec.comm in HTTP_UTILS ||
        exec.file.path in SHELL_UTILS) &&
       process.parent.file.name in DATABASE_PROCESSES &&
-      !(process.ancestors.file.name == "initdb" &&
+      !(process.parent.file.name == "initdb" &&
       exec.args == "-c locale -a") &&
-      !(process.ancestors.file.name == "postgres" &&
+      !(process.parent.file.name == "postgres" &&
       exec.args == ~"*pg_wal*")
+    tags:
+      allow_autosuppression: 'True'
+    filters:
+      - os == "linux"
+  - id: delete_system_log
+    description: A process deleted common system log files
+    expression: unlink.file.path in ["/var/run/utmp", "/var/log/wtmp", "/var/log/btmp", "/var/log/lastlog", "/var/log/faillog", "/var/log/syslog", "/var/log/messages", "/var/log/secure", "/var/log/auth.log", "/var/log/boot.log", "/var/log/kern.log"] && process.comm
+      not in ["dockerd", "containerd"]
     filters:
       - os == "linux"
   - id: deploy_priv_container
@@ -442,16 +464,26 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking global configurations the dynamic linker uses to load shared libraries.
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: exec_lsmod
     description: Kernel modules were listed using the lsmod command
     expression: exec.comm == "lsmod"
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: exec_whoami
     description: The whoami command was executed
     expression: exec.comm == "whoami"
+    tags:
+      allow_autosuppression: 'True'
+    filters:
+      - os == "linux"
+  - id: exec_wrmsr
+    description: The wrmsr program executed
+    expression: exec.comm == "wrmsr"
     filters:
       - os == "linux"
   - id: executable_bit_added
@@ -483,6 +515,13 @@ rules:
   - id: ip_check_domain
     description: A DNS lookup was done for a IP check service
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
+    tags:
+      allow_autosuppression: 'True'
+    filters:
+      - os == "linux"
+  - id: iptables_egress_allowed
+    description: Egress traffic allowed using iptables
+    expression: exec.comm == "iptables" && process.args in [r".*OUTPUT.*((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}.*ACCEPT"] && process.args not in [r"(127\.)|(10\.)|(172\.1[6-9]\.)|(172\.2[0-9]\.)|(^172\.3[0-1]\.)|(192\.168\.)|(169\.254\.)"]
     filters:
       - os == "linux"
   - id: java_shell_execution_parent
@@ -495,6 +534,7 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Java executing shell commands may indicate remote code execution (RCE)
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: k8s_pod_service_account_token_accessed
@@ -506,6 +546,7 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: kernel_module_chmod
@@ -607,9 +648,16 @@ rules:
       )
     filters:
       - os == "linux"
+  - id: kernel_msr_write
+    description: A process attempted to enable writing to model-specific registers
+    expression: exec.comm == "modprobe" && process.args =~ "*msr*allow_writes*"
+    filters:
+      - os == "linux"
   - id: kmod_list
     description: Kernel modules were listed using the kmod command
     expression: exec.comm == "kmod" && exec.args in [~"*list*"]
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: kubernetes_dns_enumeration
@@ -623,6 +671,16 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking environment variables the dynamic linker uses to load shared libraries.
+    filters:
+      - os == "linux"
+  - id: libpam_ebpf_hook
+    description: Library libpam.so hooked using eBPF
+    expression: bpf.cmd == BPF_MAP_CREATE && process.args in [r".*libpam.so.*"]
+    filters:
+      - os == "linux"
+  - id: looney_tunables_exploit
+    description: Looney Tunables (CVE-2023-4911) exploit attempted
+    expression: exec.file.mode & S_ISUID > 0 && exec.file.uid == 0 && exec.uid != 0 && exec.envs in [~"*GLIBC_TUNABLES*"]
     filters:
       - os == "linux"
   - id: memfd_create
@@ -674,6 +732,8 @@ rules:
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: net_util_in_container_v2
@@ -780,9 +840,16 @@ rules:
     expression: exec.uid >= 0 && process.ancestors.file.name == "omiagent"
     filters:
       - os == "linux"
+  - id: open_msr_writes
+    description: A process opened a model-specific register (MSR) configuration file
+    expression: open.file.path == "/sys/module/msr/parameters/allow_writes" && open.flags & OPEN_WRITE_FLAGS > 0
+    filters:
+      - os == "linux"
   - id: package_management_in_container
     description: Package management was detected in a container
     expression: exec.file.path in PACKAGE_MANAGERS && container.id != ""
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: package_management_in_container_v2
@@ -860,6 +927,8 @@ rules:
   - id: paste_site
     description: A DNS lookup was done for a pastebin-like site
     expression: dns.question.name in PASTE_SITES && process.file.name != ""
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_chmod
@@ -902,6 +971,8 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_open_v2
@@ -969,6 +1040,8 @@ rules:
   - id: ps_discovery
     description: Processes were listed using the ps command
     expression: exec.comm == "ps" && exec.argv not in ["-p", "--pid"] && process.ancestors.file.name not in ["qualys-cloud-agent", "amazon-ssm-agent"]
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: ptrace_antidebug
@@ -977,6 +1050,7 @@ rules:
     tags:
       threat_score: '7'
       threat_description: Anti-Debugging attempts from an process may suggest malware.
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: ptrace_injection
@@ -985,6 +1059,7 @@ rules:
     tags:
       threat_score: '7'
       threat_description: Process injection may indicate an attempt to conceal malicious activity within benign operating system activity.
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: pwnkit_privilege_escalation
@@ -1003,6 +1078,11 @@ rules:
       threat_description: Some Python packages are associated with malicious behavior, especially when code is provided as a command-line argument.
     filters:
       - os == "linux"
+  - id: ransomware_note
+    description: Possible ransomware note created under common user directories
+    expression: open.flags & O_CREAT > 0 && open.file.path in [~"/home/**", ~"/root/**", ~"/bin/**", ~"/usr/bin/**", ~"/opt/**", ~"/etc/**", ~"/var/log/**", ~"/var/lib/log/**", ~"/var/backup/**", ~"/var/www/**"] && open.file.name in [r"(?i).*(restore|recovery|readme|instruction|how_to|ransom).*|.*(your_|crypt|lock|important).*\.txt$"] && open.file.name != "README.md"
+    filters:
+      - os == "linux"
   - id: rc_scripts_modified
     description: RC scripts modified
     expression: (open.flags & (OPEN_WRITE_FLAGS) > 0 && (open.file.path in ["/etc/rc.common", "/etc/rc.local"])) && process.ancestors.file.path not in PACKAGE_MANAGERS
@@ -1011,6 +1091,8 @@ rules:
   - id: read_kubeconfig
     description: The kubeconfig file was accessed
     expression: open.file.path in [~"/home/*/.kube/config", "/root/.kube/config"]
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: read_release_info
@@ -1045,6 +1127,11 @@ rules:
   - id: selinux_disable_enforcement
     description: SELinux enforcement status was disabled
     expression: selinux.enforce.status in ["permissive", "disabled"] && process.ancestors.args != ~"*BECOME-SUCCESS*"
+    filters:
+      - os == "linux"
+  - id: sensitive_tracing
+    description: A process is tracing privileged processes or sshd for possible credential dumping
+    expression: (ptrace.request == PTRACE_PEEKTEXT || ptrace.request == PTRACE_PEEKDATA || ptrace.request == PTRACE_PEEKUSR) && ptrace.tracee.euid == 0 && process.comm not in COMMON_TRACERS
     filters:
       - os == "linux"
   - id: service_stop
@@ -1104,6 +1191,8 @@ rules:
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_open_v2
@@ -1191,6 +1280,8 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_open_v2
@@ -1324,7 +1415,7 @@ rules:
       - os == "windows"
   - id: suspicious_suid_execution
     description: Recently written or modified suid file has been executed
-    expression: ((process.file.mode & S_ISUID > 0) && process.file.modification_time < 30s) && exec.file.name != "" && process.ancestors.file.path in DD_AGENT_PROCESSES
+    expression: ((process.file.mode & S_ISUID > 0) && process.file.modification_time < 30s) && exec.file.name != "" && process.ancestors.file.path not in DD_AGENT_PROCESSES
     filters:
       - os == "linux"
   - id: systemd_modification_chmod
@@ -1363,6 +1454,8 @@ rules:
           (open.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
+    tags:
+      allow_autosuppression: 'True'
     filters:
       - os == "linux"
   - id: systemd_modification_rename
@@ -1401,6 +1494,13 @@ rules:
   - id: tty_shell_in_container
     description: A shell with a TTY was executed in a container
     expression: exec.file.path in SHELLS && process.tty_name != "" && process.container.id != ""
+    filters:
+      - os == "linux"
+  - id: tunnel_traffic
+    description: Tunneling or port forwarding tool used
+    expression: ((exec.comm == "pivotnacci" || exec.comm == "gost") && process.args in [r".*(-L|-C|-R).*"]) || (exec.comm in ["ssh", "sshd"] && process.args in [r".*(-R|-L|-D|w).*"] && process.args in [r"((25[0-5]|(2[0-4]|1\d|[1-9])\d)\.?\b){4}"] ) || (exec.comm
+      == "sshuttle" && process.args in [r".*(-r|--remote|-l|--listen).*"]) || (exec.comm == "socat" && process.args in [r".*(TCP4-LISTEN:|SOCKS).*"]) || (exec.comm in ["iodine", "iodined", "dnscat", "hans", "hans-ubuntu", "ptunnel-ng", "ssf", "3proxy", "ngrok"]
+      && process.parent.comm in ["bash", "dash", "ash", "sh", "tcsh", "csh", "zsh", "ksh", "fish"])
     filters:
       - os == "linux"
   - id: user_created_tty
