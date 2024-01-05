@@ -1080,7 +1080,8 @@ rules:
       - os == "linux"
   - id: ransomware_note
     description: Possible ransomware note created under common user directories
-    expression: open.flags & O_CREAT > 0 && open.file.path in [~"/home/**", ~"/root/**", ~"/bin/**", ~"/usr/bin/**", ~"/opt/**", ~"/etc/**", ~"/var/log/**", ~"/var/lib/log/**", ~"/var/backup/**", ~"/var/www/**"] && open.file.name in [r"(?i).*(restore|recovery|readme|instruction|how_to|ransom).*|.*(your_|crypt|lock|important).*\.txt$"] && open.file.name != "README.md"
+    expression: open.flags & O_CREAT > 0 && open.file.path in [~"/home/**", ~"/root/**", ~"/bin/**", ~"/usr/bin/**", ~"/opt/**", ~"/etc/**", ~"/var/log/**", ~"/var/lib/log/**", ~"/var/backup/**", ~"/var/www/**"] && open.file.name in [r"(?i).*(restore|recovery|readme|instruction|how_to|ransom).*|.*(your_|crypt|lock|important).*\.txt$"]
+      && open.file.name != "README.md"
     filters:
       - os == "linux"
   - id: rc_scripts_modified
