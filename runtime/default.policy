@@ -176,7 +176,7 @@ rules:
     description: The base64 command was used to decode information
     expression: exec.file.name == "base64" && exec.args_flags in ["d"]
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: certutil_usage
@@ -420,7 +420,7 @@ rules:
       !(process.parent.file.name == "postgres" &&
       exec.args == ~"*pg_wal*")
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: delete_system_log
@@ -464,21 +464,21 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking global configurations the dynamic linker uses to load shared libraries.
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: exec_lsmod
     description: Kernel modules were listed using the lsmod command
     expression: exec.comm == "lsmod"
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: exec_whoami
     description: The whoami command was executed
     expression: exec.comm == "whoami"
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: exec_wrmsr
@@ -516,7 +516,7 @@ rules:
     description: A DNS lookup was done for a IP check service
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: iptables_egress_allowed
@@ -534,7 +534,7 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Java executing shell commands may indicate remote code execution (RCE)
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: k8s_pod_service_account_token_accessed
@@ -546,7 +546,7 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: kernel_module_chmod
@@ -657,7 +657,7 @@ rules:
     description: Kernel modules were listed using the kmod command
     expression: exec.comm == "kmod" && exec.args in [~"*list*"]
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: kubernetes_dns_enumeration
@@ -733,7 +733,7 @@ rules:
        exec.comm in HTTP_UTILS) &&
       container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: net_util_in_container_v2
@@ -849,7 +849,7 @@ rules:
     description: Package management was detected in a container
     expression: exec.file.path in PACKAGE_MANAGERS && container.id != ""
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: package_management_in_container_v2
@@ -928,7 +928,7 @@ rules:
     description: A DNS lookup was done for a pastebin-like site
     expression: dns.question.name in PASTE_SITES && process.file.name != ""
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_chmod
@@ -972,7 +972,7 @@ rules:
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_open_v2
@@ -1041,7 +1041,7 @@ rules:
     description: Processes were listed using the ps command
     expression: exec.comm == "ps" && exec.argv not in ["-p", "--pid"] && process.ancestors.file.name not in ["qualys-cloud-agent", "amazon-ssm-agent"]
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: ptrace_antidebug
@@ -1050,7 +1050,7 @@ rules:
     tags:
       threat_score: '7'
       threat_description: Anti-Debugging attempts from an process may suggest malware.
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: ptrace_injection
@@ -1059,7 +1059,7 @@ rules:
     tags:
       threat_score: '7'
       threat_description: Process injection may indicate an attempt to conceal malicious activity within benign operating system activity.
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: pwnkit_privilege_escalation
@@ -1092,7 +1092,7 @@ rules:
     description: The kubeconfig file was accessed
     expression: open.file.path in [~"/home/*/.kube/config", "/root/.kube/config"]
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: read_release_info
@@ -1192,7 +1192,7 @@ rules:
           open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_open_v2
@@ -1281,7 +1281,7 @@ rules:
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_open_v2
@@ -1455,7 +1455,7 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
       )
     tags:
-      allow_autosuppression: 'True'
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: systemd_modification_rename
