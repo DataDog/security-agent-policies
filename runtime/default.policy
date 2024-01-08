@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.19.0
+version: 1.19.2
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -1080,8 +1080,10 @@ rules:
       - os == "linux"
   - id: ransomware_note
     description: Possible ransomware note created under common user directories
-    expression: open.flags & O_CREAT > 0 && open.file.path in [~"/home/**", ~"/root/**", ~"/bin/**", ~"/usr/bin/**", ~"/opt/**", ~"/etc/**", ~"/var/log/**", ~"/var/lib/log/**", ~"/var/backup/**", ~"/var/www/**"] && open.file.name in [r"(?i).*(restore|recovery|readme|instruction|how_to|ransom).*|.*(your_|crypt|lock|important).*\.txt$"]
-      && open.file.name != "README.md"
+    expression: |-
+      open.flags & O_CREAT > 0
+      && open.file.path in [~"/home/**", ~"/root/**", ~"/bin/**", ~"/usr/bin/**", ~"/opt/**", ~"/etc/**", ~"/var/log/**", ~"/var/lib/log/**", ~"/var/backup/**", ~"/var/www/**"]
+      && open.file.name in [r"(?i).*(restore|recover|read|instruction|how_to|ransom|lock).*(your_|crypt|lock|file|ransom).*"] && open.file.name not in [r".*\.lock$"]
     filters:
       - os == "linux"
   - id: rc_scripts_modified
