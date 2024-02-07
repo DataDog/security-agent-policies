@@ -742,6 +742,8 @@ rules:
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] && container.created_at > 90s
+    tags:
+      allow_autosuppression: 'true'
     filters:
       - os == "linux"
   - id: network_sniffing_tool
