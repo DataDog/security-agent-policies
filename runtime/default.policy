@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.19.0
+version: 1.19.1
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -1109,6 +1109,11 @@ rules:
   - id: redis_save_module
     description: Redis module has been created
     expression: (open.flags & (O_CREAT|O_TRUNC|O_RDWR|O_WRONLY) > 0 && open.file.path =~ "/tmp/**" && open.file.name in [~"*.rdb", ~"*.aof", ~"*.so"]) && process.file.name in ["redis-check-rdb", "redis-server"]
+    filters:
+      - os == "linux"
+  - id: runc_leaky_fd
+    description: The container breakout CVE-2024-21626 was successful
+    expression: chdir.file.path == "/sys/fs/cgroup" && process.file.name =~ "runc.*"
     filters:
       - os == "linux"
   - id: runc_modification
