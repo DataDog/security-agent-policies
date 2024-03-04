@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.22.0
+version: 1.23.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -1119,6 +1119,18 @@ rules:
     expression: (open.flags & (O_CREAT|O_TRUNC|O_RDWR|O_WRONLY) > 0 && open.file.path =~ "/tmp/**" && open.file.name in [~"*.rdb", ~"*.aof", ~"*.so"]) && process.file.name in ["redis-check-rdb", "redis-server"]
     filters:
       - os == "linux"
+  - id: registry_runkey_modified
+    description: A Registry runkey has been modified
+    expression: set.registry.key_path in [~"*\\HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", ~"*\\HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Runonce", ~"*\\HKEY_LOCAL_MACHINE\\Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run",
+      ~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Terminal Server\\Install\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", ~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Terminal Server\\Install\\Software\\Microsoft\\Windows\\CurrentVersion\\Runonce",
+      ~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Terminal Server\\Install\\Software\\Microsoft\\Windows\\CurrentVersion\\RunonceEx"]
+    filters:
+      - os == "windows"
+  - id: registry_service_runkey_modified
+    description: Service registry runkey modified
+    expression: set.registry.key_path in [~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\RunServicesOnce", ~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\CurrentVersion\\RunServices"]
+    filters:
+      - os == "windows"
   - id: runc_leaky_fd
     description: The container breakout CVE-2024-21626 was successful
     expression: chdir.file.path == "/sys/fs/cgroup" && process.file.name =~ "runc.*"
@@ -1133,6 +1145,11 @@ rules:
       && process.ancestors.file.path not in PACKAGE_MANAGERS
     filters:
       - os == "linux"
+  - id: safeboot_modification
+    description: Safeboot registry modified
+    expression: set.registry.key_path =~ "*\\HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot"
+    filters:
+      - os == "windows"
   - id: scheduled_task_creation
     description: A scheduled task was created
     expression: exec.file.name in ["at.exe","schtasks.exe"]
@@ -1429,6 +1446,11 @@ rules:
       allow_autosuppression: 'true'
     filters:
       - os == "linux"
+  - id: suspicious_dll_write
+    description: Dll written to a suspicious directory
+    expression: create.file.name =~ "*.dll" && create.file.path !~ "C:\\Windows\\System32\\*"
+    filters:
+      - os == "windows"
   - id: suspicious_ntdsutil_usage
     description: Suspicious usage of ntdsutil
     expression: exec.file.name == "ntdsutil.exe" && exec.cmdline in [~"*ntds*", ~"*create*"]
