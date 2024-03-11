@@ -27,7 +27,7 @@ jobs:
         run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ steps.tag_name_extractor.outputs.TAG_NAME }}
           body: |
