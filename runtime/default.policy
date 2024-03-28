@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.23.0
+version: 1.24.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -1133,7 +1133,7 @@ rules:
       - os == "windows"
   - id: runc_leaky_fd
     description: The container breakout CVE-2024-21626 was successful
-    expression: chdir.file.path == "/sys/fs/cgroup" && process.file.name =~ "runc.*"
+    expression: chdir.file.path == "/sys/fs/cgroup" && chdir.file.filesystem in ["cgroup", "cgroup2"] && process.file.name =~ "runc.*"
     filters:
       - os == "linux"
   - id: runc_modification
@@ -1541,9 +1541,9 @@ rules:
       - os == "linux"
   - id: tunnel_traffic
     description: Tunneling or port forwarding tool used
-    expression: ((exec.comm == "pivotnacci" || exec.comm == "gost") && process.args in [r".*(-L|-C|-R).*"]) || (exec.comm in ["ssh", "sshd"] && process.args in [r".*(-R|-L|-D|w).*"] && process.args in [r"((25[0-5]|(2[0-4]|1\d|[1-9])\d)\.?\b){4}"] ) || (exec.comm
-      == "sshuttle" && process.args in [r".*(-r|--remote|-l|--listen).*"]) || (exec.comm == "socat" && process.args in [r".*(TCP4-LISTEN:|SOCKS).*"]) || (exec.comm in ["iodine", "iodined", "dnscat", "hans", "hans-ubuntu", "ptunnel-ng", "ssf", "3proxy", "ngrok"]
-      && process.parent.comm in ["bash", "dash", "ash", "sh", "tcsh", "csh", "zsh", "ksh", "fish"])
+    expression: ((exec.comm == "pivotnacci" || exec.comm == "gost") && process.args_flags in ["L", "C", "R"]) || (exec.comm in ["ssh", "sshd"] && process.args_flags in ["R", "L", "D", "w"] && process.args in [r"((25[0-5]|(2[0-4]|1\d|[1-9])\d)\.?\b){4}"] ) ||
+      (exec.comm == "sshuttle" && process.args_flags in ["r", "remote", "l", "listen"]) || (exec.comm == "socat" && process.args in [r".*(TCP4-LISTEN:|SOCKS).*"]) || (exec.comm in ["iodine", "iodined", "dnscat", "hans", "hans-ubuntu", "ptunnel-ng", "ssf", "3proxy",
+      "ngrok"] && process.parent.comm in ["bash", "dash", "ash", "sh", "tcsh", "csh", "zsh", "ksh", "fish"])
     filters:
       - os == "linux"
   - id: user_created_tty
