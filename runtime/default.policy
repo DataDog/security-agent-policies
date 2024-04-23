@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.24.0
+version: 1.25.1
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -48,9 +48,9 @@ macros:
     description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
   - id: DD_AGENT_PROCESSES
+    expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/embedded/bin/trace-agent", "/opt/datadog-agent/bin/agent/agent",
+      "/opt/datadog/apm/inject/auto_inject_runc", "/usr/bin/dd-host-install", "/usr/bin/dd-host-container-install", "/usr/bin/dd-container-install", "/opt/datadog-agent/bin/datadog-cluster-agent"]'
     description: Processes that are a part of the Datadog Agent
-    expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/bin/agent/agent", "/opt/datadog/apm/inject/auto_inject_runc",
-      "/usr/bin/dd-host-install", "/usr/bin/dd-host-container-install", "/usr/bin/dd-container-install", "/opt/datadog-agent/bin/datadog-cluster-agent"]'
   - id: FDB_SERVER_PROCESSES
     expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
   - id: GCP_RISKY_URI
@@ -78,7 +78,7 @@ macros:
   - id: OPEN_CREATE_FLAGS
     expression: O_CREAT|O_RDWR|O_WRONLY
   - id: OPEN_WRITE_FLAGS
-    expression: O_CREAT|O_TRUNC|O_RDWR|O_WRONLY
+    expression: O_CREAT|O_TRUNC|O_APPEND|O_RDWR|O_WRONLY
   - id: PACKAGE_MANAGERS
     description: Package managers and container runtimes
     expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", "/usr/bin/yum", "/sbin/apk", "/usr/lib/snapd/snapd"]'
@@ -417,7 +417,7 @@ rules:
       - os == "linux"
   - id: curl_docker_socket
     description: The Docker socket was referenced in a cURL command
-    expression: exec.file.name == "curl" && exec.args_flags in ["unix-socket"] && exec.args in ["*docker.sock*"] && container.id != ""
+    expression: exec.file.name == "curl" && exec.args_flags in ["unix-socket"] && exec.args in [~"*docker.sock*"] && container.id != ""
     filters:
       - os == "linux"
   - id: database_shell_execution
@@ -470,7 +470,7 @@ rules:
       - os == "linux"
   - id: dynamic_linker_config_write
     description: A process wrote to a dynamic linker config file
-    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES && process.ancestors.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES && process.ancestors.file.path not in DD_AGENT_PROCESSES
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking global configurations the dynamic linker uses to load shared libraries.
@@ -678,7 +678,7 @@ rules:
       - os == "linux"
   - id: ld_preload_unusual_library_path
     description: The LD_PRELOAD variable is populated by a link to a suspicious file directory
-    expression: exec.envs in [~"LD_PRELOAD=*/tmp/*" ,~"LD_PRELOAD=/dev/shm/*" ]
+    expression: exec.envs in [~"LD_PRELOAD=*/tmp/*", ~"LD_PRELOAD=/dev/shm/*"]
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking environment variables the dynamic linker uses to load shared libraries.
@@ -1080,7 +1080,7 @@ rules:
       - os == "linux"
   - id: python_cli_code
     description: Python code was provided on the command line
-    expression: exec.file.name == ~"python*" && exec.args_flags in ["c"] && exec.args in [~"*-c*SOCK_STREAM*", ~"*-c*subprocess*", "*-c*/bash*", "*-c*/bin/sh*", "*-c*pty.spawn*"] && exec.args !~ "*setuptools*"
+    expression: exec.file.name == ~"python*" && exec.args_flags in ["c"] && exec.args in [~"*-c*SOCK_STREAM*", ~"*-c*subprocess*", ~"*-c*/bash*", ~"*-c*/bin/sh*", ~"*-c*pty.spawn*"] && exec.args !~ "*setuptools*"
     tags:
       threat_score: '8'
       threat_description: Some Python packages are associated with malicious behavior, especially when code is provided as a command-line argument.
@@ -1121,14 +1121,14 @@ rules:
       - os == "linux"
   - id: registry_runkey_modified
     description: A Registry runkey has been modified
-    expression: set.registry.key_path in [~"*\\HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", ~"*\\HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Runonce", ~"*\\HKEY_LOCAL_MACHINE\\Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run",
-      ~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Terminal Server\\Install\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", ~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Terminal Server\\Install\\Software\\Microsoft\\Windows\\CurrentVersion\\Runonce",
-      ~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Terminal Server\\Install\\Software\\Microsoft\\Windows\\CurrentVersion\\RunonceEx"]
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run", ~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Runonce", ~"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run",
+      ~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Run", ~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Runonce",
+      ~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\RunonceEx"]
     filters:
       - os == "windows"
   - id: registry_service_runkey_modified
     description: Service registry runkey modified
-    expression: set.registry.key_path in [~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\RunServicesOnce", ~"*\\HKEY_LOCAL_MACHINE\\Software\\Microsoft\\CurrentVersion\\RunServices"]
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce", ~"HKEY_LOCAL_MACHINE\Software\Microsoft\CurrentVersion\RunServices"]
     filters:
       - os == "windows"
   - id: runc_leaky_fd
@@ -1147,12 +1147,12 @@ rules:
       - os == "linux"
   - id: safeboot_modification
     description: Safeboot registry modified
-    expression: set.registry.key_path =~ "*\\HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot"
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SafeBoot"]
     filters:
       - os == "windows"
   - id: scheduled_task_creation
     description: A scheduled task was created
-    expression: exec.file.name in ["at.exe","schtasks.exe"]
+    expression: exec.cmdline in [~"*at.exe",~"*schtasks*"] && exec.cmdline =~ "*create*"
     filters:
       - os == "windows"
   - id: selinux_disable_enforcement
@@ -1262,7 +1262,7 @@ rules:
       - os == "linux"
   - id: ssh_it_tool_config_write
     description: The configuration directory for an ssh worm
-    expression: open.file.path in ["/root/.prng/*", ~"/home/*/.prng/*", ~"/root/.config/prng/*", ~"/home/*/.config/prng/*"] && open.flags & (OPEN_WRITE_FLAGS) > 0
+    expression: open.file.path in [~"/root/.prng/*", ~"/home/*/.prng/*", ~"/root/.config/prng/*", ~"/home/*/.config/prng/*"] && open.flags & (OPEN_WRITE_FLAGS) > 0
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_chmod
