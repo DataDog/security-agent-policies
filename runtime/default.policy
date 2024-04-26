@@ -1,33 +1,34 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.25.1
+version: 1.26.0
 macros:
   - id: APP_PACKAGE_MANAGERS
-    description: Package managers
     expression: '["pip3", "pip", "npm"]'
+    description: Package managers
   - id: APT_PROCESSES
     expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
   - id: AWS_RISKY_URI
+    expression: '[~"*169.254.169.254/latest/meta-data/iam/security-credentials/*", ~"*169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI", ~"*169.254.170.2/*/credentials?id=*"]'
     description: AWS IMDS URI's known for exploitation
-    expression: '[~"*169.254.169.254/latest/meta-data/iam/security-credentials/*", "*169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI", ~"*169.254.170.2/*/credentials?id=*"]'
   - id: AZURE_RISKY_URI
-    description: Azure IMDS URI's known for exploitation
     expression: '[~"*169.254.169.254/metadata/identity/oauth2/token?api-version=*"]'
+    description: Azure IMDS URI's known for exploitation
   - id: CHAT_ROOM_SITES
     expression: '["discord.com", "api.telegram.org", "cdn.discordapp.com"]'
   - id: CHMOD_EXEC_FLAGS
     expression: S_IXUSR|S_IXGRP|S_IXOTH
+    filters:
+      - os == "linux"
   - id: COMMON_MODULES
-    description: Common kernel modules
     expression: '["nf_tables", "iptable_filter", "ip6table_filter", "bpfilter", "ip6_tables", "ip6table_nat", "nf_reject_ipv4", "ipt_REJECT", "iptable_raw"]'
+    description: Common kernel modules
   - id: COMMON_TRACERS
-    description: Common tracers
     expression: '["dlv", "dlv-linux-amd64", "strace", "gdb", "lldb-server"]'
+    description: Common tracers
   - id: COMPILER_PROCESSES
     expression: '["javac", "clang", "gcc","bcc"]'
   - id: CONTAINER_CLIENTS
     expression: '["docker", "kubectl"]'
   - id: CONTAINER_PROCESSES
-    description: Processes related to operating containers and kubernetes clusters
     expression: |-
       ["/usr/bin/containerd", "/usr/local/bin/containerd",
        "/usr/bin/docker", "/usr/local/bin/docker",
@@ -39,14 +40,15 @@ macros:
        "/usr/bin/exechealthz", "/usr/local/bin/exechealthz",
        "/usr/bin/weave-net", "/usr/local/bin/weave-net",
        "/opt/cni/bin/loopback", "/opt/cni/bin/bridge"]
+    description: Processes related to operating containers and kubernetes clusters
   - id: CREDENTIAL_BINARIES
     expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd", "/usr/sbin/groupadd", "/usr/sbin/useradd", "/usr/sbin/usermod", "/usr/sbin/userdel",
       "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
   - id: CRYPTOMINER_DOMAINS
     expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me", ~"*rplant.xyz"]'
   - id: DATABASE_PROCESSES
-    description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
+    description: Common database process names
   - id: DD_AGENT_PROCESSES
     expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/embedded/bin/trace-agent", "/opt/datadog-agent/bin/agent/agent",
       "/opt/datadog/apm/inject/auto_inject_runc", "/usr/bin/dd-host-install", "/usr/bin/dd-host-container-install", "/usr/bin/dd-container-install", "/opt/datadog-agent/bin/datadog-cluster-agent"]'
@@ -54,41 +56,44 @@ macros:
   - id: FDB_SERVER_PROCESSES
     expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
   - id: GCP_RISKY_URI
-    description: GCP IMDS URI's known for exploitation
     expression: '[~"*metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token", ~"*169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token"]'
+    description: GCP IMDS URI's known for exploitation
   - id: GITLAB_PROCESSES
     expression: '["/opt/gitlab/embedded/bin/bundle", "/opt/gitlab/embedded/bin/svlogd"]'
   - id: HTTP_UTILS
-    description: Executables commonly used to fetch data over HTTP
     expression: '["wget", "curl", "lwp-download"]'
+    description: Executables commonly used to fetch data over HTTP
   - id: INTERPRETER_PROCESSES
-    description: Processes associated with interpreted programming languages (Python, Node.js)
     expression: '[~"python2*", ~"python3*", "node", "perl", ~"ruby*"]'
+    description: Processes associated with interpreted programming languages (Python, Node.js)
   - id: IPCHECK_DOMAINS
     expression: '["icanhazip.com", "ip-api.com", "myip.opendns.com", "checkip.amazonaws.com", "whatismyip.akamai.com"]'
   - id: LIBC_VERSIONS
-    description: LIBC Library Versions
     expression: '["libc-2.29.so", "libc-2.30.so", "libc-2.31.so", "libc-2.32.so", "libc-2.33.so", "libc-2.34.so", "libc-2.35.so", "libc-2.36.so", "libc-2.37.so"]'
+    description: LIBC Library Versions
   - id: NETWORK_SCANNERS
-    description: Commonly used network scanners
     expression: '["nmap", "masscan", "fping", "zgrab", "zgrab2", "rustscan", "pnscan"]'
+    description: Commonly used network scanners
   - id: NET_UTILS
-    description: Executables of common network utilites
     expression: '["socat", "dig", "nslookup", "host", ~"netcat*", ~"nc*", "ncat"]'
+    description: Executables of common network utilites
   - id: OPEN_CREATE_FLAGS
     expression: O_CREAT|O_RDWR|O_WRONLY
+    filters:
+      - os == "linux"
   - id: OPEN_WRITE_FLAGS
     expression: O_CREAT|O_TRUNC|O_APPEND|O_RDWR|O_WRONLY
+    filters:
+      - os == "linux"
   - id: PACKAGE_MANAGERS
-    description: Package managers and container runtimes
     expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", "/usr/bin/yum", "/sbin/apk", "/usr/lib/snapd/snapd"]'
-  - id: PACKAGE_MANAGERS_AND_RUNTIMES
     description: Package managers and container runtimes
+  - id: PACKAGE_MANAGERS_AND_RUNTIMES
     expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*"]'
+    description: Package managers and container runtimes
   - id: PASTE_SITES
     expression: '["pastebin.com", "ghostbin.com", "termbin.com", "klgrth.io"]'
   - id: SHELLS
-    description: Common Linux shell executables
     expression: |-
       [ "/bin/dash",
         "/usr/bin/dash",
@@ -119,26 +124,27 @@ macros:
         "/usr/bin/yash",
         "/bin/zsh5",
         "/bin/zsh5-static" ]
+    description: Common Linux shell executables
   - id: SHELL_NAMES
-    description: File names of common Linux shell executables
     expression: '["dash","sh","static-sh","sh","bash","bash","bash-static","zsh","ash","csh","ksh","tcsh","busybox","busybox","fish","ksh93","rksh","rksh93","lksh","mksh","mksh-static","csharp","posh","rc","sash","yash","zsh5","zsh5-static"]'
+    description: File names of common Linux shell executables
   - id: SHELL_UTILS
-    description: Executables in the coreutils
     expression: '["/bin/cat","/bin/chgrp","/bin/chmod","/bin/chown","/bin/cp","/bin/date","/bin/dd","/bin/df","/bin/dir","/bin/echo","/bin/ln","/bin/ls","/bin/mkdir","/bin/mknod","/bin/mktemp","/bin/mv","/bin/pwd","/bin/readlink","/bin/rm","/bin/rmdir","/bin/sleep","/bin/stty","/bin/sync","/bin/touch","/bin/uname","/bin/vdir","/usr/bin/arch","/usr/bin/b2sum","/usr/bin/base32","/usr/bin/base64","/usr/bin/basename","/usr/bin/chcon","/usr/bin/cksum","/usr/bin/comm","/usr/bin/csplit","/usr/bin/cut","/usr/bin/dircolors","/usr/bin/dirname","/usr/bin/du","/usr/bin/env","/usr/bin/expand","/usr/bin/expr","/usr/bin/factor","/usr/bin/fmt","/usr/bin/fold","/usr/bin/groups","/usr/bin/head","/usr/bin/hostid","/usr/bin/id","/usr/bin/install","/usr/bin/join","/usr/bin/link","/usr/bin/logname","/usr/bin/md5sum","/usr/bin/md5sum.textutils","/usr/bin/mkfifo","/usr/bin/nice","/usr/bin/nl","/usr/bin/nohup","/usr/bin/nproc","/usr/bin/numfmt","/usr/bin/od","/usr/bin/paste","/usr/bin/pathchk","/usr/bin/pinky","/usr/bin/pr","/usr/bin/printenv","/usr/bin/printf","/usr/bin/ptx","/usr/bin/realpath","/usr/bin/runcon","/usr/bin/seq","/usr/bin/sha1sum","/usr/bin/sha224sum","/usr/bin/sha256sum","/usr/bin/sha384sum","/usr/bin/sha512sum","/usr/bin/shred","/usr/bin/shuf","/usr/bin/sort","/usr/bin/split","/usr/bin/stat","/usr/bin/stdbuf","/usr/bin/sum","/usr/bin/tac","/usr/bin/tail","/usr/bin/tee","/usr/bin/test","/usr/bin/timeout","/usr/bin/tr","/usr/bin/truncate","/usr/bin/tsort","/usr/bin/tty","/usr/bin/unexpand","/usr/bin/uniq","/usr/bin/unlink","/usr/bin/users","/usr/bin/wc","/usr/bin/who","/usr/bin/whoami","/usr/sbin/chroot"]'
+    description: Executables in the coreutils
   - id: SHELL_UTIL_NAMES
-    description: Files names of executables in the coreutils
     expression: '["cat","chgrp","chmod","chown","cp","date","dd","df","dir","echo","ln","ls","mkdir","mknod","mktemp","mv","pwd","readlink","rm","rmdir","sleep","stty","sync","touch","uname","vdir","arch","b2sum","base32","base64","basename","chcon","cksum","comm","csplit","cut","dircolors","dirname","du","env","expand","expr","factor","fmt","fold","groups","head","hostid","id","install","join","link","logname","md5sum","textutils","mkfifo","nice","nl","nohup","nproc","numfmt","od","paste","pathchk","pinky","pr","printenv","printf","ptx","realpath","runcon","seq","sha1sum","sha224sum","sha256sum","sha384sum","sha512sum","shred","shuf","sort","split","stat","stdbuf","sum","tac","tail","tee","test","timeout","tr","truncate","tsort","tty","unexpand","uniq","unlink","users","wc","who","whoami","chroot"]'
+    description: Files names of executables in the coreutils
   - id: SYSTEMD_FOLDERS
-    description: Package managers
     expression: '[ ~"/lib/systemd/system/**", ~"/usr/lib/systemd/system/**", ~"/etc/systemd/system/**" ]'
+    description: Package managers
   - id: SYSTEMD_JOURNALD_PROCESSES
     expression: '["/usr/lib/systemd/systemd-journald"]'
   - id: SYSTEM_PACKAGE_MANAGERS
-    description: Package managers
     expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/sbin/apk"]'
+    description: Package managers
   - id: WEBAPP_PROCESSES
-    description: Processes that commonly run web applications
     expression: '["apache2", "nginx", ~"tomcat*", "httpd"]'
+    description: Processes that commonly run web applications
 rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
@@ -213,7 +219,7 @@ rules:
       open.flags & O_CREAT > 0
       && (
         (open.file.path =~ "/tmp/**" && open.file.name in [~"*.ko", ~".*"])
-        || open.file.path in [~"/var/tmp/**", ~"/dev/shm/**", ~"/root/**", ~"*/bin/*", ~"/usr/local/lib/**"]
+        || open.file.path in [~"/var/tmp/**", ~"/root/**", ~"*/bin/*", ~"/usr/local/lib/**"]
       )
       && (process.comm in COMPILER_PROCESSES || process.ancestors.comm in COMPILER_PROCESSES)
       && process.file.name not in ["pip", ~"python*"]
@@ -329,6 +335,11 @@ rules:
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
     filters:
       - os == "linux"
+  - id: critical_registry_export
+    description: regedit used to export critical registry hive
+    expression: exec.file.name in ["reg.exe", "regedit.exe"] && exec.cmdline in [~"*hklm*", ~"*hkey_local_machine*", ~"*system*", ~"*sam*", ~"*security*"]
+    filters:
+      - os == "windows"
   - id: cron_at_job_creation_chmod
     description: An unauthorized job was added to cron scheduling
     expression: |-
@@ -460,6 +471,11 @@ rules:
       threat_description: The vulnerability CVE-2022-0847 allows privilege escalation using pipes
     filters:
       - os == "linux"
+  - id: dotnet_dump_execution
+    description: Dotnet_dump was used to dump a process memory
+    expression: exec.cmdline =~ "*dotnet-dump*" && exec.cmdline =~ "*collect*"
+    filters:
+      - os == "windows"
   - id: dynamic_linker_config_unlink
     description: A process unlinked a dynamic linker config file
     expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && process.file.path not in PACKAGE_MANAGERS
@@ -521,6 +537,11 @@ rules:
       allow_autosuppression: 'true'
     filters:
       - os == "linux"
+  - id: inveigh_tool_usage
+    description: Process executed with arguments common with Inveigh tool usage
+    expression: exec.cmdline in [~"*SpooferIP*", ~"*ReplyToIPs*", ~"*ReplyToDomains*", ~"*ReplyToMACs*", ~"*SnifferIP*"]
+    filters:
+      - os == "windows"
   - id: ip_check_domain
     description: A DNS lookup was done for a IP check service
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
@@ -1041,6 +1062,11 @@ rules:
       (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*")
     filters:
       - os == "linux"
+  - id: powershell_empire_uac_bypass
+    description: A process was executed matching arguments for a UAC bypass technique common in powershell empire
+    expression: exec.cmdline in [~"*-NoP -NonI -w Hidden -c $x=$((gp HKCU:Software\Microsoft\Windows Update).Update)*", ~"*-NoP -NonI -c $x=$((gp HKCU:Software\Microsoft\Windows Update).Update);*"]
+    filters:
+      - os == "windows"
   - id: procdump_execution
     description: A tool used to dump process memory has been executed
     expression: exec.file.name in ["procmon.exe","procdump.exe"]
@@ -1131,6 +1157,18 @@ rules:
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce", ~"HKEY_LOCAL_MACHINE\Software\Microsoft\CurrentVersion\RunServices"]
     filters:
       - os == "windows"
+  - id: relay_attack_tool_execution
+    description: Process matches known relay attack tool
+    expression: exec.file.name in [~"*PetitPotam*", ~"*RottenPotato*", ~"*HotPotato*", ~"*JuicyPotato*", ~"*just_dce_*", ~"*Juicy Potato*", "rot.exe", "Potato.exe", "SpoolSample.exe", "Responder.exe", ~"*smbrelayx*", ~"*smbrelayx*", ~"*ntlmrelayx*", ~"*LocalPotato*"]
+      || exec.cmdline in [~"*Invoke-Tater*", ~"*smbrelay*", ~"*ntlmrelay*", ~"*cme smb*", ~"*ntlm:NTLMhash*", ~"*Invoke-PetitPotam*"]
+    filters:
+      - os == "windows"
+  - id: rubeus_execution
+    description: process arguments match rubeus credential theft tool
+    expression: exec.cmdline in [~"*asreproast*", ~"*/service:krbtgt*", ~"*dump /luid:0x*", ~"*kerberoast*", ~"*createonly /program*", ~"*ptt /ticket*", ~"*impersonateuser*", ~"*renew /ticket*", ~"*asktgt /user*", ~"*harvest /interval*", ~"*s4u /user*", ~"*hash
+      /password*", ~"*golden /aes256*", ~"*silver /user*", "*rubeus*"]
+    filters:
+      - os == "windows"
   - id: runc_leaky_fd
     description: The container breakout CVE-2024-21626 was successful
     expression: chdir.file.path == "/sys/fs/cgroup" && chdir.file.filesystem in ["cgroup", "cgroup2"] && process.file.name =~ "runc.*"
@@ -1172,6 +1210,11 @@ rules:
       allow_autosuppression: 'true'
     filters:
       - os == "linux"
+  - id: sharpup_tool_usage
+    description: sharpup tool used for local privilege escalation
+    expression: exec.file.name == "sharpup.exe" && exec.cmdline in [~"*HijackablePaths*", ~"*UnquotedServicePath*", ~"*ProcessDLLHijack*", ~"*ModifiableServiceBinaries*", ~"*ModifiableScheduledTask*", ~"*DomainGPPPassword*", ~"*CachedGPPPassword*"]
+    filters:
+      - os == "windows"
   - id: shell_history_deleted
     description: Shell History was Deleted
     expression: (unlink.file.name  =~ r".([dbazfi]*sh)(_history)$") && process.comm not in  ["dockerd", "containerd"]
@@ -1192,6 +1235,11 @@ rules:
     expression: open.file.path in [~"/home/*/*profile", ~"/home/*/*rc"] && open.flags & ((O_CREAT|O_TRUNC|O_RDWR|O_WRONLY)) > 0
     filters:
       - os == "linux"
+  - id: sliver_c2_implant_execution
+    description: process arguments match sliver c2 implant
+    expression: exec.cmdline =~ "*NoExit *" && exec.cmdline =~ "*Command *" && exec.cmdline =~ "*[Console]::OutputEncoding=[Text.UTF8Encoding]::UTF8*"
+    filters:
+      - os == "windows"
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
@@ -1558,6 +1606,11 @@ rules:
     expression: exec.file.name in ["userdel", "deluser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS
     filters:
       - os == "linux"
+  - id: windows_cryptominer_process
+    description: A cryptominer was potentially executed
+    expression: exec.cmdline in [~"*xmrig*", ~"*cpu-priority*", ~"*donate-level*", ~"*randomx-1gb-pages*", ~"*stratum+tcp*", ~"*stratum+ssl*", ~"*stratum1+tcp*", ~"*stratum1+ssl*", ~"*stratum2+tcp*", ~"*stratum2+ssl*", ~"*nicehash*", ~"*yespower*"]
+    filters:
+      - os == "windows"
   - id: wmi_spawning_shell
     description: Command executed via WMI
     expression: exec.file.name in [~"powershell*","cmd.exe"] && process.parent.file.name == "WmiPrvSE.exe"
