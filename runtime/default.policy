@@ -1496,7 +1496,7 @@ rules:
       - os == "linux"
   - id: suspicious_dll_write
     description: Dll written to a suspicious directory
-    expression: create.file.name =~ "*.dll" && create.file.path !~ "\Device\*\Windows\System32\**"
+    expression: create.file.name =~ "*.dll" && create.file.device_path !~ "\Device\*\Windows\System32\**"
     filters:
       - os == "windows"
   - id: suspicious_ntdsutil_usage
