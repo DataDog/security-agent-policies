@@ -13,6 +13,22 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
+  - id: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_password_auth
+    description: Configure the Use of the pam_faillock.so Module in the /etc/pam.d/password-auth File.
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_password_auth
+  - id: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_system_auth
+    description: Configure the Use of the pam_faillock.so Module in the /etc/pam.d/system-auth File.
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_system_auth
   - id: xccdf_org.ssgproject.content_rule_account_unique_id
     description: Ensure All Accounts on the System Have Unique User IDs
     filters: *id001
@@ -37,14 +53,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
-  - id: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
-    description: Set Password Minimum Age
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
     description: Verify Only Root Has UID 0
     filters: *id001
@@ -53,6 +61,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed
+    description: Verify All Account Password Hashes are Shadowed
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed
   - id: xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past
     description: Ensure all users last password change date is in the past
     filters: *id001
@@ -61,6 +77,38 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_dictcheck
+    description: Ensure PAM Enforces Password Requirements - Prevent the Use of Dictionary Words
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_dictcheck
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_difok
+    description: Ensure PAM Enforces Password Requirements - Minimum Different Characters
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_difok
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_enforce_root
+    description: Ensure PAM Enforces Password Requirements - Enforce for root User
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_enforce_root
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxrepeat
+    description: Set Password Maximum Consecutive Repeating Characters
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxrepeat
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
     description: Ensure PAM Enforces Password Requirements - Minimum Different Categories
     filters: *id001
@@ -93,14 +141,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_system_auth
-  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
-    description: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
     description: Set Existing Passwords Maximum Age
     filters: *id001
@@ -109,14 +149,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
-  - id: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
-    description: Set Existing Passwords Minimum Age
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_warn_age_existing
     description: Set Existing Passwords Warning Age
     filters: *id001
@@ -205,6 +237,22 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
+  - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
+    description: User Initialization Files Must Be Group-Owned By The Primary Group
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
+  - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_user_ownership
+    description: User Initialization Files Must Be Owned By the Primary User
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_user_ownership
   - id: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
     description: All Interactive Users Home Directories Must Exist
     filters: *id001
@@ -229,6 +277,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_aide_build_database
+  - id: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
+    description: Configure AIDE to Verify the Audit Tools
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
   - id: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
     description: Configure Periodic Execution of AIDE
     filters: *id001
@@ -341,6 +397,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount
+  - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_autorun
+    description: Disable GNOME3 Automount running
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_autorun
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_user_list
     description: Disable the GNOME3 Login User List
     filters: *id001
@@ -357,6 +421,38 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_login_banner_text
+  - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_idle_delay
+    description: Set GNOME3 Screensaver Inactivity Timeout
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_idle_delay
+  - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay
+    description: Set GNOME3 Screensaver Lock Delay After Activation Period
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay
+  - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_user_locks
+    description: Ensure Users Cannot Change GNOME3 Screensaver Settings
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_user_locks
+  - id: xccdf_org.ssgproject.content_rule_dconf_gnome_session_idle_user_locks
+    description: Ensure Users Cannot Change GNOME3 Session Idle Settings
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_dconf_gnome_session_idle_user_locks
   - id: xccdf_org.ssgproject.content_rule_disable_host_auth
     description: Disable Host-Based Authentication
     filters: *id001
@@ -381,6 +477,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
+  - id: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled
+    description: Ensure gpgcheck Enabled for All yum Package Repositories
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled
   - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
     description: Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty
     filters: *id001
@@ -389,6 +493,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
+  - id: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
+    description: Ensure Authentication Required for Single User Mode
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
   - id: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
     description: Ensure that /etc/at.deny does not exist
     filters: *id001
@@ -397,6 +509,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
+  - id: xccdf_org.ssgproject.content_rule_file_cron_allow_exists
+    description: Ensure that /etc/cron.allow exists
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_cron_allow_exists
   - id: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
     description: Ensure that /etc/cron.deny does not exist
     filters: *id001
@@ -405,6 +525,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
+  - id: xccdf_org.ssgproject.content_rule_file_etc_security_opasswd
+    description: Verify Permissions and Ownership of Old Passwords File
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_etc_security_opasswd
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
     description: Verify Group Who Owns /etc/at.allow file
     filters: *id001
@@ -573,6 +701,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shells
+    description: Verify Group Who Owns /etc/shells File
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shells
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
     description: Verify /boot/grub2/grub.cfg Group Ownership
     filters: *id001
@@ -597,14 +733,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_user_cfg
-  - id: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
-    description: All Interactive User Home Directories Must Be Group-Owned By The Primary Group
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_private_key
     description: Verify Group Ownership on SSH Server Private *_key Key Files
     filters: *id001
@@ -781,6 +909,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shadow
+  - id: xccdf_org.ssgproject.content_rule_file_owner_etc_shells
+    description: Verify Who Owns /etc/shells File
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shells
   - id: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
     description: Verify /boot/grub/grub.cfg User Ownership
     filters: *id001
@@ -829,6 +965,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_ownership_sshd_pub_key
+  - id: xccdf_org.ssgproject.content_rule_file_permission_user_init_files
+    description: Ensure All User Initialization Files Have Mode 0740 Or Less Permissive
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_permission_user_init_files
   - id: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
     description: Verify Permissions on /etc/at.allow file
     filters: *id001
@@ -997,6 +1141,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_shells
+    description: Verify Permissions on /etc/shells File
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shells
   - id: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
     description: Verify /boot/grub/grub.cfg Permissions
     filters: *id001
@@ -1045,6 +1197,22 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
+  - id: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_restricted
+    description: Configure Firewalld to Restrict Loopback Traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_restricted
+  - id: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_trusted
+    description: Configure Firewalld to Trust Loopback Traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_trusted
   - id: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
     description: All GIDs referenced in /etc/passwd must be defined in /etc/group
     filters: *id001
@@ -1109,22 +1277,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
-  - id: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
-    description: Ensure ip6tables Firewall Rules Exist for All Open Ports
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
-  - id: xccdf_org.ssgproject.content_rule_iptables_rules_for_open_ports
-    description: Ensure iptables Firewall Rules Exist for All Open Ports
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_iptables_rules_for_open_ports
   - id: xccdf_org.ssgproject.content_rule_journald_compress
     description: Ensure journald is configured to compress large log files
     filters: *id001
@@ -1157,14 +1309,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
-  - id: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
-    description: Disable Modprobe Loading of USB Storage Driver
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
   - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
     description: Add nodev Option to /dev/shm
     filters: *id001
@@ -1189,14 +1333,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
-  - id: xccdf_org.ssgproject.content_rule_mount_option_home_grpquota
-    description: Add grpquota Option to /home
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_mount_option_home_grpquota
   - id: xccdf_org.ssgproject.content_rule_mount_option_home_nodev
     description: Add nodev Option to /home
     filters: *id001
@@ -1213,14 +1349,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_home_nosuid
-  - id: xccdf_org.ssgproject.content_rule_mount_option_home_usrquota
-    description: Add usrquota Option to /home
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_mount_option_home_usrquota
   - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_nodev
     description: Add nodev Option to /tmp
     filters: *id001
@@ -1301,14 +1429,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_nodev
-  - id: xccdf_org.ssgproject.content_rule_mount_option_var_noexec
-    description: Add noexec Option to /var
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_mount_option_var_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_nosuid
     description: Add nosuid Option to /var
     filters: *id001
@@ -1365,14 +1485,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_forward_files
-  - id: xccdf_org.ssgproject.content_rule_no_netrc_files
-    description: Verify No netrc Files Exist
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_no_netrc_files
   - id: xccdf_org.ssgproject.content_rule_no_password_auth_for_systemaccounts
     description: Ensure that System Accounts Are Locked
     filters: *id001
@@ -1405,14 +1517,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_aide_installed
-  - id: xccdf_org.ssgproject.content_rule_package_avahi-autoipd_removed
-    description: Uninstall avahi-autoipd Server Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_avahi-autoipd_removed
   - id: xccdf_org.ssgproject.content_rule_package_avahi_removed
     description: Uninstall avahi Server Package
     filters: *id001
@@ -1429,6 +1533,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_bind_removed
+  - id: xccdf_org.ssgproject.content_rule_package_chrony_installed
+    description: The Chrony package is installed
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_chrony_installed
   - id: xccdf_org.ssgproject.content_rule_package_cups_removed
     description: Uninstall CUPS Package
     filters: *id001
@@ -1469,6 +1581,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_firewalld_installed
+  - id: xccdf_org.ssgproject.content_rule_package_ftp_removed
+    description: Remove ftp Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_ftp_removed
   - id: xccdf_org.ssgproject.content_rule_package_httpd_removed
     description: Uninstall httpd Package
     filters: *id001
@@ -1477,14 +1597,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_httpd_removed
-  - id: xccdf_org.ssgproject.content_rule_package_iptables-services_removed
-    description: Remove iptables-services Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_iptables-services_removed
   - id: xccdf_org.ssgproject.content_rule_package_libselinux_installed
     description: Install libselinux Package
     filters: *id001
@@ -1525,22 +1637,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_nginx_removed
-  - id: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
-    description: Ensure LDAP client is not installed
+  - id: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
+    description: Install pam_pwquality Package
     filters: *id001
     input:
       - xccdf:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
-  - id: xccdf_org.ssgproject.content_rule_package_rsh_removed
-    description: Uninstall rsh Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_rsh_removed
+          rule: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
   - id: xccdf_org.ssgproject.content_rule_package_rsync_removed
     description: Uninstall rsync Package
     filters: *id001
@@ -1589,14 +1693,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_sudo_installed
-  - id: xccdf_org.ssgproject.content_rule_package_talk_removed
-    description: Uninstall talk Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_talk_removed
   - id: xccdf_org.ssgproject.content_rule_package_telnet_removed
     description: Remove telnet Clients
     filters: *id001
@@ -1645,14 +1741,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_xinetd_removed
-  - id: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
-    description: Remove the X Windows Package Group
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
   - id: xccdf_org.ssgproject.content_rule_package_ypbind_removed
     description: Remove NIS Client
     filters: *id001
@@ -1669,6 +1757,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_ypserv_removed
+  - id: xccdf_org.ssgproject.content_rule_partition_for_dev_shm
+    description: Ensure /dev/shm is configured
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_partition_for_dev_shm
   - id: xccdf_org.ssgproject.content_rule_partition_for_tmp
     description: Ensure /tmp Located On Separate Partition
     filters: *id001
@@ -1685,22 +1781,6 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
-  - id: xccdf_org.ssgproject.content_rule_require_emergency_target_auth
-    description: Require Authentication for Emergency Systemd Target
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_require_emergency_target_auth
-  - id: xccdf_org.ssgproject.content_rule_require_singleuser_auth
-    description: Require Authentication for Single User Mode
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_require_singleuser_auth
   - id: xccdf_org.ssgproject.content_rule_root_path_no_dot
     description: Ensure that Root's Path Does Not Include Relative Paths or Null Directories
     filters: *id001
@@ -1717,6 +1797,22 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
+  - id: xccdf_org.ssgproject.content_rule_rsyslog_files_groupownership
+    description: Ensure Log Files Are Owned By Appropriate Group
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_rsyslog_files_groupownership
+  - id: xccdf_org.ssgproject.content_rule_rsyslog_files_ownership
+    description: Ensure Log Files Are Owned By Appropriate User
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_rsyslog_files_ownership
   - id: xccdf_org.ssgproject.content_rule_rsyslog_files_permissions
     description: Ensure System Log Files Have Correct Permissions
     filters: *id001
@@ -1765,6 +1861,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_bluetooth_disabled
+    description: Disable Bluetooth Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_service_bluetooth_disabled
   - id: xccdf_org.ssgproject.content_rule_service_crond_enabled
     description: Enable cron Daemon
     filters: *id001
@@ -1821,38 +1925,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_systemd-journald_enabled
-  - id: xccdf_org.ssgproject.content_rule_set_firewalld_appropriate_zone
-    description: Ensure network interfaces are assigned to appropriate zone
+  - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_libuserconf
+    description: Set Password Hashing Algorithm in /etc/libuser.conf
     filters: *id001
     input:
       - xccdf:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_set_firewalld_appropriate_zone
-  - id: xccdf_org.ssgproject.content_rule_set_firewalld_default_zone
-    description: Set Default firewalld Zone for Incoming Packets
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_set_firewalld_default_zone
-  - id: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
-    description: Set Default ip6tables Policy for Incoming Packets
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
-  - id: xccdf_org.ssgproject.content_rule_set_nftables_table
-    description: Ensure a Table Exists for Nftables
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_set_nftables_table
+          rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_libuserconf
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
     description: Set Password Hashing Algorithm in /etc/login.defs
     filters: *id001
@@ -1997,6 +2077,30 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
+    description: Use Only FIPS 140-2 Validated Ciphers
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
+    description: Use Only Strong Key Exchange algorithms
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
+    description: Use Only Strong MACs
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
     description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
     filters: *id001
@@ -2013,6 +2117,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
+  - id: xccdf_org.ssgproject.content_rule_sudo_require_authentication
+    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sudo_require_authentication
   - id: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
     description: Require Re-Authentication When Using the sudo Command
     filters: *id001
@@ -2029,6 +2141,14 @@ rules:
           name: ssg-rhel8-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
+  - id: xccdf_org.ssgproject.content_rule_sysctl_kernel_yama_ptrace_scope
+    description: Restrict usage of ptrace to descendant processes
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_yama_ptrace_scope
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
     description: Disable Accepting ICMP Redirects for All IPv4 Interfaces
     filters: *id001
