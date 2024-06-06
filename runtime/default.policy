@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.28.1
+version: 1.28.2
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -1515,7 +1515,7 @@ rules:
       - os == "linux"
   - id: suspicious_dll_write
     description: Dll written to a suspicious directory
-    expression: create.file.name =~ "*.dll" && create.file.device_path !~ "\Device\*\Windows\System32\**" && create.file.device_path !~ "\Device\*\ProgramData\docker\windowsfilter\*\Files\Windows\System32\**"
+    expression: create.file.name =~ "*.dll" && create.file.device_path not in [~"\Device\*\Windows\System32\**", ~"\Device\*\ProgramData\docker\windowsfilter\*\Files\Windows\System32\**", ~"\Device\*\ProgramData\docker\tmp\**"]
     filters:
       - os == "windows"
   - id: suspicious_ntdsutil_usage
