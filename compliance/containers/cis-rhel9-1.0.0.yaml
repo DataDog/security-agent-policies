@@ -13,6 +13,22 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
+  - id: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_password_auth
+    description: Configure the Use of the pam_faillock.so Module in the /etc/pam.d/password-auth File.
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_password_auth
+  - id: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_system_auth
+    description: Configure the Use of the pam_faillock.so Module in the /etc/pam.d/system-auth File.
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_system_auth
   - id: xccdf_org.ssgproject.content_rule_account_unique_id
     description: Ensure All Accounts on the System Have Unique User IDs
     filters: *id001
@@ -453,6 +469,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
+  - id: xccdf_org.ssgproject.content_rule_file_cron_allow_exists
+    description: Ensure that /etc/cron.allow exists
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_cron_allow_exists
   - id: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
     description: Ensure that /etc/cron.deny does not exist
     filters: *id001
@@ -1429,6 +1453,14 @@ rules:
           name: ssg-rhel9-ds-1.2.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_dovecot_removed
+  - id: xccdf_org.ssgproject.content_rule_package_firewalld_installed
+    description: Install firewalld Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds-1.2.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_firewalld_installed
   - id: xccdf_org.ssgproject.content_rule_package_ftp_removed
     description: Remove ftp Package
     filters: *id001
