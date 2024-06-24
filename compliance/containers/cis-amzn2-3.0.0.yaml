@@ -1,40 +1,24 @@
 schema:
   version: 1.0.0
-name: CIS Red Hat Enterprise Linux 8 Benchmark for Level 1 - Server
-framework: cis-rhel8
-version: 2.0.0
+name: CIS Amazon Linux 2 Benchmark
+framework: cis-amzn2
+version: 3.0.0
 rules:
   - id: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
     description: Set Account Expiration Following Inactivity
     filters: &id001
-      - os.id == "rhel" && os.version_id == ~"8*"
+      - os.id == "amzn" && os.version_id == "2"
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
-  - id: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_password_auth
-    description: Configure the Use of the pam_faillock.so Module in the /etc/pam.d/password-auth File.
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_password_auth
-  - id: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_system_auth
-    description: Configure the Use of the pam_faillock.so Module in the /etc/pam.d/system-auth File.
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_account_password_pam_faillock_system_auth
   - id: xccdf_org.ssgproject.content_rule_account_unique_id
     description: Ensure All Accounts on the System Have Unique User IDs
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_unique_id
   - id: xccdf_org.ssgproject.content_rule_account_unique_name
@@ -42,7 +26,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_account_unique_name
   - id: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
@@ -50,7 +34,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
@@ -58,7 +42,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
   - id: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed
@@ -66,7 +50,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed
   - id: xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past
@@ -74,7 +58,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_dictcheck
@@ -82,7 +66,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_dictcheck
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_difok
@@ -90,23 +74,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_difok
-  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_enforce_root
-    description: Ensure PAM Enforces Password Requirements - Enforce for root User
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_enforce_root
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxrepeat
     description: Set Password Maximum Consecutive Repeating Characters
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxrepeat
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
@@ -114,7 +90,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
@@ -122,7 +98,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_password_auth
@@ -130,7 +106,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_password_auth
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_system_auth
@@ -138,7 +114,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_system_auth
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
@@ -146,7 +122,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_warn_age_existing
@@ -154,7 +130,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_set_warn_age_existing
   - id: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
@@ -162,7 +138,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
@@ -170,7 +146,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
@@ -178,7 +154,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
   - id: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
@@ -186,7 +162,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
   - id: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
@@ -194,7 +170,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
   - id: xccdf_org.ssgproject.content_rule_accounts_set_post_pw_existing
@@ -202,7 +178,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_set_post_pw_existing
   - id: xccdf_org.ssgproject.content_rule_accounts_tmout
@@ -210,7 +186,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_tmout
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
@@ -218,7 +194,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
@@ -226,7 +202,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
@@ -234,7 +210,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
   - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
@@ -242,7 +218,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
   - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_user_ownership
@@ -250,7 +226,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_user_ownership
   - id: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
@@ -258,7 +234,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
   - id: xccdf_org.ssgproject.content_rule_accounts_users_netrc_file_permissions
@@ -266,7 +242,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_users_netrc_file_permissions
   - id: xccdf_org.ssgproject.content_rule_aide_build_database
@@ -274,23 +250,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_aide_build_database
-  - id: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
-    description: Configure AIDE to Verify the Audit Tools
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
   - id: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
     description: Configure Periodic Execution of AIDE
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
   - id: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
@@ -298,7 +266,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_banner_etc_issue
@@ -306,7 +274,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_banner_etc_issue
   - id: xccdf_org.ssgproject.content_rule_banner_etc_motd
@@ -314,7 +282,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_banner_etc_motd
   - id: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
@@ -322,7 +290,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
   - id: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
@@ -330,31 +298,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
-  - id: xccdf_org.ssgproject.content_rule_configure_crypto_policy
-    description: Configure System Cryptography Policy
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_configure_crypto_policy
-  - id: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
-    description: Configure SSH to use System Crypto Policy
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
   - id: xccdf_org.ssgproject.content_rule_coredump_disable_backtraces
     description: Disable core dump backtraces
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_coredump_disable_backtraces
   - id: xccdf_org.ssgproject.content_rule_coredump_disable_storage
@@ -362,7 +314,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_coredump_disable_storage
   - id: xccdf_org.ssgproject.content_rule_dconf_db_up_to_date
@@ -370,7 +322,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_db_up_to_date
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_banner_enabled
@@ -378,7 +330,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_banner_enabled
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount_open
@@ -386,7 +338,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount_open
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount
@@ -394,7 +346,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_autorun
@@ -402,7 +354,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_autorun
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_user_list
@@ -410,7 +362,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_user_list
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_login_banner_text
@@ -418,7 +370,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_login_banner_text
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_idle_delay
@@ -426,7 +378,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_idle_delay
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay
@@ -434,7 +386,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_user_locks
@@ -442,7 +394,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_user_locks
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_session_idle_user_locks
@@ -450,7 +402,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_session_idle_user_locks
   - id: xccdf_org.ssgproject.content_rule_disable_host_auth
@@ -458,23 +410,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_disable_host_auth
-  - id: xccdf_org.ssgproject.content_rule_enable_authselect
-    description: Enable authselect
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_enable_authselect
   - id: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
     description: Ensure gpgcheck Enabled In Main yum Configuration
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
   - id: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled
@@ -482,7 +426,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled
   - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
@@ -490,7 +434,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
   - id: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
@@ -498,7 +442,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
   - id: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
@@ -506,7 +450,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
   - id: xccdf_org.ssgproject.content_rule_file_cron_allow_exists
@@ -514,7 +458,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_cron_allow_exists
   - id: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
@@ -522,7 +466,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
   - id: xccdf_org.ssgproject.content_rule_file_etc_security_opasswd
@@ -530,23 +474,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_etc_security_opasswd
-  - id: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
-    description: Verify Group Who Owns /etc/at.allow file
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
     description: Verify Group Who Owns Backup group File
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_gshadow
@@ -554,7 +490,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
@@ -562,7 +498,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
@@ -570,7 +506,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
@@ -578,7 +514,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_d
@@ -586,7 +522,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_d
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_daily
@@ -594,7 +530,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_daily
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
@@ -602,7 +538,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
@@ -610,7 +546,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
@@ -618,7 +554,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
@@ -626,7 +562,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_efi_grub2_cfg
@@ -634,7 +570,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_efi_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_efi_user_cfg
@@ -642,7 +578,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_efi_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_group
@@ -650,7 +586,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
@@ -658,7 +594,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue_net
@@ -666,7 +602,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
@@ -674,7 +610,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
@@ -682,7 +618,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
@@ -690,7 +626,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
@@ -698,7 +634,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shells
@@ -706,7 +642,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shells
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
@@ -714,7 +650,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
@@ -722,7 +658,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_user_cfg
@@ -730,7 +666,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_private_key
@@ -738,7 +674,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_private_key
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_pub_key
@@ -746,7 +682,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_pub_key
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_group
@@ -754,7 +690,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_gshadow
@@ -762,7 +698,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_passwd
@@ -770,7 +706,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_shadow
@@ -778,7 +714,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_allow
@@ -786,7 +722,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_allow
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_d
@@ -794,7 +730,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_d
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_daily
@@ -802,7 +738,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_daily
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_hourly
@@ -810,7 +746,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_hourly
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_monthly
@@ -818,7 +754,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_monthly
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_weekly
@@ -826,7 +762,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_weekly
   - id: xccdf_org.ssgproject.content_rule_file_owner_crontab
@@ -834,7 +770,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_crontab
   - id: xccdf_org.ssgproject.content_rule_file_owner_efi_grub2_cfg
@@ -842,7 +778,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_efi_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_owner_efi_user_cfg
@@ -850,7 +786,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_efi_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_group
@@ -858,7 +794,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
@@ -866,7 +802,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_issue_net
@@ -874,7 +810,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_issue
@@ -882,7 +818,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_issue
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_motd
@@ -890,7 +826,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_motd
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_passwd
@@ -898,7 +834,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_shadow
@@ -906,7 +842,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_shells
@@ -914,7 +850,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shells
   - id: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
@@ -922,7 +858,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
@@ -930,7 +866,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
   - id: xccdf_org.ssgproject.content_rule_file_owner_user_cfg
@@ -938,7 +874,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
@@ -946,7 +882,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
   - id: xccdf_org.ssgproject.content_rule_file_ownership_sshd_private_key
@@ -954,7 +890,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_ownership_sshd_private_key
   - id: xccdf_org.ssgproject.content_rule_file_ownership_sshd_pub_key
@@ -962,7 +898,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_ownership_sshd_pub_key
   - id: xccdf_org.ssgproject.content_rule_file_permission_user_init_files
@@ -970,23 +906,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permission_user_init_files
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
-    description: Verify Permissions on /etc/at.allow file
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_group
     description: Verify Permissions on Backup group File
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_gshadow
@@ -994,7 +922,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_passwd
@@ -1002,7 +930,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_shadow
@@ -1010,7 +938,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_allow
@@ -1018,7 +946,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_allow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_d
@@ -1026,7 +954,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_d
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_daily
@@ -1034,7 +962,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_daily
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_hourly
@@ -1042,7 +970,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_hourly
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_monthly
@@ -1050,7 +978,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_monthly
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_weekly
@@ -1058,7 +986,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_weekly
   - id: xccdf_org.ssgproject.content_rule_file_permissions_crontab
@@ -1066,7 +994,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_crontab
   - id: xccdf_org.ssgproject.content_rule_file_permissions_efi_grub2_cfg
@@ -1074,7 +1002,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_efi_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_permissions_efi_user_cfg
@@ -1082,7 +1010,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_efi_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
@@ -1090,7 +1018,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_gshadow
@@ -1098,7 +1026,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue_net
@@ -1106,7 +1034,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue
@@ -1114,7 +1042,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_motd
@@ -1122,7 +1050,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_motd
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_passwd
@@ -1130,7 +1058,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
@@ -1138,7 +1066,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_shells
@@ -1146,7 +1074,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shells
   - id: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
@@ -1154,7 +1082,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
@@ -1162,7 +1090,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
@@ -1170,7 +1098,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
@@ -1178,7 +1106,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
@@ -1186,7 +1114,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
   - id: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
@@ -1194,31 +1122,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
-  - id: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_restricted
-    description: Configure Firewalld to Restrict Loopback Traffic
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_restricted
-  - id: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_trusted
-    description: Configure Firewalld to Trust Loopback Traffic
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_trusted
   - id: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
     description: All GIDs referenced in /etc/passwd must be defined in /etc/group
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
   - id: xccdf_org.ssgproject.content_rule_gnome_gdm_disable_xdmcp
@@ -1226,7 +1138,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_gnome_gdm_disable_xdmcp
   - id: xccdf_org.ssgproject.content_rule_group_unique_id
@@ -1234,7 +1146,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_group_unique_id
   - id: xccdf_org.ssgproject.content_rule_group_unique_name
@@ -1242,7 +1154,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_group_unique_name
   - id: xccdf_org.ssgproject.content_rule_grub2_enable_selinux
@@ -1250,7 +1162,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_grub2_enable_selinux
   - id: xccdf_org.ssgproject.content_rule_grub2_password
@@ -1258,7 +1170,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_grub2_password
   - id: xccdf_org.ssgproject.content_rule_grub2_uefi_password
@@ -1266,7 +1178,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_grub2_uefi_password
   - id: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
@@ -1274,15 +1186,31 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
+  - id: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
+    description: Ensure ip6tables Firewall Rules Exist for All Open Ports
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
+  - id: xccdf_org.ssgproject.content_rule_iptables_rules_for_open_ports
+    description: Ensure iptables Firewall Rules Exist for All Open Ports
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_iptables_rules_for_open_ports
   - id: xccdf_org.ssgproject.content_rule_journald_compress
     description: Ensure journald is configured to compress large log files
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_journald_compress
   - id: xccdf_org.ssgproject.content_rule_journald_forward_to_syslog
@@ -1290,7 +1218,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_journald_forward_to_syslog
   - id: xccdf_org.ssgproject.content_rule_journald_storage
@@ -1298,7 +1226,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_journald_storage
   - id: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
@@ -1306,15 +1234,55 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_freevxfs_disabled
+    description: Disable Mounting of freevxfs
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_freevxfs_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_hfs_disabled
+    description: Disable Mounting of hfs
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_hfs_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_hfsplus_disabled
+    description: Disable Mounting of hfsplus
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_hfsplus_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_jffs2_disabled
+    description: Disable Mounting of jffs2
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_jffs2_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
+    description: Disable Modprobe Loading of USB Storage Driver
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
   - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
     description: Add nodev Option to /dev/shm
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
@@ -1322,7 +1290,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
@@ -1330,7 +1298,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_home_nodev
@@ -1338,7 +1306,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_home_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_home_nosuid
@@ -1346,7 +1314,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_home_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_nodev
@@ -1354,7 +1322,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_noexec
@@ -1362,7 +1330,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_nosuid
@@ -1370,7 +1338,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nodev
@@ -1378,7 +1346,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_noexec
@@ -1386,7 +1354,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nosuid
@@ -1394,7 +1362,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_nodev
@@ -1402,7 +1370,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_noexec
@@ -1410,7 +1378,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_nosuid
@@ -1418,7 +1386,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_nodev
@@ -1426,7 +1394,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_nosuid
@@ -1434,7 +1402,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nodev
@@ -1442,7 +1410,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_noexec
@@ -1450,7 +1418,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
@@ -1458,7 +1426,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
@@ -1466,7 +1434,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords
@@ -1474,7 +1442,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords
   - id: xccdf_org.ssgproject.content_rule_no_forward_files
@@ -1482,7 +1450,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_forward_files
   - id: xccdf_org.ssgproject.content_rule_no_password_auth_for_systemaccounts
@@ -1490,7 +1458,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_password_auth_for_systemaccounts
   - id: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
@@ -1498,7 +1466,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
   - id: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
@@ -1506,7 +1474,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
   - id: xccdf_org.ssgproject.content_rule_package_aide_installed
@@ -1514,7 +1482,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_aide_installed
   - id: xccdf_org.ssgproject.content_rule_package_avahi_removed
@@ -1522,7 +1490,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_avahi_removed
   - id: xccdf_org.ssgproject.content_rule_package_bind_removed
@@ -1530,7 +1498,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_bind_removed
   - id: xccdf_org.ssgproject.content_rule_package_chrony_installed
@@ -1538,7 +1506,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_chrony_installed
   - id: xccdf_org.ssgproject.content_rule_package_cups_removed
@@ -1546,7 +1514,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_cups_removed
   - id: xccdf_org.ssgproject.content_rule_package_cyrus-imapd_removed
@@ -1554,7 +1522,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_cyrus-imapd_removed
   - id: xccdf_org.ssgproject.content_rule_package_dhcp_removed
@@ -1562,15 +1530,23 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_dhcp_removed
+  - id: xccdf_org.ssgproject.content_rule_package_dnsmasq_removed
+    description: Uninstall dnsmasq Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_dnsmasq_removed
   - id: xccdf_org.ssgproject.content_rule_package_dovecot_removed
     description: Uninstall dovecot Package
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_dovecot_removed
   - id: xccdf_org.ssgproject.content_rule_package_firewalld_installed
@@ -1578,7 +1554,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_firewalld_installed
   - id: xccdf_org.ssgproject.content_rule_package_ftp_removed
@@ -1586,7 +1562,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_ftp_removed
   - id: xccdf_org.ssgproject.content_rule_package_httpd_removed
@@ -1594,15 +1570,23 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_httpd_removed
+  - id: xccdf_org.ssgproject.content_rule_package_iptables_installed
+    description: Install iptables Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
   - id: xccdf_org.ssgproject.content_rule_package_libselinux_installed
     description: Install libselinux Package
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_libselinux_installed
   - id: xccdf_org.ssgproject.content_rule_package_mcstrans_removed
@@ -1610,7 +1594,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_mcstrans_removed
   - id: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
@@ -1618,23 +1602,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
-  - id: xccdf_org.ssgproject.content_rule_package_nftables_installed
-    description: Install nftables Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_nftables_installed
   - id: xccdf_org.ssgproject.content_rule_package_nginx_removed
     description: Uninstall nginx Package
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_nginx_removed
   - id: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
@@ -1642,7 +1618,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
   - id: xccdf_org.ssgproject.content_rule_package_rsync_removed
@@ -1650,7 +1626,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_rsync_removed
   - id: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
@@ -1658,7 +1634,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
   - id: xccdf_org.ssgproject.content_rule_package_samba_removed
@@ -1666,7 +1642,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_samba_removed
   - id: xccdf_org.ssgproject.content_rule_package_setroubleshoot_removed
@@ -1674,7 +1650,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_setroubleshoot_removed
   - id: xccdf_org.ssgproject.content_rule_package_squid_removed
@@ -1682,7 +1658,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_squid_removed
   - id: xccdf_org.ssgproject.content_rule_package_sudo_installed
@@ -1690,7 +1666,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_sudo_installed
   - id: xccdf_org.ssgproject.content_rule_package_telnet_removed
@@ -1698,7 +1674,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_telnet_removed
   - id: xccdf_org.ssgproject.content_rule_package_telnet-server_removed
@@ -1706,7 +1682,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_telnet-server_removed
   - id: xccdf_org.ssgproject.content_rule_package_tftp_removed
@@ -1714,7 +1690,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_tftp_removed
   - id: xccdf_org.ssgproject.content_rule_package_tftp-server_removed
@@ -1722,7 +1698,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_tftp-server_removed
   - id: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
@@ -1730,7 +1706,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
   - id: xccdf_org.ssgproject.content_rule_package_xinetd_removed
@@ -1738,7 +1714,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_xinetd_removed
   - id: xccdf_org.ssgproject.content_rule_package_ypbind_removed
@@ -1746,7 +1722,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_ypbind_removed
   - id: xccdf_org.ssgproject.content_rule_package_ypserv_removed
@@ -1754,7 +1730,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_ypserv_removed
   - id: xccdf_org.ssgproject.content_rule_partition_for_dev_shm
@@ -1762,7 +1738,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_partition_for_dev_shm
   - id: xccdf_org.ssgproject.content_rule_partition_for_tmp
@@ -1770,7 +1746,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_partition_for_tmp
   - id: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
@@ -1778,15 +1754,31 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
+  - id: xccdf_org.ssgproject.content_rule_require_emergency_target_auth
+    description: Require Authentication for Emergency Systemd Target
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_require_emergency_target_auth
+  - id: xccdf_org.ssgproject.content_rule_require_singleuser_auth
+    description: Require Authentication for Single User Mode
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_require_singleuser_auth
   - id: xccdf_org.ssgproject.content_rule_root_path_no_dot
     description: Ensure that Root's Path Does Not Include Relative Paths or Null Directories
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_root_path_no_dot
   - id: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
@@ -1794,7 +1786,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
   - id: xccdf_org.ssgproject.content_rule_rsyslog_files_groupownership
@@ -1802,7 +1794,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_rsyslog_files_groupownership
   - id: xccdf_org.ssgproject.content_rule_rsyslog_files_ownership
@@ -1810,7 +1802,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_rsyslog_files_ownership
   - id: xccdf_org.ssgproject.content_rule_rsyslog_files_permissions
@@ -1818,7 +1810,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_rsyslog_files_permissions
   - id: xccdf_org.ssgproject.content_rule_rsyslog_nolisten
@@ -1826,7 +1818,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_rsyslog_nolisten
   - id: xccdf_org.ssgproject.content_rule_selinux_confinement_of_daemons
@@ -1834,7 +1826,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_selinux_confinement_of_daemons
   - id: xccdf_org.ssgproject.content_rule_selinux_not_disabled
@@ -1842,7 +1834,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_selinux_not_disabled
   - id: xccdf_org.ssgproject.content_rule_selinux_policytype
@@ -1850,7 +1842,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_selinux_policytype
   - id: xccdf_org.ssgproject.content_rule_service_autofs_disabled
@@ -1858,7 +1850,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
   - id: xccdf_org.ssgproject.content_rule_service_bluetooth_disabled
@@ -1866,7 +1858,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_bluetooth_disabled
   - id: xccdf_org.ssgproject.content_rule_service_crond_enabled
@@ -1874,7 +1866,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_crond_enabled
   - id: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
@@ -1882,7 +1874,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
   - id: xccdf_org.ssgproject.content_rule_service_nfs_disabled
@@ -1890,23 +1882,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_nfs_disabled
-  - id: xccdf_org.ssgproject.content_rule_service_nftables_disabled
-    description: Verify nftables Service is Disabled
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_service_nftables_disabled
   - id: xccdf_org.ssgproject.content_rule_service_rpcbind_disabled
     description: Disable rpcbind Service
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_rpcbind_disabled
   - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
@@ -1914,7 +1898,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
   - id: xccdf_org.ssgproject.content_rule_service_systemd-journald_enabled
@@ -1922,15 +1906,39 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_systemd-journald_enabled
+  - id: xccdf_org.ssgproject.content_rule_set_firewalld_appropriate_zone
+    description: Ensure network interfaces are assigned to appropriate zone
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_set_firewalld_appropriate_zone
+  - id: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
+    description: Set Default ip6tables Policy for Incoming Packets
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
+  - id: xccdf_org.ssgproject.content_rule_set_loopback_traffic
+    description: Set configuration for loopback traffic
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-amzn2-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_set_loopback_traffic
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_libuserconf
     description: Set Password Hashing Algorithm in /etc/libuser.conf
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_libuserconf
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
@@ -1938,7 +1946,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_passwordauth
@@ -1946,7 +1954,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_passwordauth
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
@@ -1954,7 +1962,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
   - id: xccdf_org.ssgproject.content_rule_socket_systemd-journal-remote_disabled
@@ -1962,7 +1970,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_socket_systemd-journal-remote_disabled
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
@@ -1970,7 +1978,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_rhosts
@@ -1978,7 +1986,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_rhosts
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
@@ -1986,7 +1994,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
   - id: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
@@ -1994,7 +2002,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_pam
@@ -2002,7 +2010,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_pam
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
@@ -2010,7 +2018,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
   - id: xccdf_org.ssgproject.content_rule_sshd_limit_user_access
@@ -2018,7 +2026,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_limit_user_access
   - id: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
@@ -2026,7 +2034,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
   - id: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
@@ -2034,7 +2042,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
   - id: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
@@ -2042,7 +2050,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
   - id: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose
@@ -2050,7 +2058,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose
   - id: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
@@ -2058,7 +2066,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
   - id: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
@@ -2066,7 +2074,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
   - id: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
@@ -2074,7 +2082,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
   - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
@@ -2082,7 +2090,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
   - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
@@ -2090,7 +2098,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
   - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
@@ -2098,7 +2106,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
@@ -2106,7 +2114,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
   - id: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
@@ -2114,7 +2122,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
   - id: xccdf_org.ssgproject.content_rule_sudo_require_authentication
@@ -2122,7 +2130,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_require_authentication
   - id: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
@@ -2130,7 +2138,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
   - id: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
@@ -2138,7 +2146,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
   - id: xccdf_org.ssgproject.content_rule_sysctl_kernel_yama_ptrace_scope
@@ -2146,7 +2154,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_yama_ptrace_scope
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
@@ -2154,7 +2162,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
@@ -2162,7 +2170,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
@@ -2170,7 +2178,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_rp_filter
@@ -2178,7 +2186,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_rp_filter
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
@@ -2186,7 +2194,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
@@ -2194,7 +2202,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_redirects
@@ -2202,7 +2210,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
@@ -2210,7 +2218,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
@@ -2218,7 +2226,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_rp_filter
@@ -2226,7 +2234,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_rp_filter
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_secure_redirects
@@ -2234,7 +2242,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_secure_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_send_redirects
@@ -2242,7 +2250,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_send_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_echo_ignore_broadcasts
@@ -2250,7 +2258,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_echo_ignore_broadcasts
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
@@ -2258,7 +2266,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
@@ -2266,7 +2274,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
@@ -2274,7 +2282,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_ra
@@ -2282,7 +2290,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_ra
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_redirects
@@ -2290,7 +2298,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_source_route
@@ -2298,7 +2306,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_forwarding
@@ -2306,7 +2314,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_forwarding
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_ra
@@ -2314,7 +2322,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_ra
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_redirects
@@ -2322,7 +2330,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_source_route
@@ -2330,7 +2338,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
@@ -2338,7 +2346,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
   - id: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
@@ -2346,6 +2354,6 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-rhel8-ds-1.2.xml.bz2
+          name: ssg-amzn2-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
