@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.28.3
+version: 1.29.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -52,7 +52,7 @@ macros:
   - id: DD_AGENT_PROCESSES
     description: Processes that are a part of the Datadog Agent
     expression: '["/opt/datadog-agent/embedded/bin/agent", "/opt/datadog-agent/embedded/bin/system-probe", "/opt/datadog-agent/embedded/bin/security-agent", "/opt/datadog-agent/embedded/bin/process-agent", "/opt/datadog-agent/embedded/bin/trace-agent", "/opt/datadog-agent/bin/agent/agent",
-      "/opt/datadog/apm/inject/auto_inject_runc", "/usr/bin/dd-host-install", "/usr/bin/dd-host-container-install", "/usr/bin/dd-container-install", "/opt/datadog-agent/bin/datadog-cluster-agent"]'
+      "/opt/datadog/apm/inject/auto_inject_runc", "/usr/bin/dd-host-install", "/usr/bin/dd-host-container-install", "/usr/bin/dd-container-install", "/opt/datadog-agent/bin/datadog-cluster-agent", ~"/opt/datadog-packages/**", ~"/opt/datadog-installer/**"]'
   - id: FDB_SERVER_PROCESSES
     expression: '["/usr/sbin/fdbserver", "/usr/lib/foundationdb/backup_agent/backup_agent"]'
   - id: GCP_RISKY_URI
@@ -241,7 +241,7 @@ rules:
       - os == "linux"
   - id: crackmap_exec_executed
     description: Known offensive tool crackmap exec executed
-    expression: exec.cmdline in [~"*crackmapexec*", ~"*cme*"]
+    expression: exec.cmdline in [~"*crackmapexec*", ~"*cme.exe*", ~"*cme.py*"]
     filters:
       - os == "windows"
   - id: credential_modified_chmod
@@ -1072,6 +1072,11 @@ rules:
       )
     filters:
       - os == "linux"
+  - id: php_spawning_shell
+    description: PHP web application spawning shell
+    expression: exec.file.name in [~"powershell*","cmd.exe"] && process.parent.file.name in ["php.exe","php-cgi.exe"]
+    filters:
+      - os == "windows"
   - id: potential_web_shell_parent
     description: A web application spawned a shell or shell utility
     expression: |-
@@ -1089,14 +1094,6 @@ rules:
     expression: exec.file.name in ["procmon.exe","procdump.exe"]
     filters:
       - os == "windows"
-  - id: ps_discovery
-    description: Processes were listed using the ps command
-    expression: exec.comm == "ps" && exec.argv not in ["-p", "--pid"] && process.ancestors.file.name not in ["qualys-cloud-agent", "amazon-ssm-agent"] && process.parent.file.name not in ["rkhunter", "jspawnhelper", ~"vm-agent*", "PassengerAgent", "node", "wdavdaemon",
-      "chkrootkit", "tsagentd", "wazuh-modulesd", "wdavdaemon", "talend-remote-engine-service", "check_procs", "newrelic-daemon"]
-    tags:
-      allow_autosuppression: 'true'
-    filters:
-      - os == "linux"
   - id: ptrace_antidebug
     description: A process uses an anti-debugging technique to block debuggers
     expression: ptrace.request == PTRACE_TRACEME && process.file.name != ""
@@ -1188,7 +1185,7 @@ rules:
       - os == "windows"
   - id: runc_leaky_fd
     description: The container breakout CVE-2024-21626 was successful
-    expression: chdir.file.path == "/sys/fs/cgroup" && chdir.syscall.path =~ "/proc/self/fd/*" && process.file.name =~ "runc.*"
+    expression: chdir.syscall.path =~ "/proc/self/fd/*" && process.file.name =~ "runc.*"
     filters:
       - os == "linux"
   - id: runc_modification
