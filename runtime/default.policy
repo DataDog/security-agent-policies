@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.29.1
+version: 1.30.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -45,7 +45,8 @@ macros:
     expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd", "/usr/sbin/groupadd", "/usr/sbin/useradd", "/usr/sbin/usermod", "/usr/sbin/userdel",
       "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
   - id: CRYPTOMINER_DOMAINS
-    expression: '[~"*minexmr.com", ~"*nanopool.org", ~"*supportxmr.com", ~"*c3pool.com", ~"*p2pool.io", ~"*ethermine.org", ~"*f2pool.com", ~"*poolin.me", ~"*rplant.xyz", ~"*miningocean.org"]'
+    expression: '[~"*.minexmr.com", "minexmr.com", ~"*.nanopool.org", "nanopool.org", ~"*.supportxmr.com", "supportxmr.com", ~"*.c3pool.com", "c3pool.com", ~"*.p2pool.io", "p2pool.io", ~"*.ethermine.org", "ethermine.org", ~"*.f2pool.com", "f2pool.com", ~"*.poolin.me",
+      "poolin.me", ~"*.rplant.xyz", "rplant.xyz", ~"*.miningocean.org", "miningocean.org"]'
   - id: DATABASE_PROCESSES
     description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
@@ -92,7 +93,7 @@ macros:
     description: Package managers and container runtimes
     expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*"]'
   - id: PASTE_SITES
-    expression: '["pastebin.com", "ghostbin.com", "termbin.com", "klgrth.io"]'
+    expression: '["pastebin.com", "ghostbin.com", "termbin.com", "klgrth.io", "rentry.co", "transfer.sh"]'
   - id: SHELLS
     description: Common Linux shell executables
     expression: |-
@@ -169,6 +170,11 @@ rules:
   - id: auditd_rule_file_modified
     description: The auditd rules file was modified without using auditctl
     expression: open.file.path in ["/etc/audit/rules.d/audit.rules", "/etc/audit/audit.rules"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.name != "auditctl"
+    filters:
+      - os == "linux"
+  - id: aws_cli_usage
+    description: The AWS CLI utility was executed
+    expression: exec.file.name == "aws"
     filters:
       - os == "linux"
   - id: aws_eks_service_account_token_accessed
@@ -527,6 +533,11 @@ rules:
       chmod.file.destination.mode != chmod.file.mode &&
       chmod.file.destination.mode & CHMOD_EXEC_FLAGS > 0 &&
       process.argv in ["+x"]
+    filters:
+      - os == "linux"
+  - id: file_sync_exfil
+    description: The rclone utility was executed
+    expression: exec.file.name in ["rclone", "rsync", "sftp", "ftp", "scp", "dcp", "rcp"]
     filters:
       - os == "linux"
   - id: gcp_imds
@@ -1512,7 +1523,7 @@ rules:
       - os == "linux"
   - id: suspicious_dll_write
     description: Dll written to a suspicious directory
-    expression: create.file.name =~ "*.dll" && create.file.device_path not in [~"\Device\*\Windows\System32\**", ~"\Device\*\ProgramData\docker\windowsfilter\*\Files\Windows\System32\**", ~"\Device\*\ProgramData\docker\tmp\**"]
+    expression: create.file.name =~ "*.dll" && create.file.device_path not in [~"\Device\*\Windows\System32\**", ~"\Device\*\ProgramData\docker\windowsfilter\*\Files\Windows\System32\**", ~"\Device\*\ProgramData\docker\tmp\**"] && process.file.name != "dockerd.exe"
     filters:
       - os == "windows"
   - id: suspicious_ntdsutil_usage
@@ -1620,6 +1631,11 @@ rules:
   - id: user_deleted_tty
     description: A user was deleted via an interactive session
     expression: exec.file.name in ["userdel", "deluser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS
+    filters:
+      - os == "linux"
+  - id: webdriver_spawned_shell
+    description: Browser WebDriver spawned shell
+    expression: process.parent.file.name in [~"chromedriver*", "geckodriver"] && exec.file.name not in ["chrome", "google-chrome", "chromium", "firefox"]
     filters:
       - os == "linux"
   - id: windows_boot_registry_key_modified
