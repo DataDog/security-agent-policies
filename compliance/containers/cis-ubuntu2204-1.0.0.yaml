@@ -126,7 +126,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
-    description: Limit Password Reuse (ubuntu2204)
+    description: Limit Password Reuse (STIGs - ubuntu2004)
     filters: *id001
     input:
       - xccdf:
