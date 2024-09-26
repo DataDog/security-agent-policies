@@ -10,7 +10,7 @@ rules:
       - os.id == "ubuntu" && os.version_id == ~"22.04*"
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
   - id: xccdf_org.ssgproject.content_rule_account_unique_id
@@ -18,7 +18,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_account_unique_id
   - id: xccdf_org.ssgproject.content_rule_account_unique_name
@@ -26,7 +26,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_account_unique_name
   - id: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
@@ -34,7 +34,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
@@ -42,7 +42,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
@@ -50,7 +50,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero
   - id: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed
@@ -58,7 +58,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_all_shadowed
   - id: xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past
@@ -66,7 +66,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit
@@ -74,7 +74,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_lcredit
@@ -82,7 +82,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_lcredit
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
@@ -90,7 +90,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
@@ -98,7 +98,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_ocredit
@@ -106,7 +106,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ocredit
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
@@ -114,7 +114,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit
@@ -122,7 +122,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
@@ -130,7 +130,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
@@ -138,7 +138,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
@@ -146,7 +146,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_set_min_life_existing
   - id: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
@@ -154,7 +154,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
@@ -162,7 +162,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_interval
@@ -170,7 +170,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_interval
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
@@ -178,7 +178,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
   - id: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
@@ -186,7 +186,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
   - id: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
@@ -194,7 +194,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
   - id: xccdf_org.ssgproject.content_rule_accounts_tmout
@@ -202,7 +202,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_tmout
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
@@ -210,7 +210,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
@@ -218,7 +218,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
@@ -226,7 +226,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_interactive_users
@@ -234,7 +234,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_interactive_users
   - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
@@ -242,7 +242,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_group_ownership
   - id: xccdf_org.ssgproject.content_rule_accounts_user_dot_user_ownership
@@ -250,7 +250,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_user_dot_user_ownership
   - id: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
@@ -258,7 +258,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
   - id: xccdf_org.ssgproject.content_rule_aide_build_database
@@ -266,7 +266,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_aide_build_database
   - id: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
@@ -274,7 +274,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
   - id: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
@@ -282,7 +282,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
   - id: xccdf_org.ssgproject.content_rule_all_apparmor_profiles_in_enforce_complain_mode
@@ -290,7 +290,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_all_apparmor_profiles_in_enforce_complain_mode
   - id: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
@@ -298,7 +298,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_banner_etc_issue
@@ -306,7 +306,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_banner_etc_issue
   - id: xccdf_org.ssgproject.content_rule_banner_etc_motd
@@ -314,7 +314,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_banner_etc_motd
   - id: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
@@ -322,7 +322,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_banner_enabled
@@ -330,7 +330,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_banner_enabled
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount_open
@@ -338,7 +338,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount_open
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount
@@ -346,7 +346,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_automount
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_autorun
@@ -354,7 +354,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_autorun
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_user_list
@@ -362,7 +362,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_user_list
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_login_banner_text
@@ -370,7 +370,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_login_banner_text
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay
@@ -378,7 +378,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled
@@ -386,7 +386,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled
   - id: xccdf_org.ssgproject.content_rule_directory_permissions_var_log_audit
@@ -394,7 +394,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_directory_permissions_var_log_audit
   - id: xccdf_org.ssgproject.content_rule_disable_host_auth
@@ -402,7 +402,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_disable_host_auth
   - id: xccdf_org.ssgproject.content_rule_disable_users_coredumps
@@ -410,15 +410,23 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_disable_users_coredumps
+  - id: xccdf_org.ssgproject.content_rule_enable_dconf_user_profile
+    description: Configure GNOME3 DConf User Profile
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_enable_dconf_user_profile
   - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
     description: Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
   - id: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
@@ -426,7 +434,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
   - id: xccdf_org.ssgproject.content_rule_ensure_shadow_group_empty
@@ -434,7 +442,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_ensure_shadow_group_empty
   - id: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
@@ -442,7 +450,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
   - id: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
@@ -450,7 +458,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_cron_deny_not_exist
   - id: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit
@@ -458,7 +466,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
@@ -466,7 +474,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_at_allow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
@@ -474,7 +482,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_gshadow
@@ -482,7 +490,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
@@ -490,7 +498,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
@@ -498,7 +506,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
@@ -506,7 +514,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_d
@@ -514,7 +522,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_d
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_daily
@@ -522,7 +530,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_daily
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
@@ -530,7 +538,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_hourly
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
@@ -538,7 +546,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_monthly
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
@@ -546,7 +554,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
@@ -554,7 +562,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_group
@@ -562,7 +570,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
@@ -570,7 +578,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue_net
@@ -578,7 +586,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
@@ -586,7 +594,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_issue
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
@@ -594,7 +602,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_motd
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
@@ -602,7 +610,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
@@ -610,7 +618,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
@@ -618,7 +626,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_audit_binaries
@@ -626,7 +634,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupownership_audit_binaries
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_audit_configuration
@@ -634,7 +642,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupownership_audit_configuration
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
@@ -642,7 +650,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
   - id: xccdf_org.ssgproject.content_rule_file_owner_at_allow
@@ -650,7 +658,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_at_allow
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_group
@@ -658,7 +666,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_gshadow
@@ -666,7 +674,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_passwd
@@ -674,7 +682,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_shadow
@@ -682,7 +690,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_allow
@@ -690,7 +698,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_allow
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_d
@@ -698,7 +706,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_d
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_daily
@@ -706,7 +714,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_daily
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_hourly
@@ -714,7 +722,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_hourly
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_monthly
@@ -722,7 +730,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_monthly
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_weekly
@@ -730,7 +738,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_weekly
   - id: xccdf_org.ssgproject.content_rule_file_owner_crontab
@@ -738,7 +746,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_crontab
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_group
@@ -746,7 +754,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
@@ -754,7 +762,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_issue_net
@@ -762,7 +770,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_issue
@@ -770,7 +778,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_issue
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_motd
@@ -778,7 +786,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_motd
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_passwd
@@ -786,7 +794,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_owner_etc_shadow
@@ -794,7 +802,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
@@ -802,7 +810,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
@@ -810,7 +818,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
   - id: xccdf_org.ssgproject.content_rule_file_ownership_audit_binaries
@@ -818,7 +826,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_ownership_audit_binaries
   - id: xccdf_org.ssgproject.content_rule_file_ownership_audit_configuration
@@ -826,7 +834,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_ownership_audit_configuration
   - id: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
@@ -834,7 +842,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
   - id: xccdf_org.ssgproject.content_rule_file_ownership_var_log_audit_stig
@@ -842,7 +850,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_ownership_var_log_audit_stig
   - id: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
@@ -850,7 +858,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_audit_binaries
@@ -858,7 +866,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_audit_binaries
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_group
@@ -866,7 +874,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_gshadow
@@ -874,7 +882,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_passwd
@@ -882,7 +890,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_shadow
@@ -890,7 +898,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_allow
@@ -898,7 +906,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_allow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_d
@@ -906,7 +914,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_d
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_daily
@@ -914,7 +922,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_daily
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_hourly
@@ -922,7 +930,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_hourly
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_monthly
@@ -930,7 +938,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_monthly
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_weekly
@@ -938,7 +946,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_weekly
   - id: xccdf_org.ssgproject.content_rule_file_permissions_crontab
@@ -946,7 +954,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_crontab
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_auditd
@@ -954,7 +962,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_auditd
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rulesd
@@ -962,7 +970,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rulesd
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
@@ -970,7 +978,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_gshadow
@@ -978,7 +986,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_gshadow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue_net
@@ -986,7 +994,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue
@@ -994,7 +1002,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_issue
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_motd
@@ -1002,7 +1010,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_motd
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_passwd
@@ -1010,7 +1018,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_passwd
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
@@ -1018,7 +1026,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
@@ -1026,7 +1034,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
@@ -1034,7 +1042,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
@@ -1042,7 +1050,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
@@ -1050,7 +1058,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
@@ -1058,7 +1066,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
   - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit
@@ -1066,7 +1074,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit
   - id: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
@@ -1074,7 +1082,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
   - id: xccdf_org.ssgproject.content_rule_gnome_gdm_disable_xdmcp
@@ -1082,7 +1090,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_gnome_gdm_disable_xdmcp
   - id: xccdf_org.ssgproject.content_rule_group_unique_id
@@ -1090,7 +1098,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_group_unique_id
   - id: xccdf_org.ssgproject.content_rule_group_unique_name
@@ -1098,7 +1106,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_group_unique_name
   - id: xccdf_org.ssgproject.content_rule_grub2_enable_apparmor
@@ -1106,7 +1114,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_grub2_enable_apparmor
   - id: xccdf_org.ssgproject.content_rule_grub2_password
@@ -1114,7 +1122,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_grub2_password
   - id: xccdf_org.ssgproject.content_rule_grub2_uefi_password
@@ -1122,7 +1130,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_grub2_uefi_password
   - id: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
@@ -1130,7 +1138,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
   - id: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
@@ -1138,7 +1146,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
   - id: xccdf_org.ssgproject.content_rule_iptables_rules_for_open_ports
@@ -1146,7 +1154,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_iptables_rules_for_open_ports
   - id: xccdf_org.ssgproject.content_rule_journald_compress
@@ -1154,7 +1162,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_journald_compress
   - id: xccdf_org.ssgproject.content_rule_journald_storage
@@ -1162,7 +1170,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_journald_storage
   - id: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
@@ -1170,7 +1178,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
   - id: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
@@ -1178,7 +1186,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
   - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
@@ -1186,7 +1194,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
@@ -1194,7 +1202,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
@@ -1202,7 +1210,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_dev_shm_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_home_nodev
@@ -1210,7 +1218,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_home_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_home_nosuid
@@ -1218,7 +1226,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_home_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_nodev
@@ -1226,7 +1234,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_noexec
@@ -1234,7 +1242,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_tmp_nosuid
@@ -1242,7 +1250,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_tmp_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nodev
@@ -1250,7 +1258,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_noexec
@@ -1258,7 +1266,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nosuid
@@ -1266,7 +1274,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_audit_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_nodev
@@ -1274,7 +1282,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_noexec
@@ -1282,7 +1290,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_log_nosuid
@@ -1290,7 +1298,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_log_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_nodev
@@ -1298,7 +1306,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_nosuid
@@ -1306,7 +1314,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_nosuid
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nodev
@@ -1314,7 +1322,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nodev
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_noexec
@@ -1322,7 +1330,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_noexec
   - id: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
@@ -1330,7 +1338,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
   - id: xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy
@@ -1338,7 +1346,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy
   - id: xccdf_org.ssgproject.content_rule_nftables_rules_permanent
@@ -1346,7 +1354,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_nftables_rules_permanent
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
@@ -1354,7 +1362,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_no_forward_files
@@ -1362,7 +1370,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_forward_files
   - id: xccdf_org.ssgproject.content_rule_no_netrc_files
@@ -1370,7 +1378,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_netrc_files
   - id: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
@@ -1378,7 +1386,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_rsh_trust_files
   - id: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
@@ -1386,7 +1394,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts
   - id: xccdf_org.ssgproject.content_rule_ntpd_configure_restrictions
@@ -1394,7 +1402,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_ntpd_configure_restrictions
   - id: xccdf_org.ssgproject.content_rule_ntpd_run_as_ntp_user
@@ -1402,7 +1410,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_ntpd_run_as_ntp_user
   - id: xccdf_org.ssgproject.content_rule_package_aide_installed
@@ -1410,7 +1418,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_aide_installed
   - id: xccdf_org.ssgproject.content_rule_package_apparmor_installed
@@ -1418,7 +1426,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_apparmor_installed
   - id: xccdf_org.ssgproject.content_rule_package_avahi_removed
@@ -1426,7 +1434,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_avahi_removed
   - id: xccdf_org.ssgproject.content_rule_package_bind_removed
@@ -1434,7 +1442,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_bind_removed
   - id: xccdf_org.ssgproject.content_rule_package_cups_removed
@@ -1442,7 +1450,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_cups_removed
   - id: xccdf_org.ssgproject.content_rule_package_cyrus-imapd_removed
@@ -1450,7 +1458,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_cyrus-imapd_removed
   - id: xccdf_org.ssgproject.content_rule_package_dhcp_removed
@@ -1458,7 +1466,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_dhcp_removed
   - id: xccdf_org.ssgproject.content_rule_package_dovecot_removed
@@ -1466,7 +1474,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_dovecot_removed
   - id: xccdf_org.ssgproject.content_rule_package_httpd_removed
@@ -1474,7 +1482,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_httpd_removed
   - id: xccdf_org.ssgproject.content_rule_package_iptables_installed
@@ -1482,7 +1490,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
   - id: xccdf_org.ssgproject.content_rule_package_iptables-persistent_removed
@@ -1490,7 +1498,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_iptables-persistent_removed
   - id: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
@@ -1498,7 +1506,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
   - id: xccdf_org.ssgproject.content_rule_package_nfs-kernel-server_removed
@@ -1506,7 +1514,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_nfs-kernel-server_removed
   - id: xccdf_org.ssgproject.content_rule_package_nftables_installed
@@ -1514,7 +1522,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_nftables_installed
   - id: xccdf_org.ssgproject.content_rule_package_nginx_removed
@@ -1522,7 +1530,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_nginx_removed
   - id: xccdf_org.ssgproject.content_rule_package_nis_removed
@@ -1530,7 +1538,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_nis_removed
   - id: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
@@ -1538,7 +1546,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
   - id: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
@@ -1546,15 +1554,23 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
+  - id: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
+    description: Install pam_pwquality Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
   - id: xccdf_org.ssgproject.content_rule_package_prelink_removed
     description: Package "prelink" Must not be Installed
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_prelink_removed
   - id: xccdf_org.ssgproject.content_rule_package_rpcbind_removed
@@ -1562,7 +1578,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_rpcbind_removed
   - id: xccdf_org.ssgproject.content_rule_package_rsh_removed
@@ -1570,7 +1586,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_rsh_removed
   - id: xccdf_org.ssgproject.content_rule_package_rsync_removed
@@ -1578,7 +1594,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_rsync_removed
   - id: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
@@ -1586,7 +1602,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
   - id: xccdf_org.ssgproject.content_rule_package_samba_removed
@@ -1594,7 +1610,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_samba_removed
   - id: xccdf_org.ssgproject.content_rule_package_squid_removed
@@ -1602,7 +1618,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_squid_removed
   - id: xccdf_org.ssgproject.content_rule_package_sudo_installed
@@ -1610,7 +1626,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_sudo_installed
   - id: xccdf_org.ssgproject.content_rule_package_systemd-journal-remote_installed
@@ -1618,7 +1634,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_systemd-journal-remote_installed
   - id: xccdf_org.ssgproject.content_rule_package_talk_removed
@@ -1626,7 +1642,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_talk_removed
   - id: xccdf_org.ssgproject.content_rule_package_telnet_removed
@@ -1634,7 +1650,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_telnet_removed
   - id: xccdf_org.ssgproject.content_rule_package_timesyncd_installed
@@ -1642,7 +1658,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_timesyncd_installed
   - id: xccdf_org.ssgproject.content_rule_package_ufw_removed
@@ -1650,7 +1666,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_ufw_removed
   - id: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
@@ -1658,7 +1674,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
   - id: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
@@ -1666,7 +1682,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_xorg-x11-server-common_removed
   - id: xccdf_org.ssgproject.content_rule_partition_for_tmp
@@ -1674,7 +1690,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_partition_for_tmp
   - id: xccdf_org.ssgproject.content_rule_permissions_local_var_log
@@ -1682,7 +1698,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_permissions_local_var_log
   - id: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
@@ -1690,7 +1706,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
   - id: xccdf_org.ssgproject.content_rule_root_path_no_dot
@@ -1698,7 +1714,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_root_path_no_dot
   - id: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
@@ -1706,7 +1722,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
   - id: xccdf_org.ssgproject.content_rule_rsyslog_nolisten
@@ -1714,7 +1730,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_rsyslog_nolisten
   - id: xccdf_org.ssgproject.content_rule_rsyslog_remote_loghost
@@ -1722,7 +1738,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_rsyslog_remote_loghost
   - id: xccdf_org.ssgproject.content_rule_service_apport_disabled
@@ -1730,7 +1746,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_apport_disabled
   - id: xccdf_org.ssgproject.content_rule_service_autofs_disabled
@@ -1738,7 +1754,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_autofs_disabled
   - id: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
@@ -1746,7 +1762,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_avahi-daemon_disabled
   - id: xccdf_org.ssgproject.content_rule_service_chronyd_enabled
@@ -1754,7 +1770,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_chronyd_enabled
   - id: xccdf_org.ssgproject.content_rule_service_cron_enabled
@@ -1762,7 +1778,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_cron_enabled
   - id: xccdf_org.ssgproject.content_rule_service_cups_disabled
@@ -1770,7 +1786,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_cups_disabled
   - id: xccdf_org.ssgproject.content_rule_service_nftables_enabled
@@ -1778,7 +1794,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_nftables_enabled
   - id: xccdf_org.ssgproject.content_rule_service_ntp_enabled
@@ -1786,7 +1802,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_ntp_enabled
   - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
@@ -1794,7 +1810,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
   - id: xccdf_org.ssgproject.content_rule_service_systemd-journald_enabled
@@ -1802,7 +1818,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_systemd-journald_enabled
   - id: xccdf_org.ssgproject.content_rule_service_timesyncd_enabled
@@ -1810,7 +1826,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_timesyncd_enabled
   - id: xccdf_org.ssgproject.content_rule_service_ufw_enabled
@@ -1818,7 +1834,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_ufw_enabled
   - id: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
@@ -1826,7 +1842,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
   - id: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
@@ -1834,7 +1850,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
   - id: xccdf_org.ssgproject.content_rule_set_ipv6_loopback_traffic
@@ -1842,7 +1858,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_ipv6_loopback_traffic
   - id: xccdf_org.ssgproject.content_rule_set_loopback_traffic
@@ -1850,7 +1866,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_loopback_traffic
   - id: xccdf_org.ssgproject.content_rule_set_nftables_base_chain
@@ -1858,7 +1874,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_nftables_base_chain
   - id: xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic
@@ -1866,7 +1882,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic
   - id: xccdf_org.ssgproject.content_rule_set_nftables_table
@@ -1874,7 +1890,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_nftables_table
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
@@ -1882,7 +1898,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
   - id: xccdf_org.ssgproject.content_rule_set_ufw_default_rule
@@ -1890,7 +1906,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_ufw_default_rule
   - id: xccdf_org.ssgproject.content_rule_set_ufw_loopback_traffic
@@ -1898,7 +1914,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_ufw_loopback_traffic
   - id: xccdf_org.ssgproject.content_rule_socket_systemd-journal-remote_disabled
@@ -1906,7 +1922,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_socket_systemd-journal-remote_disabled
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
@@ -1914,7 +1930,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_rhosts
@@ -1922,7 +1938,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_rhosts
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
@@ -1930,7 +1946,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_root_login
   - id: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
@@ -1938,7 +1954,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_pam
@@ -1946,7 +1962,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_pam
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
@@ -1954,7 +1970,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
   - id: xccdf_org.ssgproject.content_rule_sshd_limit_user_access
@@ -1962,7 +1978,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_limit_user_access
   - id: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
@@ -1970,7 +1986,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
   - id: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
@@ -1978,7 +1994,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
   - id: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
@@ -1986,7 +2002,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
   - id: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_info
@@ -1994,7 +2010,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_info
   - id: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
@@ -2002,7 +2018,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
   - id: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
@@ -2010,7 +2026,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_max_sessions
   - id: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
@@ -2018,7 +2034,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
   - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_ciphers
@@ -2026,7 +2042,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_ciphers
   - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
@@ -2034,7 +2050,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
   - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
@@ -2042,7 +2058,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
@@ -2050,7 +2066,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
   - id: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
@@ -2058,7 +2074,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
   - id: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
@@ -2066,7 +2082,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
   - id: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
@@ -2074,7 +2090,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
   - id: xccdf_org.ssgproject.content_rule_sysctl_fs_suid_dumpable
@@ -2082,7 +2098,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_fs_suid_dumpable
   - id: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
@@ -2090,7 +2106,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
@@ -2098,7 +2114,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
@@ -2106,7 +2122,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
@@ -2114,7 +2130,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_rp_filter
@@ -2122,7 +2138,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_rp_filter
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
@@ -2130,7 +2146,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_secure_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
@@ -2138,7 +2154,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_send_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_redirects
@@ -2146,7 +2162,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
@@ -2154,7 +2170,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
@@ -2162,7 +2178,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_rp_filter
@@ -2170,7 +2186,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_rp_filter
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_secure_redirects
@@ -2178,7 +2194,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_secure_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_send_redirects
@@ -2186,7 +2202,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_send_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_echo_ignore_broadcasts
@@ -2194,7 +2210,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_echo_ignore_broadcasts
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
@@ -2202,7 +2218,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
@@ -2210,7 +2226,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
@@ -2218,7 +2234,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_ra
@@ -2226,7 +2242,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_ra
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_redirects
@@ -2234,7 +2250,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_source_route
@@ -2242,7 +2258,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_forwarding
@@ -2250,7 +2266,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_all_forwarding
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_ra
@@ -2258,7 +2274,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_ra
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_redirects
@@ -2266,7 +2282,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_redirects
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_source_route
@@ -2274,7 +2290,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_ufw_rules_for_open_ports
@@ -2282,7 +2298,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_ufw_rules_for_open_ports
   - id: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
@@ -2290,7 +2306,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
   - id: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
@@ -2298,6 +2314,6 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2204-ds-1.2.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
