@@ -981,14 +981,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dir_permissions_system_journal
-  - id: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
-    description: Verify that All World-Writable Directories Have Sticky Bits Set
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
   - id: xccdf_org.ssgproject.content_rule_directory_permissions_var_log_audit
     description: System Audit Logs Must Have Mode 0750 or Less Permissive
     filters: *id001
