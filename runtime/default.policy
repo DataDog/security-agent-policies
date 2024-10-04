@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.30.0
+version: 1.31.1
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -358,7 +358,7 @@ rules:
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (chmod.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
+          (chmod.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && chmod.file.destination.mode != chmod.file.mode
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
@@ -368,7 +368,7 @@ rules:
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (chown.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
+          (chown.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
@@ -378,7 +378,7 @@ rules:
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (link.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ]
+          (link.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"]
           || link.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
@@ -390,7 +390,7 @@ rules:
     expression: |-
       (
           open.flags & (OPEN_CREATE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
+          (open.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
@@ -400,7 +400,7 @@ rules:
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (rename.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ]
+          (rename.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"]
           || rename.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
@@ -411,7 +411,7 @@ rules:
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (unlink.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
+          (unlink.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
@@ -421,7 +421,7 @@ rules:
     description: An unauthorized job was added to cron scheduling
     expression: |-
       (
-          (utimes.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
+          (utimes.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
