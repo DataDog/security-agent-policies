@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.31.1
+version: 1.32.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -25,7 +25,7 @@ macros:
     description: Common tracers
     expression: '["dlv", "dlv-linux-amd64", "strace", "gdb", "lldb-server"]'
   - id: COMPILER_PROCESSES
-    expression: '["javac", "clang", "gcc","bcc"]'
+    expression: '["javac", "clang", "gcc", "bcc"]'
   - id: CONTAINER_CLIENTS
     expression: '["docker", "kubectl"]'
   - id: CONTAINER_PROCESSES
@@ -230,7 +230,7 @@ rules:
         (open.file.path =~ "/tmp/**" && open.file.name in [~"*.ko", ~".*"])
         || open.file.path in [~"/var/tmp/**", ~"/root/**", ~"*/bin/*", ~"/usr/local/lib/**"]
       )
-      && (process.comm in COMPILER_PROCESSES || process.ancestors.comm in COMPILER_PROCESSES)
+      && (process.comm in COMPILER_PROCESSES || process.ancestors.comm in COMPILER_PROCESSES || process.file.name in COMPILER_PROCESSES || process.ancestors.file.name in COMPILER_PROCESSES)
       && process.file.name not in ["pip", ~"python*"]
       && container.id != ""
     tags:
@@ -240,7 +240,7 @@ rules:
       - os == "linux"
   - id: compiler_in_container
     description: A compiler was executed inside of a container
-    expression: (exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
+    expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
     tags:
       allow_autosuppression: 'true'
     filters:
@@ -439,6 +439,11 @@ rules:
   - id: cryptominer_envs
     description: Process environment variables match cryptocurrency miner
     expression: exec.envs in ["POOL_USER", "POOL_URL", "POOL_PASS", "DONATE_LEVEL"]
+    filters:
+      - os == "linux"
+  - id: cups_spawned_shell
+    description: Shell process spawned from print server
+    expression: exec.file.name != "" && process.parent.file.name == "foomatic-rip"
     filters:
       - os == "linux"
   - id: curl_docker_socket
@@ -760,6 +765,11 @@ rules:
       threat_description: Cloud environments are a common target for cryptocurrency mining
     filters:
       - os == "linux"
+  - id: modified_file_requesting_imds_creds
+    description: Recently modified file requested credentials from IMDS
+    expression: imds.url =~ "/*/meta-data/iam/security-credentials/*" && (process.parent.file.modification_time < 120s || process.file.modification_time < 30s)
+    filters:
+      - os == "linux"
   - id: mount_host_fs
     description: The host file system was mounted in a container
     expression: mount.source.path == "/" && mount.fs_type != "overlay" && container.id != ""
@@ -813,6 +823,11 @@ rules:
       container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
     tags:
       allow_autosuppression: 'true'
+    filters:
+      - os == "linux"
+  - id: netcat_shell
+    description: Process arguments indicating possible netcat shell detected
+    expression: exec.file.name in ["netcat", "nc", "ncat"] && ((exec.args_flags in ["l"] && exec.args_flags in ["p"]) || (exec.args_flags in ["n"] && exec.args_flags in ["v"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
     filters:
       - os == "linux"
   - id: network_sniffing_tool
@@ -1083,6 +1098,16 @@ rules:
       )
     filters:
       - os == "linux"
+  - id: perl_shell
+    description: Process arguments indicating possible perl bind shell detected
+    expression: exec.file.name == ~"perl*" && exec.args_flags in ["e"] && ((exec.args in [~"*socket*", ~"*bind*", ~"*sockaddr*", ~"*listen*", ~"*accept", ~"*stdin*", ~"*stdout"]) || (exec.args in [~"*/bin/sh*", ~"*/bin/bash*"]))
+    filters:
+      - os == "linux"
+  - id: php_shell
+    description: Process arguments indicating possible php shell detected
+    expression: exec.file.name == "php" && exec.args_flags in ["r"] && ((exec.args in [~"*socket_bind*", ~"*socket_listen*", ~"*socket_accept*", ~"*socket_create*", ~"*socket_write*", ~"*socket_read*"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
+    filters:
+      - os == "linux"
   - id: php_spawning_shell
     description: PHP web application spawning shell
     expression: exec.file.name in [~"powershell*","cmd.exe"] && process.parent.file.name in ["php.exe","php-cgi.exe"]
@@ -1265,6 +1290,11 @@ rules:
     expression: exec.cmdline =~ "*NoExit *" && exec.cmdline =~ "*Command *" && exec.cmdline =~ "*[Console]::OutputEncoding=[Text.UTF8Encoding]::UTF8*"
     filters:
       - os == "windows"
+  - id: socat_shell
+    description: Process arguments indicating possible socat shell detected
+    expression: ((exec.file.name == "socat") || (exec.comm == "socat")) && exec.args in [~"*/bin/bash*", ~"*/bin/sh*", ~"*exec*", ~"*pty*", ~"*setsid*", ~"*stderr*"]
+    filters:
+      - os == "linux"
   - id: ssh_authorized_keys_chmod
     description: SSH modified keys may have been modified
     expression: |-
@@ -1631,6 +1661,11 @@ rules:
   - id: user_deleted_tty
     description: A user was deleted via an interactive session
     expression: exec.file.name in ["userdel", "deluser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS
+    filters:
+      - os == "linux"
+  - id: webapp_imds_V1_request
+    description: Web application requested IMDSv1 credentials
+    expression: imds.aws.is_imds_v2 == false && imds.url =~ "*/*/meta-data/iam/security-credentials/*" && (process.ancestors.file.name in ["apache2", "nginx", ~"tomcat*", "httpd"] || process.ancestors.file.name =~ "php*" || process.ancestors.file.name == "java")
     filters:
       - os == "linux"
   - id: webdriver_spawned_shell
