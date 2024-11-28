@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.32.0
+version: 1.35.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -236,6 +236,8 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious code may be downloaded and compiled on the workload to evade detection
+    actions:
+      - hash: {}
     filters:
       - os == "linux"
   - id: compiler_in_container
@@ -545,6 +547,11 @@ rules:
     expression: exec.file.name in ["rclone", "rsync", "sftp", "ftp", "scp", "dcp", "rcp"]
     filters:
       - os == "linux"
+  - id: find_credentials
+    description: find command searching for sensitive files
+    expression: exec.comm == "find" && exec.args in [~"*credentials*"]
+    filters:
+      - os == "linux"
   - id: gcp_imds
     description: An GCP IMDS was called via a network utility
     expression: exec.comm in HTTP_UTILS && exec.args in GCP_RISKY_URI
@@ -555,11 +562,32 @@ rules:
     expression: exec.file.name =~ ".*" && exec.file.path in [~"/home/**", ~"/tmp/**", ~"/var/tmp/**", ~"/dev/shm/**"]
     filters:
       - os == "linux"
+  - id: imds_v1_usage
+    description: An AWS IMDSv1 request was issued
+    expression: imds.cloud_provider == "aws" && imds.aws.is_imds_v2 == false && process.file.name not in ${imds_v1_usage_services}
+    actions:
+      - set:
+          name: imds_v1_usage_services
+          field: process.file.name
+          ttl: 10000000000
+          append: true
+    disabled: true
+    agent_version: '>= 7.60'
+    filters:
+      - os == "linux"
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
     tags:
       allow_autosuppression: 'true'
+    filters:
+      - os == "linux"
+  - id: interpreter_outbound_connection
+    description: An interpreter made an outbound network connection
+    expression: connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.is_public == true && process.file.name in INTERPRETER_PROCESSES
+    tags:
+      allow_autosuppression: 'true'
+    agent_version: '>= 7.61'
     filters:
       - os == "linux"
   - id: inveigh_tool_usage
@@ -577,6 +605,12 @@ rules:
   - id: iptables_egress_allowed
     description: Egress traffic allowed using iptables
     expression: exec.comm == "iptables" && process.args in [r".*OUTPUT.*((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}.*ACCEPT"] && process.args not in [r"(127\.)|(10\.)|(172\.1[6-9]\.)|(172\.2[0-9]\.)|(^172\.3[0-1]\.)|(192\.168\.)|(169\.254\.)"]
+    filters:
+      - os == "linux"
+  - id: irc_connection
+    description: A process made an outbound IRC connection
+    expression: connect.addr.port == 6667 && connect.addr.is_public == true
+    agent_version: '>= 7.61'
     filters:
       - os == "linux"
   - id: java_shell_execution_parent
@@ -844,6 +878,11 @@ rules:
       allow_autosuppression: 'true'
     filters:
       - os == "linux"
+  - id: nsenter_in_container
+    description: nsenter used to breakout of container
+    expression: exec.file.name == "nsenter" && exec.args_options in ["target=1", "t=1"] && container.id != ""
+    filters:
+      - os == "linux"
   - id: nsswitch_conf_mod_chmod
     description: nsswitch may have been modified without authorization
     expression: |-
@@ -930,6 +969,17 @@ rules:
   - id: open_msr_writes
     description: A process opened a model-specific register (MSR) configuration file
     expression: open.file.path == "/sys/module/msr/parameters/allow_writes" && open.flags & OPEN_WRITE_FLAGS > 0
+    filters:
+      - os == "linux"
+  - id: openssl_backdoor
+    description: openssl used to establish backdoor
+    expression: exec.comm == "openssl" && exec.args =~ "*s_client*"
+    filters:
+      - os == "linux"
+  - id: p2pinfect_connection
+    description: A process made a connection to a port associated with P2PInfect malware
+    expression: connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.is_public == true && connect.addr.port >= 60100 && connect.addr.port <= 60150
+    agent_version: '>= 7.61'
     filters:
       - os == "linux"
   - id: package_management_in_container
@@ -1188,6 +1238,8 @@ rules:
   - id: redis_save_module
     description: Redis module has been created
     expression: (open.flags & (O_CREAT|O_TRUNC|O_RDWR|O_WRONLY) > 0 && open.file.path =~ "/tmp/**" && open.file.name in [~"*.rdb", ~"*.aof", ~"*.so"]) && process.file.name in ["redis-check-rdb", "redis-server"]
+    actions:
+      - hash: {}
     filters:
       - os == "linux"
   - id: registry_hives_file_path_key_modified
@@ -1280,6 +1332,12 @@ rules:
     expression: open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name in SHELL_HISTORY_NAMES && open.file.path in [~"/root/*", ~"/home/**"] && process.file.name == "truncate"
     filters:
       - os == "linux"
+  - id: shell_net_connection
+    description: A shell made an outbound network connection
+    expression: connect.addr.family & (AF_INET|AF_INET6) > 0 && process.file.name in SHELL_NAMES && connect.addr.is_public == true
+    agent_version: '>= 7.61'
+    filters:
+      - os == "linux"
   - id: shell_profile_modification
     description: Shell profile was modified
     expression: open.file.path in [~"/home/*/*profile", ~"/home/*/*rc"] && open.flags & ((O_CREAT|O_TRUNC|O_RDWR|O_WRONLY)) > 0
@@ -1366,6 +1424,18 @@ rules:
   - id: ssh_it_tool_config_write
     description: The configuration directory for an ssh worm
     expression: open.file.path in [~"/root/.prng/*", ~"/home/*/.prng/*", ~"/root/.config/prng/*", ~"/home/*/.config/prng/*"] && open.flags & (OPEN_WRITE_FLAGS) > 0
+    filters:
+      - os == "linux"
+  - id: ssh_nonstandard_connection
+    description: SSH initiated a connection on a nonstandard port
+    expression: connect.addr.port in [80, 8080, 88, 443, 8443, 4444] && process.file.name == "ssh"
+    agent_version: '>= 7.60'
+    filters:
+      - os == "linux"
+  - id: ssh_outbound_connection
+    description: A process connected to an SSH server
+    expression: connect.addr.port == 22 && connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.ip not in [127.0.0.0/8]
+    agent_version: '>= 7.60'
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_chmod
@@ -1553,7 +1623,7 @@ rules:
       - os == "linux"
   - id: suspicious_dll_write
     description: Dll written to a suspicious directory
-    expression: create.file.name =~ "*.dll" && create.file.device_path not in [~"\Device\*\Windows\System32\**", ~"\Device\*\ProgramData\docker\windowsfilter\*\Files\Windows\System32\**", ~"\Device\*\ProgramData\docker\tmp\**"] && process.file.name != "dockerd.exe"
+    expression: create.file.name =~ "*.dll" && create.file.device_path not in [~"\Device\*\Windows\System32\**", ~"\Device\*\ProgramData\docker\**"] && process.file.name != "dockerd.exe"
     filters:
       - os == "windows"
   - id: suspicious_ntdsutil_usage
@@ -1651,6 +1721,11 @@ rules:
       "ngrok"] && process.parent.comm in ["bash", "dash", "ash", "sh", "tcsh", "csh", "zsh", "ksh", "fish"])
     filters:
       - os == "linux"
+  - id: udev_modification
+    description: Device rule created
+    expression: open.file.path in [~"/etc/udev/rules.d/*", ~"/lib/udev/rules.d/*", ~"/usr/lib/udev/rules.d/*", ~"/usr/local/lib/udev/rules.d/*", ~"/run/udev/rules.d/*"] && open.flags & O_CREAT > 0
+    filters:
+      - os == "linux"
   - id: user_created_tty
     description: A user was created via an interactive session
     expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"]
@@ -1690,7 +1765,7 @@ rules:
       - os == "windows"
   - id: windows_cryptominer_process
     description: A cryptominer was potentially executed
-    expression: exec.cmdline in [~"*xmrig*", ~"*cpu-priority*", ~"*donate-level*", ~"*randomx-1gb-pages*", ~"*stratum+tcp*", ~"*stratum+ssl*", ~"*stratum1+tcp*", ~"*stratum1+ssl*", ~"*stratum2+tcp*", ~"*stratum2+ssl*", ~"*nicehash*", ~"*yespower*"]
+    expression: exec.cmdline in [~"*cpu-priority*", ~"*donate-level*", ~"*randomx-1gb-pages*", ~"*stratum+tcp*", ~"*stratum+ssl*", ~"*stratum1+tcp*", ~"*stratum1+ssl*", ~"*stratum2+tcp*", ~"*stratum2+ssl*", ~"*nicehash*", ~"*yespower*"]
     filters:
       - os == "windows"
   - id: windows_explorer_executable_modified
