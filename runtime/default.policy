@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.35.0
+version: 1.36.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -466,6 +466,11 @@ rules:
       exec.args == ~"*pg_wal*")
     filters:
       - os == "linux"
+  - id: debugfs_in_container
+    description: The debugfs was executed in a container
+    expression: exec.comm == "debugfs" && container.id != ""
+    filters:
+      - os == "linux"
   - id: delete_system_log
     description: A process deleted common system log files
     expression: unlink.file.path in ["/var/run/utmp", "/var/log/wtmp", "/var/log/btmp", "/var/log/lastlog", "/var/log/faillog", "/var/log/syslog", "/var/log/messages", "/var/log/secure", "/var/log/auth.log", "/var/log/boot.log", "/var/log/kern.log"] && process.comm
@@ -475,6 +480,11 @@ rules:
   - id: deploy_priv_container
     description: A privileged container was created
     expression: exec.file.name != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0
+    filters:
+      - os == "linux"
+  - id: devshm_execution
+    description: A file executed from /dev/shm/ directory
+    expression: exec.file.path == "/dev/shm/**"
     filters:
       - os == "linux"
   - id: dirty_pipe_attempt
@@ -604,7 +614,7 @@ rules:
       - os == "linux"
   - id: iptables_egress_allowed
     description: Egress traffic allowed using iptables
-    expression: exec.comm == "iptables" && process.args in [r".*OUTPUT.*((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}.*ACCEPT"] && process.args not in [r"(127\.)|(10\.)|(172\.1[6-9]\.)|(172\.2[0-9]\.)|(^172\.3[0-1]\.)|(192\.168\.)|(169\.254\.)"]
+    expression: exec.comm == "iptables" && process.args in [r"OUTPUT.*((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}.*ACCEPT"] && process.args not in [r"(127\.)|(10\.)|(172\.1[6-9]\.)|(172\.2[0-9]\.)|(^172\.3[0-1]\.)|(192\.168\.)|(169\.254\.)"]
     filters:
       - os == "linux"
   - id: irc_connection
@@ -771,7 +781,7 @@ rules:
       - os == "linux"
   - id: libpam_ebpf_hook
     description: Library libpam.so hooked using eBPF
-    expression: bpf.cmd == BPF_MAP_CREATE && process.args in [r".*libpam.so.*"]
+    expression: bpf.cmd == BPF_MAP_CREATE && process.args in [r"libpam\.so"]
     filters:
       - os == "linux"
   - id: looney_tunables_exploit
@@ -807,6 +817,11 @@ rules:
   - id: mount_host_fs
     description: The host file system was mounted in a container
     expression: mount.source.path == "/" && mount.fs_type != "overlay" && container.id != ""
+    filters:
+      - os == "linux"
+  - id: mount_in_container
+    description: The mount utility was executed in a container
+    expression: exec.comm == "mount" && container.id != ""
     filters:
       - os == "linux"
   - id: mount_proc_hide
@@ -974,6 +989,11 @@ rules:
   - id: openssl_backdoor
     description: openssl used to establish backdoor
     expression: exec.comm == "openssl" && exec.args =~ "*s_client*"
+    filters:
+      - os == "linux"
+  - id: overwrite_entrypoint
+    description: A process attempted to overwrite the container entrypoint
+    expression: open.file.path == "/proc/self/fd/1" && open.flags & OPEN_WRITE_FLAGS > 0 && container.id != ""
     filters:
       - os == "linux"
   - id: p2pinfect_connection
@@ -1217,7 +1237,7 @@ rules:
     expression: |-
       open.flags & O_CREAT > 0
       && open.file.path in [~"/home/**", ~"/root/**", ~"/bin/**", ~"/usr/bin/**", ~"/opt/**", ~"/etc/**", ~"/var/log/**", ~"/var/lib/log/**", ~"/var/backup/**", ~"/var/www/**"]
-      && open.file.name in [r"(?i).*(restore|recover|read|instruction|how_to|ransom|lock).*(your_|crypt|lock|file|ransom).*"] && open.file.name not in [r".*\.lock$"]
+      && open.file.name in [r"(?i)(restore|recover|read|instruction|how_to|ransom|lock).*(your_|crypt|lock|file|ransom)"] && open.file.name not in [r"\.lock$"]
     filters:
       - os == "linux"
   - id: rc_scripts_modified
@@ -1265,6 +1285,11 @@ rules:
       || exec.cmdline in [~"*Invoke-Tater*", ~"*smbrelay*", ~"*ntlmrelay*", ~"*cme smb*", ~"*ntlm:NTLMhash*", ~"*Invoke-PetitPotam*"]
     filters:
       - os == "windows"
+  - id: release_agent_escape
+    description: Container escape attempted by overwriting release_agent
+    expression: open.file.name == "release_agent" && open.file.path in ["/tmp/**", "/home/**", "/root/**", "/*"] && open.flags & OPEN_WRITE_FLAGS > 0
+    filters:
+      - os == "linux"
   - id: rubeus_execution
     description: process arguments match rubeus credential theft tool
     expression: exec.cmdline in [~"*asreproast*", ~"*/service:krbtgt*", ~"*dump /luid:0x*", ~"*kerberoast*", ~"*createonly /program*", ~"*ptt /ticket*", ~"*impersonateuser*", ~"*renew /ticket*", ~"*asktgt /user*", ~"*harvest /interval*", ~"*s4u /user*", ~"*hash
@@ -1717,13 +1742,18 @@ rules:
   - id: tunnel_traffic
     description: Tunneling or port forwarding tool used
     expression: ((exec.comm == "pivotnacci" || exec.comm == "gost") && process.args_flags in ["L", "C", "R"]) || (exec.comm in ["ssh", "sshd"] && process.args_flags in ["R", "L", "D", "w"] && process.args in [r"((25[0-5]|(2[0-4]|1\d|[1-9])\d)\.?\b){4}"] ) ||
-      (exec.comm == "sshuttle" && process.args_flags in ["r", "remote", "l", "listen"]) || (exec.comm == "socat" && process.args in [r".*(TCP4-LISTEN:|SOCKS).*"]) || (exec.comm in ["iodine", "iodined", "dnscat", "hans", "hans-ubuntu", "ptunnel-ng", "ssf", "3proxy",
+      (exec.comm == "sshuttle" && process.args_flags in ["r", "remote", "l", "listen"]) || (exec.comm == "socat" && process.args in [r"(TCP4-LISTEN:|SOCKS)"]) || (exec.comm in ["iodine", "iodined", "dnscat", "hans", "hans-ubuntu", "ptunnel-ng", "ssf", "3proxy",
       "ngrok"] && process.parent.comm in ["bash", "dash", "ash", "sh", "tcsh", "csh", "zsh", "ksh", "fish"])
     filters:
       - os == "linux"
   - id: udev_modification
     description: Device rule created
     expression: open.file.path in [~"/etc/udev/rules.d/*", ~"/lib/udev/rules.d/*", ~"/usr/lib/udev/rules.d/*", ~"/usr/local/lib/udev/rules.d/*", ~"/run/udev/rules.d/*"] && open.flags & O_CREAT > 0
+    filters:
+      - os == "linux"
+  - id: unshare_in_container
+    description: The unshare utility was executed in a container
+    expression: exec.comm == "unshare" && container.id != ""
     filters:
       - os == "linux"
   - id: user_created_tty
