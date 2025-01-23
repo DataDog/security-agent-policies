@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.36.0
+version: 1.40.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -20,7 +20,7 @@ macros:
       - os == "linux"
   - id: COMMON_MODULES
     description: Common kernel modules
-    expression: '["nf_tables", "iptable_filter", "ip6table_filter", "bpfilter", "ip6_tables", "ip6table_nat", "nf_reject_ipv4", "ipt_REJECT", "iptable_raw"]'
+    expression: '["nf_tables", "iptable_filter", "ip6table_filter", "bpfilter", "ip6_tables", "ip6table_nat", "nf_reject_ipv4", "ipt_REJECT", "iptable_raw", "udp_diag", "inet_diag"]'
   - id: COMMON_TRACERS
     description: Common tracers
     expression: '["dlv", "dlv-linux-amd64", "strace", "gdb", "lldb-server"]'
@@ -592,14 +592,6 @@ rules:
       allow_autosuppression: 'true'
     filters:
       - os == "linux"
-  - id: interpreter_outbound_connection
-    description: An interpreter made an outbound network connection
-    expression: connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.is_public == true && process.file.name in INTERPRETER_PROCESSES
-    tags:
-      allow_autosuppression: 'true'
-    agent_version: '>= 7.61'
-    filters:
-      - os == "linux"
   - id: inveigh_tool_usage
     description: Process executed with arguments common with Inveigh tool usage
     expression: exec.cmdline in [~"*SpooferIP*", ~"*ReplyToIPs*", ~"*ReplyToDomains*", ~"*ReplyToMACs*", ~"*SnifferIP*"]
@@ -685,7 +677,7 @@ rules:
       - os == "linux"
   - id: kernel_module_load
     description: A kernel module was loaded
-    expression: load_module.name not in COMMON_MODULES && process.ancestors.file.name not in [~"falcon*", "unattended-upgrade", "apt.systemd.daily", "xtables-legacy-multi", "ssm-agent-worker"]
+    expression: load_module.loaded_from_memory == false && load_module.name not in COMMON_MODULES && process.ancestors.file.name not in [~"falcon*", "unattended-upgrade", "apt.systemd.daily", "xtables-legacy-multi", "ssm-agent-worker"]
     filters:
       - os == "linux"
   - id: kernel_module_load_container
@@ -763,7 +755,7 @@ rules:
       - os == "linux"
   - id: known_dll_registry_key_modified
     description: Windows Known DLLs location registry key modified
-    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\CurrentControlSet\Control\Session Manager\KnownDLLs*"]
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs*"]
     filters:
       - os == "windows"
   - id: kubernetes_dns_enumeration
