@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.40.0
+version: 1.42.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -634,14 +634,22 @@ rules:
       - os == "linux"
   - id: k8s_pod_service_account_token_accessed
     description: The Kubernetes pod service account token was accessed
-    expression: open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"] && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES && process.file.path not in  ["/usr/bin/cilium-agent",
-      "/coredns", "/usr/bin/cilium-operator", "/manager", "/fluent-bit/bin/fluent-bit", "/usr/local/bin/cloud-node-manager", "/secrets-store-csi", "/bin/secrets-store-csi-driver-provider-aws", "/usr/bin/calico-node", "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent",
-      "/nginx-ingress-controller", "/cluster-autoscaler", "/cluster-proportional-autoscaler", "/haproxy-ingress-controller", "/kube-state-metrics", "/fluent-bit-gke-exporter", "/bin/external-secrets", "/node-termination-handler", "/fluent-bit-gke-exporter",
-      "/bin/vault", "/usr/local/bin/kubectl", "/local-provisioner", "/usr/bin/gitlab-runner", "/usr/local/bin/vaultd", "/usr/local/bin/trace-driveline-writer", "/usr/local/bin/registration-controller", "/usr/local/bin/cluster-autoscaler"] && process.ancestors.file.path
-      not in DD_AGENT_PROCESSES
+    expression: |-
+      open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"]
+      && open.file.name == "token"
+      && process.file.path not in DD_AGENT_PROCESSES
+      && process.file.path not in  ["/usr/bin/cilium-agent", "/coredns", "/usr/bin/cilium-operator", "/manager", "/fluent-bit/bin/fluent-bit", "/usr/local/bin/cloud-node-manager", "/secrets-store-csi", "/bin/secrets-store-csi-driver-provider-aws", "/usr/bin/calico-node", "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent", "/nginx-ingress-controller", "/cluster-autoscaler", "/cluster-proportional-autoscaler", "/haproxy-ingress-controller", "/kube-state-metrics", "/fluent-bit-gke-exporter", "/bin/external-secrets", "/node-termination-handler", "/fluent-bit-gke-exporter", "/bin/vault", "/usr/local/bin/kubectl", "/local-provisioner", "/usr/bin/gitlab-runner", "/usr/local/bin/vaultd", "/usr/local/bin/trace-driveline-writer", "/usr/local/bin/registration-controller", "/usr/local/bin/cluster-autoscaler"]
+      && process.file.path not in ${processes_accessing}
+      && process.ancestors.file.path not in DD_AGENT_PROCESSES
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
+    actions:
+      - set:
+          name: processes_accessing
+          field: process.file.path
+          ttl: 60s
+          append: true
     filters:
       - os == "linux"
   - id: kernel_module_chmod
@@ -1161,8 +1169,8 @@ rules:
     filters:
       - os == "linux"
   - id: perl_shell
-    description: Process arguments indicating possible perl bind shell detected
-    expression: exec.file.name == ~"perl*" && exec.args_flags in ["e"] && ((exec.args in [~"*socket*", ~"*bind*", ~"*sockaddr*", ~"*listen*", ~"*accept", ~"*stdin*", ~"*stdout"]) || (exec.args in [~"*/bin/sh*", ~"*/bin/bash*"]))
+    description: Perl executed with suspicious argument
+    expression: exec.file.name == ~"perl*" && exec.args_flags in ["e"] && (exec.args in [~"*socket*", ~"*bind*", ~"*sockaddr*", ~"*listen*", ~"*accept", ~"*stdin*", ~"*stdout"])
     filters:
       - os == "linux"
   - id: php_shell
