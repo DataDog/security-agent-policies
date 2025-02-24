@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.42.0
+version: 1.42.1
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -155,26 +155,41 @@ rules:
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
     filters:
       - os == "linux"
   - id: auditctl_usage
     description: The auditctl command was used to modify auditd
     expression: exec.file.name == "auditctl" && exec.args_flags not in ["s", "l"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
     filters:
       - os == "linux"
   - id: auditd_config_modified
     description: The auditd configuration file was modified without using auditctl
     expression: open.file.path == "/etc/audit/auditd.conf" && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.name != "auditctl"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
     filters:
       - os == "linux"
   - id: auditd_rule_file_modified
     description: The auditd rules file was modified without using auditctl
     expression: open.file.path in ["/etc/audit/rules.d/audit.rules", "/etc/audit/audit.rules"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.name != "auditctl"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
     filters:
       - os == "linux"
   - id: aws_cli_usage
     description: The AWS CLI utility was executed
     expression: exec.file.name == "aws"
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1651-cloud-administration-command
     filters:
       - os == "linux"
   - id: aws_eks_service_account_token_accessed
@@ -183,16 +198,25 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the EKS control plane.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
     filters:
       - os == "linux"
   - id: aws_imds
     description: An AWS IMDS was called via a network utility
     expression: exec.comm in HTTP_UTILS && exec.args in AWS_RISKY_URI
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
     filters:
       - os == "linux"
   - id: azure_imds
     description: An Azure IMDS was called via a network utility
     expression: exec.comm in HTTP_UTILS && exec.args in AZURE_RISKY_URI
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
     filters:
       - os == "linux"
   - id: base64_decode
@@ -200,11 +224,17 @@ rules:
     expression: exec.file.name == "base64" && exec.args_flags in ["d"]
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1140-deobfuscate-or-decode-files-or-information
     filters:
       - os == "linux"
   - id: certutil_usage
     description: Certutil was executed to transmit or decode a potentially malicious file
     expression: exec.file.name == "certutil.exe" && ((exec.cmdline =~ "*urlcache*" && exec.cmdline =~ "*split*") || exec.cmdline =~ "*decode*")
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
     filters:
       - os == "windows"
   - id: chatroom_request
@@ -212,6 +242,9 @@ rules:
     expression: dns.question.name in CHAT_ROOM_SITES
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1572-protocol-tunneling
     filters:
       - os == "linux"
   - id: common_net_intrusion_util
@@ -220,6 +253,9 @@ rules:
     tags:
       threat_score: '7'
       threat_description: Network scanners are used to discover additional infrastructure after compromise
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1046-network-service-discovery
     filters:
       - os == "linux"
   - id: compile_after_delivery
@@ -236,6 +272,11 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious code may be downloaded and compiled on the workload to evade detection
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - tactic:TA0004-privilege-escalation
+      - technique:T1027-obfuscated-files-or-information
+      - technique:T1574-hijack-execution-flow
     actions:
       - hash: {}
     filters:
@@ -245,11 +286,17 @@ rules:
     expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1027-obfuscated-files-or-information
     filters:
       - os == "linux"
   - id: crackmap_exec_executed
     description: Known offensive tool crackmap exec executed
     expression: exec.cmdline in [~"*crackmapexec*", ~"*cme.exe*", ~"*cme.py*"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "windows"
   - id: credential_modified_chmod
@@ -263,6 +310,9 @@ rules:
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "linux"
   - id: credential_modified_chown
@@ -276,6 +326,9 @@ rules:
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "linux"
   - id: credential_modified_link
@@ -290,6 +343,9 @@ rules:
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "linux"
   - id: credential_modified_open_v2
@@ -300,10 +356,13 @@ rules:
           (open.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
-      ) && container.created_at > 90s
+      ) && container.id != "" && container.created_at > 90s
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "linux"
   - id: credential_modified_rename
@@ -318,6 +377,9 @@ rules:
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "linux"
   - id: credential_modified_unlink
@@ -331,6 +393,9 @@ rules:
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "linux"
   - id: credential_modified_utimes
@@ -344,16 +409,25 @@ rules:
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "linux"
   - id: critical_registry_export
     description: regedit used to export critical registry hive
     expression: exec.file.name in ["reg.exe", "regedit.exe"] && exec.cmdline in [~"*hklm*", ~"*hkey_local_machine*", ~"*system*", ~"*sam*", ~"*security*"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "windows"
   - id: critical_windows_files_modified
     description: a critical windows file was modified
     expression: write.file.device_path in [~"\Device\*\windows\system32\**"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "windows"
   - id: cron_at_job_creation_chmod
@@ -364,6 +438,9 @@ rules:
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && chmod.file.destination.mode != chmod.file.mode
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
     filters:
       - os == "linux"
   - id: cron_at_job_creation_chown
@@ -374,6 +451,9 @@ rules:
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
     filters:
       - os == "linux"
   - id: cron_at_job_creation_link
@@ -385,6 +465,9 @@ rules:
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
     filters:
       - os == "linux"
   - id: cron_at_job_creation_open
@@ -396,6 +479,9 @@ rules:
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
     filters:
       - os == "linux"
   - id: cron_at_job_creation_rename
@@ -407,6 +493,9 @@ rules:
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
     filters:
       - os == "linux"
   - id: cron_at_job_creation_unlink
@@ -417,6 +506,9 @@ rules:
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
     filters:
       - os == "linux"
   - id: cron_at_job_creation_utimes
@@ -427,6 +519,9 @@ rules:
           && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
     filters:
       - os == "linux"
   - id: cryptominer_args
@@ -436,21 +531,33 @@ rules:
     tags:
       threat_score: '9'
       threat_description: Cloud environments are a common target for cryptocurrency mining
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
     filters:
       - os == "linux"
   - id: cryptominer_envs
     description: Process environment variables match cryptocurrency miner
     expression: exec.envs in ["POOL_USER", "POOL_URL", "POOL_PASS", "DONATE_LEVEL"]
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
     filters:
       - os == "linux"
   - id: cups_spawned_shell
     description: Shell process spawned from print server
     expression: exec.file.name != "" && process.parent.file.name == "foomatic-rip"
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
     filters:
       - os == "linux"
   - id: curl_docker_socket
     description: The Docker socket was referenced in a cURL command
     expression: exec.file.name == "curl" && exec.args_flags in ["unix-socket"] && exec.args in [~"*docker.sock*"] && container.id != ""
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1613-container-and-resource-discovery
     filters:
       - os == "linux"
   - id: database_shell_execution
@@ -464,27 +571,42 @@ rules:
       exec.args == "-c locale -a") &&
       !(process.parent.file.name == "postgres" &&
       exec.args == ~"*pg_wal*")
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
     filters:
       - os == "linux"
   - id: debugfs_in_container
     description: The debugfs was executed in a container
     expression: exec.comm == "debugfs" && container.id != ""
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1613-container-and-resource-discovery
     filters:
       - os == "linux"
   - id: delete_system_log
     description: A process deleted common system log files
     expression: unlink.file.path in ["/var/run/utmp", "/var/log/wtmp", "/var/log/btmp", "/var/log/lastlog", "/var/log/faillog", "/var/log/syslog", "/var/log/messages", "/var/log/secure", "/var/log/auth.log", "/var/log/boot.log", "/var/log/kern.log"] && process.comm
       not in ["dockerd", "containerd"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1070-indicator-removal
     filters:
       - os == "linux"
   - id: deploy_priv_container
     description: A privileged container was created
-    expression: exec.file.name != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0
+    expression: exec.file.name != "" && container.id != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
     filters:
       - os == "linux"
   - id: devshm_execution
     description: A file executed from /dev/shm/ directory
     expression: exec.file.path == "/dev/shm/**"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1564-hide-artifacts
     filters:
       - os == "linux"
   - id: dirty_pipe_attempt
@@ -493,6 +615,9 @@ rules:
     tags:
       threat_score: '8'
       threat_description: The vulnerability CVE-2022-0847 allows privilege escalation using pipes
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1068-exploitation-for-privilege-escalation
     filters:
       - os == "linux"
   - id: dirty_pipe_exploitation
@@ -501,11 +626,17 @@ rules:
     tags:
       threat_score: '7'
       threat_description: The vulnerability CVE-2022-0847 allows privilege escalation using pipes
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1068-exploitation-for-privilege-escalation
     filters:
       - os == "linux"
   - id: dotnet_dump_execution
     description: Dotnet_dump was used to dump a process memory
     expression: exec.cmdline =~ "*dotnet-dump*" && exec.cmdline =~ "*collect*"
+    product_tags:
+      - tactic:TA0009-collection
+      - technique:T1005-data-from-local-system
     filters:
       - os == "windows"
   - id: dynamic_linker_config_unlink
@@ -514,6 +645,9 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by removing and replacing global configurations the dynamic linker uses to load shared libraries.
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1574-hijack-execution-flow
     filters:
       - os == "linux"
   - id: dynamic_linker_config_write
@@ -522,11 +656,17 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking global configurations the dynamic linker uses to load shared libraries.
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1574-hijack-execution-flow
     filters:
       - os == "linux"
   - id: exec_lsmod
     description: Kernel modules were listed using the lsmod command
     expression: exec.comm == "lsmod"
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1082-system-information-discovery
     filters:
       - os == "linux"
   - id: exec_whoami
@@ -534,11 +674,17 @@ rules:
     expression: exec.comm == "whoami"
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1033-system-owner-or-user-discovery
     filters:
       - os == "linux"
   - id: exec_wrmsr
     description: The wrmsr program executed
     expression: exec.comm == "wrmsr"
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
     filters:
       - os == "linux"
   - id: executable_bit_added
@@ -550,31 +696,49 @@ rules:
       chmod.file.destination.mode != chmod.file.mode &&
       chmod.file.destination.mode & CHMOD_EXEC_FLAGS > 0 &&
       process.argv in ["+x"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1222-file-and-directory-permissions-modification
     filters:
       - os == "linux"
   - id: file_sync_exfil
     description: The rclone utility was executed
     expression: exec.file.name in ["rclone", "rsync", "sftp", "ftp", "scp", "dcp", "rcp"]
+    product_tags:
+      - tactic:TA0010-exfiltration
+      - technique:T1048-exfiltration-over-alternative-protocol
     filters:
       - os == "linux"
   - id: find_credentials
     description: find command searching for sensitive files
     expression: exec.comm == "find" && exec.args in [~"*credentials*"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
     filters:
       - os == "linux"
   - id: gcp_imds
     description: An GCP IMDS was called via a network utility
     expression: exec.comm in HTTP_UTILS && exec.args in GCP_RISKY_URI
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
     filters:
       - os == "linux"
   - id: hidden_file_executed
     description: A hidden file was executed in a suspicious folder
     expression: exec.file.name =~ ".*" && exec.file.path in [~"/home/**", ~"/tmp/**", ~"/var/tmp/**", ~"/dev/shm/**"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1564-hide-artifacts
     filters:
       - os == "linux"
   - id: imds_v1_usage
     description: An AWS IMDSv1 request was issued
     expression: imds.cloud_provider == "aws" && imds.aws.is_imds_v2 == false && process.file.name not in ${imds_v1_usage_services}
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
     actions:
       - set:
           name: imds_v1_usage_services
@@ -590,11 +754,17 @@ rules:
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1609-container-administration-command
     filters:
       - os == "linux"
   - id: inveigh_tool_usage
     description: Process executed with arguments common with Inveigh tool usage
     expression: exec.cmdline in [~"*SpooferIP*", ~"*ReplyToIPs*", ~"*ReplyToDomains*", ~"*ReplyToMACs*", ~"*SnifferIP*"]
+    product_tags:
+      - tactic:TA0009-collection
+      - technique:T1557-adversary-in-the-middle
     filters:
       - os == "windows"
   - id: ip_check_domain
@@ -602,16 +772,25 @@ rules:
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1016-system-network-configuration-discovery
     filters:
       - os == "linux"
   - id: iptables_egress_allowed
     description: Egress traffic allowed using iptables
     expression: exec.comm == "iptables" && process.args in [r"OUTPUT.*((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}.*ACCEPT"] && process.args not in [r"(127\.)|(10\.)|(172\.1[6-9]\.)|(172\.2[0-9]\.)|(^172\.3[0-1]\.)|(192\.168\.)|(169\.254\.)"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
     filters:
       - os == "linux"
   - id: irc_connection
     description: A process made an outbound IRC connection
     expression: connect.addr.port == 6667 && connect.addr.is_public == true
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1071-application-layer-protocol
     agent_version: '>= 7.61'
     filters:
       - os == "linux"
@@ -625,11 +804,17 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Java executing shell commands may indicate remote code execution (RCE)
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
     filters:
       - os == "linux"
   - id: jupyter_shell_execution
     description: A Jupyter notebook executed a shell
     expression: (exec.file.name in SHELL_UTIL_NAMES || exec.file.name in HTTP_UTILS || exec.file.name in SHELL_NAMES) && process.ancestors.comm in ["jupyter-noteboo", "jupyter-lab"]
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
     filters:
       - os == "linux"
   - id: k8s_pod_service_account_token_accessed
@@ -644,6 +829,9 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
     actions:
       - set:
           name: processes_accessing
@@ -660,6 +848,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_chown
@@ -670,6 +861,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_link
@@ -681,16 +875,28 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_load
     description: A kernel module was loaded
     expression: load_module.loaded_from_memory == false && load_module.name not in COMMON_MODULES && process.ancestors.file.name not in [~"falcon*", "unattended-upgrade", "apt.systemd.daily", "xtables-legacy-multi", "ssm-agent-worker"]
+    product_tags:
+      - tactic:TA0003-persistence
+      - tactic:TA0040-impact
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - technique:T1496-resource-hijacking
     filters:
       - os == "linux"
   - id: kernel_module_load_container
     description: A container loaded a new kernel module
     expression: load_module.name != "" && container.id !=""
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_load_from_memory
@@ -699,6 +905,9 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Malicious kernel modules may establish persistence or hide activity
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_load_from_memory_container
@@ -707,6 +916,9 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Malicious kernel modules may establish persistence or hide activity
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_open
@@ -718,6 +930,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_rename
@@ -729,6 +944,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_unlink
@@ -739,6 +957,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_module_utimes
@@ -749,26 +970,41 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: kernel_msr_write
     description: A process attempted to enable writing to model-specific registers
     expression: exec.comm == "modprobe" && process.args =~ "*msr*allow_writes*"
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
     filters:
       - os == "linux"
   - id: kmod_list
     description: Kernel modules were listed using the kmod command
     expression: exec.comm == "kmod" && exec.args in [~"*list*"]
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1082-system-information-discovery
     filters:
       - os == "linux"
   - id: known_dll_registry_key_modified
     description: Windows Known DLLs location registry key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1574-hijack-execution-flow
     filters:
       - os == "windows"
   - id: kubernetes_dns_enumeration
     description: Kubernetes DNS enumeration
     expression: dns.question.name == "any.any.svc.cluster.local" && dns.question.type == SRV && container.id != ""
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1046-network-service-discovery
     filters:
       - os == "linux"
   - id: ld_preload_unusual_library_path
@@ -777,16 +1013,25 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking environment variables the dynamic linker uses to load shared libraries.
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1574-hijack-execution-flow
     filters:
       - os == "linux"
   - id: libpam_ebpf_hook
     description: Library libpam.so hooked using eBPF
     expression: bpf.cmd == BPF_MAP_CREATE && process.args in [r"libpam\.so"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1056-input-capture
     filters:
       - os == "linux"
   - id: looney_tunables_exploit
     description: Looney Tunables (CVE-2023-4911) exploit attempted
     expression: exec.file.mode & S_ISUID > 0 && exec.file.uid == 0 && exec.uid != 0 && exec.envs in [~"*GLIBC_TUNABLES*"]
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1068-exploitation-for-privilege-escalation
     filters:
       - os == "linux"
   - id: memfd_create
@@ -794,11 +1039,17 @@ rules:
     expression: exec.file.name =~ "memfd*" && exec.file.path == ""
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1620-reflective-code-loading
     filters:
       - os == "linux"
   - id: minidump_usage
     description: Process memory was dumped using the minidump function from comsvcs.dll
     expression: exec.cmdline =~ "*MiniDump*" && exec.cmdline =~ "*comsvcs*"
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "windows"
   - id: mining_pool_lookup
@@ -807,26 +1058,41 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Cloud environments are a common target for cryptocurrency mining
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
     filters:
       - os == "linux"
   - id: modified_file_requesting_imds_creds
     description: Recently modified file requested credentials from IMDS
     expression: imds.url =~ "/*/meta-data/iam/security-credentials/*" && (process.parent.file.modification_time < 120s || process.file.modification_time < 30s)
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
     filters:
       - os == "linux"
   - id: mount_host_fs
     description: The host file system was mounted in a container
     expression: mount.source.path == "/" && mount.fs_type != "overlay" && container.id != ""
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
     filters:
       - os == "linux"
   - id: mount_in_container
     description: The mount utility was executed in a container
     expression: exec.comm == "mount" && container.id != ""
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
     filters:
       - os == "linux"
   - id: mount_proc_hide
     description: Process hidden using mount
     expression: mount.mountpoint.path in [~"/proc/1*", ~"/proc/2*", ~"/proc/3*", ~"/proc/4*", ~"/proc/5*", ~"/proc/6*", ~"/proc/7*", ~"/proc/8*", ~"/proc/9*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1564-hide-artifacts
     filters:
       - os == "linux"
   - id: net_file_download
@@ -837,6 +1103,9 @@ rules:
         (open.file.path =~ "/tmp/**" && open.file.name in [~"*.sh", ~"*.c", ~"*.so", ~"*.ko"])
         || open.file.path in [~"/usr/**", ~"/lib/**", ~"/etc/**", ~"/var/tmp/**", ~"/dev/shm/**"]
       )
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
     filters:
       - os == "linux"
   - id: net_unusual_request
@@ -844,6 +1113,9 @@ rules:
     expression: 'exec.comm in HTTP_UTILS && exec.args in [~"*.php*", ~"*.jpg*"] '
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
     filters:
       - os == "linux"
   - id: net_util
@@ -852,6 +1124,9 @@ rules:
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
     filters:
       - os == "linux"
   - id: net_util_exfiltration
@@ -862,6 +1137,9 @@ rules:
       exec.args not in [~"*localhost*", ~"*127.0.0.1*"]
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0010-exfiltration
+      - technique:T1048-exfiltration-over-alternative-protocol
     filters:
       - os == "linux"
   - id: net_util_in_container
@@ -872,16 +1150,25 @@ rules:
       container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
     filters:
       - os == "linux"
   - id: netcat_shell
     description: Process arguments indicating possible netcat shell detected
     expression: exec.file.name in ["netcat", "nc", "ncat"] && ((exec.args_flags in ["l"] && exec.args_flags in ["p"]) || (exec.args_flags in ["n"] && exec.args_flags in ["v"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
     filters:
       - os == "linux"
   - id: network_sniffing_tool
     description: Local account groups were enumerated after container start up
     expression: exec.file.name in ["tcpdump", "tshark"]
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1040-network-sniffing
     filters:
       - os == "linux"
   - id: new_binary_execution_in_container
@@ -891,11 +1178,17 @@ rules:
       threat_score: '4'
       threat_description: Container images should be immutable. New executables may be downloaded or compiled malware.
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
     filters:
       - os == "linux"
   - id: nsenter_in_container
     description: nsenter used to breakout of container
     expression: exec.file.name == "nsenter" && exec.args_options in ["target=1", "t=1"] && container.id != ""
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_chmod
@@ -904,6 +1197,9 @@ rules:
       (
           (chmod.file.path in [ "/etc/nsswitch.conf" ])
       ) && chmod.file.destination.mode != chmod.file.mode && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_chown
@@ -912,6 +1208,9 @@ rules:
       (
           (chown.file.path in [ "/etc/nsswitch.conf" ])
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_link
@@ -921,6 +1220,9 @@ rules:
           (link.file.path in [ "/etc/nsswitch.conf" ]
           || link.file.destination.path in [ "/etc/nsswitch.conf" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_open
@@ -930,6 +1232,9 @@ rules:
           open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
           (open.file.path in [ "/etc/nsswitch.conf" ])
       ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_open_v2
@@ -938,7 +1243,10 @@ rules:
       (
           open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
           (open.file.path in [ "/etc/nsswitch.conf" ])
-      ) && container.created_at > 90s && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+      ) && container.id != "" && container.created_at > 90s && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_rename
@@ -948,6 +1256,9 @@ rules:
           (rename.file.path in [ "/etc/nsswitch.conf" ]
           || rename.file.destination.path in [ "/etc/nsswitch.conf" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_unlink
@@ -956,6 +1267,9 @@ rules:
       (
           (unlink.file.path in [ "/etc/nsswitch.conf" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_utimes
@@ -964,41 +1278,65 @@ rules:
       (
           (utimes.file.path in [ "/etc/nsswitch.conf" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: ntds_in_commandline
     description: NTDS file referenced in commandline
     expression: exec.cmdline =~ "*ntds.dit*"
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "windows"
   - id: offensive_k8s_tool
     description: A known kubernetes pentesting tool has been executed
     expression: (exec.file.name in [ ~"python*" ] && ("KubiScan.py" in exec.argv || "kubestriker" in exec.argv ) ) || exec.file.name in [ "kubiscan","kdigger","kube-hunter","rakkess","peirates","kubescape","kubeaudit","kube-linter","stratus",~"botb-*"]
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1613-container-and-resource-discovery
     filters:
       - os == "linux"
   - id: omigod
     description: Omiagent spawns a privileged child process
     expression: exec.uid >= 0 && process.ancestors.file.name == "omiagent"
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1203-exploitation-for-client-execution
     filters:
       - os == "linux"
   - id: open_msr_writes
     description: A process opened a model-specific register (MSR) configuration file
     expression: open.file.path == "/sys/module/msr/parameters/allow_writes" && open.flags & OPEN_WRITE_FLAGS > 0
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
     filters:
       - os == "linux"
   - id: openssl_backdoor
     description: openssl used to establish backdoor
     expression: exec.comm == "openssl" && exec.args =~ "*s_client*"
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
     filters:
       - os == "linux"
   - id: overwrite_entrypoint
     description: A process attempted to overwrite the container entrypoint
     expression: open.file.path == "/proc/self/fd/1" && open.flags & OPEN_WRITE_FLAGS > 0 && container.id != ""
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1613-container-and-resource-discovery
     filters:
       - os == "linux"
   - id: p2pinfect_connection
     description: A process made a connection to a port associated with P2PInfect malware
     expression: connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.is_public == true && connect.addr.port >= 60100 && connect.addr.port <= 60150
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1071-application-layer-protocol
     agent_version: '>= 7.61'
     filters:
       - os == "linux"
@@ -1007,6 +1345,9 @@ rules:
     expression: exec.file.path in PACKAGE_MANAGERS && container.id != ""
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
     filters:
       - os == "linux"
   - id: pam_modification_chmod
@@ -1015,6 +1356,9 @@ rules:
       (
           (chmod.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: pam_modification_chown
@@ -1023,6 +1367,9 @@ rules:
       (
           (chown.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: pam_modification_link
@@ -1032,6 +1379,9 @@ rules:
           (link.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
           || link.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: pam_modification_open
@@ -1041,6 +1391,9 @@ rules:
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           (open.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: pam_modification_rename
@@ -1050,6 +1403,9 @@ rules:
           (rename.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
           || rename.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: pam_modification_unlink
@@ -1058,6 +1414,9 @@ rules:
       (
           (unlink.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: pam_modification_utimes
@@ -1066,6 +1425,9 @@ rules:
       (
           (utimes.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
       ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
     filters:
       - os == "linux"
   - id: passwd_execution
@@ -1075,6 +1437,11 @@ rules:
       threat_score: '6'
       threat_description: Changing a password may be done to establish persistence
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0003-persistence
+      - tactic:TA0040-impact
+      - technique:T1098-account-manipulation
+      - technique:T1531-account-access-removal
     filters:
       - os == "linux"
   - id: paste_site
@@ -1082,6 +1449,9 @@ rules:
     expression: dns.question.name in PASTE_SITES && process.file.name != ""
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_chmod
@@ -1092,6 +1462,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_chown
@@ -1102,6 +1475,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_link
@@ -1113,6 +1489,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_open
@@ -1124,6 +1503,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_open_v2
@@ -1134,7 +1516,10 @@ rules:
           open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
-      ) && container.created_at > 90s
+      ) && container.id != "" && container.created_at > 90s
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_rename
@@ -1146,6 +1531,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_unlink
@@ -1156,6 +1544,9 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_utimes
@@ -1166,21 +1557,33 @@ rules:
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "linux"
   - id: perl_shell
     description: Perl executed with suspicious argument
     expression: exec.file.name == ~"perl*" && exec.args_flags in ["e"] && (exec.args in [~"*socket*", ~"*bind*", ~"*sockaddr*", ~"*listen*", ~"*accept", ~"*stdin*", ~"*stdout"])
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1210-exploitation-of-remote-services
     filters:
       - os == "linux"
   - id: php_shell
     description: Process arguments indicating possible php shell detected
     expression: exec.file.name == "php" && exec.args_flags in ["r"] && ((exec.args in [~"*socket_bind*", ~"*socket_listen*", ~"*socket_accept*", ~"*socket_create*", ~"*socket_write*", ~"*socket_read*"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1210-exploitation-of-remote-services
     filters:
       - os == "linux"
   - id: php_spawning_shell
     description: PHP web application spawning shell
     expression: exec.file.name in [~"powershell*","cmd.exe"] && process.parent.file.name in ["php.exe","php-cgi.exe"]
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1210-exploitation-of-remote-services
     filters:
       - os == "windows"
   - id: potential_web_shell_parent
@@ -1188,16 +1591,25 @@ rules:
     expression: |-
       (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*")
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1210-exploitation-of-remote-services
     filters:
       - os == "linux"
   - id: powershell_empire_uac_bypass
     description: A process was executed matching arguments for a UAC bypass technique common in powershell empire
     expression: exec.cmdline in [~"*-NoP -NonI -w Hidden -c $x=$((gp HKCU:Software\Microsoft\Windows Update).Update)*", ~"*-NoP -NonI -c $x=$((gp HKCU:Software\Microsoft\Windows Update).Update);*"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "windows"
   - id: procdump_execution
     description: A tool used to dump process memory has been executed
     expression: exec.file.name in ["procmon.exe","procdump.exe"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "windows"
   - id: ptrace_antidebug
@@ -1206,6 +1618,9 @@ rules:
     tags:
       threat_score: '7'
       threat_description: Anti-Debugging attempts from an process may suggest malware.
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1622-debugger-evasion
     filters:
       - os == "linux"
   - id: ptrace_injection
@@ -1214,6 +1629,9 @@ rules:
     tags:
       threat_score: '7'
       threat_description: Process injection may indicate an attempt to conceal malicious activity within benign operating system activity.
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1055-process-injection
     filters:
       - os == "linux"
   - id: pwnkit_privilege_escalation
@@ -1222,6 +1640,9 @@ rules:
     tags:
       threat_score: '9'
       threat_description: The vulnerability CVE-2021-4034 allows privilege escalation using the pkexec utility
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1068-exploitation-for-privilege-escalation
     filters:
       - os == "linux"
   - id: python_cli_code
@@ -1230,6 +1651,9 @@ rules:
     tags:
       threat_score: '8'
       threat_description: Some Python packages are associated with malicious behavior, especially when code is provided as a command-line argument.
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
     filters:
       - os == "linux"
   - id: ransomware_note
@@ -1238,26 +1662,41 @@ rules:
       open.flags & O_CREAT > 0
       && open.file.path in [~"/home/**", ~"/root/**", ~"/bin/**", ~"/usr/bin/**", ~"/opt/**", ~"/etc/**", ~"/var/log/**", ~"/var/lib/log/**", ~"/var/backup/**", ~"/var/www/**"]
       && open.file.name in [r"(?i)(restore|recover|read|instruction|how_to|ransom|lock).*(your_|crypt|lock|file|ransom)"] && open.file.name not in [r"\.lock$"]
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1490-inhibit-system-recovery
     filters:
       - os == "linux"
   - id: rc_scripts_modified
     description: RC scripts modified
     expression: (open.flags & (OPEN_WRITE_FLAGS) > 0 && (open.file.path in ["/etc/rc.common", "/etc/rc.local"])) && process.ancestors.file.path not in PACKAGE_MANAGERS
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1037-boot-or-logon-initialization-scripts
     filters:
       - os == "linux"
   - id: read_kubeconfig
     description: The kubeconfig file was accessed
     expression: open.file.path in [~"/home/*/.kube/config", "/root/.kube/config"]
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1613-container-and-resource-discovery
     filters:
       - os == "linux"
   - id: redis_sandbox_escape
     description: Detects CVE-2022-0543
     expression: (open.file.path =~ "/usr/lib/x86_64-linux-gnu/*" && open.file.name in LIBC_VERSIONS) && process.ancestors.comm in ["redis-check-rdb", "redis-server"]
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
     filters:
       - os == "linux"
   - id: redis_save_module
     description: Redis module has been created
     expression: (open.flags & (O_CREAT|O_TRUNC|O_RDWR|O_WRONLY) > 0 && open.file.path =~ "/tmp/**" && open.file.name in [~"*.rdb", ~"*.aof", ~"*.so"]) && process.file.name in ["redis-check-rdb", "redis-server"]
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1129-shared-modules
     actions:
       - hash: {}
     filters:
@@ -1265,6 +1704,9 @@ rules:
   - id: registry_hives_file_path_key_modified
     description: Windows registry hives file location key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\hivelist*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
     filters:
       - os == "windows"
   - id: registry_runkey_modified
@@ -1272,33 +1714,51 @@ rules:
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run", ~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Runonce", ~"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run",
       ~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Run", ~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Runonce",
       ~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\RunonceEx"]
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "windows"
   - id: registry_service_runkey_modified
     description: Service registry runkey modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce", ~"HKEY_LOCAL_MACHINE\Software\Microsoft\CurrentVersion\RunServices"]
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "windows"
   - id: relay_attack_tool_execution
     description: Process matches known relay attack tool
     expression: exec.file.name in [~"*PetitPotam*", ~"*RottenPotato*", ~"*HotPotato*", ~"*JuicyPotato*", ~"*just_dce_*", ~"*Juicy Potato*", "rot.exe", "Potato.exe", "SpoolSample.exe", "Responder.exe", ~"*smbrelayx*", ~"*smbrelayx*", ~"*ntlmrelayx*", ~"*LocalPotato*"]
       || exec.cmdline in [~"*Invoke-Tater*", ~"*smbrelay*", ~"*ntlmrelay*", ~"*cme smb*", ~"*ntlm:NTLMhash*", ~"*Invoke-PetitPotam*"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1555-credentials-from-password-stores
     filters:
       - os == "windows"
   - id: release_agent_escape
     description: Container escape attempted by overwriting release_agent
     expression: open.file.name == "release_agent" && open.file.path in ["/tmp/**", "/home/**", "/root/**", "/*"] && open.flags & OPEN_WRITE_FLAGS > 0
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
     filters:
       - os == "linux"
   - id: rubeus_execution
     description: process arguments match rubeus credential theft tool
     expression: exec.cmdline in [~"*asreproast*", ~"*/service:krbtgt*", ~"*dump /luid:0x*", ~"*kerberoast*", ~"*createonly /program*", ~"*ptt /ticket*", ~"*impersonateuser*", ~"*renew /ticket*", ~"*asktgt /user*", ~"*harvest /interval*", ~"*s4u /user*", ~"*hash
       /password*", ~"*golden /aes256*", ~"*silver /user*", "*rubeus*"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1558-steal-or-forge-kerberos-tickets
     filters:
       - os == "windows"
   - id: runc_leaky_fd
     description: The container breakout CVE-2024-21626 was successful
     expression: chdir.syscall.path =~ "/proc/self/fd/*" && chdir.file.path == "/sys/fs/cgroup" && process.file.name =~ "runc.*"
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
     filters:
       - os == "linux"
   - id: runc_modification
@@ -1308,26 +1768,41 @@ rules:
       && open.flags & OPEN_WRITE_FLAGS > 0
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
       && process.ancestors.file.path not in PACKAGE_MANAGERS
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
     filters:
       - os == "linux"
   - id: safeboot_modification
     description: Safeboot registry modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SafeBoot"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
     filters:
       - os == "windows"
   - id: scheduled_task_creation
     description: A scheduled task was created
     expression: exec.cmdline in [~"*at.exe",~"*schtasks*"] && exec.cmdline =~ "*create*"
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1053-scheduled-task-or-job
     filters:
       - os == "windows"
   - id: selinux_disable_enforcement
     description: SELinux enforcement status was disabled
     expression: selinux.enforce.status in ["permissive", "disabled"] && process.ancestors.args != ~"*BECOME-SUCCESS*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
     filters:
       - os == "linux"
   - id: sensitive_tracing
     description: A process is tracing privileged processes or sshd for possible credential dumping
     expression: (ptrace.request == PTRACE_PEEKTEXT || ptrace.request == PTRACE_PEEKDATA || ptrace.request == PTRACE_PEEKUSR) && ptrace.tracee.euid == 0 && process.comm not in COMMON_TRACERS
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1055-process-injection
     filters:
       - os == "linux"
   - id: service_stop
@@ -1335,47 +1810,74 @@ rules:
     expression: exec.file.name == "systemctl" && exec.args in [~"*stop*"]
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1489-service-stop
     filters:
       - os == "linux"
   - id: sharpup_tool_usage
     description: sharpup tool used for local privilege escalation
     expression: exec.file.name == "sharpup.exe" && exec.cmdline in [~"*HijackablePaths*", ~"*UnquotedServicePath*", ~"*ProcessDLLHijack*", ~"*ModifiableServiceBinaries*", ~"*ModifiableScheduledTask*", ~"*DomainGPPPassword*", ~"*CachedGPPPassword*"]
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1068-exploitation-for-privilege-escalation
     filters:
       - os == "windows"
   - id: shell_history_deleted
     description: Shell History was Deleted
     expression: unlink.file.name in SHELL_HISTORY_NAMES && unlink.file.path in [~"/root/**", ~"/home/**"] && process.comm not in ["dockerd", "containerd"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1070-indicator-removal
     filters:
       - os == "linux"
   - id: shell_history_symlink
     description: A symbolic link for shell history was created targeting /dev/null
     expression: exec.comm == "ln" && exec.args in [~"*.*history*", "/dev/null"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1070-indicator-removal
     filters:
       - os == "linux"
   - id: shell_history_truncated
     description: Shell History was Deleted
     expression: open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name in SHELL_HISTORY_NAMES && open.file.path in [~"/root/*", ~"/home/**"] && process.file.name == "truncate"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1070-indicator-removal
     filters:
       - os == "linux"
   - id: shell_net_connection
     description: A shell made an outbound network connection
     expression: connect.addr.family & (AF_INET|AF_INET6) > 0 && process.file.name in SHELL_NAMES && connect.addr.is_public == true
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
     agent_version: '>= 7.61'
     filters:
       - os == "linux"
   - id: shell_profile_modification
     description: Shell profile was modified
     expression: open.file.path in [~"/home/*/*profile", ~"/home/*/*rc"] && open.flags & ((O_CREAT|O_TRUNC|O_RDWR|O_WRONLY)) > 0
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
     filters:
       - os == "linux"
   - id: sliver_c2_implant_execution
     description: process arguments match sliver c2 implant
     expression: exec.cmdline =~ "*NoExit *" && exec.cmdline =~ "*Command *" && exec.cmdline =~ "*[Console]::OutputEncoding=[Text.UTF8Encoding]::UTF8*"
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1071-application-layer-protocol
     filters:
       - os == "windows"
   - id: socat_shell
     description: Process arguments indicating possible socat shell detected
     expression: ((exec.file.name == "socat") || (exec.comm == "socat")) && exec.args in [~"*/bin/bash*", ~"*/bin/sh*", ~"*exec*", ~"*pty*", ~"*setsid*", ~"*stderr*"]
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_chmod
@@ -1384,6 +1886,9 @@ rules:
       (
           chmod.file.name in [ "authorized_keys", "authorized_keys2" ] && (chmod.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_chown
@@ -1392,6 +1897,9 @@ rules:
       (
           chown.file.name in [ "authorized_keys", "authorized_keys2" ] && (chown.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_link
@@ -1401,6 +1909,9 @@ rules:
           link.file.name in [ "authorized_keys", "authorized_keys2" ] && (link.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
           || link.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_open
@@ -1410,6 +1921,9 @@ rules:
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_open_v2
@@ -1418,7 +1932,10 @@ rules:
       (
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      ) && container.created_at > 90s
+      ) && container.id != "" && container.created_at > 90s
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_rename
@@ -1428,6 +1945,9 @@ rules:
           rename.file.name in [ "authorized_keys", "authorized_keys2" ] && (rename.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
           || rename.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_unlink
@@ -1436,6 +1956,9 @@ rules:
       (
           unlink.file.name in [ "authorized_keys", "authorized_keys2" ] && (unlink.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_utimes
@@ -1444,22 +1967,34 @@ rules:
       (
           utimes.file.name in [ "authorized_keys", "authorized_keys2" ] && (utimes.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
       )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_it_tool_config_write
     description: The configuration directory for an ssh worm
     expression: open.file.path in [~"/root/.prng/*", ~"/home/*/.prng/*", ~"/root/.config/prng/*", ~"/home/*/.config/prng/*"] && open.flags & (OPEN_WRITE_FLAGS) > 0
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
     filters:
       - os == "linux"
   - id: ssh_nonstandard_connection
     description: SSH initiated a connection on a nonstandard port
     expression: connect.addr.port in [80, 8080, 88, 443, 8443, 4444] && process.file.name == "ssh"
+    product_tags:
+      - tactic:TA0008-lateral-movement
+      - technique:T1021-remote-services
     agent_version: '>= 7.60'
     filters:
       - os == "linux"
   - id: ssh_outbound_connection
     description: A process connected to an SSH server
     expression: connect.addr.port == 22 && connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.ip not in [127.0.0.0/8]
+    product_tags:
+      - tactic:TA0008-lateral-movement
+      - technique:T1563-remote-service-session-hijacking
     agent_version: '>= 7.60'
     filters:
       - os == "linux"
@@ -1474,6 +2009,9 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_chown
@@ -1487,6 +2025,9 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_link
@@ -1501,6 +2042,9 @@ rules:
           && process.ancestors.file.path not in PACKAGE_MANAGERS
           && process.file.name !~ "runc*"
       )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_open
@@ -1514,6 +2058,9 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_open_v2
@@ -1527,7 +2074,11 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+      && container.id != ""
       && container.created_at > 90s
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_rename
@@ -1542,6 +2093,9 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_unlink
@@ -1555,6 +2109,9 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_utimes
@@ -1568,6 +2125,9 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_chmod
@@ -1576,6 +2136,9 @@ rules:
       (
           (chmod.file.path == "/etc/sudoers")
       ) && chmod.file.destination.mode != chmod.file.mode && process.ancestors.file.path not in PACKAGE_MANAGERS
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_chown
@@ -1584,6 +2147,9 @@ rules:
       (
           (chown.file.path == "/etc/sudoers")
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_link
@@ -1593,6 +2159,9 @@ rules:
           (link.file.path == "/etc/sudoers"
           || link.file.destination.path == "/etc/sudoers")
       )
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_open
@@ -1600,6 +2169,9 @@ rules:
     expression: |-
       (open.flags & (OPEN_WRITE_FLAGS) > 0 &&
       (open.file.path == "/etc/sudoers")) && process.file.path not in PACKAGE_MANAGERS
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_rename
@@ -1609,6 +2181,9 @@ rules:
           (rename.file.path == "/etc/sudoers"
           || rename.file.destination.path == "/etc/sudoers")
       )
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_unlink
@@ -1617,6 +2192,9 @@ rules:
       (
           (unlink.file.path == "/etc/sudoers")
       )
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_utimes
@@ -1625,6 +2203,9 @@ rules:
       (
           (utimes.file.path == "/etc/sudoers")
       ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: suid_file_execution
@@ -1632,11 +2213,17 @@ rules:
     expression: (setuid.euid == 0 || setuid.uid  == 0)  && process.file.mode & S_ISUID > 0  && process.file.uid == 0  && process.uid != 0  && process.file.path != "/usr/bin/sudo"
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: suspicious_bitsadmin_usage
     description: A suspicious bitsadmin command has been executed
     expression: exec.file.name == "bitsadmin.exe" && exec.cmdline in [~"*addfile*", ~"*create*", ~"*resume*"]
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
     filters:
       - os == "windows"
   - id: suspicious_container_client
@@ -1644,21 +2231,35 @@ rules:
     expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1609-container-administration-command
+      - technique:T1610-deploy-container
     filters:
       - os == "linux"
   - id: suspicious_dll_write
     description: Dll written to a suspicious directory
     expression: create.file.name =~ "*.dll" && create.file.device_path not in [~"\Device\*\Windows\System32\**", ~"\Device\*\ProgramData\docker\**"] && process.file.name != "dockerd.exe"
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1609-container-administration-command
+      - technique:T1610-deploy-container
     filters:
       - os == "windows"
   - id: suspicious_ntdsutil_usage
     description: Suspicious usage of ntdsutil
     expression: exec.file.name == "ntdsutil.exe" && exec.cmdline in [~"*ntds*", ~"*create*"]
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
     filters:
       - os == "windows"
   - id: suspicious_suid_execution
     description: Recently written or modified suid file has been executed
     expression: ((process.file.mode & S_ISUID > 0) && process.file.modification_time < 30s) && exec.file.name != "" && process.ancestors.file.path not in DD_AGENT_PROCESSES
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
     filters:
       - os == "linux"
   - id: systemd_modification_chmod
@@ -1668,6 +2269,9 @@ rules:
           (chmod.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
     filters:
       - os == "linux"
   - id: systemd_modification_chown
@@ -1677,6 +2281,9 @@ rules:
           (chown.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
     filters:
       - os == "linux"
   - id: systemd_modification_link
@@ -1687,6 +2294,9 @@ rules:
           || link.file.destination.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
     filters:
       - os == "linux"
   - id: systemd_modification_open
@@ -1697,6 +2307,9 @@ rules:
           (open.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
     filters:
       - os == "linux"
   - id: systemd_modification_rename
@@ -1707,6 +2320,9 @@ rules:
           || rename.file.destination.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
     filters:
       - os == "linux"
   - id: systemd_modification_unlink
@@ -1716,6 +2332,9 @@ rules:
           (unlink.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
     filters:
       - os == "linux"
   - id: systemd_modification_utimes
@@ -1725,6 +2344,9 @@ rules:
           (utimes.file.path in SYSTEMD_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
     filters:
       - os == "linux"
   - id: tar_execution
@@ -1732,11 +2354,17 @@ rules:
     expression: exec.file.path == "/usr/bin/tar" && exec.args_flags in ["create","c"]
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0009-collection
+      - technique:T1560-archive-collected-data
     filters:
       - os == "linux"
   - id: tty_shell_in_container
     description: A shell with a TTY was executed in a container
     expression: exec.file.path in SHELLS && process.tty_name != "" && process.container.id != ""
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1609-container-administration-command
     filters:
       - os == "linux"
   - id: tunnel_traffic
@@ -1744,16 +2372,25 @@ rules:
     expression: ((exec.comm == "pivotnacci" || exec.comm == "gost") && process.args_flags in ["L", "C", "R"]) || (exec.comm in ["ssh", "sshd"] && process.args_flags in ["R", "L", "D", "w"] && process.args in [r"((25[0-5]|(2[0-4]|1\d|[1-9])\d)\.?\b){4}"] ) ||
       (exec.comm == "sshuttle" && process.args_flags in ["r", "remote", "l", "listen"]) || (exec.comm == "socat" && process.args in [r"(TCP4-LISTEN:|SOCKS)"]) || (exec.comm in ["iodine", "iodined", "dnscat", "hans", "hans-ubuntu", "ptunnel-ng", "ssf", "3proxy",
       "ngrok"] && process.parent.comm in ["bash", "dash", "ash", "sh", "tcsh", "csh", "zsh", "ksh", "fish"])
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1572-protocol-tunneling
     filters:
       - os == "linux"
   - id: udev_modification
     description: Device rule created
     expression: open.file.path in [~"/etc/udev/rules.d/*", ~"/lib/udev/rules.d/*", ~"/usr/lib/udev/rules.d/*", ~"/usr/local/lib/udev/rules.d/*", ~"/run/udev/rules.d/*"] && open.flags & O_CREAT > 0
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1546-event-triggered-execution
     filters:
       - os == "linux"
   - id: unshare_in_container
     description: The unshare utility was executed in a container
     expression: exec.comm == "unshare" && container.id != ""
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
     filters:
       - os == "linux"
   - id: user_created_tty
@@ -1761,85 +2398,136 @@ rules:
     expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"]
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1136-create-account
     filters:
       - os == "linux"
   - id: user_deleted_tty
     description: A user was deleted via an interactive session
     expression: exec.file.name in ["userdel", "deluser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1531-account-access-removal
     filters:
       - os == "linux"
   - id: webapp_imds_V1_request
     description: Web application requested IMDSv1 credentials
     expression: imds.aws.is_imds_v2 == false && imds.url =~ "*/*/meta-data/iam/security-credentials/*" && (process.ancestors.file.name in ["apache2", "nginx", ~"tomcat*", "httpd"] || process.ancestors.file.name =~ "php*" || process.ancestors.file.name == "java")
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1531-account-access-removal
     filters:
       - os == "linux"
   - id: webdriver_spawned_shell
     description: Browser WebDriver spawned shell
     expression: process.parent.file.name in [~"chromedriver*", "geckodriver"] && exec.file.name not in ["chrome", "google-chrome", "chromium", "firefox"]
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
     filters:
       - os == "linux"
   - id: windows_boot_registry_key_modified
     description: Windows boot registry key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\IniFileMapping\SYSTEM.ini\boot*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
     filters:
       - os == "windows"
   - id: windows_com_rpc_debugging_registry_key_modified
     description: Windows RPC COM debugging registry key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
     filters:
       - os == "windows"
   - id: windows_cryptographic_blocking_policy_registry_key_modified
     description: Windows cryptographic blocking policy modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\OID\EncodingType 0\CryptSIPDllRemoveSignedDataMsg*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
     filters:
       - os == "windows"
   - id: windows_cryptominer_process
     description: A cryptominer was potentially executed
     expression: exec.cmdline in [~"*cpu-priority*", ~"*donate-level*", ~"*randomx-1gb-pages*", ~"*stratum+tcp*", ~"*stratum+ssl*", ~"*stratum1+tcp*", ~"*stratum1+ssl*", ~"*stratum2+tcp*", ~"*stratum2+ssl*", ~"*nicehash*", ~"*yespower*"]
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
     filters:
       - os == "windows"
   - id: windows_explorer_executable_modified
     description: windows explorer file has been modified
     expression: write.file.device_path in [~"\Device\*\windows\explorer.exe"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "windows"
   - id: windows_firewall_configuration_registry_key_modified
     description: Windows firewall configuration registry key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
     filters:
       - os == "windows"
   - id: windows_hosts_file_modified
     description: the windows hosts file was modified
     expression: write.file.device_path in [~"\Device\*\windows\system32\Drivers\etc\hosts"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "windows"
   - id: windows_security_essentials_executable_modified
     description: microsoft security essentials executable modified
     expression: write.file.device_path in [~"\Device\*\Program Files\Microsoft Security Client\msseces.exe"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "windows"
   - id: windows_shell_folders_registry_key_modified
     description: Windows shell folders registry key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders*", ~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "windows"
   - id: windows_system_enviroment_variable_registry_key_modified
     description: Windows environment variable registry key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
     filters:
       - os == "windows"
   - id: windows_update_registry_key_modified
     description: Windows update registry key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsUpdate*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
     filters:
       - os == "windows"
   - id: winlogon_registry_key_modified
     description: Windows winlogon registry key modified
     expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
     filters:
       - os == "windows"
   - id: wmi_spawning_shell
     description: Command executed via WMI
     expression: exec.file.name in [~"powershell*","cmd.exe"] && process.parent.file.name == "WmiPrvSE.exe"
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1047-windows-management-instrumentation
     filters:
       - os == "windows"
