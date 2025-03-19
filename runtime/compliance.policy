@@ -1,0 +1,1235 @@
+# IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
+version: 1.43.0
+macros:
+  - id: CREDENTIAL_BINARIES
+    expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd", "/usr/sbin/groupadd", "/usr/sbin/useradd", "/usr/sbin/usermod", "/usr/sbin/userdel",
+      "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
+  - id: PACKAGE_MANAGERS
+    description: Package managers and container runtimes
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*", "/usr/bin/yum", "/sbin/apk", "/usr/lib/snapd/snapd"]'
+  - id: PACKAGE_MANAGERS_AND_RUNTIMES
+    description: Package managers and container runtimes
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*"]'
+  - id: OPEN_CREATE_FLAGS
+    expression: O_CREAT|O_RDWR|O_WRONLY
+    filters:
+      - os == "linux"
+  - id: OPEN_WRITE_FLAGS
+    expression: O_CREAT|O_TRUNC|O_APPEND|O_RDWR|O_WRONLY
+    filters:
+      - os == "linux"
+  - id: SHELL_HISTORY_NAMES
+    description: File names of common Linux shell history files
+    expression: '[".bash_history", ".zsh_history", ".fish_history", "fish_history", ".dash_history", ".sh_history"]'
+  - id: SYSTEMD_FOLDERS
+    description: Package managers
+    expression: '[ ~"/lib/systemd/system/**", ~"/usr/lib/systemd/system/**", ~"/etc/systemd/system/**" ]'
+rules:
+  - id: credential_modified_chmod
+    description: Sensitive credential files were modified using a non-standard tool
+    expression: |-
+      (
+          (chmod.file.path in [ "/etc/shadow", "/etc/gshadow" ])
+          && process.file.path not in CREDENTIAL_BINARIES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      ) && chmod.file.destination.mode != chmod.file.mode
+    tags:
+      threat_score: '5'
+      threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: credential_modified_chown
+    description: Sensitive credential files were modified using a non-standard tool
+    expression: |-
+      (
+          (chown.file.path in [ "/etc/shadow", "/etc/gshadow" ])
+          && process.file.path not in CREDENTIAL_BINARIES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    tags:
+      threat_score: '5'
+      threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: credential_modified_link
+    description: Sensitive credential files were modified using a non-standard tool
+    expression: |-
+      (
+          (link.file.path in [ "/etc/shadow", "/etc/gshadow" ]
+          || link.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
+          && process.file.path not in CREDENTIAL_BINARIES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    tags:
+      threat_score: '5'
+      threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: credential_modified_open_v2
+    description: Sensitive credential files were modified using a non-standard tool
+    expression: |-
+      (
+          open.flags & ((O_CREAT|O_RDWR|O_WRONLY|O_TRUNC)) > 0 &&
+          (open.file.path in [ "/etc/shadow", "/etc/gshadow" ])
+          && process.file.path not in CREDENTIAL_BINARIES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      ) && container.id != "" && container.created_at > 90s
+    tags:
+      threat_score: '5'
+      threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: credential_modified_rename
+    description: Sensitive credential files were modified using a non-standard tool
+    expression: |-
+      (
+          (rename.file.path in [ "/etc/shadow", "/etc/gshadow" ]
+          || rename.file.destination.path in [ "/etc/shadow", "/etc/gshadow" ])
+          && process.file.path not in CREDENTIAL_BINARIES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    tags:
+      threat_score: '5'
+      threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: credential_modified_unlink
+    description: Sensitive credential files were modified using a non-standard tool
+    expression: |-
+      (
+          (unlink.file.path in [ "/etc/shadow", "/etc/gshadow" ])
+          && process.file.path not in CREDENTIAL_BINARIES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    tags:
+      threat_score: '5'
+      threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: credential_modified_utimes
+    description: Sensitive credential files were modified using a non-standard tool
+    expression: |-
+      (
+          (utimes.file.path in [ "/etc/shadow", "/etc/gshadow" ])
+          && process.file.path not in CREDENTIAL_BINARIES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    tags:
+      threat_score: '5'
+      threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1003-os-credential-dumping
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: critical_windows_files_modified
+    description: a critical windows file was modified
+    expression: write.file.device_path in [~"\Device\*\windows\system32\**"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: cron_at_job_creation_chmod
+    description: An unauthorized job was added to cron scheduling
+    expression: |-
+      (
+          (chmod.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
+          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
+      ) && chmod.file.destination.mode != chmod.file.mode
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: cron_at_job_creation_chown
+    description: An unauthorized job was added to cron scheduling
+    expression: |-
+      (
+          (chown.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
+          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: cron_at_job_creation_link
+    description: An unauthorized job was added to cron scheduling
+    expression: |-
+      (
+          (link.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"]
+          || link.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
+          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
+      )
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: cron_at_job_creation_open
+    description: An unauthorized job was added to cron scheduling
+    expression: |-
+      (
+          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
+          (open.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
+          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
+      )
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: cron_at_job_creation_rename
+    description: An unauthorized job was added to cron scheduling
+    expression: |-
+      (
+          (rename.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"]
+          || rename.file.destination.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab" ])
+          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
+      )
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: cron_at_job_creation_unlink
+    description: An unauthorized job was added to cron scheduling
+    expression: |-
+      (
+          (unlink.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
+          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
+      )
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: cron_at_job_creation_utimes
+    description: An unauthorized job was added to cron scheduling
+    expression: |-
+      (
+          (utimes.file.path in [ ~"/var/spool/cron/**", ~"/etc/cron.*/**", ~"/etc/crontab", ~"/etc/crontabs/**"])
+          && process.file.path not in [ "/usr/bin/at", "/usr/bin/crontab" ]
+      )
+      && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: kernel_module_chmod
+    description: A new kernel module was added
+    expression: |-
+      (
+          (chmod.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+      ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: kernel_module_chown
+    description: A new kernel module was added
+    expression: |-
+      (
+          (chown.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: kernel_module_link
+    description: A new kernel module was added
+    expression: |-
+      (
+          (link.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ]
+          || link.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: kernel_module_open
+    description: A new kernel module was added
+    expression: |-
+      (
+          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+          (open.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: kernel_module_rename
+    description: A new kernel module was added
+    expression: |-
+      (
+          (rename.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ]
+          || rename.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: kernel_module_unlink
+    description: A new kernel module was added
+    expression: |-
+      (
+          (unlink.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: kernel_module_utimes
+    description: A new kernel module was added
+    expression: |-
+      (
+          (utimes.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: known_dll_registry_key_modified
+    description: Windows Known DLLs location registry key modified
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1574-hijack-execution-flow
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: nsswitch_conf_mod_chmod
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          (chmod.file.path in [ "/etc/nsswitch.conf" ])
+      ) && chmod.file.destination.mode != chmod.file.mode && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: nsswitch_conf_mod_chown
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          (chown.file.path in [ "/etc/nsswitch.conf" ])
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: nsswitch_conf_mod_link
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          (link.file.path in [ "/etc/nsswitch.conf" ]
+          || link.file.destination.path in [ "/etc/nsswitch.conf" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: nsswitch_conf_mod_open
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
+          (open.file.path in [ "/etc/nsswitch.conf" ])
+      ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: nsswitch_conf_mod_open_v2
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
+          (open.file.path in [ "/etc/nsswitch.conf" ])
+      ) && container.id != "" && container.created_at > 90s && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: nsswitch_conf_mod_rename
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          (rename.file.path in [ "/etc/nsswitch.conf" ]
+          || rename.file.destination.path in [ "/etc/nsswitch.conf" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: nsswitch_conf_mod_unlink
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          (unlink.file.path in [ "/etc/nsswitch.conf" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: nsswitch_conf_mod_utimes
+    description: nsswitch may have been modified without authorization
+    expression: |-
+      (
+          (utimes.file.path in [ "/etc/nsswitch.conf" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pam_modification_chmod
+    description: PAM may have been modified without authorization
+    expression: |-
+      (
+          (chmod.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+      ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pam_modification_chown
+    description: PAM may have been modified without authorization
+    expression: |-
+      (
+          (chown.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pam_modification_link
+    description: PAM may have been modified without authorization
+    expression: |-
+      (
+          (link.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
+          || link.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pam_modification_open
+    description: PAM may have been modified without authorization
+    expression: |-
+      (
+          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+          (open.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pam_modification_rename
+    description: PAM may have been modified without authorization
+    expression: |-
+      (
+          (rename.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
+          || rename.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pam_modification_unlink
+    description: PAM may have been modified without authorization
+    expression: |-
+      (
+          (unlink.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pam_modification_utimes
+    description: PAM may have been modified without authorization
+    expression: |-
+      (
+          (utimes.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+      ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1556-modify-authentication-process
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pci_11_5_critical_binaries_chmod
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          (chmod.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pci_11_5_critical_binaries_chown
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          (chown.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pci_11_5_critical_binaries_link
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          (link.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
+          || link.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pci_11_5_critical_binaries_open
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+          open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pci_11_5_critical_binaries_open_v2
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+          open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      ) && container.id != "" && container.created_at > 90s
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pci_11_5_critical_binaries_rename
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          (rename.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
+          || rename.file.destination.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pci_11_5_critical_binaries_unlink
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          (unlink.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pci_11_5_critical_binaries_utimes
+    description: Critical system binaries may have been modified
+    expression: |-
+      (
+          (utimes.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ])
+          && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: registry_hives_file_path_key_modified
+    description: Windows registry hives file location key modified
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\hivelist*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: safeboot_modification
+    description: Safeboot registry modified
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SafeBoot"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: shell_history_deleted
+    description: Shell History was Deleted
+    expression: unlink.file.name in SHELL_HISTORY_NAMES && unlink.file.path in [~"/root/**", ~"/home/**"] && process.comm not in ["dockerd", "containerd"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1070-indicator-removal
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: shell_history_symlink
+    description: A symbolic link for shell history was created targeting /dev/null
+    expression: exec.comm == "ln" && exec.args in [~"*.*history*", "/dev/null"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1070-indicator-removal
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: shell_history_truncated
+    description: Shell History was Deleted
+    expression: open.flags & (OPEN_WRITE_FLAGS) > 0 && open.file.name in SHELL_HISTORY_NAMES && open.file.path in [~"/root/*", ~"/home/**"] && process.file.name == "truncate"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1070-indicator-removal
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: shell_profile_modification
+    description: Shell profile was modified
+    expression: open.file.path in [~"/home/*/*profile", ~"/home/*/*rc"] && open.flags & ((O_CREAT|O_TRUNC|O_RDWR|O_WRONLY)) > 0
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssh_authorized_keys_chmod
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          chmod.file.name in [ "authorized_keys", "authorized_keys2" ] && (chmod.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssh_authorized_keys_chown
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          chown.file.name in [ "authorized_keys", "authorized_keys2" ] && (chown.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssh_authorized_keys_link
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          link.file.name in [ "authorized_keys", "authorized_keys2" ] && (link.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
+          || link.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssh_authorized_keys_open
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+          open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssh_authorized_keys_open_v2
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+          open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      ) && container.id != "" && container.created_at > 90s
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssh_authorized_keys_rename
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          rename.file.name in [ "authorized_keys", "authorized_keys2" ] && (rename.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ]
+          || rename.file.destination.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssh_authorized_keys_unlink
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          unlink.file.name in [ "authorized_keys", "authorized_keys2" ] && (unlink.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssh_authorized_keys_utimes
+    description: SSH modified keys may have been modified
+    expression: |-
+      (
+          utimes.file.name in [ "authorized_keys", "authorized_keys2" ] && (utimes.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
+      )
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssl_certificate_tampering_chmod
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          (chmod.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+      ) && chmod.file.mode != chmod.file.destination.mode
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssl_certificate_tampering_chown
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          (chown.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssl_certificate_tampering_link
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          (link.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ]
+          || link.file.destination.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+          && process.file.path != "/usr/sbin/update-ca-certificates"
+          && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+          && process.ancestors.file.path not in PACKAGE_MANAGERS
+          && process.file.name !~ "runc*"
+      )
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssl_certificate_tampering_open
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
+          (open.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
+      )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssl_certificate_tampering_open_v2
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
+          (open.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
+      )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
+      && container.id != ""
+      && container.created_at > 90s
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssl_certificate_tampering_rename
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          (rename.file.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ]
+          || rename.file.destination.path in [ ~"/etc/ssl/certs/**", ~"/etc/pki/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+      )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssl_certificate_tampering_unlink
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          (unlink.file.path in [ ~"/etc/ssl/certs/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+      )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: ssl_certificate_tampering_utimes
+    description: SSL certificates may have been tampered with
+    expression: |-
+      (
+          (utimes.file.path in [ ~"/etc/ssl/certs/**" ])
+          && process.file.path not in PACKAGE_MANAGERS
+      )
+      && process.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
+      && process.ancestors.file.path not in PACKAGE_MANAGERS
+      && process.file.name !~ "runc*"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1553-subvert-trust-controls
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: sudoers_policy_modified_chmod
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (chmod.file.path == "/etc/sudoers")
+      ) && chmod.file.destination.mode != chmod.file.mode && process.ancestors.file.path not in PACKAGE_MANAGERS
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: sudoers_policy_modified_chown
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (chown.file.path == "/etc/sudoers")
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: sudoers_policy_modified_link
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (link.file.path == "/etc/sudoers"
+          || link.file.destination.path == "/etc/sudoers")
+      )
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: sudoers_policy_modified_open
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (open.flags & (OPEN_WRITE_FLAGS) > 0 &&
+      (open.file.path == "/etc/sudoers")) && process.file.path not in PACKAGE_MANAGERS
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: sudoers_policy_modified_rename
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (rename.file.path == "/etc/sudoers"
+          || rename.file.destination.path == "/etc/sudoers")
+      )
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: sudoers_policy_modified_unlink
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (unlink.file.path == "/etc/sudoers")
+      )
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: sudoers_policy_modified_utimes
+    description: Sudoers policy file may have been modified without authorization
+    expression: |-
+      (
+          (utimes.file.path == "/etc/sudoers")
+      ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: systemd_modification_chmod
+    description: A service may have been modified without authorization
+    expression: |-
+      (
+          (chmod.file.path in SYSTEMD_FOLDERS)
+          && process.file.path not in PACKAGE_MANAGERS
+      ) && chmod.file.destination.mode != chmod.file.mode
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: systemd_modification_chown
+    description: A service may have been modified without authorization
+    expression: |-
+      (
+          (chown.file.path in SYSTEMD_FOLDERS)
+          && process.file.path not in PACKAGE_MANAGERS
+      ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: systemd_modification_link
+    description: A service may have been modified without authorization
+    expression: |-
+      (
+          (link.file.path in SYSTEMD_FOLDERS
+          || link.file.destination.path in SYSTEMD_FOLDERS)
+          && process.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: systemd_modification_open
+    description: A service may have been modified without authorization
+    expression: |-
+      (
+          open.flags & (OPEN_CREATE_FLAGS) > 0 &&
+          (open.file.path in SYSTEMD_FOLDERS)
+          && process.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: systemd_modification_rename
+    description: A service may have been modified without authorization
+    expression: |-
+      (
+          (rename.file.path in SYSTEMD_FOLDERS
+          || rename.file.destination.path in SYSTEMD_FOLDERS)
+          && process.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: systemd_modification_unlink
+    description: A service may have been modified without authorization
+    expression: |-
+      (
+          (unlink.file.path in SYSTEMD_FOLDERS)
+          && process.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: systemd_modification_utimes
+    description: A service may have been modified without authorization
+    expression: |-
+      (
+          (utimes.file.path in SYSTEMD_FOLDERS)
+          && process.file.path not in PACKAGE_MANAGERS
+      )
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
+    filters:
+      - os == "linux"
+  - id: windows_com_rpc_debugging_registry_key_modified
+    description: Windows RPC COM debugging registry key modified
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: windows_explorer_executable_modified
+    description: windows explorer file has been modified
+    expression: write.file.device_path in [~"\Device\*\windows\explorer.exe"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: windows_firewall_configuration_registry_key_modified
+    description: Windows firewall configuration registry key modified
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1112-modify-registry
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: windows_hosts_file_modified
+    description: the windows hosts file was modified
+    expression: write.file.device_path in [~"\Device\*\windows\system32\Drivers\etc\hosts"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: windows_security_essentials_executable_modified
+    description: microsoft security essentials executable modified
+    expression: write.file.device_path in [~"\Device\*\Program Files\Microsoft Security Client\msseces.exe"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: windows_shell_folders_registry_key_modified
+    description: Windows shell folders registry key modified
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders*", ~"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "windows"
+  - id: windows_system_enviroment_variable_registry_key_modified
+    description: Windows environment variable registry key modified
+    expression: set.registry.key_path in [~"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment*"]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:compliance
+    filters:
+      - os == "windows"
