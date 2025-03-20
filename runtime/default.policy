@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.42.1
+version: 1.43.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -158,6 +158,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: auditctl_usage
@@ -166,6 +167,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: auditd_config_modified
@@ -174,6 +176,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: auditd_rule_file_modified
@@ -182,6 +185,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: aws_cli_usage
@@ -190,6 +194,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1651-cloud-administration-command
+      - policy:best-practice
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: aws_eks_service_account_token_accessed
@@ -201,6 +207,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: aws_imds
@@ -209,6 +216,8 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:best-practice
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: azure_imds
@@ -217,6 +226,8 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:best-practice
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: base64_decode
@@ -227,6 +238,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1140-deobfuscate-or-decode-files-or-information
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: certutil_usage
@@ -235,6 +247,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: chatroom_request
@@ -245,10 +258,11 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1572-protocol-tunneling
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: common_net_intrusion_util
-    description: A network utility (nmap) commonly used in intrusion attacks was executed
+    description: A network utility (such as nmap) commonly used in intrusion attacks was executed
     expression: exec.file.name in NETWORK_SCANNERS && exec.args_flags not in ["V", "version"]
     tags:
       threat_score: '7'
@@ -256,6 +270,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1046-network-service-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: compile_after_delivery
@@ -277,6 +292,7 @@ rules:
       - tactic:TA0004-privilege-escalation
       - technique:T1027-obfuscated-files-or-information
       - technique:T1574-hijack-execution-flow
+      - policy:threat-detection
     actions:
       - hash: {}
     filters:
@@ -289,6 +305,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1027-obfuscated-files-or-information
+      - policy:best-practice
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: crackmap_exec_executed
@@ -297,6 +315,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: credential_modified_chmod
@@ -313,6 +332,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:compliance
     filters:
       - os == "linux"
   - id: credential_modified_chown
@@ -329,6 +349,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:compliance
     filters:
       - os == "linux"
   - id: credential_modified_link
@@ -346,6 +367,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:compliance
     filters:
       - os == "linux"
   - id: credential_modified_open_v2
@@ -363,6 +385,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:compliance
     filters:
       - os == "linux"
   - id: credential_modified_rename
@@ -380,6 +403,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:compliance
     filters:
       - os == "linux"
   - id: credential_modified_unlink
@@ -396,6 +420,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:compliance
     filters:
       - os == "linux"
   - id: credential_modified_utimes
@@ -412,6 +437,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:compliance
     filters:
       - os == "linux"
   - id: critical_registry_export
@@ -420,6 +446,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: critical_windows_files_modified
@@ -428,6 +455,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "windows"
   - id: cron_at_job_creation_chmod
@@ -441,6 +469,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: cron_at_job_creation_chown
@@ -454,6 +484,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: cron_at_job_creation_link
@@ -468,6 +500,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: cron_at_job_creation_open
@@ -482,6 +516,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: cron_at_job_creation_rename
@@ -496,6 +532,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: cron_at_job_creation_unlink
@@ -509,6 +547,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: cron_at_job_creation_utimes
@@ -522,6 +562,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: cryptominer_args
@@ -534,6 +576,9 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
+      - policy:threat-detection
+    actions:
+      - hash: {}
     filters:
       - os == "linux"
   - id: cryptominer_envs
@@ -542,6 +587,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: cups_spawned_shell
@@ -550,6 +596,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: curl_docker_socket
@@ -558,6 +605,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: database_shell_execution
@@ -574,6 +622,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: debugfs_in_container
@@ -582,6 +631,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: delete_system_log
@@ -591,6 +641,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1070-indicator-removal
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: deploy_priv_container
@@ -599,6 +650,8 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
+      - policy:best-practice
     filters:
       - os == "linux"
   - id: devshm_execution
@@ -607,6 +660,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1564-hide-artifacts
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: dirty_pipe_attempt
@@ -618,6 +672,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1068-exploitation-for-privilege-escalation
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: dirty_pipe_exploitation
@@ -629,6 +684,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1068-exploitation-for-privilege-escalation
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: dotnet_dump_execution
@@ -637,6 +693,7 @@ rules:
     product_tags:
       - tactic:TA0009-collection
       - technique:T1005-data-from-local-system
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: dynamic_linker_config_unlink
@@ -648,17 +705,20 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1574-hijack-execution-flow
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: dynamic_linker_config_write
     description: A process wrote to a dynamic linker config file
     expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES && process.ancestors.file.path not in DD_AGENT_PROCESSES
+      && process.argv0 not in ["runc", "/usr/bin/runc", "/usr/sbin/runc"]
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking global configurations the dynamic linker uses to load shared libraries.
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1574-hijack-execution-flow
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: exec_lsmod
@@ -667,6 +727,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1082-system-information-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: exec_whoami
@@ -677,6 +738,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1033-system-owner-or-user-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: exec_wrmsr
@@ -685,6 +747,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: executable_bit_added
@@ -699,6 +762,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1222-file-and-directory-permissions-modification
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: file_sync_exfil
@@ -707,6 +771,7 @@ rules:
     product_tags:
       - tactic:TA0010-exfiltration
       - technique:T1048-exfiltration-over-alternative-protocol
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: find_credentials
@@ -715,6 +780,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: gcp_imds
@@ -723,6 +789,8 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:best-practice
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: hidden_file_executed
@@ -731,6 +799,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1564-hide-artifacts
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: imds_v1_usage
@@ -739,6 +808,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:best-practice
     actions:
       - set:
           name: imds_v1_usage_services
@@ -757,6 +827,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: inveigh_tool_usage
@@ -765,6 +836,7 @@ rules:
     product_tags:
       - tactic:TA0009-collection
       - technique:T1557-adversary-in-the-middle
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: ip_check_domain
@@ -775,6 +847,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1016-system-network-configuration-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: iptables_egress_allowed
@@ -783,6 +856,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: irc_connection
@@ -791,6 +865,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1071-application-layer-protocol
+      - policy:threat-detection
     agent_version: '>= 7.61'
     filters:
       - os == "linux"
@@ -807,6 +882,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: jupyter_shell_execution
@@ -815,6 +891,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: k8s_pod_service_account_token_accessed
@@ -832,6 +909,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:threat-detection
     actions:
       - set:
           name: processes_accessing
@@ -851,6 +929,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
     filters:
       - os == "linux"
   - id: kernel_module_chown
@@ -864,6 +943,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
     filters:
       - os == "linux"
   - id: kernel_module_link
@@ -878,6 +958,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
     filters:
       - os == "linux"
   - id: kernel_module_load
@@ -889,6 +970,7 @@ rules:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
       - technique:T1496-resource-hijacking
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: kernel_module_load_container
@@ -897,6 +979,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: kernel_module_load_from_memory
@@ -908,6 +991,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: kernel_module_load_from_memory_container
@@ -919,6 +1003,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: kernel_module_open
@@ -933,6 +1018,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
     filters:
       - os == "linux"
   - id: kernel_module_rename
@@ -947,6 +1033,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
     filters:
       - os == "linux"
   - id: kernel_module_unlink
@@ -960,6 +1047,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
     filters:
       - os == "linux"
   - id: kernel_module_utimes
@@ -973,6 +1061,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:compliance
     filters:
       - os == "linux"
   - id: kernel_msr_write
@@ -981,6 +1070,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: kmod_list
@@ -989,6 +1079,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1082-system-information-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: known_dll_registry_key_modified
@@ -997,6 +1088,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1574-hijack-execution-flow
+      - policy:compliance
     filters:
       - os == "windows"
   - id: kubernetes_dns_enumeration
@@ -1005,6 +1097,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1046-network-service-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ld_preload_unusual_library_path
@@ -1016,6 +1109,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1574-hijack-execution-flow
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: libpam_ebpf_hook
@@ -1024,6 +1118,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1056-input-capture
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: looney_tunables_exploit
@@ -1032,16 +1127,19 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1068-exploitation-for-privilege-escalation
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: memfd_create
     description: memfd object created
-    expression: exec.file.name =~ "memfd*" && exec.file.path == ""
+    expression: exec.file.name =~ "memfd*" && exec.file.path == "" && process.parent.file.path not in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc" , "/run/docker/runtime-runc/moby/*", "/x86_64-bottlerocket-linux-gnu/sys-root/usr/bin/runc"] && !(process.comm
+      == "dd-ipc-helper" && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"])
     tags:
       allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1620-reflective-code-loading
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: minidump_usage
@@ -1050,6 +1148,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: mining_pool_lookup
@@ -1061,6 +1160,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: modified_file_requesting_imds_creds
@@ -1069,6 +1169,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: mount_host_fs
@@ -1077,6 +1178,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: mount_in_container
@@ -1085,6 +1187,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: mount_proc_hide
@@ -1093,6 +1196,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1564-hide-artifacts
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: net_file_download
@@ -1106,6 +1210,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: net_unusual_request
@@ -1116,6 +1221,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: net_util
@@ -1127,6 +1233,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: net_util_exfiltration
@@ -1140,6 +1247,7 @@ rules:
     product_tags:
       - tactic:TA0010-exfiltration
       - technique:T1048-exfiltration-over-alternative-protocol
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: net_util_in_container
@@ -1153,6 +1261,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: netcat_shell
@@ -1161,6 +1270,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: network_sniffing_tool
@@ -1169,6 +1279,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1040-network-sniffing
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: new_binary_execution_in_container
@@ -1181,6 +1292,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: nsenter_in_container
@@ -1189,6 +1301,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_chmod
@@ -1200,6 +1313,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_chown
@@ -1211,6 +1325,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_link
@@ -1223,6 +1338,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_open
@@ -1235,6 +1351,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_open_v2
@@ -1247,6 +1364,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_rename
@@ -1259,6 +1377,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_unlink
@@ -1270,6 +1389,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: nsswitch_conf_mod_utimes
@@ -1281,6 +1401,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ntds_in_commandline
@@ -1289,6 +1410,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: offensive_k8s_tool
@@ -1297,6 +1419,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: omigod
@@ -1305,6 +1428,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1203-exploitation-for-client-execution
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: open_msr_writes
@@ -1313,6 +1437,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: openssl_backdoor
@@ -1321,6 +1446,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: overwrite_entrypoint
@@ -1329,6 +1455,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: p2pinfect_connection
@@ -1337,6 +1464,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1071-application-layer-protocol
+      - policy:threat-detection
     agent_version: '>= 7.61'
     filters:
       - os == "linux"
@@ -1348,6 +1476,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
+      - policy:threat-detection
+      - policy:best-practice
     filters:
       - os == "linux"
   - id: pam_modification_chmod
@@ -1359,6 +1489,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pam_modification_chown
@@ -1370,6 +1501,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pam_modification_link
@@ -1382,6 +1514,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pam_modification_open
@@ -1394,6 +1527,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pam_modification_rename
@@ -1406,6 +1540,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pam_modification_unlink
@@ -1417,6 +1552,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pam_modification_utimes
@@ -1428,6 +1564,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
+      - policy:compliance
     filters:
       - os == "linux"
   - id: passwd_execution
@@ -1442,6 +1579,7 @@ rules:
       - tactic:TA0040-impact
       - technique:T1098-account-manipulation
       - technique:T1531-account-access-removal
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: paste_site
@@ -1452,6 +1590,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_chmod
@@ -1465,6 +1604,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_chown
@@ -1478,6 +1618,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_link
@@ -1492,6 +1633,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_open
@@ -1506,6 +1648,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_open_v2
@@ -1520,6 +1663,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_rename
@@ -1534,6 +1678,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_unlink
@@ -1547,6 +1692,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_utimes
@@ -1560,6 +1706,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "linux"
   - id: perl_shell
@@ -1568,6 +1715,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1210-exploitation-of-remote-services
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: php_shell
@@ -1576,6 +1724,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1210-exploitation-of-remote-services
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: php_spawning_shell
@@ -1584,6 +1733,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1210-exploitation-of-remote-services
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: potential_web_shell_parent
@@ -1594,6 +1744,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1210-exploitation-of-remote-services
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: powershell_empire_uac_bypass
@@ -1602,6 +1753,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: procdump_execution
@@ -1610,6 +1762,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: ptrace_antidebug
@@ -1621,6 +1774,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1622-debugger-evasion
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ptrace_injection
@@ -1632,6 +1786,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1055-process-injection
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: pwnkit_privilege_escalation
@@ -1643,6 +1798,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1068-exploitation-for-privilege-escalation
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: python_cli_code
@@ -1654,6 +1810,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ransomware_note
@@ -1665,6 +1822,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1490-inhibit-system-recovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: rc_scripts_modified
@@ -1673,6 +1831,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1037-boot-or-logon-initialization-scripts
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: read_kubeconfig
@@ -1681,6 +1840,7 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: redis_sandbox_escape
@@ -1689,6 +1849,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: redis_save_module
@@ -1697,6 +1858,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1129-shared-modules
+      - policy:threat-detection
     actions:
       - hash: {}
     filters:
@@ -1707,6 +1869,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1112-modify-registry
+      - policy:compliance
     filters:
       - os == "windows"
   - id: registry_runkey_modified
@@ -1717,6 +1880,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: registry_service_runkey_modified
@@ -1725,6 +1889,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: relay_attack_tool_execution
@@ -1734,6 +1899,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1555-credentials-from-password-stores
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: release_agent_escape
@@ -1742,6 +1908,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: rubeus_execution
@@ -1751,6 +1918,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1558-steal-or-forge-kerberos-tickets
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: runc_leaky_fd
@@ -1759,6 +1927,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: runc_modification
@@ -1771,6 +1940,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: safeboot_modification
@@ -1779,6 +1949,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "windows"
   - id: scheduled_task_creation
@@ -1787,6 +1959,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: selinux_disable_enforcement
@@ -1795,6 +1968,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: sensitive_tracing
@@ -1803,6 +1977,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1055-process-injection
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: service_stop
@@ -1813,6 +1988,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1489-service-stop
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: sharpup_tool_usage
@@ -1821,6 +1997,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1068-exploitation-for-privilege-escalation
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: shell_history_deleted
@@ -1829,6 +2006,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1070-indicator-removal
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: shell_history_symlink
@@ -1837,6 +2016,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1070-indicator-removal
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: shell_history_truncated
@@ -1845,6 +2026,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1070-indicator-removal
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: shell_net_connection
@@ -1853,6 +2036,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
+      - policy:threat-detection
     agent_version: '>= 7.61'
     filters:
       - os == "linux"
@@ -1862,6 +2046,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: sliver_c2_implant_execution
@@ -1870,6 +2056,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1071-application-layer-protocol
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: socat_shell
@@ -1878,6 +2065,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_chmod
@@ -1889,6 +2077,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_chown
@@ -1900,6 +2090,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_link
@@ -1912,6 +2104,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_open
@@ -1924,6 +2118,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_open_v2
@@ -1936,6 +2132,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_rename
@@ -1948,6 +2146,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_unlink
@@ -1959,6 +2159,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_utimes
@@ -1970,6 +2172,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssh_it_tool_config_write
@@ -1978,6 +2182,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_nonstandard_connection
@@ -1986,15 +2191,17 @@ rules:
     product_tags:
       - tactic:TA0008-lateral-movement
       - technique:T1021-remote-services
+      - policy:threat-detection
     agent_version: '>= 7.60'
     filters:
       - os == "linux"
   - id: ssh_outbound_connection
     description: A process connected to an SSH server
-    expression: connect.addr.port == 22 && connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.ip not in [127.0.0.0/8]
+    expression: connect.addr.port == 22 && connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.ip not in [127.0.0.0/8, 0.0.0.0/32, ::1/128, ::/128]
     product_tags:
       - tactic:TA0008-lateral-movement
       - technique:T1563-remote-service-session-hijacking
+      - policy:threat-detection
     agent_version: '>= 7.60'
     filters:
       - os == "linux"
@@ -2012,6 +2219,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_chown
@@ -2028,6 +2236,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_link
@@ -2045,6 +2254,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_open
@@ -2061,6 +2271,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_open_v2
@@ -2079,6 +2290,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_rename
@@ -2096,6 +2308,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_unlink
@@ -2112,6 +2325,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_utimes
@@ -2128,6 +2342,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:compliance
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_chmod
@@ -2139,6 +2354,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_chown
@@ -2150,6 +2366,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_link
@@ -2162,6 +2379,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_open
@@ -2172,6 +2390,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_rename
@@ -2184,6 +2403,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_unlink
@@ -2195,6 +2415,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
     filters:
       - os == "linux"
   - id: sudoers_policy_modified_utimes
@@ -2206,6 +2427,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:compliance
     filters:
       - os == "linux"
   - id: suid_file_execution
@@ -2216,6 +2438,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: suspicious_bitsadmin_usage
@@ -2224,6 +2447,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: suspicious_container_client
@@ -2235,6 +2459,7 @@ rules:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
       - technique:T1610-deploy-container
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: suspicious_dll_write
@@ -2244,6 +2469,7 @@ rules:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
       - technique:T1610-deploy-container
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: suspicious_ntdsutil_usage
@@ -2252,6 +2478,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1003-os-credential-dumping
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: suspicious_suid_execution
@@ -2260,6 +2487,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: systemd_modification_chmod
@@ -2272,6 +2500,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: systemd_modification_chown
@@ -2284,6 +2514,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: systemd_modification_link
@@ -2297,6 +2529,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: systemd_modification_open
@@ -2310,6 +2544,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: systemd_modification_rename
@@ -2323,6 +2559,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: systemd_modification_unlink
@@ -2335,6 +2573,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: systemd_modification_utimes
@@ -2347,6 +2587,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
+      - policy:threat-detection
+      - policy:compliance
     filters:
       - os == "linux"
   - id: tar_execution
@@ -2357,6 +2599,7 @@ rules:
     product_tags:
       - tactic:TA0009-collection
       - technique:T1560-archive-collected-data
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: tty_shell_in_container
@@ -2365,6 +2608,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: tunnel_traffic
@@ -2375,6 +2619,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1572-protocol-tunneling
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: udev_modification
@@ -2383,6 +2628,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1546-event-triggered-execution
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: unshare_in_container
@@ -2391,6 +2637,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: user_created_tty
@@ -2401,6 +2648,7 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1136-create-account
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: user_deleted_tty
@@ -2409,6 +2657,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1531-account-access-removal
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: webapp_imds_V1_request
@@ -2417,6 +2666,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1531-account-access-removal
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: webdriver_spawned_shell
@@ -2425,6 +2675,7 @@ rules:
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: windows_boot_registry_key_modified
@@ -2433,6 +2684,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1112-modify-registry
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: windows_com_rpc_debugging_registry_key_modified
@@ -2441,6 +2693,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1112-modify-registry
+      - policy:compliance
     filters:
       - os == "windows"
   - id: windows_cryptographic_blocking_policy_registry_key_modified
@@ -2449,6 +2702,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1553-subvert-trust-controls
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: windows_cryptominer_process
@@ -2457,6 +2711,7 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: windows_explorer_executable_modified
@@ -2465,6 +2720,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "windows"
   - id: windows_firewall_configuration_registry_key_modified
@@ -2473,6 +2729,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1112-modify-registry
+      - policy:compliance
     filters:
       - os == "windows"
   - id: windows_hosts_file_modified
@@ -2481,6 +2738,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "windows"
   - id: windows_security_essentials_executable_modified
@@ -2489,6 +2747,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "windows"
   - id: windows_shell_folders_registry_key_modified
@@ -2497,6 +2756,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "windows"
   - id: windows_system_enviroment_variable_registry_key_modified
@@ -2505,6 +2765,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
+      - policy:compliance
     filters:
       - os == "windows"
   - id: windows_update_registry_key_modified
@@ -2513,6 +2774,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1112-modify-registry
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: winlogon_registry_key_modified
@@ -2521,6 +2783,7 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1112-modify-registry
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: wmi_spawning_shell
@@ -2529,5 +2792,6 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1047-windows-management-instrumentation
+      - policy:threat-detection
     filters:
       - os == "windows"
