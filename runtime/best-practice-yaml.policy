@@ -1,0 +1,112 @@
+# IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
+version: 1.4.3
+macros:
+  - id: AWS_RISKY_URI
+    description: AWS IMDS URI's known for exploitation
+    expression: '[~"*169.254.169.254/latest/meta-data/iam/security-credentials/*", ~"*169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI", ~"*169.254.170.2/*/credentials?id=*"]'
+  - id: HTTP_UTILS
+    description: Executables commonly used to fetch data over HTTP
+    expression: '["wget", "curl", "lwp-download"]'
+  - id: AZURE_RISKY_URI
+    description: Azure IMDS URI's known for exploitation
+    expression: '[~"*169.254.169.254/metadata/identity/oauth2/token?api-version=*"]'
+  - id: COMPILER_PROCESSES
+    expression: '["javac", "clang", "gcc", "bcc"]'
+  - id: GCP_RISKY_URI
+    description: GCP IMDS URI's known for exploitation
+    expression: '[~"*metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token", ~"*169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token"]'
+  - id: PACKAGE_MANAGERS
+    description: Package managers and container runtimes
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*", "/usr/bin/yum", "/sbin/apk", "/usr/lib/snapd/snapd"]'
+rules:
+  - id: aws_cli_usage
+    description: The AWS CLI utility was executed
+    expression: exec.file.name == "aws"
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1651-cloud-administration-command
+      - policy:best-practice
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: aws_imds
+    description: An AWS IMDS was called via a network utility
+    expression: exec.comm in HTTP_UTILS && exec.args in AWS_RISKY_URI
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
+      - policy:best-practice
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: azure_imds
+    description: An Azure IMDS was called via a network utility
+    expression: exec.comm in HTTP_UTILS && exec.args in AZURE_RISKY_URI
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
+      - policy:best-practice
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: compiler_in_container
+    description: A compiler was executed inside of a container
+    expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
+    tags:
+      allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1027-obfuscated-files-or-information
+      - policy:best-practice
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: deploy_priv_container
+    description: A privileged container was created
+    expression: exec.file.name != "" && container.id != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
+      - policy:threat-detection
+      - policy:best-practice
+    filters:
+      - os == "linux"
+  - id: gcp_imds
+    description: An GCP IMDS was called via a network utility
+    expression: exec.comm in HTTP_UTILS && exec.args in GCP_RISKY_URI
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
+      - policy:best-practice
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: imds_v1_usage
+    description: An AWS IMDSv1 request was issued
+    expression: imds.cloud_provider == "aws" && imds.aws.is_imds_v2 == false && process.file.name not in ${imds_v1_usage_services}
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
+      - policy:best-practice
+    actions:
+      - set:
+          name: imds_v1_usage_services
+          field: process.file.name
+          ttl: 10000000000
+          append: true
+    disabled: true
+    agent_version: '>= 7.60'
+    filters:
+      - os == "linux"
+  - id: package_management_in_container
+    description: Package management was detected in a container
+    expression: exec.file.path in PACKAGE_MANAGERS && container.id != ""
+    tags:
+      allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
+      - policy:threat-detection
+      - policy:best-practice
+    filters:
+      - os == "linux"
