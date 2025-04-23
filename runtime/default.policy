@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.43.0
+version: 1.45.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -8,7 +8,7 @@ macros:
     expression: '["/usr/bin/unattended-upgrade", "/usr/bin/apt"]'
   - id: AWS_RISKY_URI
     description: AWS IMDS URI's known for exploitation
-    expression: '[~"*169.254.169.254/latest/meta-data/iam/security-credentials/*", ~"*169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI", ~"*169.254.170.2/*/credentials?id=*"]'
+    expression: '[~"*169.254.169.254/latest/meta-data/iam/security-credentials/*", ~"*169.254.170.2/*/credentials?id=*"]'
   - id: AZURE_RISKY_URI
     description: Azure IMDS URI's known for exploitation
     expression: '[~"*169.254.169.254/metadata/identity/oauth2/token?api-version=*"]'
@@ -892,30 +892,6 @@ rules:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
       - policy:threat-detection
-    filters:
-      - os == "linux"
-  - id: k8s_pod_service_account_token_accessed
-    description: The Kubernetes pod service account token was accessed
-    expression: |-
-      open.file.path in [~"/var/run/secrets/kubernetes.io/serviceaccount/**", ~"/run/secrets/kubernetes.io/serviceaccount/**"]
-      && open.file.name == "token"
-      && process.file.path not in DD_AGENT_PROCESSES
-      && process.file.path not in  ["/usr/bin/cilium-agent", "/coredns", "/usr/bin/cilium-operator", "/manager", "/fluent-bit/bin/fluent-bit", "/usr/local/bin/cloud-node-manager", "/secrets-store-csi", "/bin/secrets-store-csi-driver-provider-aws", "/usr/bin/calico-node", "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent", "/nginx-ingress-controller", "/cluster-autoscaler", "/cluster-proportional-autoscaler", "/haproxy-ingress-controller", "/kube-state-metrics", "/fluent-bit-gke-exporter", "/bin/external-secrets", "/node-termination-handler", "/fluent-bit-gke-exporter", "/bin/vault", "/usr/local/bin/kubectl", "/local-provisioner", "/usr/bin/gitlab-runner", "/usr/local/bin/vaultd", "/usr/local/bin/trace-driveline-writer", "/usr/local/bin/registration-controller", "/usr/local/bin/cluster-autoscaler"]
-      && process.file.path not in ${processes_accessing}
-      && process.ancestors.file.path not in DD_AGENT_PROCESSES
-    tags:
-      threat_score: '4'
-      threat_description: Access to privileged Service Account tokens could allow impersonation to the Kubernetes control plane.
-    product_tags:
-      - tactic:TA0006-credential-access
-      - technique:T1552-unsecured-credentials
-      - policy:threat-detection
-    actions:
-      - set:
-          name: processes_accessing
-          field: process.file.path
-          ttl: 60s
-          append: true
     filters:
       - os == "linux"
   - id: kernel_module_chmod
