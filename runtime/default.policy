@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.45.0
+version: 1.46.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -74,7 +74,7 @@ macros:
     expression: '["libc-2.29.so", "libc-2.30.so", "libc-2.31.so", "libc-2.32.so", "libc-2.33.so", "libc-2.34.so", "libc-2.35.so", "libc-2.36.so", "libc-2.37.so"]'
   - id: NETWORK_SCANNERS
     description: Commonly used network scanners
-    expression: '["nmap", "masscan", "fping", "zgrab", "zgrab2", "rustscan", "pnscan"]'
+    expression: '["nmap", "masscan", "fping", "zmap", "zgrab", "zgrab2", "rustscan", "pnscan"]'
   - id: NET_UTILS
     description: Executables of common network utilites
     expression: '["socat", "dig", "nslookup", "host", ~"netcat*", ~"nc*", "ncat"]'
@@ -568,8 +568,8 @@ rules:
       - os == "linux"
   - id: cryptominer_args
     description: A process launched with arguments associated with cryptominers
-    expression: exec.args_options in [~"cpu-priority*", ~"donate-level*"] || exec.args_flags == "randomx-1gb-pages" || exec.args in [~"*stratum+tcp*", ~"*stratum+ssl*", ~"*stratum1+tcp*", ~"*stratum1+ssl*", ~"*stratum2+tcp*", ~"*stratum2+ssl*", ~"*nicehash*",
-      ~"*yespower*"]
+    expression: exec.args_options in [~"cpu-priority*", ~"donate-level*", ~"wallet-address*"] || exec.args_flags == "randomx-1gb-pages" || exec.args in [~"*stratum+tcp*", ~"*stratum+ssl*", ~"*stratum1+tcp*", ~"*stratum1+ssl*", ~"*stratum2+tcp*", ~"*stratum2+ssl*",
+      ~"*nicehash*", ~"*yespower*"]
     tags:
       threat_score: '9'
       threat_description: Cloud environments are a common target for cryptocurrency mining
@@ -1794,7 +1794,7 @@ rules:
     expression: |-
       open.flags & O_CREAT > 0
       && open.file.path in [~"/home/**", ~"/root/**", ~"/bin/**", ~"/usr/bin/**", ~"/opt/**", ~"/etc/**", ~"/var/log/**", ~"/var/lib/log/**", ~"/var/backup/**", ~"/var/www/**"]
-      && open.file.name in [r"(?i)(restore|recover|read|instruction|how_to|ransom|lock).*(your_|crypt|lock|file|ransom)"] && open.file.name not in [r"\.lock$"]
+      && (open.file.name in [r"(?i)(restore|recover|instruction|help|how_to|how\ to|ransom).*(your_|recover|crypt|lock|ransom|instruction|files)"] || open.file.name in [r"RECOVER.*\.txt"]) && open.file.name not in [r"\.lock$"]
     product_tags:
       - tactic:TA0040-impact
       - technique:T1490-inhibit-system-recovery
