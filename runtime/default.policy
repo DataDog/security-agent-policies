@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.46.0
+version: 1.48.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -27,7 +27,7 @@ macros:
   - id: COMPILER_PROCESSES
     expression: '["javac", "clang", "gcc", "bcc"]'
   - id: CONTAINER_CLIENTS
-    expression: '["docker", "kubectl"]'
+    expression: '["docker", "kubectl", "ctr"]'
   - id: CONTAINER_PROCESSES
     description: Processes related to operating containers and kubernetes clusters
     expression: |-
@@ -140,9 +140,12 @@ macros:
     expression: '["cat","chgrp","chmod","chown","cp","date","dd","df","dir","echo","ln","ls","mkdir","mknod","mktemp","mv","pwd","readlink","rm","rmdir","sleep","stty","sync","touch","uname","vdir","arch","b2sum","base32","base64","basename","chcon","cksum","comm","csplit","cut","dircolors","dirname","du","env","expand","expr","factor","fmt","fold","groups","head","hostid","id","install","join","link","logname","md5sum","textutils","mkfifo","nice","nl","nohup","nproc","numfmt","od","paste","pathchk","pinky","pr","printenv","printf","ptx","realpath","runcon","seq","sha1sum","sha224sum","sha256sum","sha384sum","sha512sum","shred","shuf","sort","split","stat","stdbuf","sum","tac","tail","tee","test","timeout","tr","truncate","tsort","tty","unexpand","uniq","unlink","users","wc","who","whoami","chroot"]'
   - id: SYSTEMD_FOLDERS
     description: Package managers
-    expression: '[ ~"/lib/systemd/system/**", ~"/usr/lib/systemd/system/**", ~"/etc/systemd/system/**" ]'
+    expression: '[ ~"/lib/systemd/system/**", ~"/usr/lib/systemd/system/**", ~"/etc/systemd/system/**", ~"/usr/local/lib/systemd/system/**", ~"/run/systemd/system/**"]'
   - id: SYSTEMD_JOURNALD_PROCESSES
     expression: '["/usr/lib/systemd/systemd-journald"]'
+  - id: SYSTEMD_USER_FOLDERS
+    description: SYSTEMD User Context Folders
+    expression: '[ ~"/etc/systemd/user/**", ~"/usr/lib/systemd/user/**", ~"/home/*/.config/systemd/user/**", ~"/home/*/.local/share/systemd/user/**", ~"/run/systemd/user/**"]'
   - id: SYSTEM_PACKAGE_MANAGERS
     description: Package managers
     expression: '["/usr/bin/apt", "/usr/bin/apt-get", "/usr/bin/apt-config", "/usr/bin/dpkg", "/usr/bin/aptitude-curses", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/sbin/apk"]'
@@ -599,9 +602,9 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
-  - id: curl_docker_socket
-    description: The Docker socket was referenced in a cURL command
-    expression: exec.file.name == "curl" && exec.args_flags in ["unix-socket"] && exec.args in [~"*docker.sock*"] && container.id != ""
+  - id: curl_mgmt_socket
+    description: A container management socket was referenced in a cURL command
+    expression: exec.file.name == "curl" && exec.args_flags in ["unix-socket"] && exec.args in [~"*docker.sock*",  ~"*dockershim.sock*", ~"*containerd.sock*", ~"*crio.sock*", ~"*frakti.sock*", ~"*rktlet.sock*"] && container.id != ""
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
@@ -632,6 +635,21 @@ rules:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: delete_new_process
+    description: A file was deleted shortly after it was executed
+    expression: unlink.file.path in ${cgroup.chain_exec_unlink}
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1564-hide-artifacts
+      - policy:threat-detection
+    actions:
+      - set:
+          name: correlation_key_file_path
+          field: unlink.file.path
+          scope: cgroup
+    agent_version: '>= 7.46'
     filters:
       - os == "linux"
   - id: delete_system_log
@@ -721,6 +739,15 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
+  - id: enum_images
+    description: A container management utility listed images
+    expression: exec.file.name in CONTAINER_CLIENTS && exec.args in ["image list"]
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1613-container-and-resource-discovery
+      - policy:threat-detection
+    filters:
+      - os == "linux"
   - id: exec_lsmod
     description: Kernel modules were listed using the lsmod command
     expression: exec.comm == "lsmod"
@@ -728,6 +755,32 @@ rules:
       - tactic:TA0007-discovery
       - technique:T1082-system-information-discovery
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: exec_new_file
+    description: A recently modified file was executed
+    expression: exec.file.change_time < 30s && exec.file.path not in ${cgroup.exec_new_file_in_cgroup}
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - set:
+          name: chain_exec_unlink
+          field: exec.file.path
+          append: true
+          scope: cgroup
+          ttl: 30s
+      - set:
+          name: exec_new_file_in_cgroup
+          field: exec.file.path
+          append: true
+          scope: cgroup
+          ttl: 30m
+          size: 10000
+      - set:
+          name: correlation_key_file_path
+          field: exec.file.path
+          scope: cgroup
+    agent_version: '>= 7.46'
     filters:
       - os == "linux"
   - id: exec_whoami
@@ -780,6 +833,15 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: find_mgmt_socket
+    description: find command searching for container management socket
+    expression: exec.comm == "find" && exec.args in [~"*.sock*"]
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1613-container-and-resource-discovery
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -844,6 +906,15 @@ rules:
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
     tags:
       allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1016-system-network-configuration-discovery
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: ip_lookup_domain
+    description: A process checked the public IP address of the host
+    expression: connect.addr.hostname in IPCHECK_DOMAINS
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1016-system-network-configuration-discovery
@@ -1127,6 +1198,15 @@ rules:
       - policy:threat-detection
     filters:
       - os == "windows"
+  - id: mining_pool_domain
+    description: A process connected to a cryptocurrency mining pool
+    expression: connect.addr.hostname in CRYPTOMINER_DOMAINS
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
+      - policy:threat-detection
+    filters:
+      - os == "linux"
   - id: mining_pool_lookup
     description: A process resolved a DNS name associated with cryptomining activity
     expression: dns.question.name in CRYPTOMINER_DOMAINS && process.file.name != ""
@@ -1268,6 +1348,15 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: ngrok_domain
+    description: A process established a connection to ngrok
+    expression: connect.addr.hostname in [~"*.tunnel*.ngrok.com"]
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1102-web-service
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -1436,7 +1525,7 @@ rules:
       - os == "linux"
   - id: p2pinfect_connection
     description: A process made a connection to a port associated with P2PInfect malware
-    expression: connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.is_public == true && connect.addr.port >= 60100 && connect.addr.port <= 60150
+    expression: (connect.addr.family == AF_INET || connect.addr.family == AF_INET6) && connect.addr.is_public == true && connect.addr.port >= 60100 && connect.addr.port <= 60150
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1071-application-layer-protocol
@@ -1569,6 +1658,15 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
+  - id: paste_site_domain
+    description: A process connected to a paste site
+    expression: connect.addr.hostname in PASTE_SITES
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
+    filters:
+      - os == "linux"
   - id: pci_11_5_critical_binaries_chmod
     description: Critical system binaries may have been modified
     expression: |-
@@ -1683,6 +1781,15 @@ rules:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
       - policy:compliance
+    filters:
+      - os == "linux"
+  - id: pentest_domain
+    description: A process connected to a penetration testing domain
+    expression: connect.addr.hostname in [~"*.interact.sh", ~"*.oast.pro", ~"*.oast.live", ~"*.oast.fun", ~"*.oast.me", ~"*.burpcollaborator.net", ~"*.oastify.com", ~"*canarytokens.com", ~"*.requestbin.net", ~"*.dnslog.cn"]
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: perl_shell
@@ -2008,7 +2115,7 @@ rules:
       - os == "linux"
   - id: shell_net_connection
     description: A shell made an outbound network connection
-    expression: connect.addr.family & (AF_INET|AF_INET6) > 0 && process.file.name in SHELL_NAMES && connect.addr.is_public == true
+    expression: (connect.addr.family == AF_INET || connect.addr.family == AF_INET6) && process.file.name in SHELL_NAMES && connect.addr.is_public == true
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
@@ -2173,7 +2280,7 @@ rules:
       - os == "linux"
   - id: ssh_outbound_connection
     description: A process connected to an SSH server
-    expression: connect.addr.port == 22 && connect.addr.family & (AF_INET|AF_INET6) > 0 && connect.addr.ip not in [127.0.0.0/8, 0.0.0.0/32, ::1/128, ::/128]
+    expression: connect.addr.port == 22 && (connect.addr.family == AF_INET || connect.addr.family == AF_INET6) && connect.addr.ip not in [127.0.0.0/8, 0.0.0.0/32, ::1/128, ::/128]
     product_tags:
       - tactic:TA0008-lateral-movement
       - technique:T1563-remote-service-session-hijacking
@@ -2325,7 +2432,7 @@ rules:
     description: Sudoers policy file may have been modified without authorization
     expression: |-
       (
-          (chmod.file.path == "/etc/sudoers")
+          (chmod.file.path in ["/etc/sudoers", ~"/etc/sudoers.d/*"])
       ) && chmod.file.destination.mode != chmod.file.mode && process.ancestors.file.path not in PACKAGE_MANAGERS
     product_tags:
       - tactic:TA0004-privilege-escalation
@@ -2337,7 +2444,7 @@ rules:
     description: Sudoers policy file may have been modified without authorization
     expression: |-
       (
-          (chown.file.path == "/etc/sudoers")
+          (chown.file.path in ["/etc/sudoers", ~"/etc/sudoers.d/*"])
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
     product_tags:
       - tactic:TA0004-privilege-escalation
@@ -2349,8 +2456,8 @@ rules:
     description: Sudoers policy file may have been modified without authorization
     expression: |-
       (
-          (link.file.path == "/etc/sudoers"
-          || link.file.destination.path == "/etc/sudoers")
+          (link.file.path in ["/etc/sudoers", ~"/etc/sudoers.d/*"]
+          || link.file.destination.path in ["/etc/sudoers", ~"/etc/sudoers.d/*"])
       )
     product_tags:
       - tactic:TA0004-privilege-escalation
@@ -2362,7 +2469,7 @@ rules:
     description: Sudoers policy file may have been modified without authorization
     expression: |-
       (open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-      (open.file.path == "/etc/sudoers")) && process.file.path not in PACKAGE_MANAGERS
+      (open.file.path in ["/etc/sudoers", ~"/etc/sudoers.d/*"])) && process.file.path not in PACKAGE_MANAGERS
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
@@ -2373,8 +2480,8 @@ rules:
     description: Sudoers policy file may have been modified without authorization
     expression: |-
       (
-          (rename.file.path == "/etc/sudoers"
-          || rename.file.destination.path == "/etc/sudoers")
+          (rename.file.path in ["/etc/sudoers", ~"/etc/sudoers.d/*"]
+          || rename.file.destination.path in ["/etc/sudoers",~"/etc/sudoers.d/*"])
       )
     product_tags:
       - tactic:TA0004-privilege-escalation
@@ -2386,7 +2493,7 @@ rules:
     description: Sudoers policy file may have been modified without authorization
     expression: |-
       (
-          (unlink.file.path == "/etc/sudoers")
+          (unlink.file.path in ["/etc/sudoers", ~"/etc/sudoers.d/*"])
       )
     product_tags:
       - tactic:TA0004-privilege-escalation
@@ -2398,7 +2505,7 @@ rules:
     description: Sudoers policy file may have been modified without authorization
     expression: |-
       (
-          (utimes.file.path == "/etc/sudoers")
+          (utimes.file.path in ["/etc/sudoers", ~"/etc/sudoers.d/*"])
       ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
       - tactic:TA0004-privilege-escalation
@@ -2496,12 +2603,8 @@ rules:
       - os == "linux"
   - id: systemd_modification_link
     description: A service may have been modified without authorization
-    expression: |-
-      (
-          (link.file.path in SYSTEMD_FOLDERS
-          || link.file.destination.path in SYSTEMD_FOLDERS)
-          && process.file.path not in PACKAGE_MANAGERS
-      )
+    expression: "(\n    (  link.file.path in SYSTEMD_FOLDERS\n    || link.file.destination.path in SYSTEMD_USER_FOLDERS \n    || link.file.destination.path in SYSTEMD_FOLDERS \n    || link.file.path in SYSTEMD_USER_FOLDERS)\n    && process.file.path not in PACKAGE_MANAGERS\n\
+      )"
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
@@ -2514,7 +2617,7 @@ rules:
     expression: |-
       (
           open.flags & (OPEN_CREATE_FLAGS) > 0 &&
-          (open.file.path in SYSTEMD_FOLDERS)
+          (open.file.path in SYSTEMD_FOLDERS || open.file.path in SYSTEMD_USER_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
     product_tags:
@@ -2526,12 +2629,8 @@ rules:
       - os == "linux"
   - id: systemd_modification_rename
     description: A service may have been modified without authorization
-    expression: |-
-      (
-          (rename.file.path in SYSTEMD_FOLDERS
-          || rename.file.destination.path in SYSTEMD_FOLDERS)
-          && process.file.path not in PACKAGE_MANAGERS
-      )
+    expression: "(\n    (  rename.file.path in SYSTEMD_FOLDERS \n    || rename.file.path in SYSTEMD_USER_FOLDERS\n    || rename.file.destination.path in SYSTEMD_FOLDERS \n    || rename.file.destination.path in SYSTEMD_USER_FOLDERS)\n    && process.file.path\
+      \ not in PACKAGE_MANAGERS\n)"
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
@@ -2543,7 +2642,7 @@ rules:
     description: A service may have been modified without authorization
     expression: |-
       (
-          (unlink.file.path in SYSTEMD_FOLDERS)
+          (unlink.file.path in SYSTEMD_FOLDERS || unlink.file.path in SYSTEMD_USER_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
     product_tags:
@@ -2557,7 +2656,7 @@ rules:
     description: A service may have been modified without authorization
     expression: |-
       (
-          (utimes.file.path in SYSTEMD_FOLDERS)
+          (utimes.file.path in SYSTEMD_FOLDERS || utimes.file.path in SYSTEMD_USER_FOLDERS)
           && process.file.path not in PACKAGE_MANAGERS
       )
     product_tags:
@@ -2565,6 +2664,17 @@ rules:
       - technique:T1569-system-services
       - policy:threat-detection
       - policy:compliance
+    filters:
+      - os == "linux"
+  - id: systemd_spawned_shell
+    description: systemd spawned shell
+    expression: exec.file.path in SHELLS && process.ancestors.file.path == "/usr/lib/systemd/systemd-executor" && process.parent.file.path not in PACKAGE_MANAGERS
+    tags:
+      allow_autosuppression: 'true'
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: tar_execution
@@ -2576,6 +2686,16 @@ rules:
       - tactic:TA0009-collection
       - technique:T1560-archive-collected-data
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: tmate_usage
+    description: Remote access was created using a terminal-sharing service
+    expression: connect.addr.hostname in ["ssh.tmate.io"]
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1219-remote-access-tools
+      - policy:threat-detection
+    agent_version: '>= 7.67'
     filters:
       - os == "linux"
   - id: tty_shell_in_container
@@ -2633,6 +2753,15 @@ rules:
     product_tags:
       - tactic:TA0040-impact
       - technique:T1531-account-access-removal
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: usermod_privileged_group
+    description: A user was added to the sudo group
+    expression: exec.file.name == "usermod" && (exec.args_flags in ["aG"] || exec.args_flags in ["G"]) && exec.args_flags not in ["r"] && (exec.argv == "sudo" || exec.argv == "wheel")
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1098-account-manipulation
       - policy:threat-detection
     filters:
       - os == "linux"
