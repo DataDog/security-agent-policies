@@ -117,14 +117,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit
-  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
-    description: Limit Password Reuse (STIGs - ubuntu2004)
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faildelay_delay
     description: Enforce Delay After Failed Logon Attempts
     filters: *id001
@@ -989,14 +981,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_directory_permissions_var_log_audit
-  - id: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_burstaction
-    description: Disable Ctrl-Alt-Del Burst Action
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_burstaction
   - id: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_reboot
     description: Disable Ctrl-Alt-Del Reboot Activation
     filters: *id001
@@ -1005,14 +989,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_reboot
-  - id: xccdf_org.ssgproject.content_rule_display_login_attempts
-    description: Ensure PAM Displays Last Logon/Access Notification
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_display_login_attempts
   - id: xccdf_org.ssgproject.content_rule_encrypt_partitions
     description: Encrypt Partitions
     filters: *id001
@@ -1277,14 +1253,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_grub2_uefi_password
-  - id: xccdf_org.ssgproject.content_rule_install_endpoint_security_software
-    description: Install an Endpoint Security Solution
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_install_endpoint_security_software
   - id: xccdf_org.ssgproject.content_rule_install_smartcard_packages
     description: Install Smart Card Packages For Multifactor Authentication
     filters: *id001
@@ -1453,14 +1421,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_permissions_local_var_log
-  - id: xccdf_org.ssgproject.content_rule_policy_temp_passwords_immediate_change
-    description: Policy Requires Immediate Change of Temporary Passwords
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_policy_temp_passwords_immediate_change
   - id: xccdf_org.ssgproject.content_rule_prevent_direct_root_logins
     description: Direct root Logins Are Not Allowed
     filters: *id001

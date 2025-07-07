@@ -949,14 +949,6 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_directory_permissions_var_log_audit
-  - id: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_burstaction
-    description: Disable Ctrl-Alt-Del Burst Action
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_burstaction
   - id: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_reboot
     description: Disable Ctrl-Alt-Del Reboot Activation
     filters: *id001
