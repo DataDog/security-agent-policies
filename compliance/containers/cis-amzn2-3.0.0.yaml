@@ -1566,7 +1566,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_ftp_removed
   - id: xccdf_org.ssgproject.content_rule_package_httpd_removed
-    description: Uninstall httpd Package
+    description: Uninstall apache2 Package
     filters: *id001
     input:
       - xccdf:
