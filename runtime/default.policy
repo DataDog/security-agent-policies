@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.48.0
+version: 1.50.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -759,7 +759,7 @@ rules:
       - os == "linux"
   - id: exec_new_file
     description: A recently modified file was executed
-    expression: exec.file.change_time < 30s && exec.file.path not in ${cgroup.exec_new_file_in_cgroup}
+    expression: exec.file.change_time < 30s && cgroup.file.inode != 0 && exec.file.path not in ${cgroup.exec_new_file_in_cgroup}
     product_tags:
       - policy:threat-detection
     actions:
@@ -1549,7 +1549,7 @@ rules:
     description: PAM may have been modified without authorization
     expression: |-
       (
-          (chmod.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+          (chmod.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*"])
       ) && chmod.file.destination.mode != chmod.file.mode
     product_tags:
       - tactic:TA0003-persistence
@@ -1561,7 +1561,7 @@ rules:
     description: PAM may have been modified without authorization
     expression: |-
       (
-          (chown.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+          (chown.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*" ])
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
     product_tags:
       - tactic:TA0003-persistence
@@ -1573,8 +1573,8 @@ rules:
     description: PAM may have been modified without authorization
     expression: |-
       (
-          (link.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
-          || link.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+          (link.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*"]
+          || link.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*"])
       )
     product_tags:
       - tactic:TA0003-persistence
@@ -1587,7 +1587,7 @@ rules:
     expression: |-
       (
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+          (open.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*" ])
       )
     product_tags:
       - tactic:TA0003-persistence
@@ -1599,8 +1599,8 @@ rules:
     description: PAM may have been modified without authorization
     expression: |-
       (
-          (rename.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ]
-          || rename.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+          (rename.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*" ]
+          || rename.file.destination.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*" ])
       )
     product_tags:
       - tactic:TA0003-persistence
@@ -1612,7 +1612,7 @@ rules:
     description: PAM may have been modified without authorization
     expression: |-
       (
-          (unlink.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+          (unlink.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*" ])
       )
     product_tags:
       - tactic:TA0003-persistence
@@ -1624,7 +1624,7 @@ rules:
     description: PAM may have been modified without authorization
     expression: |-
       (
-          (utimes.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf" ])
+          (utimes.file.path in [ ~"/etc/pam.d/**", "/etc/pam.conf", ~"/lib/security/*", ~"/usr/lib/security/*", ~"/lib64/security/*", ~"/usr/lib64/security/*" ])
       ) && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
       - tactic:TA0003-persistence
@@ -2724,6 +2724,15 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1546-event-triggered-execution
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: unlink_self
+    description: A process removed itself from the filesystem
+    expression: unlink.file.path == process.file.path
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1564-hide-artifacts
       - policy:threat-detection
     filters:
       - os == "linux"
