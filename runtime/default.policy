@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.50.0
+version: 1.54.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -310,6 +310,32 @@ rules:
       - technique:T1027-obfuscated-files-or-information
       - policy:best-practice
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: core_pattern_write
+    description: Detect any attempt to modify /proc/sys/kernel/core_pattern from a container, which might result to escape to host when a core dump is triggered.
+    expression: "open.file.name == \"core_pattern\" &&\nopen.file.filesystem == \"proc\" &&\nopen.flags & (OPEN_WRITE_FLAGS) > 0 && \ncontainer.id != \"\""
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
+      - policy:threat-detection
+    actions:
+      - set:
+          name: core_pattern_write_container_id
+          field: container.id
+          scope: container
+          ttl: 30m
+    agent_version: '>= 7.65'
+    filters:
+      - os == "linux"
+  - id: coredump_triggered
+    description: Detect attempts to trigger a coredump after modifying /proc/sys/kernel/core_pattern.
+    expression: exit.cause == COREDUMPED && container.id == ${container.core_pattern_write_container_id}
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1611-escape-to-host
+      - policy:threat-detection
+    agent_version: '>= 7.65'
     filters:
       - os == "linux"
   - id: crackmap_exec_executed
@@ -674,7 +700,7 @@ rules:
       - os == "linux"
   - id: devshm_execution
     description: A file executed from /dev/shm/ directory
-    expression: exec.file.path == "/dev/shm/**"
+    expression: exec.file.path == ~"/dev/shm/**"
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1564-hide-artifacts
@@ -818,6 +844,218 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
+  - id: execution_context_auid
+    description: Track execution context from auid
+    expression: exec.auid >= 0 && exec.auid != AUDIT_AUID_UNSET && ${process.correlation_key} in ["", ~"cgroup_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"auid_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_cgroup
+    description: Track execution context from cgroup
+    expression: exec.cgroup.id != process.parent.cgroup.id && ${process.correlation_key} in ["", ~"cgroup_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"cgroup_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_cgroup_write
+    description: Track execution context from cgroup write
+    expression: cgroup_write.pid > 0 && ${process.correlation_key} in ["", ~"cgroup_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          scope_field: cgroup_write.pid
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"cgroup_${builtins.uuid4}"'
+          scope: process
+          scope_field: cgroup_write.pid
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_interactive_shell
+    description: Track execution context from interactive shell
+    expression: exec.file.path in SHELLS && (process.tty_name != "" || exec.args_flags in ["i"]) && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*", ~"service_*", ~"service_new_cgroup_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"interactive_shell_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_k8s_usersession_entrypoint
+    description: Track execution context from k8s user session
+    expression: exec.user_session.k8s_username != ""  && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*", ~"service_*", ~"service_new_cgroup_*", ~"interactive_shell_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"k8s_session_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_service
+    description: Track execution context from service
+    expression: (exec.envs in ["DD_SERVICE", "OTEL_SERVICE_NAME"] || "tags.datadoghq.com/service" in container.tags) && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"service_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_service_new_cgroup
+    description: Track execution context from new service cgroup
+    expression: (exec.envs in ["DD_SERVICE", "OTEL_SERVICE_NAME"] || "tags.datadoghq.com/service" in container.tags) && ${process.correlation_key} in [~"service_*"] && process.cgroup.id != process.parent.cgroup.id
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"service_new_cgroup_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_service_new_cgroup_write
+    description: Track execution context from new service cgroup write
+    expression: cgroup_write.pid > 0 && (process.envs in ["DD_SERVICE", "OTEL_SERVICE_NAME"] || "tags.datadoghq.com/service" in container.tags) && ${process.correlation_key} in [~"service_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          scope_field: cgroup_write.pid
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"service_new_cgroup_${builtins.uuid4}"'
+          scope: process
+          scope_field: cgroup_write.pid
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
   - id: file_sync_exfil
     description: The rclone utility was executed
     expression: exec.file.name in ["rclone", "rsync", "sftp", "ftp", "scp", "dcp", "rcp"]
@@ -852,6 +1090,15 @@ rules:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
       - policy:best-practice
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: git_cve_2025_48384
+    description: A shell spawned from a git clone which could be exploitation of CVE-2025-48384
+    expression: exec.comm in SHELL_NAMES && process.ancestors[A].comm == "git" && process.ancestors[A].argv in ["clone"] && process.ancestors[A].args_flags in ["recursive"]
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1203-exploitation-for-client-execution
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -963,6 +1210,13 @@ rules:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: k8s_user_session
+    description: A process was executed in a Kubernetes user session
+    expression: exec.user_session.k8s_username != ""
+    product_tags:
+      - policy:compliance
     filters:
       - os == "linux"
   - id: kernel_module_chmod
@@ -1120,6 +1374,15 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
+  - id: kernel_process_masquerade
+    description: A process is masquerading as a kernel thread by using bracket notation in its name
+    expression: (exec.comm in [r"^\[.*\]$"] || exec.argv0 in [r"^\[.*\]$"]) && (process.parent.ppid !=2 || process.args != "")
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:threat-detection
+    filters:
+      - os == "linux"
   - id: kmod_list
     description: Kernel modules were listed using the kmod command
     expression: exec.comm == "kmod" && exec.args in [~"*list*"]
@@ -1144,6 +1407,18 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1046-network-service-discovery
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: ld_audit_unusual_library_path
+    description: The LD_AUDIT variable is populated by a link to a suspicious file directory
+    expression: "process.envs in [\"LD_AUDIT\"] && \n(\n  mmap.file.path in [~\"/home/*\", ~\"/tmp/*\", ~\"/dev/shm/*\"] || \n  mmap.file.in_upper_layer == true\n) &&\nmmap.protection & (PROT_EXEC) > 0  "
+    tags:
+      threat_score: '8'
+      threat_description: Malicious payloads can be executed by hijacking environment variables the dynamic linker uses to load shared libraries.
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1574-hijack-execution-flow
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -1794,7 +2069,7 @@ rules:
       - os == "linux"
   - id: perl_shell
     description: Perl executed with suspicious argument
-    expression: exec.file.name == ~"perl*" && exec.args_flags in ["e"] && (exec.args in [~"*socket*", ~"*bind*", ~"*sockaddr*", ~"*listen*", ~"*accept", ~"*stdin*", ~"*stdout"])
+    expression: exec.file.name == ~"perl*" && exec.args_flags in ["e"] && (exec.args in [~"*SOCK_STREAM*", ~"*sockaddr_in*"])
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1210-exploitation-of-remote-services
