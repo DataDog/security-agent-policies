@@ -44,7 +44,7 @@ resource "datadog_csm_threats_agent_rule" "hash_exec_host" {
         name   = "host_already_sent_hashes"
         field  = "exec.file.path"
         append = true
-        ttl = 60000000000
+        ttl = 3600000000000
       }
     }
 }
@@ -62,7 +62,7 @@ resource "datadog_csm_threats_agent_rule" "hash_exec_container" {
         field  = "exec.file.path"
         append = true
         scope  = "cgroup"
-        ttl = 60000000000
+        ttl = 3600000000000
       }
     }
 }
