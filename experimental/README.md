@@ -1,4 +1,4 @@
-# DataDog Workload Protection
+# Workload Protection - Experimental Policies
 
 This repository contains Terraform configurations designed to provide experimental security detection capabilities for **DataDog Workload Protection**. These policies help organizations implement advanced security monitoring and threat detection across their infrastructure.
 
