@@ -15,6 +15,7 @@ The `/policies` folder contains individual security policies, with each subfolde
 | Policy | Use Case | Description |
 |--------|----------|-------------|
 | `hash-exec` | Malware Detection | Monitors binary executions and generates alerts based on file hashes matching known malware signatures |
+| `ssh-session` | SSH Session Tracking | Monitors process activity of SSH Sessions |
 
 ## Prerequisites
 
@@ -70,22 +71,26 @@ terraform apply
 For containerized deployments, you can use the provided Dockerfile:
 
 ```bash
-# Build the container (optional)
-docker build -t datadog/wp-policy-creator .
+# Initialization
+docker run -it -v ./policies:/policies -w /policies/[policy-name] \
+-e TF_VAR_api_key=$TF_VAR_api_key \
+-e TF_VAR_app_key=$TF_VAR_app_key \
+-e TF_VAR_url=$TF_VAR_url \
+hashicorp/terraform init
 
 # Plan the deployment
-docker run -it -w /policies/[policy-name] \
+docker run -it -v ./policies:/policies -w /policies/[policy-name] \
 -e TF_VAR_api_key=$TF_VAR_api_key \
 -e TF_VAR_app_key=$TF_VAR_app_key \
 -e TF_VAR_url=$TF_VAR_url \
-datadog/wp-policy-creator plan
+hashicorp/terraform plan
 
 # Apply the configuration
-docker run -it -w /policies/[policy-name] \
+docker run -it -v ./policies:/policies -w /policies/[policy-name] \
 -e TF_VAR_api_key=$TF_VAR_api_key \
 -e TF_VAR_app_key=$TF_VAR_app_key \
 -e TF_VAR_url=$TF_VAR_url \
-datadog/wp-policy-creator apply
+hashicorp/terraform apply
 ```
 
 ## Important Notes
