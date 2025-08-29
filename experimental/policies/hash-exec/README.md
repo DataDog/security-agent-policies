@@ -37,9 +37,17 @@ For containerized deployments, you can use the provided Dockerfile:
 # Build the container (optional)
 docker build -t datadog/wp-policy-creator .
 
-# Run with a specific policy
+# Plan the deployment
 docker run -it -w /policies/hash-exec \
 -e TF_VAR_api_key=$TF_VAR_api_key \
 -e TF_VAR_app_key=$TF_VAR_app_key \
+-e TF_VAR_url=$TF_VAR_url \
+datadog/wp-policy-creator terraform plan
+
+# Apply the configuration
+docker run -it -w /policies/hash-exec \
+-e TF_VAR_api_key=$TF_VAR_api_key \
+-e TF_VAR_app_key=$TF_VAR_app_key \
+-e TF_VAR_url=$TF_VAR_url \
 datadog/wp-policy-creator terraform plan
 ```
