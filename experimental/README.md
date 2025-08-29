@@ -31,11 +31,7 @@ Before using these policies, ensure you have:
 
 ### 1. Choose a Policy
 
-Navigate to the specific policy folder you want to deploy:
-
-```bash
-cd policies/[policy-name]
-```
+Navigate to the specific policy folder you want to deploy.
 
 ### 2. Review Documentation
 
