@@ -42,12 +42,12 @@ docker run -it -w /policies/hash-exec \
 -e TF_VAR_api_key=$TF_VAR_api_key \
 -e TF_VAR_app_key=$TF_VAR_app_key \
 -e TF_VAR_url=$TF_VAR_url \
-datadog/wp-policy-creator terraform plan
+datadog/wp-policy-creator plan
 
 # Apply the configuration
 docker run -it -w /policies/hash-exec \
 -e TF_VAR_api_key=$TF_VAR_api_key \
 -e TF_VAR_app_key=$TF_VAR_app_key \
 -e TF_VAR_url=$TF_VAR_url \
-datadog/wp-policy-creator terraform plan
+datadog/wp-policy-creator plan
 ```
