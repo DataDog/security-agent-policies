@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.54.0
+version: 1.55.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -166,7 +166,7 @@ rules:
       - os == "linux"
   - id: auditctl_usage
     description: The auditctl command was used to modify auditd
-    expression: exec.file.name == "auditctl" && exec.args_flags not in ["s", "l"]
+    expression: exec.file.name == "auditctl" && exec.args_flags not in ["s", "l" , "v"]
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
@@ -203,7 +203,10 @@ rules:
       - os == "linux"
   - id: aws_eks_service_account_token_accessed
     description: The AWS EKS service account token was accessed
-    expression: open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/**" && open.file.name == "token" && process.file.path not in DD_AGENT_PROCESSES
+    expression: |-
+      open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/**" &&
+      open.file.name == "token" &&
+      (process.file.path not in DD_AGENT_PROCESSES && process.parent.comm not in ["velero"])
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the EKS control plane.
@@ -309,6 +312,17 @@ rules:
       - tactic:TA0005-defense-evasion
       - technique:T1027-obfuscated-files-or-information
       - policy:best-practice
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: container_breakout_enumeration_tool
+    description: A container performed various enumeration activities including checking container runtime, process privileges, user namespace mappings, Linux Security Modules, mount points, and network namespaces.
+    expression: "container.id != \"\" && (\n  open.file.path in [~\"/run/systemd/container\"] ||\n  open.file.path in [~\"/proc/*/status\", ~\"/proc/*/task/*/status\"] ||\n  (open.file.path in [~\"/proc/*/uid_map\"] && process.file.name not in [\"runc\"]) ||\n\
+      \  open.file.path in [~\"/proc/*/attr/current\"] ||\n  open.file.path in [~\"/proc/*/mountinfo\"] ||\n  open.file.path in [~\"/proc/*/cgroup\"] ||\n  open.file.path in [~\"/proc/net/unix\"]\n) &&\nprocess.file.in_upper_layer && \nprocess.file.path not\
+      \ in DD_AGENT_PROCESSES "
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1613-container-and-resource-discovery
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -1161,7 +1175,7 @@ rules:
       - os == "linux"
   - id: ip_lookup_domain
     description: A process checked the public IP address of the host
-    expression: connect.addr.hostname in IPCHECK_DOMAINS
+    expression: connect.addr.hostname in IPCHECK_DOMAINS && connect.addr.is_public == true && connect.addr.port in [80, 443]
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1016-system-network-configuration-discovery
@@ -1475,7 +1489,7 @@ rules:
       - os == "windows"
   - id: mining_pool_domain
     description: A process connected to a cryptocurrency mining pool
-    expression: connect.addr.hostname in CRYPTOMINER_DOMAINS
+    expression: connect.addr.hostname in CRYPTOMINER_DOMAINS && connect.addr.is_public == true && connect.addr.port not in [53, 80, 443]
     product_tags:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
@@ -1523,7 +1537,7 @@ rules:
       - os == "linux"
   - id: mount_proc_hide
     description: Process hidden using mount
-    expression: mount.mountpoint.path in [~"/proc/1*", ~"/proc/2*", ~"/proc/3*", ~"/proc/4*", ~"/proc/5*", ~"/proc/6*", ~"/proc/7*", ~"/proc/8*", ~"/proc/9*"]
+    expression: mount.mountpoint.path in [~"/proc/1*", ~"/proc/2*", ~"/proc/3*", ~"/proc/4*", ~"/proc/5*", ~"/proc/6*", ~"/proc/7*", ~"/proc/8*", ~"/proc/9*"] && process.argv0 != "runc"
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1564-hide-artifacts
@@ -1597,7 +1611,7 @@ rules:
       - os == "linux"
   - id: netcat_shell
     description: Process arguments indicating possible netcat shell detected
-    expression: exec.file.name in ["netcat", "nc", "ncat"] && ((exec.args_flags in ["l"] && exec.args_flags in ["p"]) || (exec.args_flags in ["n"] && exec.args_flags in ["v"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
+    expression: exec.file.name in ["netcat", "nc", ~"nc.*", "ncat"] && ((exec.args_flags in ["l"] && exec.args_flags in ["p"]) || (exec.args_flags in ["n"] && exec.args_flags in ["v"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
@@ -1628,7 +1642,7 @@ rules:
       - os == "linux"
   - id: ngrok_domain
     description: A process established a connection to ngrok
-    expression: connect.addr.hostname in [~"*.tunnel*.ngrok.com"]
+    expression: connect.addr.hostname in [~"tunnel.*.ngrok.com"] && connect.addr.is_public == true && connect.addr.port in [80, 443]
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1102-web-service
@@ -1935,7 +1949,7 @@ rules:
       - os == "linux"
   - id: paste_site_domain
     description: A process connected to a paste site
-    expression: connect.addr.hostname in PASTE_SITES
+    expression: connect.addr.hostname in PASTE_SITES && connect.addr.is_public == true && connect.addr.port in [80, 443]
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -2060,7 +2074,7 @@ rules:
       - os == "linux"
   - id: pentest_domain
     description: A process connected to a penetration testing domain
-    expression: connect.addr.hostname in [~"*.interact.sh", ~"*.oast.pro", ~"*.oast.live", ~"*.oast.fun", ~"*.oast.me", ~"*.burpcollaborator.net", ~"*.oastify.com", ~"*canarytokens.com", ~"*.requestbin.net", ~"*.dnslog.cn"]
+    expression: connect.addr.hostname in [~"*.interact.sh", ~"*.oast.pro", ~"*.oast.live", ~"*.oast.fun", ~"*.oast.me", ~"*.burpcollaborator.net", ~"*.oastify.com", ~"*canarytokens.com", ~"*.requestbin.net", ~"*.dnslog.cn"] && connect.addr.is_public == true
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
@@ -2966,10 +2980,6 @@ rules:
   - id: tmate_usage
     description: Remote access was created using a terminal-sharing service
     expression: connect.addr.hostname in ["ssh.tmate.io"]
-    product_tags:
-      - tactic:TA0011-command-and-control
-      - technique:T1219-remote-access-tools
-      - policy:threat-detection
     agent_version: '>= 7.67'
     filters:
       - os == "linux"
