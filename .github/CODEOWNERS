@@ -13,4 +13,4 @@
 /runtime                        @DataDog/agent-security
 
 # Documentation
-*.md                            @DataDog/documentation @DataDog/agent-security
+*.md                            @DataDog/agent-security
