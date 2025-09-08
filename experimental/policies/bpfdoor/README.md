@@ -2,7 +2,7 @@
 
 ## Description
 
-This policy defines security rules to detect potential bpfdoor malware execution by monitoring its characteristic behavior. The first rule triggers when a fake PID file is created in /var/run, and the second rule activates if the same process installs a BPF filter. Together, these rules enable reliable detection of bpfdoor activity.
+This policy defines security rules to detect potential BPFDoor malware execution by monitoring its characteristic behavior. The first rule triggers when a fake PID file is created in /var/run, and the second rule activates if the same process installs a BPF filter. Together, these rules enable reliable detection of bpfdoor activity.
 
 ## Installation
 

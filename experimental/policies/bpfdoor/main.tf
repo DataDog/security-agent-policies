@@ -42,7 +42,7 @@ resource "datadog_csm_threats_agent_rule" "experimental_bpfdoor_pid_file_creatio
     actions {
       set {
         name   = "pid_file"
-        value  = true
+        value  = "true"
         ttl    = 10000000000
         scope  = "process"
       }
@@ -52,8 +52,16 @@ resource "datadog_csm_threats_agent_rule" "experimental_bpfdoor_pid_file_creatio
 resource "datadog_csm_threats_agent_rule" "experimental_bpfdoor_bpf_filter_creation" {
     description  = "BPFDoor malware detected: a BPF filter has been attached to a socket and previously a fake pid file has been created."
     enabled      = true
-    expression   = "setsockopt.level == SOL_SOCKET && setsockopt.optname == SO_ATTACH_FILTER && $${process.pid_file} == true"
+    expression   = "setsockopt.level == SOL_SOCKET && setsockopt.optname == SO_ATTACH_FILTER && $${process.pid_file} == \"true\""
     name         = "experimental_bpfdoor_bpf_filter_creation"
     policy_id    = datadog_csm_threats_policy.bpfdoor.id
     product_tags = ["type:experimental"]
+    actions {
+      set {
+        name   = "pid_file"
+        value  = "true"
+        ttl    = 10000000000
+        scope  = "process"
+      }
+    }
 }
