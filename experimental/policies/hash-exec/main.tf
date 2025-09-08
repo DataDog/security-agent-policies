@@ -26,9 +26,9 @@ provider "datadog" {
   api_url = var.url
 }
 
-resource "datadog_csm_threats_policy" "hash_exec" {
-    description  = "Hash binary at the execution"
-    name         = "Hash binary at the execution"
+resource "datadog_csm_threats_policy" "experimental_hash_exec" {
+    description  = "Hash binary at the execution (experimental)"
+    name         = "Hash binary at the execution (experimental)"
     enabled      = false
 }
 
@@ -37,7 +37,7 @@ resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_host" {
     enabled      = true
     expression   = "process.container.id == \"\" && exec.file.name != \"\" && exec.file.path not in $${host_already_sent_hashes}"
     name         = "experimental_hash_exec_host"
-    policy_id    = datadog_csm_threats_policy.hash_exec.id
+    policy_id    = datadog_csm_threats_policy.experimental_hash_exec.id
     product_tags = ["type:experimental"]
     actions {
       set {
@@ -54,7 +54,7 @@ resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_container" {
     enabled      = true
     expression   = "exec.file.in_upper_layer == true && process.container.id != \"\" && exec.file.name != \"\" && exec.file.path not in $${cgroup.cont_already_sent_hashes}"
     name         = "experimental_hash_exec_container"
-    policy_id    = datadog_csm_threats_policy.hash_exec.id
+    policy_id    = datadog_csm_threats_policy.experimental_hash_exec.id
     product_tags = ["type:experimental"]
     actions {
       set {

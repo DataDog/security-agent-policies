@@ -26,9 +26,9 @@ provider "datadog" {
   api_url = var.url
 }
 
-resource "datadog_csm_threats_policy" "bpfdoor" {
-    description  = "Detect BPFDoor"
-    name         = "Detect BPFDoor"
+resource "datadog_csm_threats_policy" "experimental_bpfdoor" {
+    description  = "Detect BPFDoor (experimental)"
+    name         = "Detect BPFDoor (experimental)"
     enabled      = false
 }
 
@@ -37,7 +37,7 @@ resource "datadog_csm_threats_agent_rule" "experimental_bpfdoor_pid_file_creatio
     enabled      = true
     expression   = "open.file.path in [\"/var/run/haldrund.pid\", \"/var/run/hald-smartd.pid\", \"/var/run/system.pid\", \"/var/run/hp-health.pid\", \"/var/run/hald-addon.pid\", \"/run/haldrund.pid\", \"/run/hald-smartd.pid\", \"/run/system.pid\", \"/run/hp-health.pid\", \"/run/hald-addon.pid\"] && open.flags & O_CREAT != 0"
     name         = "experimental_bpfdoor_pid_file_creation"
-    policy_id    = datadog_csm_threats_policy.bpfdoor.id
+    policy_id    = datadog_csm_threats_policy.experimental_bpfdoor.id
     product_tags = ["type:experimental"]
     actions {
       set {
@@ -54,7 +54,7 @@ resource "datadog_csm_threats_agent_rule" "experimental_bpfdoor_bpf_filter_creat
     enabled      = true
     expression   = "setsockopt.level == SOL_SOCKET && setsockopt.optname == SO_ATTACH_FILTER && $${process.pid_file} == \"true\""
     name         = "experimental_bpfdoor_bpf_filter_creation"
-    policy_id    = datadog_csm_threats_policy.bpfdoor.id
+    policy_id    = datadog_csm_threats_policy.experimental_bpfdoor.id
     product_tags = ["type:experimental"]
     actions {
       set {
