@@ -32,11 +32,11 @@ resource "datadog_csm_threats_policy" "ssh_session" {
     enabled      = false
 }
 
-resource "datadog_csm_threats_agent_rule" "ssh_session_start" {
+resource "datadog_csm_threats_agent_rule" "experimental_ssh_session_start" {
     description  = "SSH Session start"
     enabled      = true
     expression   = "exec.tty_name != \"\" && process.ancestors.name == \"sshd\" && $${process.ssh_session_key} == \"\""
-    name         = "ssh_session_start"
+    name         = "experimental_ssh_session_start"
     policy_id    = datadog_csm_threats_policy.ssh_session.id
     product_tags = ["type:experimental"]
     actions {
@@ -49,11 +49,11 @@ resource "datadog_csm_threats_agent_rule" "ssh_session_start" {
     }
 }
 
-resource "datadog_csm_threats_agent_rule" "ssh_session" {
+resource "datadog_csm_threats_agent_rule" "experimental_ssh_session" {
     description  = "SSH Session start"
     enabled      = true
     expression   = "exec.file.name != \"\" && $${process.ssh_session_key} != \"\""
-    name         = "ssh_session"
+    name         = "experimental_ssh_session"
     policy_id    = datadog_csm_threats_policy.ssh_session.id
     product_tags = ["type:experimental"]
 }

@@ -32,11 +32,11 @@ resource "datadog_csm_threats_policy" "hash_exec" {
     enabled      = false
 }
 
-resource "datadog_csm_threats_agent_rule" "hash_exec_host" {
+resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_host" {
     description  = "Hash binary at the execution"
     enabled      = true
     expression   = "process.container.id == \"\" && exec.file.name != \"\" && exec.file.path not in $${host_already_sent_hashes}"
-    name         = "hash_exec_host"
+    name         = "experimental_hash_exec_host"
     policy_id    = datadog_csm_threats_policy.hash_exec.id
     product_tags = ["type:experimental"]
     actions {
@@ -49,11 +49,11 @@ resource "datadog_csm_threats_agent_rule" "hash_exec_host" {
     }
 }
 
-resource "datadog_csm_threats_agent_rule" "hash_exec_container" {
+resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_container" {
     description  = "Hash binary at the execution"
     enabled      = true
     expression   = "exec.file.in_upper_layer == true && process.container.id != \"\" && exec.file.name != \"\" && exec.file.path not in $${cgroup.cont_already_sent_hashes}"
-    name         = "hash_exec_container"
+    name         = "experimental_hash_exec_container"
     policy_id    = datadog_csm_threats_policy.hash_exec.id
     product_tags = ["type:experimental"]
     actions {
