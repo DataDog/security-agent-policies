@@ -16,7 +16,6 @@ The `/policies` folder contains individual security policies, with each subfolde
 |--------|----------|-------------|
 | `hash-exec` | Malware Detection | Monitors binary executions and generates alerts based on file hashes matching known malware signatures |
 | `hash-open` | Malware Detection | Monitors newly created files and generates alerts based on file hashes matching known malware signatures |
-| `ssh-session` | SSH Session Tracking | Monitors process activity of SSH Sessions |
 | `bpfdoor` | BPFDoor execution detection | Detect BPFDoor malware execution by monitoring its behavioral patterns |
 
 ## Prerequisites
