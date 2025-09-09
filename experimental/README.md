@@ -4,7 +4,10 @@ This repository contains Terraform configurations designed to provide experiment
 
 ## Overview
 
-The Workload Protection Policy Creator enables security teams to deploy sophisticated detection rules and monitoring policies through Infrastructure as Code (IaC). Each policy is designed to address specific security use cases and threat vectors, providing comprehensive coverage across different attack scenarios.
+The Workload Protection Policy Creator enables security teams to create sophisticated detection rules and monitoring policies through Infrastructure as Code (IaC). Each policy is designed to address specific security use cases and threat vectors, providing comprehensive coverage across different attack scenarios.
+
+⚠️ **Policy Deployment**: The Terraform configuration creates policies that are disabled by default. These policies will appear in the DataDog Workload Protection UI, where you can enable them and select which hosts to monitor.
+
 
 ## Policies Directory
 
