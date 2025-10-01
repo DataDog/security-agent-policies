@@ -1510,7 +1510,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_telnet-server_removed
   - id: xccdf_org.ssgproject.content_rule_package_tftp-server_removed
-    description: Uninstall tftp-server Package
+    description: Uninstall tftpd-hpa Package
     filters: *id001
     input:
       - xccdf:
