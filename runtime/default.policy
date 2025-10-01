@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.55.0
+version: 1.57.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -46,7 +46,7 @@ macros:
       "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
   - id: CRYPTOMINER_DOMAINS
     expression: '[~"*.minexmr.com", "minexmr.com", ~"*.nanopool.org", "nanopool.org", ~"*.supportxmr.com", "supportxmr.com", ~"*.c3pool.com", "c3pool.com", ~"*.p2pool.io", "p2pool.io", ~"*.ethermine.org", "ethermine.org", ~"*.f2pool.com", "f2pool.com", ~"*.poolin.me",
-      "poolin.me", ~"*.rplant.xyz", "rplant.xyz", ~"*.miningocean.org", "miningocean.org"]'
+      "poolin.me", ~"*.rplant.xyz", "rplant.xyz", ~"*.miningocean.org", "miningocean.org", "donate.v2.xmrig.com"]'
   - id: DATABASE_PROCESSES
     description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
@@ -156,8 +156,6 @@ rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
@@ -213,6 +211,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - subtechnique:T1552.001-credentials-in-files
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -222,6 +221,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - subtechnique:T1552.005-cloud-instance-metadata-api
       - policy:best-practice
       - policy:threat-detection
     filters:
@@ -239,8 +239,6 @@ rules:
   - id: base64_decode
     description: The base64 command was used to decode information
     expression: exec.file.name == "base64" && exec.args_flags in ["d"]
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1140-deobfuscate-or-decode-files-or-information
@@ -259,8 +257,6 @@ rules:
   - id: chatroom_request
     description: A DNS request was made for a chatroom domain
     expression: dns.question.name in CHAT_ROOM_SITES
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1572-protocol-tunneling
@@ -294,8 +290,8 @@ rules:
       threat_score: '8'
       threat_description: Malicious code may be downloaded and compiled on the workload to evade detection
     product_tags:
-      - tactic:TA0005-defense-evasion
       - tactic:TA0004-privilege-escalation
+      - tactic:TA0005-defense-evasion
       - technique:T1027-obfuscated-files-or-information
       - technique:T1574-hijack-execution-flow
       - policy:threat-detection
@@ -306,8 +302,6 @@ rules:
   - id: compiler_in_container
     description: A compiler was executed inside of a container
     expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1027-obfuscated-files-or-information
@@ -510,10 +504,11 @@ rules:
       ) && chmod.file.destination.mode != chmod.file.mode
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
-      - tactic:TA0002-execution
+      - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
-      - policy:threat-detection
+      - subtechnique:T1053.003-cron
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: cron_at_job_creation_chown
@@ -525,10 +520,11 @@ rules:
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
-      - tactic:TA0002-execution
+      - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
-      - policy:threat-detection
+      - subtechnique:T1053.003-cron
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: cron_at_job_creation_link
@@ -541,10 +537,11 @@ rules:
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
-      - tactic:TA0002-execution
+      - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
-      - policy:threat-detection
+      - subtechnique:T1053.003-cron
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: cron_at_job_creation_open
@@ -557,10 +554,11 @@ rules:
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
-      - tactic:TA0002-execution
+      - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
-      - policy:threat-detection
+      - subtechnique:T1053.003-cron
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: cron_at_job_creation_rename
@@ -573,10 +571,11 @@ rules:
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
-      - tactic:TA0002-execution
+      - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
-      - policy:threat-detection
+      - subtechnique:T1053.006-systemd-timers
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: cron_at_job_creation_unlink
@@ -588,10 +587,11 @@ rules:
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
-      - tactic:TA0002-execution
+      - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
-      - policy:threat-detection
+      - subtechnique:T1053.003-cron
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: cron_at_job_creation_utimes
@@ -603,10 +603,11 @@ rules:
       )
       && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
-      - tactic:TA0002-execution
+      - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
-      - policy:threat-detection
+      - subtechnique:T1053.003-cron
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: cryptominer_args
@@ -682,7 +683,7 @@ rules:
     expression: unlink.file.path in ${cgroup.chain_exec_unlink}
     product_tags:
       - tactic:TA0005-defense-evasion
-      - technique:T1564-hide-artifacts
+      - technique:T1070-indicator-removal
       - policy:threat-detection
     actions:
       - set:
@@ -704,12 +705,18 @@ rules:
       - os == "linux"
   - id: deploy_priv_container
     description: A privileged container was created
-    expression: exec.file.name != "" && container.id != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0
+    expression: exec.file.name != "" && container.id != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0 && container.id != ${container.ratelimit_priv_container}
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
-      - policy:threat-detection
       - policy:best-practice
+      - policy:threat-detection
+    actions:
+      - set:
+          name: ratelimit_priv_container
+          field: container.id
+          scope: container
+          ttl: 10s
     filters:
       - os == "linux"
   - id: devshm_execution
@@ -717,7 +724,8 @@ rules:
     expression: exec.file.path == ~"/dev/shm/**"
     product_tags:
       - tactic:TA0005-defense-evasion
-      - technique:T1564-hide-artifacts
+      - technique:T1027-obfuscated-files-or-information
+      - subtechnique:T1027.011-fileless-storage
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -754,6 +762,15 @@ rules:
       - policy:threat-detection
     filters:
       - os == "windows"
+  - id: drop_caches
+    description: A process cleared the system cache
+    expression: open.file.path == "/proc/sys/vm/drop_caches"
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
+      - policy:threat-detection
+    filters:
+      - os == "linux"
   - id: dynamic_linker_config_unlink
     description: A process unlinked a dynamic linker config file
     expression: unlink.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && process.file.path not in PACKAGE_MANAGERS
@@ -799,7 +816,7 @@ rules:
       - os == "linux"
   - id: exec_new_file
     description: A recently modified file was executed
-    expression: exec.file.change_time < 30s && cgroup.file.inode != 0 && exec.file.path not in ${cgroup.exec_new_file_in_cgroup}
+    expression: exec.file.change_time < 30s && cgroup.file.inode != 0 && exec.file.path not in ${cgroup.exec_new_file_in_cgroup} && exec.file.in_upper_layer != false && container.created_at > 1m
     product_tags:
       - policy:threat-detection
     actions:
@@ -826,8 +843,6 @@ rules:
   - id: exec_whoami
     description: The whoami command was executed
     expression: exec.comm == "whoami"
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1033-system-owner-or-user-discovery
@@ -990,6 +1005,34 @@ rules:
     agent_version: '>=7.68'
     filters:
       - os == "linux"
+  - id: execution_context_npm_install
+    description: Track execution context from npm install
+    expression: "exec.file.name in [~\"node\", ~\"npm\"] && \n(process.args =~ \"* install *\" || process.args =~ \"* add *\" || process.args =~ \"* i *\" || \n process.args =~ \"* in *\" || process.args =~ \"* ins *\" || process.args =~ \"* inst *\" || \n process.args\
+      \ =~ \"* insta *\" || process.args =~ \"* instal *\" || process.args =~ \"* isnt *\" || \n process.args =~ \"* isnta *\" || process.args =~ \"* isntal *\" || process.args =~ \"* isntall *\") &&\nnot(process.args =~ \"*-e *\") &&\n${process.correlation_key}\
+      \ in [\"\", ~\"cgroup_*\", ~\"auid_*\", ~\"service_*\", ~\"service_new_cgroup_*\", ~\"interactive_shell_*\", ~\"k8s_session_*\"]"
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"npm_install_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
   - id: execution_context_service
     description: Track execution context from service
     expression: (exec.envs in ["DD_SERVICE", "OTEL_SERVICE_NAME"] || "tags.datadoghq.com/service" in container.tags) && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*"]
@@ -1070,6 +1113,33 @@ rules:
     agent_version: '>=7.68'
     filters:
       - os == "linux"
+  - id: execution_context_spawned_shell
+    description: Track execution context from spawned shell
+    expression: exec.file.path in SHELLS && (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*" || process.parent.file.name in DATABASE_PROCESSES || process.parent.file.name in ["java", "jspawnhelper"]) && ${process.correlation_key}
+      in ["", ~"cgroup_*", ~"auid_*", ~"service_*", ~"service_new_cgroup_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"spawned_shell_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
   - id: file_sync_exfil
     description: The rclone utility was executed
     expression: exec.file.name in ["rclone", "rsync", "sftp", "ftp", "scp", "dcp", "rcp"]
@@ -1085,6 +1155,7 @@ rules:
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
+      - subtechnique:T1552.001-credentials-in-files
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -1116,12 +1187,18 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
+  - id: github_api_contacted
+    description: GitHub API was contacted
+    expression: connect.addr.hostname =~ "api.github.com"
+    filters:
+      - os == "linux"
   - id: hidden_file_executed
     description: A hidden file was executed in a suspicious folder
     expression: exec.file.name =~ ".*" && exec.file.path in [~"/home/**", ~"/tmp/**", ~"/var/tmp/**", ~"/dev/shm/**"]
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1564-hide-artifacts
+      - subtechnique:T1564.001-hidden-files-and-directories
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -1145,8 +1222,6 @@ rules:
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
@@ -1165,8 +1240,6 @@ rules:
   - id: ip_check_domain
     description: A DNS lookup was done for a IP check service
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1016-system-network-configuration-discovery
@@ -1197,6 +1270,7 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1071-application-layer-protocol
+      - subtechnique:T1071.001-web-protocols
       - policy:threat-detection
     agent_version: '>= 7.61'
     filters:
@@ -1237,7 +1311,7 @@ rules:
     description: A new kernel module was added
     expression: |-
       (
-          (chmod.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          (chmod.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**", ~"/usr/lib/modules-load.d/**", ~"/etc/modules-load.d/**", ~"/etc/modprobe.d/**" ])
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       ) && chmod.file.destination.mode != chmod.file.mode
@@ -1251,7 +1325,7 @@ rules:
     description: A new kernel module was added
     expression: |-
       (
-          (chown.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          (chown.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**", ~"/usr/lib/modules-load.d/**", ~"/etc/modules-load.d/**", ~"/etc/modprobe.d/**" ])
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       ) && (chown.file.destination.uid != chown.file.uid || chown.file.destination.gid != chown.file.gid)
@@ -1265,7 +1339,7 @@ rules:
     description: A new kernel module was added
     expression: |-
       (
-          (link.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ]
+          (link.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**", ~"/usr/lib/modules-load.d/**", ~"/etc/modules-load.d/**", ~"/etc/modprobe.d/**" ]
           || link.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
@@ -1281,10 +1355,7 @@ rules:
     expression: load_module.loaded_from_memory == false && load_module.name not in COMMON_MODULES && process.ancestors.file.name not in [~"falcon*", "unattended-upgrade", "apt.systemd.daily", "xtables-legacy-multi", "ssm-agent-worker"]
     product_tags:
       - tactic:TA0003-persistence
-      - tactic:TA0040-impact
-      - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
-      - technique:T1496-resource-hijacking
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -1326,7 +1397,7 @@ rules:
     expression: |-
       (
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
-          (open.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          (open.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**", ~"/usr/lib/modules-load.d/**", ~"/etc/modules-load.d/**", ~"/etc/modprobe.d/**" ])
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
@@ -1341,7 +1412,7 @@ rules:
     expression: |-
       (
           (rename.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ]
-          || rename.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          || rename.file.destination.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**", ~"/usr/lib/modules-load.d/**", ~"/etc/modules-load.d/**", ~"/etc/modprobe.d/**" ])
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
@@ -1355,7 +1426,7 @@ rules:
     description: A new kernel module was added
     expression: |-
       (
-          (unlink.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          (unlink.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**", ~"/usr/lib/modules-load.d/**", ~"/etc/modules-load.d/**", ~"/etc/modprobe.d/**" ])
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
@@ -1369,7 +1440,7 @@ rules:
     description: A new kernel module was added
     expression: |-
       (
-          (utimes.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**" ])
+          (utimes.file.path in [ ~"/lib/modules/**", ~"/usr/lib/modules/**", ~"/usr/lib/modules-load.d/**", ~"/etc/modules-load.d/**", ~"/etc/modprobe.d/**" ])
           && process.file.path not in PACKAGE_MANAGERS
           && process.ancestors.file.path not in PACKAGE_MANAGERS && process.ancestors.file.path != "/usr/bin/kmod"
       )
@@ -1470,8 +1541,6 @@ rules:
     description: memfd object created
     expression: exec.file.name =~ "memfd*" && exec.file.path == "" && process.parent.file.path not in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc" , "/run/docker/runtime-runc/moby/*", "/x86_64-bottlerocket-linux-gnu/sys-root/usr/bin/runc"] && !(process.comm
       == "dd-ipc-helper" && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"])
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1620-reflective-code-loading
@@ -1537,10 +1606,11 @@ rules:
       - os == "linux"
   - id: mount_proc_hide
     description: Process hidden using mount
-    expression: mount.mountpoint.path in [~"/proc/1*", ~"/proc/2*", ~"/proc/3*", ~"/proc/4*", ~"/proc/5*", ~"/proc/6*", ~"/proc/7*", ~"/proc/8*", ~"/proc/9*"] && process.argv0 != "runc"
+    expression: mount.mountpoint.path in [~"/proc/1*", ~"/proc/2*", ~"/proc/3*", ~"/proc/4*", ~"/proc/5*", ~"/proc/6*", ~"/proc/7*", ~"/proc/8*", ~"/proc/9*"] && process.argv0 not in ["runc", ~"/*/runc"]
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1564-hide-artifacts
+      - subtechnique:T1564.003-bind-mounts
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -1561,8 +1631,6 @@ rules:
   - id: net_unusual_request
     description: Network utility executed with suspicious URI
     expression: 'exec.comm in HTTP_UTILS && exec.args in [~"*.php*", ~"*.jpg*"] '
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -1587,8 +1655,6 @@ rules:
       exec.comm in HTTP_UTILS &&
       exec.args_options in [ ~"post-file=*", ~"post-data=*", ~"T=*", ~"d=@*", ~"upload-file=*", ~"F=file*"] &&
       exec.args not in [~"*localhost*", ~"*127.0.0.1*"]
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0010-exfiltration
       - technique:T1048-exfiltration-over-alternative-protocol
@@ -1601,8 +1667,6 @@ rules:
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -1633,7 +1697,6 @@ rules:
     tags:
       threat_score: '4'
       threat_description: Container images should be immutable. New executables may be downloaded or compiled malware.
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -1646,6 +1709,16 @@ rules:
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1102-web-service
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: nohup_usage
+    description: nohup was used to ignore process termination signals
+    expression: exec.comm == "nohup"
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1564-hide-artifacts
+      - subtechnique:T1564.011-ignore-process-interrupts
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -1819,19 +1892,20 @@ rules:
       - tactic:TA0011-command-and-control
       - technique:T1071-application-layer-protocol
       - policy:threat-detection
-    agent_version: '>= 7.61'
+    actions:
+      - hash:
+          field: process.file
+    agent_version: '>= 7.70'
     filters:
       - os == "linux"
   - id: package_management_in_container
     description: Package management was detected in a container
     expression: exec.file.path in PACKAGE_MANAGERS && container.id != ""
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
-      - policy:threat-detection
       - policy:best-practice
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: pam_modification_chmod
@@ -1927,7 +2001,6 @@ rules:
     tags:
       threat_score: '6'
       threat_description: Changing a password may be done to establish persistence
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0003-persistence
       - tactic:TA0040-impact
@@ -1939,8 +2012,6 @@ rules:
   - id: paste_site
     description: A DNS lookup was done for a pastebin-like site
     expression: dns.question.name in PASTE_SITES && process.file.name != ""
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -2085,8 +2156,8 @@ rules:
     description: Perl executed with suspicious argument
     expression: exec.file.name == ~"perl*" && exec.args_flags in ["e"] && (exec.args in [~"*SOCK_STREAM*", ~"*sockaddr_in*"])
     product_tags:
-      - tactic:TA0001-initial-access
-      - technique:T1210-exploitation-of-remote-services
+      - tactic:TA0001-execution
+      - technique:T1059-command-and-scripting-interpreter
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -2094,8 +2165,8 @@ rules:
     description: Process arguments indicating possible php shell detected
     expression: exec.file.name == "php" && exec.args_flags in ["r"] && ((exec.args in [~"*socket_bind*", ~"*socket_listen*", ~"*socket_accept*", ~"*socket_create*", ~"*socket_write*", ~"*socket_read*"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
     product_tags:
-      - tactic:TA0001-initial-access
-      - technique:T1210-exploitation-of-remote-services
+      - tactic:TA0001-execution
+      - technique:T1059-command-and-scripting-interpreter
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -2115,7 +2186,7 @@ rules:
       (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*")
     product_tags:
       - tactic:TA0002-execution
-      - technique:T1210-exploitation-of-remote-services
+      - technique:T1190-exploit-public-facing-application
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -2182,6 +2253,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
+      - subtechnique:T1059.006-python
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -2321,8 +2393,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "windows"
   - id: scheduled_task_creation
@@ -2355,8 +2427,6 @@ rules:
   - id: service_stop
     description: systemctl used to stop a service
     expression: exec.file.name == "systemctl" && exec.args in [~"*stop*"]
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0040-impact
       - technique:T1489-service-stop
@@ -2378,8 +2448,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1070-indicator-removal
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: shell_history_symlink
@@ -2388,8 +2458,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1070-indicator-removal
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: shell_history_truncated
@@ -2398,8 +2468,8 @@ rules:
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1070-indicator-removal
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: shell_net_connection
@@ -2408,6 +2478,7 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
+      - subtechnique:T1059.004-unix-shell
       - policy:threat-detection
     agent_version: '>= 7.61'
     filters:
@@ -2418,8 +2489,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: sliver_c2_implant_execution
@@ -2449,8 +2520,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_chown
@@ -2462,8 +2533,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_link
@@ -2476,8 +2547,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_open
@@ -2490,8 +2561,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_open_v2
@@ -2504,8 +2575,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_rename
@@ -2518,8 +2589,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_unlink
@@ -2531,8 +2602,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_utimes
@@ -2544,8 +2615,8 @@ rules:
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: ssh_it_tool_config_write
@@ -2575,6 +2646,13 @@ rules:
       - technique:T1563-remote-service-session-hijacking
       - policy:threat-detection
     agent_version: '>= 7.60'
+    filters:
+      - os == "linux"
+  - id: ssh_session
+    description: A process was executed in an SSH session
+    expression: exec.comm != "" && process.ancestors.file.name in ["sshd"] && process.file.name != "sshd"
+    product_tags:
+      - policy:compliance
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_chmod
@@ -2717,6 +2795,22 @@ rules:
       - policy:compliance
     filters:
       - os == "linux"
+  - id: static_pod_manifest_created
+    description: A new static pod manifest was created in the Kubernetes manifests directory
+    expression: |-
+      open.flags & O_CREAT > 0
+      && open.file.path in [~"/etc/kubernetes/manifests/*"]
+      && open.file.extension in [".yaml", ".yml"]
+      && process.file.path not in ["/usr/bin/kubelet", "/usr/local/bin/kubelet", "/opt/bin/kubelet"]
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1053-scheduled-task-or-job
+      - technique:T1543-create-or-modify-system-process
+      - subtechnique:T1543.005-container-service
+      - policy:threat-detection
+    agent_version: '>= 7.70.1'
+    filters:
+      - os == "linux"
   - id: sudoers_policy_modified_chmod
     description: Sudoers policy file may have been modified without authorization
     expression: |-
@@ -2726,6 +2820,8 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
+      - subtechnique:T1548.003-sudo-and-sudo-caching
       - policy:compliance
     filters:
       - os == "linux"
@@ -2738,6 +2834,8 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
+      - subtechnique:T1548.003-sudo-and-sudo-caching
       - policy:compliance
     filters:
       - os == "linux"
@@ -2751,6 +2849,8 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
+      - subtechnique:T1548.003-sudo-and-sudo-caching
       - policy:compliance
     filters:
       - os == "linux"
@@ -2762,6 +2862,8 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
+      - subtechnique:T1548.003-sudo-and-sudo-caching
       - policy:compliance
     filters:
       - os == "linux"
@@ -2775,6 +2877,8 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
+      - subtechnique:T1548.003-sudo-and-sudo-caching
       - policy:compliance
     filters:
       - os == "linux"
@@ -2787,6 +2891,8 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
+      - subtechnique:T1548.003-sudo-and-sudo-caching
       - policy:compliance
     filters:
       - os == "linux"
@@ -2799,17 +2905,18 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
+      - subtechnique:T1548.003-sudo-and-sudo-caching
       - policy:compliance
     filters:
       - os == "linux"
   - id: suid_file_execution
     description: a SUID file was executed
     expression: (setuid.euid == 0 || setuid.uid  == 0)  && process.file.mode & S_ISUID > 0  && process.file.uid == 0  && process.uid != 0  && process.file.path != "/usr/bin/sudo"
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -2825,8 +2932,6 @@ rules:
   - id: suspicious_container_client
     description: A container management utility was executed in a container
     expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
@@ -2859,6 +2964,7 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -2872,8 +2978,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: systemd_modification_chown
@@ -2886,8 +2992,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: systemd_modification_link
@@ -2897,8 +3003,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: systemd_modification_open
@@ -2912,8 +3018,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: systemd_modification_rename
@@ -2923,8 +3029,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: systemd_modification_unlink
@@ -2937,8 +3043,8 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: systemd_modification_utimes
@@ -2951,36 +3057,43 @@ rules:
     product_tags:
       - tactic:TA0002-execution
       - technique:T1569-system-services
-      - policy:threat-detection
       - policy:compliance
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: systemd_spawned_shell
     description: systemd spawned shell
     expression: exec.file.path in SHELLS && process.ancestors.file.path == "/usr/lib/systemd/systemd-executor" && process.parent.file.path not in PACKAGE_MANAGERS
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task
+      - subtechnique:T1053.006-systemd-timers
       - policy:threat-detection
     filters:
       - os == "linux"
   - id: tar_execution
     description: Tar archive created
     expression: exec.file.path == "/usr/bin/tar" && exec.args_flags in ["create","c"]
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0009-collection
       - technique:T1560-archive-collected-data
+      - subtechnique:T1560.001-archive-via-utility
       - policy:threat-detection
     filters:
       - os == "linux"
   - id: tmate_usage
     description: Remote access was created using a terminal-sharing service
     expression: connect.addr.hostname in ["ssh.tmate.io"]
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1219-remote-access-tools
+      - policy:threat-detection
     agent_version: '>= 7.67'
+    filters:
+      - os == "linux"
+  - id: trufflehog_executed
+    description: A Trufflehog process was executed
+    expression: exec.file.name == "trufflehog"
     filters:
       - os == "linux"
   - id: tty_shell_in_container
@@ -3017,7 +3130,8 @@ rules:
     expression: unlink.file.path == process.file.path
     product_tags:
       - tactic:TA0005-defense-evasion
-      - technique:T1564-hide-artifacts
+      - technique:T1070-indicator-removal
+      - subtechnique:T1070.001-file-deletion
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -3033,11 +3147,10 @@ rules:
   - id: user_created_tty
     description: A user was created via an interactive session
     expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"]
-    tags:
-      allow_autosuppression: 'true'
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1136-create-account
+      - subtechnique:T1136.001-local-account
       - policy:threat-detection
     filters:
       - os == "linux"
