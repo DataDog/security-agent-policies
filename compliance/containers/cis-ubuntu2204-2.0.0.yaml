@@ -2,7 +2,7 @@ schema:
   version: 1.0.0
 name: CIS Ubuntu 22.04 Benchmark for Level 1 - Server
 framework: cis-ubuntu2204
-version: 1.0.0
+version: 2.0.0
 rules:
   - id: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
     description: Set Account Expiration Following Inactivity
