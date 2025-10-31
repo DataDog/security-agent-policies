@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.57.0
+version: 1.58.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -72,6 +72,13 @@ macros:
   - id: LIBC_VERSIONS
     description: LIBC Library Versions
     expression: '["libc-2.29.so", "libc-2.30.so", "libc-2.31.so", "libc-2.32.so", "libc-2.33.so", "libc-2.34.so", "libc-2.35.so", "libc-2.36.so", "libc-2.37.so"]'
+  - id: MASQUERADING_PROCESS_NAMES
+    description: Target common daemon names used by malware to masquerade as legitimate system processes
+    expression: |-
+      ["systemd", "init", "sshd", "cron", "crond", "rsyslogd", "syslog-ng",
+       "dbus-daemon", "dbus-broker", "udevd", "systemd-udevd", "NetworkManager",
+       "systemd-journald", "systemd-logind", "systemd-resolved", "systemd-networkd",
+       "systemd-timesyncd", "accounts-daemon", "polkitd", "auditd"]
   - id: NETWORK_SCANNERS
     description: Commonly used network scanners
     expression: '["nmap", "masscan", "fping", "zmap", "zgrab", "zgrab2", "rustscan", "pnscan"]'
@@ -245,6 +252,32 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
+  - id: bpfdoor_bpf_filter_creation
+    description: A BPF filter was attached to a socket after a fake PID file was created
+    expression: setsockopt.level == SOL_SOCKET && setsockopt.optname == SO_ATTACH_FILTER && ${process.pid_file} == true
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1205-traffic-signaling
+      - subtechnique:T1205.002-socket-filters
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: bpfdoor_pid_file_creation
+    description: A PID file was created in /var/run, indicating a BPFDoor malware infection.
+    expression: open.file.path in ["/var/run/haldrund.pid", "/var/run/hald-smartd.pid", "/var/run/system.pid", "/var/run/hp-health.pid", "/var/run/hald-addon.pid", "/run/haldrund.pid", "/run/hald-smartd.pid", "/run/system.pid", "/run/hp-health.pid", "/run/hald-addon.pid"]
+      && open.flags & O_CREAT != 0
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1480-execution-guardrails
+      - policy:threat-detection
+    actions:
+      - set:
+          scope: process
+          name: pid_file
+          value: true
+          ttl: 10000000000
+    filters:
+      - os == "linux"
   - id: certutil_usage
     description: Certutil was executed to transmit or decode a potentially malicious file
     expression: exec.file.name == "certutil.exe" && ((exec.cmdline =~ "*urlcache*" && exec.cmdline =~ "*split*") || exec.cmdline =~ "*decode*")
@@ -285,7 +318,7 @@ rules:
       )
       && (process.comm in COMPILER_PROCESSES || process.ancestors.comm in COMPILER_PROCESSES || process.file.name in COMPILER_PROCESSES || process.ancestors.file.name in COMPILER_PROCESSES)
       && process.file.name not in ["pip", ~"python*"]
-      && container.id != ""
+      && process.container.id != ""
     tags:
       threat_score: '8'
       threat_description: Malicious code may be downloaded and compiled on the workload to evade detection
@@ -301,7 +334,7 @@ rules:
       - os == "linux"
   - id: compiler_in_container
     description: A compiler was executed inside of a container
-    expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
+    expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && process.container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1027-obfuscated-files-or-information
@@ -311,9 +344,9 @@ rules:
       - os == "linux"
   - id: container_breakout_enumeration_tool
     description: A container performed various enumeration activities including checking container runtime, process privileges, user namespace mappings, Linux Security Modules, mount points, and network namespaces.
-    expression: "container.id != \"\" && (\n  open.file.path in [~\"/run/systemd/container\"] ||\n  open.file.path in [~\"/proc/*/status\", ~\"/proc/*/task/*/status\"] ||\n  (open.file.path in [~\"/proc/*/uid_map\"] && process.file.name not in [\"runc\"]) ||\n\
-      \  open.file.path in [~\"/proc/*/attr/current\"] ||\n  open.file.path in [~\"/proc/*/mountinfo\"] ||\n  open.file.path in [~\"/proc/*/cgroup\"] ||\n  open.file.path in [~\"/proc/net/unix\"]\n) &&\nprocess.file.in_upper_layer && \nprocess.file.path not\
-      \ in DD_AGENT_PROCESSES "
+    expression: "process.container.id != \"\" && (\n  open.file.path in [~\"/run/systemd/container\"] ||\n  open.file.path in [~\"/proc/*/status\", ~\"/proc/*/task/*/status\"] ||\n  (open.file.path in [~\"/proc/*/uid_map\"] && process.file.name not in [\"runc\"\
+      ]) ||\n  open.file.path in [~\"/proc/*/attr/current\"] ||\n  open.file.path in [~\"/proc/*/mountinfo\"] ||\n  open.file.path in [~\"/proc/*/cgroup\"] ||\n  open.file.path in [~\"/proc/net/unix\"]\n) &&\nprocess.file.in_upper_layer && \nprocess.file.path\
+      \ not in DD_AGENT_PROCESSES "
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
@@ -322,7 +355,7 @@ rules:
       - os == "linux"
   - id: core_pattern_write
     description: Detect any attempt to modify /proc/sys/kernel/core_pattern from a container, which might result to escape to host when a core dump is triggered.
-    expression: "open.file.name == \"core_pattern\" &&\nopen.file.filesystem == \"proc\" &&\nopen.flags & (OPEN_WRITE_FLAGS) > 0 && \ncontainer.id != \"\""
+    expression: "open.file.name == \"core_pattern\" &&\nopen.file.filesystem == \"proc\" &&\nopen.flags & (OPEN_WRITE_FLAGS) > 0 && \nprocess.container.id != \"\""
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
@@ -330,15 +363,15 @@ rules:
     actions:
       - set:
           name: core_pattern_write_container_id
-          field: container.id
+          field: process.container.id
           scope: container
-          ttl: 30m
+          ttl: 1800000000000
     agent_version: '>= 7.65'
     filters:
       - os == "linux"
   - id: coredump_triggered
     description: Detect attempts to trigger a coredump after modifying /proc/sys/kernel/core_pattern.
-    expression: exit.cause == COREDUMPED && container.id == ${container.core_pattern_write_container_id}
+    expression: exit.cause == COREDUMPED && process.container.id == ${container.core_pattern_write_container_id}
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
@@ -415,7 +448,7 @@ rules:
           (open.file.path in [ "/etc/shadow", "/etc/gshadow" ])
           && process.file.path not in CREDENTIAL_BINARIES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
-      ) && container.id != "" && container.created_at > 90s
+      ) && process.container.id != "" && container.created_at > 90s
     tags:
       threat_score: '5'
       threat_description: Credentials should be static or defined as code. Changes to credentials files indicates drift.
@@ -645,7 +678,7 @@ rules:
       - os == "linux"
   - id: curl_mgmt_socket
     description: A container management socket was referenced in a cURL command
-    expression: exec.file.name == "curl" && exec.args_flags in ["unix-socket"] && exec.args in [~"*docker.sock*",  ~"*dockershim.sock*", ~"*containerd.sock*", ~"*crio.sock*", ~"*frakti.sock*", ~"*rktlet.sock*"] && container.id != ""
+    expression: exec.file.name == "curl" && exec.args_flags in ["unix-socket"] && exec.args in [~"*docker.sock*",  ~"*dockershim.sock*", ~"*containerd.sock*", ~"*crio.sock*", ~"*frakti.sock*", ~"*rktlet.sock*"] && process.container.id != ""
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
@@ -671,7 +704,7 @@ rules:
       - os == "linux"
   - id: debugfs_in_container
     description: The debugfs was executed in a container
-    expression: exec.comm == "debugfs" && container.id != ""
+    expression: exec.comm == "debugfs" && process.container.id != ""
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
@@ -705,7 +738,7 @@ rules:
       - os == "linux"
   - id: deploy_priv_container
     description: A privileged container was created
-    expression: exec.file.name != "" && container.id != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0 && container.id != ${container.ratelimit_priv_container}
+    expression: exec.file.name != "" && process.container.id != "" && container.created_at < 1s && process.cap_permitted & CAP_SYS_ADMIN > 0 && process.container.id != ${container.ratelimit_priv_container}
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
@@ -714,9 +747,9 @@ rules:
     actions:
       - set:
           name: ratelimit_priv_container
-          field: container.id
+          field: process.container.id
           scope: container
-          ttl: 10s
+          ttl: 10000000000
     filters:
       - os == "linux"
   - id: devshm_execution
@@ -825,13 +858,13 @@ rules:
           field: exec.file.path
           append: true
           scope: cgroup
-          ttl: 30s
+          ttl: 30000000000
       - set:
           name: exec_new_file_in_cgroup
           field: exec.file.path
           append: true
           scope: cgroup
-          ttl: 30m
+          ttl: 1800000000000
           size: 10000
       - set:
           name: correlation_key_file_path
@@ -863,7 +896,7 @@ rules:
     expression: |-
       chmod.file.in_upper_layer &&
       chmod.file.change_time < 30s &&
-      container.id != "" &&
+      process.container.id != "" &&
       chmod.file.destination.mode != chmod.file.mode &&
       chmod.file.destination.mode & CHMOD_EXEC_FLAGS > 0 &&
       process.argv in ["+x"]
@@ -1006,7 +1039,7 @@ rules:
     filters:
       - os == "linux"
   - id: execution_context_npm_install
-    description: Track execution context from npm install
+    description: Track execution context of npm package installation
     expression: "exec.file.name in [~\"node\", ~\"npm\"] && \n(process.args =~ \"* install *\" || process.args =~ \"* add *\" || process.args =~ \"* i *\" || \n process.args =~ \"* in *\" || process.args =~ \"* ins *\" || process.args =~ \"* inst *\" || \n process.args\
       \ =~ \"* insta *\" || process.args =~ \"* instal *\" || process.args =~ \"* isnt *\" || \n process.args =~ \"* isnta *\" || process.args =~ \"* isntal *\" || process.args =~ \"* isntall *\") &&\nnot(process.args =~ \"*-e *\") &&\n${process.correlation_key}\
       \ in [\"\", ~\"cgroup_*\", ~\"auid_*\", ~\"service_*\", ~\"service_new_cgroup_*\", ~\"interactive_shell_*\", ~\"k8s_session_*\"]"
@@ -1026,7 +1059,7 @@ rules:
       - set:
           name: correlation_key
           default_value: ''
-          expression: '"npm_install_${builtins.uuid4}"'
+          expression: '"package_install_${builtins.uuid4}"'
           scope: process
           inherited: true
     silent: true
@@ -1190,6 +1223,10 @@ rules:
   - id: github_api_contacted
     description: GitHub API was contacted
     expression: connect.addr.hostname =~ "api.github.com"
+    product_tags:
+      - tactic:TA0008-lateral-movement
+      - technique:T1021-remote-services
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: hidden_file_executed
@@ -1221,7 +1258,7 @@ rules:
       - os == "linux"
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
-    expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && container.id !=""
+    expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && process.container.id !=""
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
@@ -1361,7 +1398,7 @@ rules:
       - os == "linux"
   - id: kernel_module_load_container
     description: A container loaded a new kernel module
-    expression: load_module.name != "" && container.id !=""
+    expression: load_module.name != "" && process.container.id !=""
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
@@ -1382,7 +1419,7 @@ rules:
       - os == "linux"
   - id: kernel_module_load_from_memory_container
     description: A kernel module was loaded from memory inside a container
-    expression: load_module.loaded_from_memory == true && container.id !=""
+    expression: load_module.loaded_from_memory == true && process.container.id !=""
     tags:
       threat_score: '4'
       threat_description: Malicious kernel modules may establish persistence or hide activity
@@ -1488,7 +1525,7 @@ rules:
       - os == "windows"
   - id: kubernetes_dns_enumeration
     description: Kubernetes DNS enumeration
-    expression: dns.question.name == "any.any.svc.cluster.local" && dns.question.type == SRV && container.id != ""
+    expression: dns.question.name == "any.any.svc.cluster.local" && dns.question.type == SRV && process.container.id != ""
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1046-network-service-discovery
@@ -1588,7 +1625,7 @@ rules:
       - os == "linux"
   - id: mount_host_fs
     description: The host file system was mounted in a container
-    expression: mount.source.path == "/" && mount.fs_type != "overlay" && container.id != ""
+    expression: mount.source.path == "/" && mount.fs_type != "overlay" && process.container.id != ""
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
@@ -1597,7 +1634,7 @@ rules:
       - os == "linux"
   - id: mount_in_container
     description: The mount utility was executed in a container
-    expression: exec.comm == "mount" && container.id != ""
+    expression: exec.comm == "mount" && process.container.id != ""
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
@@ -1642,7 +1679,7 @@ rules:
     expression: |-
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
-      container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+      process.container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -1666,7 +1703,7 @@ rules:
     expression: |-
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
-      container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+      process.container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -1693,7 +1730,7 @@ rules:
       - os == "linux"
   - id: new_binary_execution_in_container
     description: A container executed a new binary not found in the container image
-    expression: container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
+    expression: process.container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
     tags:
       threat_score: '4'
       threat_description: Container images should be immutable. New executables may be downloaded or compiled malware.
@@ -1714,7 +1751,7 @@ rules:
       - os == "linux"
   - id: nohup_usage
     description: nohup was used to ignore process termination signals
-    expression: exec.comm == "nohup"
+    expression: exec.file.name != "" && process.parent.comm == "nohup"
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1564-hide-artifacts
@@ -1724,7 +1761,7 @@ rules:
       - os == "linux"
   - id: nsenter_in_container
     description: nsenter used to breakout of container
-    expression: exec.file.name == "nsenter" && exec.args_options in ["target=1", "t=1"] && container.id != ""
+    expression: exec.file.name == "nsenter" && exec.args_options in ["target=1", "t=1"] && process.container.id != ""
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
@@ -1787,7 +1824,7 @@ rules:
       (
           open.flags & ((O_RDWR|O_WRONLY|O_CREAT)) > 0 &&
           (open.file.path in [ "/etc/nsswitch.conf" ])
-      ) && container.id != "" && container.created_at > 90s && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
+      ) && process.container.id != "" && container.created_at > 90s && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1556-modify-authentication-process
@@ -1878,7 +1915,7 @@ rules:
       - os == "linux"
   - id: overwrite_entrypoint
     description: A process attempted to overwrite the container entrypoint
-    expression: open.file.path == "/proc/self/fd/1" && open.flags & OPEN_WRITE_FLAGS > 0 && container.id != ""
+    expression: open.file.path == "/proc/self/fd/1" && open.flags & OPEN_WRITE_FLAGS > 0 && process.container.id != ""
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1613-container-and-resource-discovery
@@ -1900,7 +1937,7 @@ rules:
       - os == "linux"
   - id: package_management_in_container
     description: Package management was detected in a container
-    expression: exec.file.path in PACKAGE_MANAGERS && container.id != ""
+    expression: exec.file.path in PACKAGE_MANAGERS && process.container.id != ""
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
@@ -2093,7 +2130,7 @@ rules:
           open.file.path in [ ~"/bin/*", ~"/sbin/*", ~"/usr/bin/*", ~"/usr/sbin/*", ~"/usr/local/bin/*", ~"/usr/local/sbin/*", ~"/boot/**" ]
           && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES
           && process.ancestors.file.path not in PACKAGE_MANAGERS
-      ) && container.id != "" && container.created_at > 90s
+      ) && process.container.id != "" && container.created_at > 90s
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
@@ -2199,6 +2236,15 @@ rules:
       - policy:threat-detection
     filters:
       - os == "windows"
+  - id: prctl_masquerading
+    description: Detects use of prctl to change process name to mimic legitimate system processes or kernel threads
+    expression: prctl.option == PR_SET_NAME && (prctl.new_name in MASQUERADING_PROCESS_NAMES || prctl.new_name in [r"^\[.*\]$"]) && process.file.name not in MASQUERADING_PROCESS_NAMES
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1036-masquerading
+      - policy:threat-detection
+    filters:
+      - os == "linux"
   - id: procdump_execution
     description: A tool used to dump process memory has been executed
     expression: exec.file.name in ["procmon.exe","procdump.exe"]
@@ -2571,7 +2617,7 @@ rules:
       (
           open.flags & (OPEN_WRITE_FLAGS) > 0 &&
           open.file.name in [ "authorized_keys", "authorized_keys2" ] && (open.file.path in [ ~"/root/.ssh/*", ~"/home/*/.ssh/*", ~"/var/lib/*/.ssh/*" ])
-      ) && container.id != "" && container.created_at > 90s
+      ) && process.container.id != "" && container.created_at > 90s
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1098-account-manipulation
@@ -2735,7 +2781,7 @@ rules:
       && process.ancestors.file.path != "/usr/sbin/update-ca-certificates"
       && process.ancestors.file.path not in PACKAGE_MANAGERS
       && process.file.name !~ "runc*"
-      && container.id != ""
+      && process.container.id != ""
       && container.created_at > 90s
     product_tags:
       - tactic:TA0005-defense-evasion
@@ -2801,7 +2847,7 @@ rules:
       open.flags & O_CREAT > 0
       && open.file.path in [~"/etc/kubernetes/manifests/*"]
       && open.file.extension in [".yaml", ".yml"]
-      && process.file.path not in ["/usr/bin/kubelet", "/usr/local/bin/kubelet", "/opt/bin/kubelet"]
+      && process.file.path not in ["/usr/bin/kubelet", "/usr/local/bin/kubelet", "/opt/bin/kubelet", "/usr/bin/kubeadm", "/usr/local/bin/kubeadm"]
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1053-scheduled-task-or-job
@@ -2931,7 +2977,7 @@ rules:
       - os == "windows"
   - id: suspicious_container_client
     description: A container management utility was executed in a container
-    expression: exec.file.name in CONTAINER_CLIENTS && container.id != ""
+    expression: exec.file.name in CONTAINER_CLIENTS && process.container.id != ""
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
@@ -3094,6 +3140,11 @@ rules:
   - id: trufflehog_executed
     description: A Trufflehog process was executed
     expression: exec.file.name == "trufflehog"
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
+      - subtechnique:T1552.001-credentials-in-files
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: tty_shell_in_container
@@ -3137,7 +3188,7 @@ rules:
       - os == "linux"
   - id: unshare_in_container
     description: The unshare utility was executed in a container
-    expression: exec.comm == "unshare" && container.id != ""
+    expression: exec.comm == "unshare" && process.container.id != ""
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
