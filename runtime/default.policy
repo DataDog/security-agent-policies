@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.58.0
+version: 1.59.0
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -2243,6 +2243,7 @@ rules:
       - tactic:TA0005-defense-evasion
       - technique:T1036-masquerading
       - policy:threat-detection
+    agent_version: '>= 7.73'
     filters:
       - os == "linux"
   - id: procdump_execution
@@ -2398,6 +2399,15 @@ rules:
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1611-escape-to-host
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: rogue_ssm_agent_registration
+    description: A rogue SSM agent was registered
+    expression: exec.file.name =~ "*ssm-agent" && exec.args_flags == "register" && exec.args_options =~ "code*"
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1219-remote-access-tools
       - policy:threat-detection
     filters:
       - os == "linux"
