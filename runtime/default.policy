@@ -1279,11 +1279,6 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - technique:T1082-system-information-discovery
       - policy:threat-detection
-    actions:
-      - set:
-          name: kernel_headers_pid
-          field: process.parent.pid
-          scope: process
     filters:
       - os == "linux"
   - id: interactive_shell_in_container
