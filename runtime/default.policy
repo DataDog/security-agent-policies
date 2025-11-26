@@ -1,5 +1,6 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.59.0
+version: 1.61.0
+type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
     description: Package managers
@@ -46,7 +47,13 @@ macros:
       "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
   - id: CRYPTOMINER_DOMAINS
     expression: '[~"*.minexmr.com", "minexmr.com", ~"*.nanopool.org", "nanopool.org", ~"*.supportxmr.com", "supportxmr.com", ~"*.c3pool.com", "c3pool.com", ~"*.p2pool.io", "p2pool.io", ~"*.ethermine.org", "ethermine.org", ~"*.f2pool.com", "f2pool.com", ~"*.poolin.me",
-      "poolin.me", ~"*.rplant.xyz", "rplant.xyz", ~"*.miningocean.org", "miningocean.org", "donate.v2.xmrig.com"]'
+      "poolin.me", ~"*.rplant.xyz", "rplant.xyz", ~"*.miningocean.org", "miningocean.org", "donate.v2.xmrig.com", ~"*.hashvault.pro", "hashvault.pro", ~"*.moneroocean.stream", "moneroocean.stream", ~"*.skypool.org", "skypool.org", ~"*.xmrpool.eu", "xmrpool.eu",
+      ~"*.pool.kryptex.com", "pool.kryptex.com", ~"*.herominers.com", "herominers.com", ~"*.solopool.org", "solopool.org", ~"*.monerohash.com", "monerohash.com", ~"*.antpool.com", "antpool.com", ~"*.pool.xmr.pt", "pool.xmr.pt", ~"*.monerod.org", "monerod.org",
+      ~"*.dxpool.com", "dxpool.com", ~"*.bohemianpool.com", "bohemianpool.com", ~"*.prohashing.com", "prohashing.com", ~"*.mining-dutch.nl", "mining-dutch.nl", ~"*.gntl.uk", "gntl.uk", ~"*.fairhash.org", "fairhash.org", ~"*.volt-mine.com", "volt-mine.com", ~"*.zeropool.io",
+      "zeropool.io", ~"*.fastpool.xyz", "fastpool.xyz", ~"*.xmr-pool.com", "xmr-pool.com", ~"*.zergpool.com", "zergpool.com", ~"*.xmrminers.com", "xmrminers.com", ~"*.monerop.com", "monerop.com", ~"*.pool-pay.com", "pool-pay.com", ~"*.solopool.pro", "solopool.pro",
+      ~"*.frjoga.com", "frjoga.com", ~"*.infinium.space", "infinium.space", ~"*.minorpool.com", "minorpool.com", ~"*.cedric-crispin.com", "cedric-crispin.com", ~"*.aikapool.com", "aikapool.com", ~"*.2miners.com", "2miners.com", ~"*.h9.com", "h9.com", ~"*.ekapool.com",
+      "ekapool.com", ~"*.k1pool.com", "k1pool.com", ~"*.raptorhash.net", "raptorhash.net", ~"*.miningmadness.com", "miningmadness.com", ~"*.zephyrprotocol.com", "zephyrprotocol.com", ~"*.thunderhash.com", "thunderhash.com", ~"*.newpool.xyz", "newpool.xyz", ~"*.coinminerhub.com",
+      "coinminerhub.com", ~"*.safex.org", "safex.org", ~"*.safex.ninja", "safex.ninja"]'
   - id: DATABASE_PROCESSES
     description: Common database process names
     expression: '["mysqld", "mongod", "postgres"]'
@@ -1040,7 +1047,7 @@ rules:
       - os == "linux"
   - id: execution_context_npm_install
     description: Track execution context of npm package installation
-    expression: "exec.file.name in [~\"node\", ~\"npm\"] && \n(process.args =~ \"* install *\" || process.args =~ \"* add *\" || process.args =~ \"* i *\" || \n process.args =~ \"* in *\" || process.args =~ \"* ins *\" || process.args =~ \"* inst *\" || \n process.args\
+    expression: "exec.file.name in [\"node\", \"npm\"] && \n(process.args =~ \"* install *\" || process.args =~ \"* add *\" || process.args =~ \"* i *\" || \n process.args =~ \"* in *\" || process.args =~ \"* ins *\" || process.args =~ \"* inst *\" || \n process.args\
       \ =~ \"* insta *\" || process.args =~ \"* instal *\" || process.args =~ \"* isnt *\" || \n process.args =~ \"* isnta *\" || process.args =~ \"* isntal *\" || process.args =~ \"* isntall *\") &&\nnot(process.args =~ \"*-e *\") &&\n${process.correlation_key}\
       \ in [\"\", ~\"cgroup_*\", ~\"auid_*\", ~\"service_*\", ~\"service_new_cgroup_*\", ~\"interactive_shell_*\", ~\"k8s_session_*\"]"
     tags:
@@ -1138,7 +1145,7 @@ rules:
       - set:
           name: correlation_key
           default_value: ''
-          expression: '"service_new_cgroup_${builtins.uuid4}"'
+          expression: '"service_new_cgroup_write_${builtins.uuid4}"'
           scope: process
           scope_field: cgroup_write.pid
           inherited: true
@@ -1254,6 +1261,24 @@ rules:
           append: true
     disabled: true
     agent_version: '>= 7.60'
+    filters:
+      - os == "linux"
+  - id: install_kernel_headers
+    description: Kernel headers package downloaded via package manager
+    expression: "exec.file.path in PACKAGE_MANAGERS\n&& (\n  exec.args in [~\"*linux-headers*\", ~\"*kernel-devel*\", ~\"*kernel-headers*\", ~\"*linux-devel*\"]\n  || exec.args_options in [~\"linux-headers*\", ~\"kernel-devel*\", ~\"kernel-headers*\", ~\"linux-devel*\"\
+      ]\n)\n&& (\n  exec.args in [~\"*install*\", ~\"*add*\"] \n  || exec.args_flags in [\"i\", \"install\"]\n)"
+    product_tags:
+      - tactic:TA0003-persistence
+      - tactic:TA0004-privilege-escalation
+      - tactic:TA0005-defense-evasion
+      - tactic:TA0007-discovery
+      - technique:T1547-boot-or-logon-autostart-execution
+      - technique:T1547.006-boot-or-logon-autostart-execution-kernel-modules-and-extensions
+      - technique:T1068-exploitation-for-privilege-escalation
+      - technique:T1014-rootkit
+      - technique:T1105-ingress-tool-transfer
+      - technique:T1082-system-information-discovery
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: interactive_shell_in_container
@@ -3149,7 +3174,7 @@ rules:
       - os == "linux"
   - id: trufflehog_executed
     description: A Trufflehog process was executed
-    expression: exec.file.name == "trufflehog"
+    expression: exec.file.name == "trufflehog" || (process.args =~ "* filesystem *" && exec.args_options in [~"results=*"])
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
