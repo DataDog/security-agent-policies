@@ -39,4 +39,7 @@ resource "datadog_csm_threats_agent_rule" "experimental_hash_open_host" {
     name         = "experimental_hash_open_host"
     policy_id    = datadog_csm_threats_policy.experimental_hash_open.id
     product_tags = ["type:experimental"]
+    actions {
+      hash {}
+    }
 }

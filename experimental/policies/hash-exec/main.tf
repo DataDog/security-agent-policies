@@ -46,6 +46,7 @@ resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_host" {
         append = true
         ttl = 3600000000000
       }
+      hash {}
     }
 }
 
@@ -64,5 +65,6 @@ resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_container" {
         scope  = "cgroup"
         ttl = 3600000000000
       }
+      hash {}
     }
 }
