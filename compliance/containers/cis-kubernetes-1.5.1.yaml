@@ -4,48 +4,8 @@ name: CIS Kubernetes
 framework: cis-kubernetes
 version: 1.5.1
 rules:
-  - id: cis-kubernetes-1.5.1-1.1.1
-    description: API server pod specification file can only be altered by owners
-    scope:
-      - kubernetesNode
-    imports:
-      - file-permissions-common.rego
-      - helpers.rego
-    input:
-      - file:
-          path: /etc/kubernetes/manifests/kube-apiserver.yaml
-      - constants:
-          max_permissions: '644'
-          resource_type: kubernetes_master_node
-  - id: cis-kubernetes-1.5.1-1.1.2
-    description: Only the root account and group have ownership of the API server pod specification file
-    scope:
-      - kubernetesNode
-    imports:
-      - file-owner-rule-common.rego
-      - helpers.rego
-    input:
-      - file:
-          path: /etc/kubernetes/manifests/kube-apiserver.yaml
-      - constants:
-          user: root
-          group: root
-          resource_type: kubernetes_master_node
-  - id: cis-kubernetes-1.5.1-1.1.3
-    description: Controller manager pod specification file can only be altered by owners
-    scope:
-      - kubernetesNode
-    imports:
-      - file-permissions-common.rego
-      - helpers.rego
-    input:
-      - file:
-          path: /etc/kubernetes/manifests/kube-controller-manager.yaml
-      - constants:
-          max_permissions: '644'
-          resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.4
-    description: Controller manager pod specification file is owned by root
+    description: '[Deprecated] The controller manager pod specification file ownership should be root:root'
     scope:
       - kubernetesNode
     imports:
@@ -59,7 +19,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.5
-    description: Scheduler pod specification file can only be altered by owners
+    description: '[Deprecated] The scheduler pod specification file should have permissions of 644 or stricter'
     scope:
       - kubernetesNode
     imports:
@@ -72,7 +32,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.6
-    description: Scheduler pod specification file ownership is assigned to root
+    description: '[Deprecated] The scheduler pod specification file ownership should be set to root'
     scope:
       - kubernetesNode
     imports:
@@ -86,7 +46,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.7
-    description: Etcd pod specification file can only be altered by owners
+    description: '[Deprecated] The /etc/kubernetes/manifests/etcd.yaml file should have permissions of 644 or stricter'
     scope:
       - kubernetesNode
     imports:
@@ -99,7 +59,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.8
-    description: Etcd pod specification file is owned by root
+    description: '[Deprecated The /etc/kubernetes/manifests/etcd.yaml file ownership should be root:root'
     scope:
       - kubernetesNode
     imports:
@@ -113,7 +73,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.11
-    description: Etcd data directory permissions can only be altered by owners
+    description: '[Deprecated] Etcd data directory should have permissions of 700 or more restrictive'
     scope:
       - kubernetesNode
     imports:
@@ -126,7 +86,7 @@ rules:
           max_permissions: '700'
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.12
-    description: Etcd data directory is owned by the etcd user and group
+    description: '[Deprecated] The etcd data directory should be owned by etcd:etcd'
     scope:
       - kubernetesNode
     imports:
@@ -140,7 +100,7 @@ rules:
           group: etcd
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.13
-    description: Only the root account has write permissions to the admin.conf file
+    description: '[Deprecated] The admin.conf file should have permissions of 644 or more restrictive'
     scope:
       - kubernetesNode
     imports:
@@ -153,7 +113,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.14
-    description: Only the root account and group have ownership of the admin.conf file
+    description: '[Deprecated] The ownership of the admin.conf file should be root:root'
     scope:
       - kubernetesNode
     imports:
@@ -167,7 +127,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.15
-    description: Scheduler configuration file can only be altered by owners
+    description: '[Deprecated] Scheduler.conf file should only be alterable by owners with permissions of 644 or more restrictive'
     scope:
       - kubernetesNode
     imports:
@@ -180,7 +140,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.16
-    description: Scheduler configuration file ownership is assigned to root
+    description: '[Deprecated] The scheduler.conf file should be owned by root:root'
     scope:
       - kubernetesNode
     imports:
@@ -194,7 +154,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.17
-    description: controller-manager.conf file can only be altered by owners
+    description: '[Deprecated] The controller-manager.conf file should have permissions of 644 or more restrictive'
     scope:
       - kubernetesNode
     imports:
@@ -207,7 +167,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.18
-    description: The controller-manager.conf file is owned by root
+    description: '[Deprecated] The controller-manager.conf file should be owned by root:root'
     scope:
       - kubernetesNode
     imports:
@@ -221,7 +181,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.19
-    description: Kubernetes PKI directory is owned by root
+    description: '[Deprecated] The Kubernetes PKI directory should be owned by root'
     scope:
       - kubernetesNode
     imports:
@@ -235,7 +195,7 @@ rules:
           group: root
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.1.20
-    description: Kubernetes PKI certificate file can only be altered by owners
+    description: '[Deprecated] Kubernetes PKI certificate files should have permissions of 644 or more restrictive'
     scope:
       - kubernetesNode
     input:
@@ -250,7 +210,7 @@ rules:
       - cis-docker-1.2.0-3.8.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-1.2.2
-    description: Basic authentication is disabled for the API server
+    description: '[Deprecated] The API server should not use basic authentication'
     scope:
       - kubernetesNode
     imports:
@@ -262,7 +222,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.3
-    description: API server uses secure authentication methods
+    description: '[Deprecated] The API server should use secure authentication methods without token based authentication'
     scope:
       - kubernetesNode
     imports:
@@ -274,7 +234,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.4
-    description: Kubelet connections use HTTPS
+    description: '[Deprecated] Kubelet connections should use HTTPS for enhanced security'
     scope:
       - kubernetesNode
     imports:
@@ -286,7 +246,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.5
-    description: Certificate-based kubelet authentication is required
+    description: '[Deprecated] Kubelet authentication should require certificate-based authentication'
     scope:
       - kubernetesNode
     imports:
@@ -298,7 +258,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.6
-    description: API server verifies the kubelet's certificate before establishing connection
+    description: '[Deprecated] The API server should verify the kubelet''s certificate before connecting'
     scope:
       - kubernetesNode
     imports:
@@ -310,7 +270,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.7
-    description: API server only allows explicitly authorized requests
+    description: '[Deprecated] API server should only authorize explicitly authorized requests'
     scope:
       - kubernetesNode
     imports:
@@ -322,7 +282,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.8
-    description: Kubelet nodes are only authorized to read objects they are associated with
+    description: '[Deprecated] Kubelet nodes should only read objects associated with them'
     scope:
       - kubernetesNode
     imports:
@@ -334,43 +294,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.9
-    description: RBAC is enabled for the API server
-    scope:
-      - kubernetesNode
-    imports:
-      - process-common-rule.rego
-      - helpers.rego
-    input:
-      - process:
-          name: kube-apiserver
-      - constants:
-          resource_type: kubernetes_master_node
-  - id: cis-kubernetes-1.5.1-1.2.11
-    description: Admission controller AlwaysAdmin is disabled
-    scope:
-      - kubernetesNode
-    imports:
-      - process-common-rule.rego
-      - helpers.rego
-    input:
-      - process:
-          name: kube-apiserver
-      - constants:
-          resource_type: kubernetes_master_node
-  - id: cis-kubernetes-1.5.1-1.2.14
-    description: Admission controller ServiceAccount is enabled
-    scope:
-      - kubernetesNode
-    imports:
-      - process-common-rule.rego
-      - helpers.rego
-    input:
-      - process:
-          name: kube-apiserver
-      - constants:
-          resource_type: kubernetes_master_node
-  - id: cis-kubernetes-1.5.1-1.2.15
-    description: Admission controller NamespaceLifecycle is enabled
+    description: '[Deprecated] RBAC should be enabled for the API server'
     scope:
       - kubernetesNode
     imports:
@@ -382,19 +306,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.16
-    description: Admission controller PodSecurityPolicy is enabled
-    scope:
-      - kubernetesNode
-    imports:
-      - process-common-rule.rego
-      - helpers.rego
-    input:
-      - process:
-          name: kube-apiserver
-      - constants:
-          resource_type: kubernetes_master_node
-  - id: cis-kubernetes-1.5.1-1.2.17
-    description: Admission controller NodeRestriction is enabled
+    description: '[Deprecated] PodSecurityPolicy should be enabled to reject non-compliant pod creations'
     scope:
       - kubernetesNode
     imports:
@@ -406,7 +318,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.18
-    description: API server only binds to secure API service addresses
+    description: '[Deprecated] The insecure API service should not be bound'
     scope:
       - kubernetesNode
     imports:
@@ -418,7 +330,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.19
-    description: API server only binds the API service to secure, known ports
+    description: '[Deprecated] The API server should only bind to secure, known ports'
     scope:
       - kubernetesNode
     imports:
@@ -430,7 +342,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.20
-    description: API server secure port is enabled
+    description: '[Deprecated] The secure port should not be disabled for the API server'
     scope:
       - kubernetesNode
     imports:
@@ -442,7 +354,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.21
-    description: API server profiling is disabled
+    description: '[Deprecated] Profiling for API server should be disabled, if not needed'
     scope:
       - kubernetesNode
     imports:
@@ -454,7 +366,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.22
-    description: API server audit logs are enabled
+    description: '[Deprecated] The Kubernetes API Server should enable audit logs on its server'
     scope:
       - kubernetesNode
     imports:
@@ -466,7 +378,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.23
-    description: API server audit logs are retained for at least 30 days
+    description: '[Deprecated] Logs for API server audits should be retained for 30 days'
     scope:
       - kubernetesNode
     imports:
@@ -478,7 +390,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.24
-    description: API server audit log files are retained for at least 10 log file rotations
+    description: '[Deprecated] The misconfigured resource should retain at least 10 log file rotations'
     scope:
       - kubernetesNode
     imports:
@@ -490,7 +402,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.25
-    description: API server audit log files are rotated once the file reaches 100 MB or more
+    description: '[Deprecated] Log files for the API server should be rotated at 100 MB'
     scope:
       - kubernetesNode
     imports:
@@ -502,7 +414,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.26
-    description: API server request timeout exceeds 60 seconds only if required
+    description: '[Deprecated] The global request timeout for API server requests should be set appropriately'
     scope:
       - kubernetesNode
     imports:
@@ -514,7 +426,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.27
-    description: API server validates the service account token exists in etcd
+    description: '[Deprecated] The API server should validate the service account token in etcd'
     scope:
       - kubernetesNode
     imports:
@@ -526,7 +438,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.28
-    description: API server uses a service account public key file for service accounts
+    description: '[Deprecated] The API server should explicitly set a service account public key file'
     scope:
       - kubernetesNode
     imports:
@@ -538,7 +450,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.29
-    description: etcd server requires API servers present a client certificate and key when connecting
+    description: '[Deprecated] etcd servers should make use of TLS encryption for client connections'
     scope:
       - kubernetesNode
     imports:
@@ -550,7 +462,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.30
-    description: API Server requires HTTPS connections
+    description: '[Deprecated] The API server should have a TLS connection setup'
     scope:
       - kubernetesNode
     imports:
@@ -562,7 +474,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.31
-    description: API server uses TLS certificate client authentication
+    description: '[Deprecated] The API server should set up TLS connection for client authentication'
     scope:
       - kubernetesNode
     imports:
@@ -574,7 +486,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.32
-    description: etcd server requires API servers present an SSL CA file when connecting
+    description: '[Deprecated] etcd should use TLS encryption for client connections'
     scope:
       - kubernetesNode
     imports:
@@ -586,7 +498,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.2.33
-    description: etcd is encrypted at rest
+    description: '[Deprecated] Etcd key-value store should be encrypted at rest'
     scope:
       - kubernetesNode
     imports:
@@ -598,7 +510,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.2
-    description: Controller Manager profiling is disabled
+    description: '[Deprecated] Controller Manager profiling should be disabled'
     scope:
       - kubernetesNode
     imports:
@@ -610,7 +522,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.3
-    description: Each controller uses individual service account credentials
+    description: '[Deprecated] Each controller should use individual service account credentials'
     scope:
       - kubernetesNode
     imports:
@@ -622,7 +534,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.4
-    description: Controller manager has a service account private key file set
+    description: '[Deprecated] Service accounts on the controller manager should have a private key file set'
     scope:
       - kubernetesNode
     imports:
@@ -634,7 +546,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.5
-    description: Pods utilize `root-ca-file` to pass serving certificates to the API server
+    description: '[Deprecated] Pods should verify the API server''s serving certificate before connecting'
     scope:
       - kubernetesNode
     imports:
@@ -646,7 +558,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.6
-    description: Enable kubelet server certificate rotation on controller-manager
+    description: '[Deprecated] The kubelet server certificate rotation on controller-manager should be enabled'
     scope:
       - kubernetesNode
     imports:
@@ -658,7 +570,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.3.7
-    description: Controller Manager API service is bound to localhost
+    description: '[Deprecated] The Controller Manager API service should only bind to localhost'
     scope:
       - kubernetesNode
     imports:
@@ -670,7 +582,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.4.1
-    description: Scheduler profiling is disabled
+    description: '[Deprecated] Scheduler profiling should be disabled'
     scope:
       - kubernetesNode
     imports:
@@ -682,7 +594,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-1.4.2
-    description: Scheduler API service is bound to localhost
+    description: '[Deprecated] The scheduler service should only be bound to localhost'
     scope:
       - kubernetesNode
     imports:
@@ -694,7 +606,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.1
-    description: etcd is configured with TLS encryption
+    description: '[Deprecated] The etcd service should be configured with TLS encryption'
     scope:
       - kubernetesNode
     imports:
@@ -706,7 +618,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.2
-    description: Client authentication is enabled for etcd
+    description: '[Deprecated] Etcd service should have client authentication enabled'
     scope:
       - kubernetesNode
     imports:
@@ -718,7 +630,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.3
-    description: etcd only allows the use of valid client certificates
+    description: '[Deprecated] Self-signed certificates should not be used for etcd TLS'
     scope:
       - kubernetesNode
     imports:
@@ -730,7 +642,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.4
-    description: etcd uses TLS encryption for peer connections
+    description: '[Deprecated] Etcd should use TLS encryption for peer connections'
     scope:
       - kubernetesNode
     imports:
@@ -742,7 +654,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.5
-    description: etcd is configured for peer authentication
+    description: '[Deprecated] Etcd should be configured for peer authentication'
     scope:
       - kubernetesNode
     imports:
@@ -754,7 +666,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-2.6
-    description: Prevent use of self-signed certificates for TLS connections between etcd peers
+    description: '[Deprecated] TLS connections between etcd peers should not use self-signed certificates'
     scope:
       - kubernetesNode
     imports:
@@ -766,7 +678,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-3.2.1
-    description: A minimal audit policy exists
+    description: '[Deprecated] The --audit-policy-file flag should be set for Kubernetes logging to be enabled'
     scope:
       - kubernetesNode
     imports:
@@ -778,7 +690,7 @@ rules:
       - constants:
           resource_type: kubernetes_master_node
   - id: cis-kubernetes-1.5.1-4.1.1
-    description: Kubelet service can only be altered by owners
+    description: '[Deprecated] The kubelet service file should have permissions of 644 or stricter'
     scope:
       - kubernetesNode
     imports:
@@ -791,7 +703,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.2
-    description: Kubelet service file is owned by root
+    description: '[Deprecated] The kubelet service file should be owned by root:root'
     scope:
       - kubernetesNode
     imports:
@@ -805,7 +717,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.3
-    description: Kube-proxy configuration file can only be altered by owners
+    description: '[Deprecated] The proxy kubeconfig file should have permissions of 644 or stricter'
     scope:
       - kubernetesNode
     imports:
@@ -818,7 +730,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.4
-    description: Kube-proxy configuration file ownership is assigned to root
+    description: '[Deprecated] The kube-proxy configuration file should be owned by root:root'
     scope:
       - kubernetesNode
     imports:
@@ -832,7 +744,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.5
-    description: The kubelet.conf file can only be altered by owners
+    description: '[Deprecated] The kubelet.conf file should have permissions of 644 or stricter'
     scope:
       - kubernetesNode
     imports:
@@ -845,7 +757,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.6
-    description: The kubelet.conf file is owned by root
+    description: '[Deprecated] The kubelet.conf file should be owned by root'
     scope:
       - kubernetesNode
     imports:
@@ -859,7 +771,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.7
-    description: Certificate authorities file can only be altered by owners
+    description: '[Deprecated] The certificate authorities file should have permissions of 644 or stricter'
     scope:
       - kubernetesNode
     imports:
@@ -872,7 +784,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.8
-    description: Client certificate authorities file is owned by root
+    description: '[Deprecated] The certificate authorities file should be owned by root:root'
     scope:
       - kubernetesNode
     imports:
@@ -886,7 +798,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.9
-    description: The kubelet configuration file can only be altered by owners
+    description: '[Deprecated] The kubelet configuration file should have permissions of 644 or more restrictive'
     scope:
       - kubernetesNode
     imports:
@@ -899,7 +811,7 @@ rules:
           max_permissions: '644'
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.1.10
-    description: Kubelet configuration file is owned by root
+    description: '[Deprecated] The kubelet configuration file should be owned by root:root'
     scope:
       - kubernetesNode
     imports:
@@ -913,7 +825,7 @@ rules:
           group: root
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.2.1
-    description: API server anonymous-auth argument is set to false
+    description: '[Deprecated] The API server should not allow anonymous requests to Kubelet'
     scope:
       - kubernetesNode
     imports:
@@ -925,7 +837,7 @@ rules:
       - constants:
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.2.2
-    description: Kubelet only allows explicitly authorized requests
+    description: '[Deprecated] All requests should not be allowed; explicit authorization should be enabled'
     scope:
       - kubernetesNode
     imports:
@@ -937,7 +849,7 @@ rules:
       - constants:
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.2.3
-    description: Kubelet uses TLS certificate client authentication
+    description: '[Deprecated] Kubelet should enable authentication using certificates for TLS client authentication'
     scope:
       - kubernetesNode
     imports:
@@ -949,7 +861,7 @@ rules:
       - constants:
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-4.2.4
-    description: Kubelet read-only port is disabled
+    description: '[Deprecated] The read-only port should be disabled in Kubelet'
     scope:
       - kubernetesNode
     input:
@@ -963,7 +875,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.5
-    description: Timeouts on streaming connections are enabled
+    description: '[Deprecated] Streaming connections should have timeouts enabled and not be disabled'
     scope:
       - kubernetesNode
     input:
@@ -977,7 +889,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.6
-    description: Default Kubelet kernel parameter values are protected
+    description: '[Deprecated] Kubelet default kernel parameter values should be protected from overriding.'
     scope:
       - kubernetesNode
     input:
@@ -991,7 +903,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.7
-    description: Allow Kubelets to manage changes to the iptables
+    description: '[Deprecated] Kubelet should be able to manage changes to iptables'
     scope:
       - kubernetesNode
     input:
@@ -1005,7 +917,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.10
-    description: Kubelet requires HTTPS connections
+    description: '[Deprecated] Kubelets should have HTTPS connections with TLS setup'
     scope:
       - kubernetesNode
     input:
@@ -1019,7 +931,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.11
-    description: Kubelet client certificate rotation is enabled
+    description: '[Deprecated] Kubelet client certificate rotation should be enabled'
     scope:
       - kubernetesNode
     input:
@@ -1033,7 +945,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-4.2.12
-    description: Kubelet server certificate rotation is enabled
+    description: '[Deprecated] Kubelet server certificate rotation should be enabled'
     scope:
       - kubernetesNode
     imports:
@@ -1045,7 +957,7 @@ rules:
       - constants:
           resource_type: kubernetes_worker_node
   - id: cis-kubernetes-1.5.1-5.1.5
-    description: Only non-default service accounts are in use
+    description: '[Deprecated] The default service account should not be used'
     scope:
       - kubernetesCluster
     input:
@@ -1078,7 +990,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.2
-    description: Limit admission of containers sharing the host PID namespace
+    description: Containers should not be run with the hostPID flag set to true
     scope:
       - kubernetesCluster
     input:
@@ -1097,7 +1009,7 @@ rules:
       - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.3
-    description: Limit admission of containers sharing the host IPC namespace
+    description: Containers should not be generally permitted to run with hostIPC flag
     scope:
       - kubernetesCluster
     input:
@@ -1116,7 +1028,7 @@ rules:
       - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.4
-    description: Minimize the admission of containers wishing to share the host network namespace
+    description: Containers should not be allowed to share the host network namespace
     scope:
       - kubernetesCluster
     input:
@@ -1135,7 +1047,7 @@ rules:
       - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.2.5
-    description: Containers are configured to block privilege escalation
+    description: Containers should not be run with allowPrivilegeEscalation flag set to true
     scope:
       - kubernetesCluster
     input:
@@ -1154,7 +1066,7 @@ rules:
       - psp-rule-common.rego
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.3.2
-    description: All namespaces have network policies defined
+    description: Network policies should be defined to isolate traffic in cluster network
     scope:
       - kubernetesCluster
     input:
@@ -1178,7 +1090,7 @@ rules:
     imports:
       - helpers.rego
   - id: cis-kubernetes-1.5.1-5.7.4
-    description: Resources are created in a non-default namespace
+    description: Resources should be created in a non-default namespace in Kubernetes
     scope:
       - kubernetesCluster
     input:
