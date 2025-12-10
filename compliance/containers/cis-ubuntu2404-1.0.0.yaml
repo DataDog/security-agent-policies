@@ -862,7 +862,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log_sssd
   - id: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log
-    description: Verify ownership of log files
+    description: Verify ownership of log files (ubuntu2404)
     filters: *id001
     input:
       - xccdf:
