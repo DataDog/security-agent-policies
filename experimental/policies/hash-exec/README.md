@@ -20,7 +20,7 @@ export TF_VAR_url=https://app.datadoghq.com  # or your regional URL
 
 ```bash
 # Initialization
-terrafor init
+terraform init
 
 # Plan the deployment
 terraform plan
