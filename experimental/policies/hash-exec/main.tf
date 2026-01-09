@@ -2,7 +2,7 @@ terraform {
   required_providers {
     datadog = {
       source = "DataDog/datadog"
-      version = "3.72.0"
+      version = "3.84.0"
     }
   }
 }
@@ -47,6 +47,11 @@ resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_host" {
         ttl = 3600000000000
       }
     }
+    actions {
+      hash {
+        field = "exec.file"
+      }
+    }
 }
 
 resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_container" {
@@ -63,6 +68,11 @@ resource "datadog_csm_threats_agent_rule" "experimental_hash_exec_container" {
         append = true
         scope  = "cgroup"
         ttl = 3600000000000
+      }
+    }
+    actions {
+      hash {
+        field = "exec.file"
       }
     }
 }

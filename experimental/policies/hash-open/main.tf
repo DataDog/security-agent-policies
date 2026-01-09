@@ -2,7 +2,7 @@ terraform {
   required_providers {
     datadog = {
       source = "DataDog/datadog"
-      version = "3.72.0"
+      version = "3.84.0"
     }
   }
 }
@@ -39,4 +39,9 @@ resource "datadog_csm_threats_agent_rule" "experimental_hash_open_host" {
     name         = "experimental_hash_open_host"
     policy_id    = datadog_csm_threats_policy.experimental_hash_open.id
     product_tags = ["type:experimental"]
+    actions {
+      hash {
+        field = "open.file"
+      }
+    }
 }
