@@ -109,6 +109,14 @@ rules:
           name: ssg-rhel8-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxrepeat
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxsequence
+    description: Limit the maximum number of sequential characters in passwords
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxsequence
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
     description: Ensure PAM Enforces Password Requirements - Minimum Different Categories
     filters: *id001
@@ -333,14 +341,14 @@ rules:
           name: ssg-rhel8-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
-  - id: xccdf_org.ssgproject.content_rule_configure_crypto_policy
-    description: Configure System Cryptography Policy
+  - id: xccdf_org.ssgproject.content_rule_configure_custom_crypto_policy_cis
+    description: Implement Custom Crypto Policy Modules for CIS Benchmark
     filters: *id001
     input:
       - xccdf:
           name: ssg-rhel8-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_configure_crypto_policy
+          rule: xccdf_org.ssgproject.content_rule_configure_custom_crypto_policy_cis
   - id: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
     description: Configure SSH to use System Crypto Policy
     filters: *id001
@@ -501,6 +509,14 @@ rules:
           name: ssg-rhel8-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
+  - id: xccdf_org.ssgproject.content_rule_file_at_allow_exists
+    description: Ensure that /etc/at.allow exists
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel8-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_at_allow_exists
   - id: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
     description: Ensure that /etc/at.deny does not exist
     filters: *id001
@@ -2085,14 +2101,6 @@ rules:
           name: ssg-rhel8-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
-    description: Use Only FIPS 140-2 Validated Ciphers
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers
   - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
     description: Use Only Strong Key Exchange algorithms
     filters: *id001
@@ -2101,14 +2109,6 @@ rules:
           name: ssg-rhel8-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
-    description: Use Only Strong MACs
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel8-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
     description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
     filters: *id001

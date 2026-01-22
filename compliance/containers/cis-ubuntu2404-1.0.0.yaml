@@ -158,7 +158,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_enabled
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_enforce_root
-    description: Limit Password Reuse (ubuntu2404)
+    description: Limit Password Reuse
     filters: *id001
     input:
       - xccdf:
@@ -277,6 +277,14 @@ rules:
           name: ssg-ubuntu2404-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
+  - id: xccdf_org.ssgproject.content_rule_accounts_set_post_pw_existing
+    description: Set existing passwords a period of inactivity before they been locked
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2404-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_accounts_set_post_pw_existing
   - id: xccdf_org.ssgproject.content_rule_accounts_tmout
     description: Set Interactive Session Timeout
     filters: *id001
@@ -853,6 +861,14 @@ rules:
           name: ssg-ubuntu2404-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log_gdm3
+  - id: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log_landscape
+    description: Verify Groupownership of Files in /var/log/landscape
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2404-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log_landscape
   - id: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log_sssd
     description: Verify Grouponwership of Files in /var/log/sssd
     filters: *id001
@@ -862,7 +878,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log_sssd
   - id: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log
-    description: Verify ownership of log files (ubuntu2404)
+    description: Verify ownership of log files
     filters: *id001
     input:
       - xccdf:
@@ -1181,6 +1197,14 @@ rules:
           name: ssg-ubuntu2404-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_ownerships_var_log_gdm3
+  - id: xccdf_org.ssgproject.content_rule_file_ownerships_var_log_landscape
+    description: Verify Ownership of Files in /var/log/landscape
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2404-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_ownerships_var_log_landscape
   - id: xccdf_org.ssgproject.content_rule_file_ownerships_var_log_sssd
     description: Verify Ownership of Files in /var/log/sssd
     filters: *id001
@@ -1910,7 +1934,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_unix
-    description: Prevent Login to Accounts With Empty Passwor (ubuntu2404)
+    description: Prevent Login to Accounts With Empty Password
     filters: *id001
     input:
       - xccdf:

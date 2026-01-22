@@ -109,6 +109,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxrepeat
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxsequence
+    description: Limit the maximum number of sequential characters in passwords
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_maxsequence
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass
     description: Ensure PAM Enforces Password Requirements - Minimum Different Categories
     filters: *id001
@@ -325,14 +333,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
-  - id: xccdf_org.ssgproject.content_rule_configure_crypto_policy
-    description: Configure System Cryptography Policy
+  - id: xccdf_org.ssgproject.content_rule_configure_custom_crypto_policy_cis
+    description: Implement Custom Crypto Policy Modules for CIS Benchmark
     filters: *id001
     input:
       - xccdf:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_configure_crypto_policy
+          rule: xccdf_org.ssgproject.content_rule_configure_custom_crypto_policy_cis
   - id: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
     description: Configure SSH to use System Crypto Policy
     filters: *id001
@@ -469,6 +477,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
+  - id: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled
+    description: Ensure gpgcheck Enabled for All yum Package Repositories
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled
   - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
     description: Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty
     filters: *id001
@@ -485,6 +501,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
+  - id: xccdf_org.ssgproject.content_rule_file_at_allow_exists
+    description: Ensure that /etc/at.allow exists
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_at_allow_exists
   - id: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
     description: Ensure that /etc/at.deny does not exist
     filters: *id001
@@ -1165,6 +1189,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_group_unique_id
+  - id: xccdf_org.ssgproject.content_rule_groups_no_zero_gid_except_root
+    description: Verify Only Group Root Has GID 0
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_groups_no_zero_gid_except_root
   - id: xccdf_org.ssgproject.content_rule_grub2_enable_selinux
     description: Ensure SELinux Not Disabled in /etc/default/grub
     filters: *id001
@@ -1405,6 +1437,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
+  - id: xccdf_org.ssgproject.content_rule_no_dirs_unowned_by_root
+    description: Ensure that All Root's Path Directories Are Owned by Root
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_no_dirs_unowned_by_root
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
     description: Ensure There Are No Accounts With Blank or Null Passwords
     filters: *id001
@@ -1709,6 +1749,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
+  - id: xccdf_org.ssgproject.content_rule_root_path_all_dirs
+    description: Ensure that All Entries in The Path of Root Are Directories
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_root_path_all_dirs
   - id: xccdf_org.ssgproject.content_rule_root_path_no_dot
     description: Ensure that Root's Path Does Not Include Relative Paths or Null Directories
     filters: *id001
@@ -1997,14 +2045,6 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
-    description: Use Only Strong MACs
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel9-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
     description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
     filters: *id001
