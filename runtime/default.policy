@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.61.0
+version: 1.64.0
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -170,10 +170,37 @@ rules:
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: apparmor_modified_tty_v2
+    description: An AppArmor profile was modified in an interactive session
+    expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !="" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: auditctl_usage
@@ -253,10 +280,37 @@ rules:
   - id: base64_decode
     description: The base64 command was used to decode information
     expression: exec.file.name == "base64" && exec.args_flags in ["d"]
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1140-deobfuscate-or-decode-files-or-information
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: base64_decode_v2
+    description: The base64 command was used to decode information
+    expression: exec.file.name == "base64" && exec.args_flags in ["d"] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1140-deobfuscate-or-decode-files-or-information
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: bpfdoor_bpf_filter_creation
@@ -297,10 +351,37 @@ rules:
   - id: chatroom_request
     description: A DNS request was made for a chatroom domain
     expression: dns.question.name in CHAT_ROOM_SITES
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1572-protocol-tunneling
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: chatroom_request_v2
+    description: A DNS request was made for a chatroom domain
+    expression: dns.question.name in CHAT_ROOM_SITES && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1572-protocol-tunneling
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: common_net_intrusion_util
@@ -342,11 +423,40 @@ rules:
   - id: compiler_in_container
     description: A compiler was executed inside of a container
     expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && process.container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent"
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1027-obfuscated-files-or-information
       - policy:best-practice
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: compiler_in_container_v2
+    description: A compiler was executed inside of a container
+    expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && process.container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent" && (process.args
+      == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1027-obfuscated-files-or-information
+      - policy:best-practice
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: container_breakout_enumeration_tool
@@ -883,10 +993,37 @@ rules:
   - id: exec_whoami
     description: The whoami command was executed
     expression: exec.comm == "whoami"
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1033-system-owner-or-user-discovery
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: exec_whoami_v2
+    description: The whoami command was executed
+    expression: exec.comm == "whoami" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1033-system-owner-or-user-discovery
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: exec_wrmsr
@@ -1284,10 +1421,37 @@ rules:
   - id: interactive_shell_in_container
     description: An interactive shell was started inside of a container
     expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && process.container.id !=""
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: interactive_shell_in_container_v2
+    description: An interactive shell was started inside of a container
+    expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && process.container.id !="" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1609-container-administration-command
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: inveigh_tool_usage
@@ -1302,10 +1466,37 @@ rules:
   - id: ip_check_domain
     description: A DNS lookup was done for a IP check service
     expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != ""
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1016-system-network-configuration-discovery
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: ip_check_domain_v2
+    description: A DNS lookup was done for a IP check service
+    expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != "" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0007-discovery
+      - technique:T1016-system-network-configuration-discovery
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: ip_lookup_domain
@@ -1395,6 +1586,21 @@ rules:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
       - policy:compliance
+    filters:
+      - os == "linux"
+  - id: kernel_module_compilation
+    description: Kernel module compilation detected after kernel headers installation
+    expression: |-
+      exec.file.path in ["/usr/bin/make", "/bin/make"]
+      && exec.args_flags in ["C"]
+      && exec.args in [~"*/lib/modules/*/build*", ~"*/usr/lib/modules/*/build*", ~"M=*"]
+    product_tags:
+      - tactic:TA0003-persistence
+      - tactic:TA0004-privilege-escalation
+      - tactic:TA0005-defense-evasion
+      - technique:T1547-boot-or-logon-autostart-execution
+      - technique:T1547.006-boot-or-logon-autostart-execution-kernel-modules-and-extensions
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: kernel_module_link
@@ -1603,10 +1809,38 @@ rules:
     description: memfd object created
     expression: exec.file.name =~ "memfd*" && exec.file.path == "" && process.parent.file.path not in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc" , "/run/docker/runtime-runc/moby/*", "/x86_64-bottlerocket-linux-gnu/sys-root/usr/bin/runc"] && !(process.comm
       == "dd-ipc-helper" && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"])
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1620-reflective-code-loading
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: memfd_create_v2
+    description: memfd object created
+    expression: exec.file.name =~ "memfd*" && exec.file.path == "" && process.parent.file.path not in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc" , "/run/docker/runtime-runc/moby/*", "/x86_64-bottlerocket-linux-gnu/sys-root/usr/bin/runc"] && !(process.comm
+      == "dd-ipc-helper" && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"]) && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1620-reflective-code-loading
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: minidump_usage
@@ -1625,6 +1859,18 @@ rules:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: mining_pool_domain_v2
+    description: A process connected to a cryptocurrency mining pool
+    expression: connect.addr.hostname in CRYPTOMINER_DOMAINS && connect.addr.is_public == true && connect.addr.port not in [53, 80, 443]
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
+      - policy:threat-detection
+    actions:
+      - hash:
+          field: process.file
     filters:
       - os == "linux"
   - id: mining_pool_lookup
@@ -1658,7 +1904,7 @@ rules:
     filters:
       - os == "linux"
   - id: mount_in_container
-    description: The mount utility was executed in a container
+    description: The mount system call was successfully executed in a container
     expression: exec.comm == "mount" && process.container.id != ""
     product_tags:
       - tactic:TA0004-privilege-escalation
@@ -1693,10 +1939,37 @@ rules:
   - id: net_unusual_request
     description: Network utility executed with suspicious URI
     expression: 'exec.comm in HTTP_UTILS && exec.args in [~"*.php*", ~"*.jpg*"] '
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: net_unusual_request_v2
+    description: Network utility executed with suspicious URI
+    expression: exec.comm in HTTP_UTILS && exec.args in [~"*.php*", ~"*.jpg*"]  && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: net_util
@@ -1709,6 +1982,7 @@ rules:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
+    agent_version: < 7.71
     filters:
       - os == "linux"
   - id: net_util_exfiltration
@@ -1717,10 +1991,40 @@ rules:
       exec.comm in HTTP_UTILS &&
       exec.args_options in [ ~"post-file=*", ~"post-data=*", ~"T=*", ~"d=@*", ~"upload-file=*", ~"F=file*"] &&
       exec.args not in [~"*localhost*", ~"*127.0.0.1*"]
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0010-exfiltration
       - technique:T1048-exfiltration-over-alternative-protocol
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: net_util_exfiltration_v2
+    description: Exfiltration attempt via network utility
+    expression: |-
+      exec.comm in HTTP_UTILS &&
+      exec.args_options in [ ~"post-file=*", ~"post-data=*", ~"T=*", ~"d=@*", ~"upload-file=*", ~"F=file*"] &&
+      exec.args not in [~"*localhost*", ~"*127.0.0.1*"] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0010-exfiltration
+      - technique:T1048-exfiltration-over-alternative-protocol
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: net_util_in_container
@@ -1729,10 +2033,66 @@ rules:
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
       process.container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ]
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: net_util_in_container_v3
+    description: A network utility was executed in a container
+    expression: |-
+      (exec.comm in NET_UTILS ||
+       exec.comm in HTTP_UTILS) &&
+      process.container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
+    filters:
+      - os == "linux"
+  - id: net_util_v2
+    description: A network utility was executed
+    expression: |-
+      (exec.comm in NET_UTILS ||
+       exec.comm in HTTP_UTILS) &&
+      process.container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: netcat_shell
@@ -1757,12 +2117,39 @@ rules:
     description: A container executed a new binary not found in the container image
     expression: process.container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != ""
     tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: new_binary_execution_in_container_v2
+    description: A container executed a new binary not found in the container image
+    expression: process.container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != "" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    tags:
       threat_score: '4'
       threat_description: Container images should be immutable. New executables may be downloaded or compiled malware.
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: ngrok_domain
@@ -1963,11 +2350,39 @@ rules:
   - id: package_management_in_container
     description: Package management was detected in a container
     expression: exec.file.path in PACKAGE_MANAGERS && process.container.id != ""
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
       - policy:best-practice
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: package_management_in_container_v2
+    description: Package management was detected in a container
+    expression: exec.file.path in PACKAGE_MANAGERS && process.container.id != "" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
+      - policy:best-practice
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: pam_modification_chmod
@@ -2061,6 +2476,8 @@ rules:
     description: The passwd or chpasswd utility was used to modify an account password
     expression: exec.file.path in ["/usr/bin/passwd", "/usr/sbin/chpasswd"] && exec.args_flags not in ["S", "status"]
     tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
       threat_score: '6'
       threat_description: Changing a password may be done to establish persistence
     product_tags:
@@ -2069,15 +2486,48 @@ rules:
       - technique:T1098-account-manipulation
       - technique:T1531-account-access-removal
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: passwd_execution_v2
+    description: The passwd or chpasswd utility was used to modify an account password
+    expression: exec.file.path in ["/usr/bin/passwd", "/usr/sbin/chpasswd"] && exec.args_flags not in ["S", "status"] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    tags:
+      threat_score: '6'
+      threat_description: Changing a password may be done to establish persistence
+    product_tags:
+      - tactic:TA0003-persistence
+      - tactic:TA0040-impact
+      - technique:T1098-account-manipulation
+      - technique:T1531-account-access-removal
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: paste_site
     description: A DNS lookup was done for a pastebin-like site
     expression: dns.question.name in PASTE_SITES && process.file.name != ""
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
+    agent_version: < 7.71
     filters:
       - os == "linux"
   - id: paste_site_domain
@@ -2087,6 +2537,29 @@ rules:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: paste_site_v2
+    description: A DNS lookup was done for a pastebin-like site
+    expression: dns.question.name in PASTE_SITES && process.file.name != "" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1105-ingress-tool-transfer
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: pci_11_5_critical_binaries_chmod
@@ -2246,10 +2719,39 @@ rules:
     expression: |-
       (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
       (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*")
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1190-exploit-public-facing-application
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: potential_web_shell_parent_v2
+    description: A web application spawned a shell or shell utility
+    expression: |-
+      (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
+      (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*") && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: powershell_empire_uac_bypass
@@ -2507,11 +3009,38 @@ rules:
       - os == "linux"
   - id: service_stop
     description: systemctl used to stop a service
-    expression: exec.file.name == "systemctl" && exec.args in [~"*stop*"]
+    expression: exec.file.name == "systemctl" && exec.args in [~"*stop*", ~"*kill*"]
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0040-impact
       - technique:T1489-service-stop
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: service_stop_v2
+    description: systemctl used to stop a service
+    expression: exec.file.name == "systemctl" && exec.args in [~"*stop*"] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1489-service-stop
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: sharpup_tool_usage
@@ -2994,11 +3523,40 @@ rules:
   - id: suid_file_execution
     description: a SUID file was executed
     expression: (setuid.euid == 0 || setuid.uid  == 0)  && process.file.mode & S_ISUID > 0  && process.file.uid == 0  && process.uid != 0  && process.file.path != "/usr/bin/sudo"
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
       - subtechnique:T1548.001-setuid-and-setgid
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: suid_file_execution_v2
+    description: a SUID file was executed
+    expression: (setuid.euid == 0 || setuid.uid  == 0)  && process.file.mode & S_ISUID > 0  && process.file.uid == 0  && process.uid != 0  && process.file.path != "/usr/bin/sudo" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1548-abuse-elevation-control-mechanism
+      - subtechnique:T1548.001-setuid-and-setgid
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: suspicious_bitsadmin_usage
@@ -3013,11 +3571,39 @@ rules:
   - id: suspicious_container_client
     description: A container management utility was executed in a container
     expression: exec.file.name in CONTAINER_CLIENTS && process.container.id != ""
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
       - technique:T1610-deploy-container
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: suspicious_container_client_v2
+    description: A container management utility was executed in a container
+    expression: exec.file.name in CONTAINER_CLIENTS && process.container.id != "" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1609-container-administration-command
+      - technique:T1610-deploy-container
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: suspicious_dll_write
@@ -3145,21 +3731,78 @@ rules:
   - id: systemd_spawned_shell
     description: systemd spawned shell
     expression: exec.file.path in SHELLS && process.ancestors.file.path == "/usr/lib/systemd/systemd-executor" && process.parent.file.path not in PACKAGE_MANAGERS
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task
       - subtechnique:T1053.006-systemd-timers
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: systemd_spawned_shell_v2
+    description: systemd spawned shell
+    expression: exec.file.path in SHELLS && process.ancestors.file.path == "/usr/lib/systemd/systemd-executor" && process.parent.file.path not in PACKAGE_MANAGERS && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1053-scheduled-task
+      - subtechnique:T1053.006-systemd-timers
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: tar_execution
     description: Tar archive created
     expression: exec.file.path == "/usr/bin/tar" && exec.args_flags in ["create","c"]
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0009-collection
       - technique:T1560-archive-collected-data
       - subtechnique:T1560.001-archive-via-utility
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: tar_execution_v2
+    description: Tar archive created
+    expression: exec.file.path == "/usr/bin/tar" && exec.args_flags in ["create","c"] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0009-collection
+      - technique:T1560-archive-collected-data
+      - subtechnique:T1560.001-archive-via-utility
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: tmate_usage
@@ -3233,11 +3876,40 @@ rules:
   - id: user_created_tty
     description: A user was created via an interactive session
     expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"]
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1136-create-account
       - subtechnique:T1136.001-local-account
       - policy:threat-detection
+    agent_version: < 7.71
+    filters:
+      - os == "linux"
+  - id: user_created_tty_v2
+    description: A user was created via an interactive session
+    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1136-create-account
+      - subtechnique:T1136.001-local-account
+      - policy:threat-detection
+    actions:
+      - set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+      - set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          scope: cgroup
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: user_deleted_tty
