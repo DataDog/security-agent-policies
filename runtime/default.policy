@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.64.0
+version: 1.65.0
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -188,13 +188,15 @@ rules:
       - technique:T1562-impair-defenses
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -298,13 +300,15 @@ rules:
       - technique:T1140-deobfuscate-or-decode-files-or-information
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -369,13 +373,15 @@ rules:
       - technique:T1572-protocol-tunneling
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -444,19 +450,82 @@ rules:
       - policy:best-practice
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
           scope: cgroup
     agent_version: '>= 7.71'
+    filters:
+      - os == "linux"
+  - id: connection_to_exfil_domain
+    description: Connection to known data exfiltration domain
+    expression: |-
+      connect.addr.hostname in [
+        "webhook.site",
+        "requestbin.net",
+        "requestbin.com",
+        "pipedream.net",
+        "hookbin.com",
+        "canarytokens.org",
+        "webhookrelay.com",
+        "pastebin.com",
+        "paste.ee",
+        "paste2.org",
+        "hastebin.com",
+        "ghostbin.com",
+        "dpaste.org",
+        "paste.centos.org",
+        "paste.ofcode.org",
+        "dropbox.com",
+        "dl.dropboxusercontent.com",
+        "drive.google.com",
+        "docs.google.com",
+        "onedrive.live.com",
+        "1drv.ms",
+        "box.com",
+        "box.net",
+        "mega.nz",
+        "wetransfer.com",
+        "file.io",
+        "transfer.sh",
+        "sendspace.com",
+        "gofile.io",
+        "sync.com",
+        "backblaze.com",
+        "discord.com",
+        "discordapp.com",
+        "discord.gg",
+        "api.telegram.org",
+        "t.me",
+        "slack.com",
+        "hooks.slack.com",
+        "teams.microsoft.com",
+        "bitbucket.org",
+        "anonfiles.com",
+        "filedropper.com",
+        "bayfiles.com",
+        "catbox.moe",
+        "anonfile.com",
+        "krakenfiles.com"
+      ] &&
+      connect.addr.port in [80, 443, 8080, 8443, 8000, 8008, 8888] &&
+      connect.addr.is_public == true
+    product_tags:
+      - tactic:TA0010-exfiltration
+      - technique:T1041-exfiltration-over-c2-channel
+      - technique:T1567-exfiltration-over-web-service
+      - policy:threat-detection
+    agent_version: '>=7.68'
     filters:
       - os == "linux"
   - id: container_breakout_enumeration_tool
@@ -1011,13 +1080,15 @@ rules:
       - technique:T1033-system-owner-or-user-discovery
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -1439,13 +1510,15 @@ rules:
       - technique:T1609-container-administration-command
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -1484,13 +1557,15 @@ rules:
       - technique:T1016-system-network-configuration-discovery
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -1828,13 +1903,15 @@ rules:
       - technique:T1620-reflective-code-loading
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -1957,13 +2034,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2012,13 +2091,15 @@ rules:
       - technique:T1048-exfiltration-over-alternative-protocol
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2054,13 +2135,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2080,13 +2163,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2137,13 +2222,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2370,13 +2457,15 @@ rules:
       - policy:best-practice
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2502,13 +2591,15 @@ rules:
       - technique:T1531-account-access-removal
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2547,13 +2638,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2739,13 +2832,15 @@ rules:
       - technique:T1190-exploit-public-facing-application
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3028,13 +3123,15 @@ rules:
       - technique:T1489-service-stop
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3544,13 +3641,15 @@ rules:
       - subtechnique:T1548.001-setuid-and-setgid
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3591,13 +3690,15 @@ rules:
       - technique:T1610-deploy-container
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3752,13 +3853,15 @@ rules:
       - subtechnique:T1053.006-systemd-timers
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3790,13 +3893,15 @@ rules:
       - subtechnique:T1560.001-archive-via-utility
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3897,13 +4002,15 @@ rules:
       - subtechnique:T1136.001-local-account
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
