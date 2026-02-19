@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.64.0
+version: 1.65.0
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -108,6 +108,9 @@ macros:
     expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*"]'
   - id: PASTE_SITES
     expression: '["pastebin.com", "ghostbin.com", "termbin.com", "klgrth.io", "rentry.co", "transfer.sh"]'
+  - id: PROXYJACKING_DOMAINS
+    expression: '[~"*.honeygain.com", "honeygain.com", ~"*.peer2profit.com", "peer2profit.com", ~"*.iproyal.com", "iproyal.com", ~"*.pawns.app", "pawns.app", ~"*.traffmonetizer.com", "traffmonetizer.com", ~"*.proxyrack.com", "proxyrack.com", ~"*.packetstream.io",
+      "packetstream.io", ~"*.earn.fm", "earn.fm", ~"*.earnfm.com", "earnfm.com", ~"*.repocket.com", "repocket.com", ~"*.getgrass.io", "getgrass.io"]   '
   - id: SHELLS
     description: Common Linux shell executables
     expression: |-
@@ -167,6 +170,219 @@ macros:
     description: Processes that commonly run web applications
     expression: '["apache2", "nginx", ~"tomcat*", "httpd"]'
 rules:
+  - id: execution_context_cgroup
+    description: Track execution context from cgroup
+    expression: exec.cgroup.id != process.parent.cgroup.id && ${process.correlation_key} in ["", ~"cgroup_*", ~"service_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"cgroup_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_cgroup_write
+    description: Track execution context from cgroup write
+    expression: cgroup_write.pid > 0 && ${process.correlation_key} in ["", ~"cgroup_*", ~"service_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          scope_field: cgroup_write.pid
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"cgroup_${builtins.uuid4}"'
+          scope: process
+          scope_field: cgroup_write.pid
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_auid
+    description: Track execution context from auid
+    expression: exec.auid >= 0 && exec.auid != AUDIT_AUID_UNSET && ${process.correlation_key} in ["", ~"cgroup_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"auid_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_service
+    description: Track execution context from service
+    expression: (exec.envs in ["DD_SERVICE", "OTEL_SERVICE_NAME"] || "tags.datadoghq.com/service" in container.tags) && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"service_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_interactive_shell
+    description: Track execution context from interactive shell
+    expression: exec.file.path in SHELLS && (process.tty_name != "" || exec.args_flags in ["i"]) && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*", ~"service_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"interactive_shell_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_spawned_shell
+    description: Track execution context from spawned shell
+    expression: exec.file.path in SHELLS && (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*" || process.parent.file.name in DATABASE_PROCESSES || process.parent.file.name in ["java", "jspawnhelper"]) && ${process.correlation_key}
+      in ["", ~"cgroup_*", ~"auid_*", ~"service_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"spawned_shell_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_k8s_usersession_entrypoint
+    description: Track execution context from k8s user session
+    expression: exec.user_session.k8s_username != ""  && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*", ~"service_*", ~"interactive_shell_*"]
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"k8s_session_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_npm_install
+    description: Track execution context of npm package installation
+    expression: "exec.file.name in [\"node\", \"npm\"] && \n(process.args =~ \"* install *\" || process.args =~ \"* add *\" || process.args =~ \"* i *\" || \n process.args =~ \"* in *\" || process.args =~ \"* ins *\" || process.args =~ \"* inst *\" || \n process.args\
+      \ =~ \"* insta *\" || process.args =~ \"* instal *\" || process.args =~ \"* isnt *\" || \n process.args =~ \"* isnta *\" || process.args =~ \"* isntal *\" || process.args =~ \"* isntall *\") &&\nnot(process.args =~ \"*-e *\") &&\n${process.correlation_key}\
+      \ in [\"\", ~\"cgroup_*\", ~\"auid_*\", ~\"service_*\", ~\"interactive_shell_*\", ~\"spawned_shell_*\", ~\"k8s_session_*\"]"
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"package_install_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
   - id: apparmor_modified_tty
     description: An AppArmor profile was modified in an interactive session
     expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !=""
@@ -188,13 +404,15 @@ rules:
       - technique:T1562-impair-defenses
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -298,13 +516,15 @@ rules:
       - technique:T1140-deobfuscate-or-decode-files-or-information
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -369,13 +589,15 @@ rules:
       - technique:T1572-protocol-tunneling
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -444,19 +666,82 @@ rules:
       - policy:best-practice
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
           scope: cgroup
     agent_version: '>= 7.71'
+    filters:
+      - os == "linux"
+  - id: connection_to_exfil_domain
+    description: Connection to known data exfiltration domain
+    expression: |-
+      connect.addr.hostname in [
+        "webhook.site",
+        "requestbin.net",
+        "requestbin.com",
+        "pipedream.net",
+        "hookbin.com",
+        "canarytokens.org",
+        "webhookrelay.com",
+        "pastebin.com",
+        "paste.ee",
+        "paste2.org",
+        "hastebin.com",
+        "ghostbin.com",
+        "dpaste.org",
+        "paste.centos.org",
+        "paste.ofcode.org",
+        "dropbox.com",
+        "dl.dropboxusercontent.com",
+        "drive.google.com",
+        "docs.google.com",
+        "onedrive.live.com",
+        "1drv.ms",
+        "box.com",
+        "box.net",
+        "mega.nz",
+        "wetransfer.com",
+        "file.io",
+        "transfer.sh",
+        "sendspace.com",
+        "gofile.io",
+        "sync.com",
+        "backblaze.com",
+        "discord.com",
+        "discordapp.com",
+        "discord.gg",
+        "api.telegram.org",
+        "t.me",
+        "slack.com",
+        "hooks.slack.com",
+        "teams.microsoft.com",
+        "bitbucket.org",
+        "anonfiles.com",
+        "filedropper.com",
+        "bayfiles.com",
+        "catbox.moe",
+        "anonfile.com",
+        "krakenfiles.com"
+      ] &&
+      connect.addr.port in [80, 443, 8080, 8443, 8000, 8008, 8888] &&
+      connect.addr.is_public == true
+    product_tags:
+      - tactic:TA0010-exfiltration
+      - technique:T1041-exfiltration-over-c2-channel
+      - technique:T1567-exfiltration-over-web-service
+      - policy:threat-detection
+    agent_version: '>=7.68'
     filters:
       - os == "linux"
   - id: container_breakout_enumeration_tool
@@ -1011,13 +1296,15 @@ rules:
       - technique:T1033-system-owner-or-user-discovery
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -1048,273 +1335,6 @@ rules:
       - tactic:TA0005-defense-evasion
       - technique:T1222-file-and-directory-permissions-modification
       - policy:threat-detection
-    filters:
-      - os == "linux"
-  - id: execution_context_auid
-    description: Track execution context from auid
-    expression: exec.auid >= 0 && exec.auid != AUDIT_AUID_UNSET && ${process.correlation_key} in ["", ~"cgroup_*"]
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"auid_${builtins.uuid4}"'
-          scope: process
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_cgroup
-    description: Track execution context from cgroup
-    expression: exec.cgroup.id != process.parent.cgroup.id && ${process.correlation_key} in ["", ~"cgroup_*"]
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"cgroup_${builtins.uuid4}"'
-          scope: process
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_cgroup_write
-    description: Track execution context from cgroup write
-    expression: cgroup_write.pid > 0 && ${process.correlation_key} in ["", ~"cgroup_*"]
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          scope_field: cgroup_write.pid
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"cgroup_${builtins.uuid4}"'
-          scope: process
-          scope_field: cgroup_write.pid
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_interactive_shell
-    description: Track execution context from interactive shell
-    expression: exec.file.path in SHELLS && (process.tty_name != "" || exec.args_flags in ["i"]) && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*", ~"service_*", ~"service_new_cgroup_*"]
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"interactive_shell_${builtins.uuid4}"'
-          scope: process
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_k8s_usersession_entrypoint
-    description: Track execution context from k8s user session
-    expression: exec.user_session.k8s_username != ""  && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*", ~"service_*", ~"service_new_cgroup_*", ~"interactive_shell_*"]
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"k8s_session_${builtins.uuid4}"'
-          scope: process
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_npm_install
-    description: Track execution context of npm package installation
-    expression: "exec.file.name in [\"node\", \"npm\"] && \n(process.args =~ \"* install *\" || process.args =~ \"* add *\" || process.args =~ \"* i *\" || \n process.args =~ \"* in *\" || process.args =~ \"* ins *\" || process.args =~ \"* inst *\" || \n process.args\
-      \ =~ \"* insta *\" || process.args =~ \"* instal *\" || process.args =~ \"* isnt *\" || \n process.args =~ \"* isnta *\" || process.args =~ \"* isntal *\" || process.args =~ \"* isntall *\") &&\nnot(process.args =~ \"*-e *\") &&\n${process.correlation_key}\
-      \ in [\"\", ~\"cgroup_*\", ~\"auid_*\", ~\"service_*\", ~\"service_new_cgroup_*\", ~\"interactive_shell_*\", ~\"k8s_session_*\"]"
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"package_install_${builtins.uuid4}"'
-          scope: process
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_service
-    description: Track execution context from service
-    expression: (exec.envs in ["DD_SERVICE", "OTEL_SERVICE_NAME"] || "tags.datadoghq.com/service" in container.tags) && ${process.correlation_key} in ["", ~"cgroup_*", ~"auid_*"]
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"service_${builtins.uuid4}"'
-          scope: process
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_service_new_cgroup
-    description: Track execution context from new service cgroup
-    expression: (exec.envs in ["DD_SERVICE", "OTEL_SERVICE_NAME"] || "tags.datadoghq.com/service" in container.tags) && ${process.correlation_key} in [~"service_*"] && process.cgroup.id != process.parent.cgroup.id
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"service_new_cgroup_${builtins.uuid4}"'
-          scope: process
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_service_new_cgroup_write
-    description: Track execution context from new service cgroup write
-    expression: cgroup_write.pid > 0 && (process.envs in ["DD_SERVICE", "OTEL_SERVICE_NAME"] || "tags.datadoghq.com/service" in container.tags) && ${process.correlation_key} in [~"service_*"]
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          scope_field: cgroup_write.pid
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"service_new_cgroup_write_${builtins.uuid4}"'
-          scope: process
-          scope_field: cgroup_write.pid
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
-    filters:
-      - os == "linux"
-  - id: execution_context_spawned_shell
-    description: Track execution context from spawned shell
-    expression: exec.file.path in SHELLS && (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*" || process.parent.file.name in DATABASE_PROCESSES || process.parent.file.name in ["java", "jspawnhelper"]) && ${process.correlation_key}
-      in ["", ~"cgroup_*", ~"auid_*", ~"service_*", ~"service_new_cgroup_*"]
-    tags:
-      execution_context: 'True'
-    product_tags:
-      - policy:threat-detection
-    actions:
-      - filter: ${process.correlation_key} != ""
-        set:
-          name: parent_correlation_keys
-          default_value: ''
-          expression: ${process.correlation_key}
-          append: true
-          scope: process
-          inherited: true
-      - set:
-          name: correlation_key
-          default_value: ''
-          expression: '"spawned_shell_${builtins.uuid4}"'
-          scope: process
-          inherited: true
-    silent: true
-    agent_version: '>=7.68'
     filters:
       - os == "linux"
   - id: file_sync_exfil
@@ -1439,13 +1459,15 @@ rules:
       - technique:T1609-container-administration-command
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -1484,13 +1506,15 @@ rules:
       - technique:T1016-system-network-configuration-discovery
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -1828,13 +1852,15 @@ rules:
       - technique:T1620-reflective-code-loading
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -1957,13 +1983,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2012,13 +2040,15 @@ rules:
       - technique:T1048-exfiltration-over-alternative-protocol
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2054,13 +2084,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2080,13 +2112,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2137,13 +2171,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2370,13 +2406,15 @@ rules:
       - policy:best-practice
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2502,13 +2540,15 @@ rules:
       - technique:T1531-account-access-removal
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2547,13 +2587,15 @@ rules:
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2739,13 +2781,15 @@ rules:
       - technique:T1190-exploit-public-facing-application
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -2782,6 +2826,15 @@ rules:
       - policy:threat-detection
     filters:
       - os == "windows"
+  - id: proxyjacking_domain
+    description: A process established a connection to a known proxyjacking/proxyware service domain
+    expression: connect.addr.hostname in PROXYJACKING_DOMAINS && connect.addr.is_public == true
+    product_tags:
+      - tactic:TA0040-impact
+      - technique:T1496-resource-hijacking
+      - policy:threat-detection
+    filters:
+      - os == "linux"
   - id: ptrace_antidebug
     description: A process uses an anti-debugging technique to block debuggers
     expression: ptrace.request == PTRACE_TRACEME && process.file.name != ""
@@ -2938,6 +2991,15 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
+  - id: rootkit_activation
+    description: A signal with a type greater than 31 (the last defined POSIX signal) was detected. Rootkits often hook the kill syscall to use non-standard signal numbers as a covert channel for privilege escalation commands.
+    expression: signal.type > 31
+    product_tags:
+      - tactic:TA0004-privilege-escalation
+      - technique:T1014-rootkit
+      - policy:threat-detection
+    filters:
+      - os == "linux"
   - id: rubeus_execution
     description: process arguments match rubeus credential theft tool
     expression: exec.cmdline in [~"*asreproast*", ~"*/service:krbtgt*", ~"*dump /luid:0x*", ~"*kerberoast*", ~"*createonly /program*", ~"*ptt /ticket*", ~"*impersonateuser*", ~"*renew /ticket*", ~"*asktgt /user*", ~"*harvest /interval*", ~"*s4u /user*", ~"*hash
@@ -3028,13 +3090,15 @@ rules:
       - technique:T1489-service-stop
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3544,13 +3608,15 @@ rules:
       - subtechnique:T1548.001-setuid-and-setgid
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3591,13 +3657,15 @@ rules:
       - technique:T1610-deploy-container
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3752,13 +3820,15 @@ rules:
       - subtechnique:T1053.006-systemd-timers
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3790,13 +3860,15 @@ rules:
       - subtechnique:T1560.001-archive-via-utility
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
@@ -3897,13 +3969,15 @@ rules:
       - subtechnique:T1136.001-local-account
       - policy:threat-detection
     actions:
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_args
           field: process.args
           ttl: 3600000000000
           append: true
           scope: cgroup
-      - set:
+      - filter: process.pid != 0
+        set:
           name: rtl_process_parent
           field: process.parent.file.path
           ttl: 3600000000000
