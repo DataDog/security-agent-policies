@@ -13,15 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Create Compliance Benchmarks ConfigMap
-        uses: steebchen/kubectl@v2.1.1
+        uses: steebchen/kubectl@7c4c70d551952e40881998b840e16d4d9824a54f # v2.1.1
         with:
           command: create configmap datadog-compliance-benchmarks --dry-run=client -o yaml --from-file=./compliance/containers > ./datadog-compliance-benchmarks.yaml
 
       - name: Create Workload Security Policies ConfigMap
-        uses: steebchen/kubectl@v2.1.1
+        uses: steebchen/kubectl@7c4c70d551952e40881998b840e16d4d9824a54f # v2.1.1
         with:
           command: create configmap datadog-runtime-policies --dry-run=client -o yaml --from-file=./runtime > ./datadog-runtime-policies.yaml
 
@@ -30,7 +30,7 @@ jobs:
         run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         with:
           name: Release ${{ steps.tag_name_extractor.outputs.TAG_NAME }}
           body: |
