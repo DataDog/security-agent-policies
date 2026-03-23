@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.65.0
+version: 1.66.0
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -102,10 +102,11 @@ macros:
       - os == "linux"
   - id: PACKAGE_MANAGERS
     description: Package managers and container runtimes
-    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*", "/usr/bin/yum", "/sbin/apk", "/usr/lib/snapd/snapd"]'
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*", "/usr/bin/yum", "/usr/bin/dnf-3", "/usr/bin/dnf4", "/usr/bin/dnf-automatic", "/sbin/apk", "/usr/lib/snapd/snapd"]'
   - id: PACKAGE_MANAGERS_AND_RUNTIMES
     description: Package managers and container runtimes
-    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*"]'
+    expression: '[~"/usr/bin/apt*", "/usr/bin/dpkg", "/usr/bin/rpm", "/usr/bin/unattended-upgrade", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/bin/npm", ~"/usr/bin/pip*", ~"/usr/local/bin/pip*", "/usr/bin/dnf-3", "/usr/bin/dnf4",
+      "/usr/bin/dnf-automatic"]'
   - id: PASTE_SITES
     expression: '["pastebin.com", "ghostbin.com", "termbin.com", "klgrth.io", "rentry.co", "transfer.sh"]'
   - id: PROXYJACKING_DOMAINS
@@ -355,6 +356,64 @@ rules:
     agent_version: '>=7.68'
     filters:
       - os == "linux"
+  - id: execution_context_daemonized_process
+    description: Track execution context for processes using background utilities (nohup/setsid) that may indicate suspicious or potentially unwanted activity
+    expression: "exec.file.name in [\"nohup\", \"setsid\"] && \n${process.correlation_key} in [\"\", ~\"cgroup_*\", ~\"auid_*\", ~\"service_*\", ~\"service_new_cgroup_*\", ~\"interactive_shell_*\", ~\"k8s_session_*\"]"
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1564-hide-artifacts
+      - subtechnique:T1564.011-ignore-process-interrupts
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"daemonized_malware_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: execution_context_interpreter_service_spawned_shell
+    description: Detect interpreter processes accepting incoming HTTP traffic on public ports that spawned a shell
+    expression: "(exec.file.path in SHELLS || exec.file.path in SHELL_UTILS) && \nprocess.ancestors.pid in ${cgroup.interpreter_incoming_http_processes} &&\n${process.correlation_key} in [\"\", ~\"cgroup_*\", ~\"auid_*\", ~\"service_*\", ~\"service_new_cgroup_*\"\
+      , ~\"interactive_shell_*\", ~\"k8s_session_*\"]"
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"service_shell_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>= 7.65'
+    filters:
+      - os == "linux"
   - id: execution_context_npm_install
     description: Track execution context of npm package installation
     expression: "exec.file.name in [\"node\", \"npm\"] && \n(process.args =~ \"* install *\" || process.args =~ \"* add *\" || process.args =~ \"* i *\" || \n process.args =~ \"* in *\" || process.args =~ \"* ins *\" || process.args =~ \"* inst *\" || \n process.args\
@@ -381,6 +440,23 @@ rules:
           inherited: true
     silent: true
     agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: accept_incoming_http
+    description: Detect interpreter processes accepting incoming HTTP traffic on public ports
+    expression: accept.addr.port in [80, 443, 3000, 8080, 8000, 8443] && accept.addr.is_public == true && process.file.name in INTERPRETER_PROCESSES && process.pid not in ${cgroup.interpreter_incoming_http_processes}
+    product_tags:
+      - tactic:TA0001-initial-access
+      - technique:T1190-exploit-public-facing-application
+      - policy:threat-detection
+    actions:
+      - set:
+          name: interpreter_incoming_http_processes
+          field: process.pid
+          scope: cgroup
+          append: true
+          ttl: 1800000000000
+    agent_version: '>= 7.65'
     filters:
       - os == "linux"
   - id: apparmor_modified_tty
@@ -410,6 +486,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -417,6 +494,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -522,6 +600,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -529,6 +608,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -595,6 +675,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -602,6 +683,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -672,6 +754,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -679,6 +762,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -1156,7 +1240,7 @@ rules:
       - os == "linux"
   - id: devshm_execution
     description: A file executed from /dev/shm/ directory
-    expression: exec.file.path == ~"/dev/shm/**"
+    expression: exec.file.path == ~"/dev/shm/**" && process.file.path != "/dev/shm/runc"
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1027-obfuscated-files-or-information
@@ -1302,6 +1386,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -1309,6 +1394,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -1465,6 +1551,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -1472,6 +1559,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -1512,6 +1600,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -1519,6 +1608,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -1530,6 +1620,7 @@ rules:
       - tactic:TA0007-discovery
       - technique:T1016-system-network-configuration-discovery
       - policy:threat-detection
+    agent_version: '>=7.65'
     filters:
       - os == "linux"
   - id: iptables_egress_allowed
@@ -1832,7 +1923,7 @@ rules:
   - id: memfd_create
     description: memfd object created
     expression: exec.file.name =~ "memfd*" && exec.file.path == "" && process.parent.file.path not in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc" , "/run/docker/runtime-runc/moby/*", "/x86_64-bottlerocket-linux-gnu/sys-root/usr/bin/runc"] && !(process.comm
-      == "dd-ipc-helper" && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"])
+      in ["dd-ipc-helper", ~"datadog-ipc*"] && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"])
     tags:
       allow_autosuppression: 'true'
       deprecated: 'true'
@@ -1846,7 +1937,7 @@ rules:
   - id: memfd_create_v2
     description: memfd object created
     expression: exec.file.name =~ "memfd*" && exec.file.path == "" && process.parent.file.path not in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc" , "/run/docker/runtime-runc/moby/*", "/x86_64-bottlerocket-linux-gnu/sys-root/usr/bin/runc"] && !(process.comm
-      == "dd-ipc-helper" && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"]) && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+      in ["dd-ipc-helper", ~"datadog-ipc*"] && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"]) && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1620-reflective-code-loading
@@ -1858,6 +1949,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -1865,6 +1957,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -1885,6 +1978,7 @@ rules:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
       - policy:threat-detection
+    agent_version: '>=7.65 <7.70'
     filters:
       - os == "linux"
   - id: mining_pool_domain_v2
@@ -1897,6 +1991,7 @@ rules:
     actions:
       - hash:
           field: process.file
+    agent_version: '>=7.70'
     filters:
       - os == "linux"
   - id: mining_pool_lookup
@@ -1989,6 +2084,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -1996,6 +2092,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2046,6 +2143,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -2053,6 +2151,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2090,6 +2189,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -2097,6 +2197,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2118,6 +2219,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -2125,6 +2227,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2177,6 +2280,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -2184,6 +2288,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2195,6 +2300,7 @@ rules:
       - tactic:TA0011-command-and-control
       - technique:T1102-web-service
       - policy:threat-detection
+    agent_version: '>=7.65'
     filters:
       - os == "linux"
   - id: nohup_usage
@@ -2412,6 +2518,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -2419,6 +2526,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2546,6 +2654,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -2553,6 +2662,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2577,6 +2687,7 @@ rules:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
       - policy:threat-detection
+    agent_version: '>=7.65'
     filters:
       - os == "linux"
   - id: paste_site_v2
@@ -2593,6 +2704,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -2600,6 +2712,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2727,6 +2840,7 @@ rules:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
       - policy:threat-detection
+    agent_version: '>=7.65'
     filters:
       - os == "linux"
   - id: perl_shell
@@ -2787,6 +2901,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -2794,6 +2909,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -2833,6 +2949,7 @@ rules:
       - tactic:TA0040-impact
       - technique:T1496-resource-hijacking
       - policy:threat-detection
+    agent_version: '>=7.65'
     filters:
       - os == "linux"
   - id: ptrace_antidebug
@@ -3096,6 +3213,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -3103,6 +3221,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -3183,6 +3302,90 @@ rules:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: socks5_proxy_connection
+    description: A SOCKS5 proxy was contacted to connect to an IPv4 address
+    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010001" && process.file.path not in DD_AGENT_PROCESSES && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1090-proxy
+      - subtechnique:T1090.002-external-proxy
+      - policy:threat-detection
+    actions:
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: socks5_proxy_connection_domain
+    description: A SOCKS5 proxy was contacted to connect to a domain name
+    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010003" && process.file.path not in DD_AGENT_PROCESSES && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1090-proxy
+      - subtechnique:T1090.002-external-proxy
+      - policy:threat-detection
+    actions:
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: socks5_proxy_connection_ipv6
+    description: A SOCKS5 proxy was contacted to connect to an IPv6 address
+    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010004" && process.file.path not in DD_AGENT_PROCESSES && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1090-proxy
+      - subtechnique:T1090.002-external-proxy
+      - policy:threat-detection
+    actions:
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+    agent_version: '>=7.68'
     filters:
       - os == "linux"
   - id: ssh_authorized_keys_chmod
@@ -3614,6 +3817,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -3621,6 +3825,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -3663,6 +3868,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -3670,6 +3876,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -3826,6 +4033,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -3833,6 +4041,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -3866,6 +4075,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -3873,6 +4083,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
@@ -3975,6 +4186,7 @@ rules:
           field: process.args
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
       - filter: process.pid != 0
         set:
@@ -3982,6 +4194,7 @@ rules:
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
+          private: true
           scope: cgroup
     agent_version: '>= 7.71'
     filters:
