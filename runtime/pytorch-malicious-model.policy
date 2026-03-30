@@ -1,0 +1,135 @@
+# IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
+version: 1.67.0
+type: content_pack
+macros:
+  - id: SHELLS
+    description: Common Linux shell executables
+    expression: |-
+      [ "/bin/dash",
+        "/usr/bin/dash",
+        "/bin/sh",
+        "/bin/static-sh",
+        "/usr/bin/sh",
+        "/bin/bash",
+        "/usr/bin/bash",
+        "/bin/bash-static",
+        "/usr/bin/zsh",
+        "/usr/bin/ash",
+        "/usr/bin/csh",
+        "/usr/bin/ksh",
+        "/usr/bin/tcsh",
+        "/usr/lib/initramfs-tools/bin/busybox",
+        "/bin/busybox",
+        "/usr/bin/fish",
+        "/bin/ksh93",
+        "/bin/rksh",
+        "/bin/rksh93",
+        "/bin/lksh",
+        "/bin/mksh",
+        "/bin/mksh-static",
+        "/usr/bin/csharp",
+        "/bin/posh",
+        "/usr/bin/rc",
+        "/bin/sash",
+        "/usr/bin/yash",
+        "/bin/zsh5",
+        "/bin/zsh5-static" ]
+rules:
+  - id: pytorch_malicious_model_file
+    description: Python loaded a PyTorch model
+    expression: open.file.name =~ "*.pth" && ${process.has_python_imports}
+    product_tags:
+      - policy:pytorch-malicious-model
+      - tactic:TA0002-execution
+      - technique:T1129-shared-modules
+    actions:
+      - set:
+          name: malicious_model_file
+          scope: cgroup
+          field: open.file.path
+    silent: true
+    disabled: true
+    agent_version: < 7.76
+    filters:
+      - os == "linux"
+  - id: pytorch_malicious_model_file_v2
+    description: Python loaded a PyTorch model
+    expression: open.file.extension == ".pth" && (open.flags & O_ACCMODE) == O_RDONLY && ${process.has_python_imports}
+    product_tags:
+      - policy:pytorch-malicious-model
+      - tactic:TA0002-execution
+      - technique:T1129-shared-modules
+    actions:
+      - set:
+          name: malicious_model_file
+          scope: cgroup
+          field: open.file.path
+    silent: true
+    disabled: true
+    agent_version: '>= 7.76'
+    filters:
+      - os == "linux"
+  - id: pytorch_python_imports
+    description: Python pickle module has been loaded
+    expression: open.file.name in [~"__init__*pyc", ~"pickle*pyc"] && process.comm =~ "python*"
+    product_tags:
+      - policy:pytorch-malicious-model
+      - tactic:TA0002-execution
+      - technique:T1129-shared-modules
+    actions:
+      - set:
+          name: has_python_imports
+          scope: process
+          value: true
+      - set:
+          name: has_parent_with_python_imports
+          scope: process
+          value: true
+          inherited: true
+      - set:
+          name: python_loaded_modules
+          scope: cgroup
+          field: open.file.path
+          append: true
+    silent: true
+    disabled: true
+    agent_version: < 7.76
+    filters:
+      - os == "linux"
+  - id: pytorch_python_imports_v2
+    description: Python pickle module has been loaded
+    expression: open.file.name in [~"__init__*", ~"pickle*"] && open.file.extension == ".pyc" && (open.flags & O_ACCMODE) == O_RDONLY && process.comm =~ "python*"
+    product_tags:
+      - policy:pytorch-malicious-model
+      - tactic:TA0002-execution
+      - technique:T1129-shared-modules
+    actions:
+      - set:
+          name: has_python_imports
+          scope: process
+          value: true
+      - set:
+          name: has_parent_with_python_imports
+          scope: process
+          value: true
+          inherited: true
+      - set:
+          name: python_loaded_modules
+          scope: cgroup
+          field: open.file.path
+          append: true
+    silent: true
+    disabled: true
+    agent_version: '>= 7.76'
+    filters:
+      - os == "linux"
+  - id: pytorch_torch_pickle_followed_by_shell
+    description: A shell was executed after Python loaded a PyTorch model
+    expression: exec.file.path in SHELLS && ${process.has_parent_with_python_imports} && ${cgroup.python_loaded_modules} in [~"*torch*"]
+    product_tags:
+      - policy:pytorch-malicious-model
+      - tactic:TA0002-execution
+      - technique:T1129-shared-modules
+    disabled: true
+    filters:
+      - os == "linux"

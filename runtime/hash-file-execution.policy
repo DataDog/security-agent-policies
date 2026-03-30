@@ -1,0 +1,38 @@
+# IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
+version: 1.67.0
+type: content_pack
+macros: []
+rules:
+  - id: hash_exec_container
+    description: Hash of an executable file executed in a container
+    expression: process.container.id != "" && exec.file.in_upper_layer == true && exec.file.name != "" && exec.file.path not in ${cgroup.cont_already_sent_hashes}
+    product_tags:
+      - policy:hash-file-execution
+    actions:
+      - set:
+          name: cont_already_sent_hashes
+          field: exec.file.path
+          append: true
+          ttl: 3600000000000
+          scope: cgroup
+      - hash:
+          field: exec.file
+    disabled: true
+    filters:
+      - os == "linux"
+  - id: hash_exec_host
+    description: Hash of an executable file executed on the host
+    expression: process.container.id == "" && exec.file.name != "" && exec.file.path not in ${host_already_sent_hashes}
+    product_tags:
+      - policy:hash-file-execution
+    actions:
+      - set:
+          name: host_already_sent_hashes
+          field: exec.file.path
+          append: true
+          ttl: 3600000000000
+      - hash:
+          field: exec.file
+    disabled: true
+    filters:
+      - os == "linux"
