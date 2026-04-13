@@ -133,6 +133,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_modules_in_authselect_profile
+    description: Ensure Active Authselect Profile Includes PAM Modules
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_modules_in_authselect_profile
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_enforce_for_root
     description: Ensure Password History Is Enforced for the Root User
     filters: *id001
@@ -189,6 +197,22 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_authtok
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_enabled
+    description: Verify pam_unix module is activated
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_enabled
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_no_remember
+    description: Avoid using remember in pam_unix module
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_no_remember
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
     description: Set Existing Passwords Maximum Age
     filters: *id001
@@ -221,14 +245,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
-  - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
-    description: Set Lockout Time for Failed Password Attempts
+  - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time_with_zero
+    description: Set Lockout Time for Failed Password Attempts (Permanent Lockout Allowed)
     filters: *id001
     input:
       - xccdf:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
+          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time_with_zero
   - id: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
     description: Verify Root Has A Primary GID 0
     filters: *id001
@@ -494,7 +518,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_session_idle_user_locks
   - id: xccdf_org.ssgproject.content_rule_directory_groupowner_sshd_config_d
-    description: Verify Group Who Owns SSH Server Configuration Files
+    description: Verify Group Who Owns SSH Server Configuration Directory
     filters: *id001
     input:
       - xccdf:
@@ -502,7 +526,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_directory_groupowner_sshd_config_d
   - id: xccdf_org.ssgproject.content_rule_directory_owner_sshd_config_d
-    description: Verify Owner on SSH Server Configuration Files
+    description: Verify Owner on SSH Server Configuration Directory
     filters: *id001
     input:
       - xccdf:
@@ -510,7 +534,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_directory_owner_sshd_config_d
   - id: xccdf_org.ssgproject.content_rule_directory_permissions_sshd_config_d
-    description: Verify Permissions on SSH Server Config File
+    description: Verify Permissions on SSH Server Config Directory
     filters: *id001
     input:
       - xccdf:
@@ -541,6 +565,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated
+  - id: xccdf_org.ssgproject.content_rule_ensure_journald_and_rsyslog_not_active_together
+    description: Ensure journald and rsyslog Are Not Active Together
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_ensure_journald_and_rsyslog_not_active_together
   - id: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
     description: Ensure the Group Used by pam_wheel.so Module Exists on System and is Empty
     filters: *id001
@@ -629,6 +661,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_backup_etc_shadow
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_boot_grub2
+    description: All GRUB configuration files must be group-owned by root
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_boot_grub2
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_allow
     description: Verify Group Who Owns /etc/cron.allow file
     filters: *id001
@@ -773,14 +813,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shells
-  - id: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
-    description: Verify /boot/grub2/grub.cfg Group Ownership
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
     description: Verify Group Who Owns SSH Server config file
     filters: *id001
@@ -797,14 +829,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_drop_in_config
-  - id: xccdf_org.ssgproject.content_rule_file_groupowner_user_cfg
-    description: Verify /boot/grub2/user.cfg Group Ownership
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupowner_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_sshd_private_key
     description: Verify Group Ownership on SSH Server Private *_key Key Files
     filters: *id001
@@ -861,6 +885,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_backup_etc_shadow
+  - id: xccdf_org.ssgproject.content_rule_file_owner_boot_grub2
+    description: All GRUB configuration files must be owned by root
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_owner_boot_grub2
   - id: xccdf_org.ssgproject.content_rule_file_owner_cron_allow
     description: Verify User Who Owns /etc/cron.allow file
     filters: *id001
@@ -1005,14 +1037,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shells
-  - id: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
-    description: Verify /boot/grub/grub.cfg User Ownership
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
     description: Verify Owner on SSH Server config file
     filters: *id001
@@ -1029,14 +1053,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_drop_in_config
-  - id: xccdf_org.ssgproject.content_rule_file_owner_user_cfg
-    description: Verify /boot/grub2/user.cfg User Ownership
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_owner_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
     description: All Interactive User Home Directories Must Be Owned By The Primary User
     filters: *id001
@@ -1117,6 +1133,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_backup_etc_shadow
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_boot_grub2
+    description: All GRUB configuration files must have mode 0600 or more restrictive
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_boot_grub2
   - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_allow
     description: Verify Permissions on /etc/cron.allow file
     filters: *id001
@@ -1261,14 +1285,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shells
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
-    description: Verify /boot/grub/grub.cfg Permissions
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
   - id: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
     description: All Interactive User Home Directories Must Have mode 0750 Or Less Permissive
     filters: *id001
@@ -1309,14 +1325,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
-    description: Verify /boot/grub2/user.cfg Permissions
+  - id: xccdf_org.ssgproject.content_rule_firewalld-backend
+    description: Configure Firewalld to Use the Nftables Backend
     filters: *id001
     input:
       - xccdf:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
+          rule: xccdf_org.ssgproject.content_rule_firewalld-backend
   - id: xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_trusted
     description: Configure Firewalld to Trust Loopback Traffic
     filters: *id001
@@ -1701,6 +1717,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_forward_files
+  - id: xccdf_org.ssgproject.content_rule_no_invalid_shell_accounts_unlocked
+    description: Verify Non-Interactive Accounts Are Locked
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_no_invalid_shell_accounts_unlocked
   - id: xccdf_org.ssgproject.content_rule_no_netrc_files
     description: Verify No netrc Files Exist
     filters: *id001
@@ -1765,14 +1789,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_cyrus-imapd_removed
-  - id: xccdf_org.ssgproject.content_rule_package_dnsmasq_removed
-    description: Uninstall dnsmasq Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_dnsmasq_removed
   - id: xccdf_org.ssgproject.content_rule_package_dovecot_removed
     description: Uninstall dovecot Package
     filters: *id001
@@ -2053,6 +2069,14 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_cups_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_dnsmasq_disabled
+    description: Disable dnsmasq Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel10-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_service_dnsmasq_disabled
   - id: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
     description: Verify firewalld Enabled
     filters: *id001
@@ -2093,14 +2117,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_systemd-journald_enabled
-  - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_libuserconf
-    description: Set Password Hashing Algorithm in /etc/libuser.conf
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_libuserconf
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
     description: Set Password Hashing Algorithm in /etc/login.defs
     filters: *id001
@@ -2118,7 +2134,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_passwordauth
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
-    description: Set PAM''s Password Hashing Algorithm
+    description: Set PAM Password Hashing Algorithm - system-auth
     filters: *id001
     input:
       - xccdf:
@@ -2245,14 +2261,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
-    description: Use Only Strong Key Exchange algorithms
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
     description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
     filters: *id001

@@ -325,14 +325,14 @@ rules:
           name: ssg-almalinux9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
-  - id: xccdf_org.ssgproject.content_rule_configure_crypto_policy
-    description: Configure System Cryptography Policy
+  - id: xccdf_org.ssgproject.content_rule_configure_custom_crypto_policy_cis
+    description: Implement Custom Crypto Policy Modules for CIS Benchmark
     filters: *id001
     input:
       - xccdf:
           name: ssg-almalinux9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_configure_crypto_policy
+          rule: xccdf_org.ssgproject.content_rule_configure_custom_crypto_policy_cis
   - id: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
     description: Configure SSH to use System Crypto Policy
     filters: *id001
@@ -1886,7 +1886,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_passwordauth
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
-    description: Set PAM''s Password Hashing Algorithm
+    description: Set PAM Password Hashing Algorithm - system-auth
     filters: *id001
     input:
       - xccdf:

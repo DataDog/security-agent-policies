@@ -158,7 +158,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_enabled
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_enforce_root
-    description: Limit Password Reuse
+    description: Limit Password Reuse - Root
     filters: *id001
     input:
       - xccdf:
@@ -749,6 +749,14 @@ rules:
           name: ssg-ubuntu2404-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_drop_in_config
+    description: Verify Group Who Owns SSH Server Configuration Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2404-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_drop_in_config
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_var_log_auth
     description: Verify Group Who Owns /var/log/auth.log File
     filters: *id001
@@ -878,7 +886,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log_sssd
   - id: xccdf_org.ssgproject.content_rule_file_groupownerships_var_log
-    description: Verify ownership of log files
+    description: Verify group ownership of log files
     filters: *id001
     input:
       - xccdf:
@@ -1085,6 +1093,14 @@ rules:
           name: ssg-ubuntu2404-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
+  - id: xccdf_org.ssgproject.content_rule_file_owner_sshd_drop_in_config
+    description: Verify Owner on SSH Server Configuration Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2404-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_drop_in_config
   - id: xccdf_org.ssgproject.content_rule_file_owner_var_log_auth
     description: Verify User Who Owns /var/log/auth.log File
     filters: *id001
@@ -1445,6 +1461,14 @@ rules:
           name: ssg-ubuntu2404-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_drop_in_config
+    description: Verify Permissions on SSH Server Config File
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2404-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_drop_in_config
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
     description: Verify Permissions on SSH Server Private *_key Key Files
     filters: *id001
@@ -1934,7 +1958,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_unix
-    description: Prevent Login to Accounts With Empty Password
+    description: Prevent Login to Accounts With Empty Password (ubuntu2204)
     filters: *id001
     input:
       - xccdf:
@@ -2774,7 +2798,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
-    description: Set PAM''s Password Hashing Algorithm
+    description: Set PAM Password Hashing Algorithm - system-auth
     filters: *id001
     input:
       - xccdf:

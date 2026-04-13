@@ -133,6 +133,22 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_modules_in_authselect_profile
+    description: Ensure Active Authselect Profile Includes PAM Modules
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_modules_in_authselect_profile
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_enforce_for_root
+    description: Ensure Password History Is Enforced for the Root User
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_enforce_for_root
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_password_auth
     description: 'Limit Password Reuse: password-auth'
     filters: *id001
@@ -149,6 +165,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_system_auth
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_no_remember
+    description: Avoid using remember in pam_unix module
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_no_remember
   - id: xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_existing
     description: Set Existing Passwords Maximum Age
     filters: *id001
@@ -341,14 +365,6 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_configure_custom_crypto_policy_cis
-  - id: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
-    description: Configure SSH to use System Crypto Policy
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel9-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_configure_ssh_crypto_policy
   - id: xccdf_org.ssgproject.content_rule_coredump_disable_backtraces
     description: Disable core dump backtraces
     filters: *id001
@@ -1469,6 +1485,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_forward_files
+  - id: xccdf_org.ssgproject.content_rule_no_invalid_shell_accounts_unlocked
+    description: Verify Non-Interactive Accounts Are Locked
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_no_invalid_shell_accounts_unlocked
   - id: xccdf_org.ssgproject.content_rule_no_netrc_files
     description: Verify No netrc Files Exist
     filters: *id001
@@ -1549,14 +1573,6 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_dhcp_removed
-  - id: xccdf_org.ssgproject.content_rule_package_dnsmasq_removed
-    description: Uninstall dnsmasq Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel9-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_dnsmasq_removed
   - id: xccdf_org.ssgproject.content_rule_package_dovecot_removed
     description: Uninstall dovecot Package
     filters: *id001
@@ -1845,6 +1861,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_cups_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_dnsmasq_disabled
+    description: Disable dnsmasq Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_service_dnsmasq_disabled
   - id: xccdf_org.ssgproject.content_rule_service_firewalld_enabled
     description: Verify firewalld Enabled
     filters: *id001
@@ -1910,7 +1934,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_passwordauth
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
-    description: Set PAM''s Password Hashing Algorithm
+    description: Set PAM Password Hashing Algorithm - system-auth
     filters: *id001
     input:
       - xccdf:
@@ -2037,14 +2061,6 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
-    description: Use Only Strong Key Exchange algorithms
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel9-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
     description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
     filters: *id001
@@ -2061,6 +2077,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
+  - id: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
+    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo !authenticate
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
   - id: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
     description: Require Re-Authentication When Using the sudo Command
     filters: *id001
