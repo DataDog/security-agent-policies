@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.66.0
+version: 1.67.0
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -45,6 +45,18 @@ macros:
   - id: CREDENTIAL_BINARIES
     expression: '[ "/sbin/vipw", "/usr/sbin/vipw", "/sbin/vigr", "/usr/sbin/vigr", "/usr/bin/containerd", "/usr/local/bin/containerd", "/usr/bin/dockerd", "/usr/local/bin/dockerd", "/usr/sbin/groupadd", "/usr/sbin/useradd", "/usr/sbin/usermod", "/usr/sbin/userdel",
       "/usr/bin/gpasswd", "/usr/bin/chage", "/usr/sbin/chpasswd", "/usr/bin/passwd" ]'
+  - id: CREDENTIAL_FILES
+    description: Common credential file names and patterns that attackers search for
+    expression: |-
+      [~"*id_rsa*", ~"*id_dsa*", ~"*id_ecdsa*", ~"*id_ed25519*", ~"*authorized_keys*",
+       ~"*credentials*", ~"*service-account.json*",
+       ~"*.aws*", ~"*.azure*", ~"*.dockercfg*", ~"*.docker*", ~"*.netrc*", ~"*.pgpass*", ~"*.my.cnf*",
+       ~"*.npmrc*", ~"*.pypirc*", ~"*.git-credentials*", ~"*.gitconfig*", ~"*.env*", ~"*.token*",
+       ~"*shadow*", ~"*passwd*",
+       ~"*secrets.yml*", ~"*secrets.yaml*", ~"*api_key*", ~"*apikey.txt*",
+       ~"*wp-config.php*", ~"*database.yml*", ~"*connection.config*",
+       ~"*.pem*", ~"*.key*", ~"*.p12*", ~"*.pfx*", ~"*.jks*", ~"*.keystore*",
+       ~"*-key.json*", ~"*client_secret*.json*"]
   - id: CRYPTOMINER_DOMAINS
     expression: '[~"*.minexmr.com", "minexmr.com", ~"*.nanopool.org", "nanopool.org", ~"*.supportxmr.com", "supportxmr.com", ~"*.c3pool.com", "c3pool.com", ~"*.p2pool.io", "p2pool.io", ~"*.ethermine.org", "ethermine.org", ~"*.f2pool.com", "f2pool.com", ~"*.poolin.me",
       "poolin.me", ~"*.rplant.xyz", "rplant.xyz", ~"*.miningocean.org", "miningocean.org", "donate.v2.xmrig.com", ~"*.hashvault.pro", "hashvault.pro", ~"*.moneroocean.stream", "moneroocean.stream", ~"*.skypool.org", "skypool.org", ~"*.xmrpool.eu", "xmrpool.eu",
@@ -442,6 +454,33 @@ rules:
     agent_version: '>=7.68'
     filters:
       - os == "linux"
+  - id: execution_context_cicd_runner
+    description: Track execution context from CI/CD runner
+    expression: "exec.envs in [\"JENKINS_HOME\", \"JENKINS_URL\", \"GITLAB_CI\", \"GITHUB_ACTIONS\", \"CIRCLECI\", \"TRAVIS\", \"BUILDKITE\", \"TEAMCITY_VERSION\", \"BITBUCKET_PIPELINE_UUID\", \"TF_BUILD\", \"CODEBUILD_BUILD_ID\"] && \n${process.correlation_key}\
+      \ in [\"\", ~\"cgroup_*\", ~\"auid_*\", ~\"service_*\", ~\"service_new_cgroup_*\", ~\"interactive_shell_*\", ~\"k8s_session_*\", ~\"spawned_shell_*\", ~\"package_install_*\"]"
+    tags:
+      execution_context: 'True'
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} != ""
+        set:
+          name: parent_correlation_keys
+          default_value: ''
+          expression: ${process.correlation_key}
+          append: true
+          scope: process
+          inherited: true
+      - set:
+          name: correlation_key
+          default_value: ''
+          expression: '"cicd_runner_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: true
+    agent_version: '>=7.68'
+    filters:
+      - os == "linux"
   - id: accept_incoming_http
     description: Detect interpreter processes accepting incoming HTTP traffic on public ports
     expression: accept.addr.port in [80, 443, 3000, 8080, 8000, 8443] && accept.addr.is_public == true && process.file.name in INTERPRETER_PROCESSES && process.pid not in ${cgroup.interpreter_incoming_http_processes}
@@ -457,6 +496,16 @@ rules:
           append: true
           ttl: 1800000000000
     agent_version: '>= 7.65'
+    filters:
+      - os == "linux"
+  - id: apparmor_load_unprivileged_origin
+    description: A non-root user opened an AppArmor security file for writing
+    expression: open.file.path =~ "/sys/kernel/security/apparmor/**" && open.flags & (O_WRONLY|O_RDWR) > 0 && process.euid != 0 && process.auid not in [0, 4294967295]
+    product_tags:
+      - tactic:TA0005-defense-evasion
+      - technique:T1562-impair-defenses
+      - policy:threat-detection
+    agent_version: '>=7.58'
     filters:
       - os == "linux"
   - id: apparmor_modified_tty
@@ -541,7 +590,7 @@ rules:
     expression: |-
       open.file.path =~ "/var/run/secrets/eks.amazonaws.com/serviceaccount/**" &&
       open.file.name == "token" &&
-      (process.file.path not in DD_AGENT_PROCESSES && process.parent.comm not in ["velero"])
+      ((process.file.path not in DD_AGENT_PROCESSES && process.file.path not in ["/usr/local/bin/provider"]) && process.parent.comm not in ["velero"])
     tags:
       threat_score: '4'
       threat_description: Access to privileged Service Account tokens could allow impersonation to the EKS control plane.
@@ -637,6 +686,15 @@ rules:
           name: pid_file
           value: true
           ttl: 10000000000
+    filters:
+      - os == "linux"
+  - id: bpftrace_unsafe_bpf_prog_load
+    description: BPF program load (bpf syscall) with --unsafe in process arguments, e.g. bpftrace --unsafe, which can load arbitrary BPF code or use system() in bpftrace programs
+    expression: bpf.cmd == BPF_PROG_LOAD && process.args_flags in ["unsafe"]
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1620-reflective-code-loading
+      - policy:threat-detection
     filters:
       - os == "linux"
   - id: certutil_usage
@@ -1259,7 +1317,8 @@ rules:
       - technique:T1068-exploitation-for-privilege-escalation
       - policy:threat-detection
     filters:
-      - os == "linux"
+      - (kernel.version.major == 5 && ((kernel.version.minor >= 8 && kernel.version.minor <= 9) || (kernel.version.minor == 10 && kernel.version.patch < 102) || (kernel.version.minor >= 11 && kernel.version.minor <= 14) || (kernel.version.minor == 15 && kernel.version.patch
+        < 25) || (kernel.version.minor == 16 && kernel.version.patch < 11))) && (os == "linux")
   - id: dirty_pipe_exploitation
     description: Potential Dirty pipe exploitation
     expression: (splice.pipe_exit_flag & PIPE_BUF_FLAG_CAN_MERGE) > 0  && (process.uid != 0 && process.gid != 0)
@@ -1270,6 +1329,37 @@ rules:
       - tactic:TA0004-privilege-escalation
       - technique:T1068-exploitation-for-privilege-escalation
       - policy:threat-detection
+    filters:
+      - (kernel.version.major == 5 && ((kernel.version.minor >= 8 && kernel.version.minor <= 9) || (kernel.version.minor == 10 && kernel.version.patch < 102) || (kernel.version.minor >= 11 && kernel.version.minor <= 14) || (kernel.version.minor == 15 && kernel.version.patch
+        < 25) || (kernel.version.minor == 16 && kernel.version.patch < 11))) && (os == "linux")
+  - id: dns_txt_query
+    description: A DNS TXT lookup was performed. Excludes cloud-native benign lookups (_grpc_config, _acme-challenge). TXT can be used for C2, exfiltration, or DNS tunneling.
+    expression: |-
+      dns.question.type == TXT
+      && process.file.name != ""
+      && dns.question.name not in [~"_grpc_config*", ~"_acme-challenge*"] && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1071-application-layer-protocol
+      - technique:T1048-exfiltration-over-alternative-protocol
+      - policy:threat-detection
+    actions:
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
     filters:
       - os == "linux"
   - id: dotnet_dump_execution
@@ -1433,8 +1523,12 @@ rules:
     filters:
       - os == "linux"
   - id: find_credentials
-    description: find command searching for sensitive files
-    expression: exec.comm == "find" && exec.args in [~"*credentials*"]
+    description: find command searching for credential files or sensitive authentication data
+    expression: |-
+      exec.comm == "find" && (
+        exec.args in CREDENTIAL_FILES ||
+        exec.args in [~"*/.ssh/*", ~"*/.aws/*", ~"*/.azure/*", ~"*/.docker/*", ~"*/.config/gcloud/*", ~"*/shadow*", ~"*/.subversion/auth*"]
+      )
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
@@ -1487,6 +1581,41 @@ rules:
       - technique:T1564-hide-artifacts
       - subtechnique:T1564.001-hidden-files-and-directories
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: icp_canister_dns_lookup
+    description: |-
+      A process resolved a DNS name associated with the Internet Computer Protocol (ICP) canister infrastructure.
+      ICP canisters have been abused as decentralized C2 servers by malware such as CanisterWorm,
+      which uses canister endpoints (e.g. *.raw.icp0.io) to receive payload URLs. Legitimate workloads
+      rarely need to resolve ICP gateway domains, making this a high-fidelity indicator of compromise.
+    expression: |-
+      dns.question.name in [~"*.icp0.io", ~"*.ic0.app", "icp-api.io", ~"*.icp-api.io", ~"*.icp1.io", ~"*.icp2.io"]
+      && process.file.name != "" && (process.args == "" || process.args not in ${cgroup.rtl_process_args} || process.parent.file.path not in ${cgroup.rtl_process_parent})
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1071-application-layer-protocol
+      - subtechnique:T1071.001-web-protocols
+      - technique:T1102-web-service
+      - policy:threat-detection
+    actions:
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_args
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+      - filter: process.pid != 0
+        set:
+          name: rtl_process_parent
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+    agent_version: '>=7.68'
     filters:
       - os == "linux"
   - id: imds_v1_usage
@@ -1673,6 +1802,7 @@ rules:
     expression: exec.user_session.k8s_username != ""
     product_tags:
       - policy:compliance
+    every: 0
     filters:
       - os == "linux"
   - id: kernel_module_chmod
@@ -1875,6 +2005,24 @@ rules:
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1046-network-service-discovery
+      - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: lateral_movement_tool
+    description: Lateral movement or tunneling tool detected by process name or arguments
+    expression: (exec.file.name in ["ligolo-ng", "ligolo-proxy"] || process.args in ["-selfcert", "--connect", "-relay", "-autocert"]) || (exec.file.name in ["chisel"] || (process.args in ["chisel"] && process.args in ["socks", "reverse", "R:socks", ":socks"]))
+      || (exec.file.name in ["frp", "frpc", "frps"]) || (exec.file.name in ["ngrok"] || process.args in ["authtoken"]) || (exec.file.name in ["gost"] && process.args_flags in ["L", "F"]) || (exec.file.name == "socat" && process.args in ["TCP4-LISTEN:", "TCP6-LISTEN:",
+      "SOCKS4:", "SOCKS4A:", "PROXY:"]) || (exec.file.name in ["ssh", "sshd"] && process.args_flags in ["R", "L", "D"] && process.args in [r"((25[0-5]|(2[0-4]|1\d|[1-9])\d)\.?\b){4}"]) || (exec.file.name in ["sshuttle"] && process.args_flags in ["r"]) || (exec.file.name
+      in ["proxychains", "proxychains4", "proxychains-ng"]) || (exec.file.name in ["iodine", "iodined"]) || (exec.file.name in ["dnscat", "dnscat2"] || (process.args in ["dnscat", "dnscat2"] && process.args in ["--secret", "--dns", "--no-cache", "--ping"]))
+      || (exec.file.name in ["ptunnel", "ptunnel-ng"] || (process.args in ["ptunnel"] && process.args in ["--proxy"])) || (exec.file.name in ["wstunnel"] || (process.args in ["wstunnel"] && process.args_flags in ["L", "R"])) || (exec.file.name in ["bore"] ||
+      (process.args in ["bore"] && process.args in ["--to"])) || (process.args in ["portfwd"] && process.args_flags in ["add"]) || (exec.file.name in ["plink", "plink.exe"] && process.args_flags in ["R", "L", "D"]) || (exec.file.name in ["stunnel", "stunnel4",
+      "stunnel5"] && process.args_flags in ["c", "p"])
+    product_tags:
+      - tactic:TA0008-lateral-movement
+      - technique:T1021-remote-services
+      - tactic:TA0011-command-and-control
+      - technique:T1572-protocol-tunneling
+      - technique:T1090-proxy
       - policy:threat-detection
     filters:
       - os == "linux"
@@ -2234,7 +2382,8 @@ rules:
       - os == "linux"
   - id: netcat_shell
     description: Process arguments indicating possible netcat shell detected
-    expression: exec.file.name in ["netcat", "nc", ~"nc.*", "ncat"] && ((exec.args_flags in ["l"] && exec.args_flags in ["p"]) || (exec.args_flags in ["n"] && exec.args_flags in ["v"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
+    expression: "exec.file.name in [\"netcat\", \"nc\", ~\"nc.*\", \"ncat\"] && \n((exec.args_flags in [\"l\"] && exec.args_flags in [\"p\"]) || \n(exec.args_flags in [\"n\"] && exec.args_flags in [\"v\"]) || (exec.args in [~\"*/bin/bash*\", ~\"*/bin/sh*\"]))\
+      \ &&\nexec.args not in [~\"*-help*\"]"
     product_tags:
       - tactic:TA0001-initial-access
       - technique:T1190-exploit-public-facing-application
@@ -3530,6 +3679,7 @@ rules:
     expression: exec.comm != "" && process.ancestors.file.name in ["sshd"] && process.file.name != "sshd"
     product_tags:
       - policy:compliance
+    every: 0
     filters:
       - os == "linux"
   - id: ssl_certificate_tampering_chmod
