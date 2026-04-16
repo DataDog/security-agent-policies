@@ -1496,7 +1496,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
-    description: Set PAM''s Password Hashing Algorithm
+    description: Set PAM Password Hashing Algorithm - system-auth
     filters: *id001
     input:
       - xccdf:
