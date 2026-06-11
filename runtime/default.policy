@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.69.1
+version: 1.69.2
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -984,7 +984,7 @@ rules:
       - os == "linux"
   - id: apparmor_modified_tty_v2
     description: An AppArmor profile was modified in an interactive session
-    expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !="" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_homYE} || process.parent.file.path not in ${cgroup.rtl_process_parent_homYE}))
+    expression: exec.file.name in ["aa-disable", "aa-complain", "aa-audit"] && exec.tty_name !="" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_vxJBt} || process.parent.file.path not in ${cgroup.rtl_process_parent_vxJBt}))
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
@@ -992,7 +992,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_homYE
+          name: rtl_process_args_vxJBt
           field: process.args
           ttl: 3600000000000
           append: true
@@ -1000,7 +1000,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_homYE
+          name: rtl_process_parent_vxJBt
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -1098,7 +1098,7 @@ rules:
       - os == "linux"
   - id: base64_decode_v2
     description: The base64 command was used to decode information
-    expression: exec.file.name == "base64" && exec.args_flags in ["d"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_waiVj} || process.parent.file.path not in ${cgroup.rtl_process_parent_waiVj}))
+    expression: exec.file.name == "base64" && exec.args_flags in ["d"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_jSuuT} || process.parent.file.path not in ${cgroup.rtl_process_parent_jSuuT}))
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1140-deobfuscate-or-decode-files-or-information
@@ -1106,7 +1106,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_waiVj
+          name: rtl_process_args_jSuuT
           field: process.args
           ttl: 3600000000000
           append: true
@@ -1114,7 +1114,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_waiVj
+          name: rtl_process_parent_jSuuT
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -1236,7 +1236,7 @@ rules:
       - os == "linux"
   - id: chatroom_request_v2
     description: A DNS request was made for a chatroom domain
-    expression: dns.question.name in CHAT_ROOM_SITES && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_nVrLe} || process.parent.file.path not in ${cgroup.rtl_process_parent_nVrLe}))
+    expression: dns.question.name in CHAT_ROOM_SITES && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_QrZYH} || process.parent.file.path not in ${cgroup.rtl_process_parent_QrZYH}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1572-protocol-tunneling
@@ -1244,7 +1244,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_nVrLe
+          name: rtl_process_args_QrZYH
           field: process.args
           ttl: 3600000000000
           append: true
@@ -1252,7 +1252,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_nVrLe
+          name: rtl_process_parent_QrZYH
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -1314,7 +1314,7 @@ rules:
   - id: compiler_in_container_v2
     description: A compiler was executed inside of a container
     expression: (exec.comm in COMPILER_PROCESSES || exec.file.name in COMPILER_PROCESSES || (exec.file.name == "go" && exec.args in [~"*build*", ~"*run*"])) && process.container.id !="" && process.ancestors.file.path != "/usr/bin/cilium-agent" && (event.origin
-      != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_nFjTi} || process.parent.file.path not in ${cgroup.rtl_process_parent_nFjTi}))
+      != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_jgAEf} || process.parent.file.path not in ${cgroup.rtl_process_parent_jgAEf}))
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1027-obfuscated-files-or-information
@@ -1323,7 +1323,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_nFjTi
+          name: rtl_process_args_jgAEf
           field: process.args
           ttl: 3600000000000
           append: true
@@ -1331,7 +1331,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_nFjTi
+          name: rtl_process_parent_jgAEf
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -1853,7 +1853,7 @@ rules:
     expression: |-
       dns.question.type == TXT
       && process.file.name != ""
-      && dns.question.name not in [~"_grpc_config*", ~"_acme-challenge*"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_JTqtv} || process.parent.file.path not in ${cgroup.rtl_process_parent_JTqtv}))
+      && dns.question.name not in [~"_grpc_config*", ~"_acme-challenge*"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_NhRVC} || process.parent.file.path not in ${cgroup.rtl_process_parent_NhRVC}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1071-application-layer-protocol
@@ -1862,7 +1862,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_JTqtv
+          name: rtl_process_args_NhRVC
           field: process.args
           ttl: 3600000000000
           append: true
@@ -1870,7 +1870,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_JTqtv
+          name: rtl_process_parent_NhRVC
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -1991,7 +1991,7 @@ rules:
       - os == "linux"
   - id: exec_whoami_v2
     description: The whoami command was executed
-    expression: exec.comm == "whoami" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_wjgnP} || process.parent.file.path not in ${cgroup.rtl_process_parent_wjgnP}))
+    expression: exec.comm == "whoami" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_XVmre} || process.parent.file.path not in ${cgroup.rtl_process_parent_XVmre}))
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1033-system-owner-or-user-discovery
@@ -1999,7 +1999,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_wjgnP
+          name: rtl_process_args_XVmre
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2007,7 +2007,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_wjgnP
+          name: rtl_process_parent_XVmre
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2118,7 +2118,7 @@ rules:
       rarely need to resolve ICP gateway domains, making this a high-fidelity indicator of compromise.
     expression: |-
       dns.question.name in [~"*.icp0.io", ~"*.ic0.app", "icp-api.io", ~"*.icp-api.io", ~"*.icp1.io", ~"*.icp2.io"]
-      && process.file.name != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_tqUmJ} || process.parent.file.path not in ${cgroup.rtl_process_parent_tqUmJ}))
+      && process.file.name != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_sguRL} || process.parent.file.path not in ${cgroup.rtl_process_parent_sguRL}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1071-application-layer-protocol
@@ -2128,7 +2128,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_tqUmJ
+          name: rtl_process_args_sguRL
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2136,7 +2136,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_tqUmJ
+          name: rtl_process_parent_sguRL
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2178,7 +2178,7 @@ rules:
       - os == "linux"
   - id: interactive_shell_in_container_v2
     description: An interactive shell was started inside of a container
-    expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && process.container.id !="" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_eLZiV} || process.parent.file.path not in ${cgroup.rtl_process_parent_eLZiV}))
+    expression: exec.file.path in SHELLS && exec.args_flags in ["i"] && process.container.id !="" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_eCave} || process.parent.file.path not in ${cgroup.rtl_process_parent_eCave}))
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
@@ -2186,7 +2186,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_eLZiV
+          name: rtl_process_args_eCave
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2194,7 +2194,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_eLZiV
+          name: rtl_process_parent_eCave
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2227,8 +2227,8 @@ rules:
       - os == "linux"
   - id: ip_check_domain_v2
     description: A DNS lookup was done for a IP check service
-    expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != "" && process.file.path not in ["/usr/bin/datadog-traceroute"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_NmNtP} || process.parent.file.path
-      not in ${cgroup.rtl_process_parent_NmNtP}))
+    expression: dns.question.name in IPCHECK_DOMAINS && process.file.name != "" && process.file.path not in ["/usr/bin/datadog-traceroute"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_GAiGx} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent_GAiGx}))
     product_tags:
       - tactic:TA0007-discovery
       - technique:T1016-system-network-configuration-discovery
@@ -2236,7 +2236,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_NmNtP
+          name: rtl_process_args_GAiGx
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2244,7 +2244,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_NmNtP
+          name: rtl_process_parent_GAiGx
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2377,10 +2377,13 @@ rules:
   - id: kernel_module_load
     description: A kernel module was loaded
     expression: load_module.loaded_from_memory == false && load_module.name not in COMMON_MODULES && process.ancestors.file.name not in [~"falcon*", "unattended-upgrade", "apt.systemd.daily", "xtables-legacy-multi", "ssm-agent-worker"]
+    tags:
+      deprecated: 'true'
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
       - policy:threat-detection
+    agent_version: < 7.71
     filters:
       - os == "linux"
   - id: kernel_module_load_container
@@ -2414,6 +2417,16 @@ rules:
       - tactic:TA0003-persistence
       - technique:T1547-boot-or-logon-autostart-execution
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: kernel_module_load_v2
+    description: A kernel module was loaded
+    expression: load_module.loaded_from_memory == false && load_module.name not in COMMON_MODULES && process.ancestors.file.name not in [~"falcon*", "unattended-upgrade", "apt.systemd.daily", "xtables-legacy-multi", "ssm-agent-worker"] && event.source == "runtime"
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1547-boot-or-logon-autostart-execution
+      - policy:threat-detection
+    agent_version: '>= 7.71'
     filters:
       - os == "linux"
   - id: kernel_module_open
@@ -2596,8 +2609,8 @@ rules:
   - id: memfd_create_v2
     description: memfd object created
     expression: exec.file.name =~ "memfd*" && exec.file.path == "" && process.parent.file.path not in ["/usr/bin/runc", "/usr/sbin/runc", "/usr/bin/docker-runc" , "/run/docker/runtime-runc/moby/*", "/x86_64-bottlerocket-linux-gnu/sys-root/usr/bin/runc"] && !(process.comm
-      in ["dd-ipc-helper", ~"datadog-ipc*"] && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"]) && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_Rncxw} || process.parent.file.path
-      not in ${cgroup.rtl_process_parent_Rncxw}))
+      in ["dd-ipc-helper", ~"datadog-ipc*"] && exec.file.name in ["memfd:spawn_worker_trampoline (deleted)", "memfd:spawn_worker_trampoline"]) && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_NXBcZ} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent_NXBcZ}))
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1620-reflective-code-loading
@@ -2605,7 +2618,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_Rncxw
+          name: rtl_process_args_NXBcZ
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2613,7 +2626,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_Rncxw
+          name: rtl_process_parent_NXBcZ
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2732,7 +2745,7 @@ rules:
       - os == "linux"
   - id: net_unusual_request_v2
     description: Network utility executed with suspicious URI
-    expression: exec.comm in HTTP_UTILS && exec.args in [~"*.php*", ~"*.jpg*"]  && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_PVflD} || process.parent.file.path not in ${cgroup.rtl_process_parent_PVflD}))
+    expression: exec.comm in HTTP_UTILS && exec.args in [~"*.php*", ~"*.jpg*"]  && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_nBlOZ} || process.parent.file.path not in ${cgroup.rtl_process_parent_nBlOZ}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -2740,7 +2753,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_PVflD
+          name: rtl_process_args_nBlOZ
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2748,7 +2761,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_PVflD
+          name: rtl_process_parent_nBlOZ
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2791,7 +2804,7 @@ rules:
     expression: |-
       exec.comm in HTTP_UTILS &&
       exec.args_options in [ ~"post-file=*", ~"post-data=*", ~"T=*", ~"d=@*", ~"upload-file=*", ~"F=file*"] &&
-      exec.args not in [~"*localhost*", ~"*127.0.0.1*"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_mMwqH} || process.parent.file.path not in ${cgroup.rtl_process_parent_mMwqH}))
+      exec.args not in [~"*localhost*", ~"*127.0.0.1*"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_lHUzU} || process.parent.file.path not in ${cgroup.rtl_process_parent_lHUzU}))
     product_tags:
       - tactic:TA0010-exfiltration
       - technique:T1048-exfiltration-over-alternative-protocol
@@ -2799,7 +2812,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_mMwqH
+          name: rtl_process_args_lHUzU
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2807,7 +2820,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_mMwqH
+          name: rtl_process_parent_lHUzU
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2837,7 +2850,7 @@ rules:
     expression: |-
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
-      process.container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_oKUHL} || process.parent.file.path not in ${cgroup.rtl_process_parent_oKUHL}))
+      process.container.id != "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_GJxXD} || process.parent.file.path not in ${cgroup.rtl_process_parent_GJxXD}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -2845,7 +2858,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_oKUHL
+          name: rtl_process_args_GJxXD
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2853,7 +2866,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_oKUHL
+          name: rtl_process_parent_GJxXD
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2867,7 +2880,7 @@ rules:
     expression: |-
       (exec.comm in NET_UTILS ||
        exec.comm in HTTP_UTILS) &&
-      process.container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_pZNJT} || process.parent.file.path not in ${cgroup.rtl_process_parent_pZNJT}))
+      process.container.id == "" && exec.args not in [ ~"*localhost*", ~"*127.0.0.1*", ~"*motd.ubuntu.com*" ] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_fyqsg} || process.parent.file.path not in ${cgroup.rtl_process_parent_fyqsg}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -2875,7 +2888,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_pZNJT
+          name: rtl_process_args_fyqsg
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2883,7 +2896,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_pZNJT
+          name: rtl_process_parent_fyqsg
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -2926,8 +2939,8 @@ rules:
       - os == "linux"
   - id: new_binary_execution_in_container_v2
     description: A container executed a new binary not found in the container image
-    expression: process.container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_Awzdd} || process.parent.file.path
-      not in ${cgroup.rtl_process_parent_Awzdd}))
+    expression: process.container.id != "" && process.file.in_upper_layer && process.file.modification_time < 30s && exec.file.name != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_GGIgW} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent_GGIgW}))
     tags:
       threat_score: '4'
       threat_description: Container images should be immutable. New executables may be downloaded or compiled malware.
@@ -2938,7 +2951,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_Awzdd
+          name: rtl_process_args_GGIgW
           field: process.args
           ttl: 3600000000000
           append: true
@@ -2946,7 +2959,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_Awzdd
+          name: rtl_process_parent_GGIgW
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -3168,7 +3181,7 @@ rules:
       - os == "linux"
   - id: package_management_in_container_v2
     description: Package management was detected in a container
-    expression: exec.file.path in PACKAGE_MANAGERS && process.container.id != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_FGjJM} || process.parent.file.path not in ${cgroup.rtl_process_parent_FGjJM}))
+    expression: exec.file.path in PACKAGE_MANAGERS && process.container.id != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_Kwbjr} || process.parent.file.path not in ${cgroup.rtl_process_parent_Kwbjr}))
     product_tags:
       - tactic:TA0002-execution
       - technique:T1059-command-and-scripting-interpreter
@@ -3177,7 +3190,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_FGjJM
+          name: rtl_process_args_Kwbjr
           field: process.args
           ttl: 3600000000000
           append: true
@@ -3185,7 +3198,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_FGjJM
+          name: rtl_process_parent_Kwbjr
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -3315,8 +3328,8 @@ rules:
       - os == "linux"
   - id: passwd_execution_v2
     description: The passwd or chpasswd utility was used to modify an account password
-    expression: exec.file.path in ["/usr/bin/passwd", "/usr/sbin/chpasswd"] && exec.args_flags not in ["S", "status"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_VhwDY} || process.parent.file.path not in
-      ${cgroup.rtl_process_parent_VhwDY}))
+    expression: exec.file.path in ["/usr/bin/passwd", "/usr/sbin/chpasswd"] && exec.args_flags not in ["S", "status"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_foMbw} || process.parent.file.path not in
+      ${cgroup.rtl_process_parent_foMbw}))
     tags:
       threat_score: '6'
       threat_description: Changing a password may be done to establish persistence
@@ -3329,7 +3342,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_VhwDY
+          name: rtl_process_args_foMbw
           field: process.args
           ttl: 3600000000000
           append: true
@@ -3337,7 +3350,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_VhwDY
+          name: rtl_process_parent_foMbw
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -3371,7 +3384,7 @@ rules:
       - os == "linux"
   - id: paste_site_v2
     description: A DNS lookup was done for a pastebin-like site
-    expression: dns.question.name in PASTE_SITES && process.file.name != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_oQeLW} || process.parent.file.path not in ${cgroup.rtl_process_parent_oQeLW}))
+    expression: dns.question.name in PASTE_SITES && process.file.name != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_FRfeP} || process.parent.file.path not in ${cgroup.rtl_process_parent_FRfeP}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1105-ingress-tool-transfer
@@ -3379,7 +3392,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_oQeLW
+          name: rtl_process_args_FRfeP
           field: process.args
           ttl: 3600000000000
           append: true
@@ -3387,7 +3400,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_oQeLW
+          name: rtl_process_parent_FRfeP
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -3568,7 +3581,7 @@ rules:
     description: A web application spawned a shell or shell utility
     expression: |-
       (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS) &&
-      (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*") && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_AegBQ} || process.parent.file.path not in ${cgroup.rtl_process_parent_AegBQ}))
+      (process.parent.file.name in WEBAPP_PROCESSES || process.parent.file.name =~ "php*") && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_Btlbe} || process.parent.file.path not in ${cgroup.rtl_process_parent_Btlbe}))
     product_tags:
       - tactic:TA0002-execution
       - technique:T1190-exploit-public-facing-application
@@ -3576,7 +3589,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_AegBQ
+          name: rtl_process_args_Btlbe
           field: process.args
           ttl: 3600000000000
           append: true
@@ -3584,7 +3597,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_AegBQ
+          name: rtl_process_parent_Btlbe
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -3621,7 +3634,7 @@ rules:
         process.file.in_upper_layer
         || process.file.path in [~"/dev/shm/**", ~"/tmp/**", ~"/var/tmp/**", ~"/run/shm/**"]
       )
-      && ${process.proc_environ_count} > 4 && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_polNL} || process.parent.file.path not in ${cgroup.rtl_process_parent_polNL}))
+      && ${process.proc_environ_count} > 4 && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_ptSkZ} || process.parent.file.path not in ${cgroup.rtl_process_parent_ptSkZ}))
     product_tags:
       - tactic:TA0006-credential-access
       - technique:T1552-unsecured-credentials
@@ -3630,7 +3643,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_polNL
+          name: rtl_process_args_ptSkZ
           field: process.args
           ttl: 3600000000000
           append: true
@@ -3638,7 +3651,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_polNL
+          name: rtl_process_parent_ptSkZ
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -3915,7 +3928,7 @@ rules:
       - os == "linux"
   - id: service_stop_v2
     description: systemctl used to stop a service
-    expression: exec.file.name == "systemctl" && exec.args in [~"*stop*"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_vbfaS} || process.parent.file.path not in ${cgroup.rtl_process_parent_vbfaS}))
+    expression: exec.file.name == "systemctl" && exec.args in [~"*stop*"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_NTXmE} || process.parent.file.path not in ${cgroup.rtl_process_parent_NTXmE}))
     product_tags:
       - tactic:TA0040-impact
       - technique:T1489-service-stop
@@ -3923,7 +3936,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_vbfaS
+          name: rtl_process_args_NTXmE
           field: process.args
           ttl: 3600000000000
           append: true
@@ -3931,7 +3944,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_vbfaS
+          name: rtl_process_parent_NTXmE
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -4020,8 +4033,8 @@ rules:
       - os == "linux"
   - id: socks5_proxy_connection
     description: A SOCKS5 proxy was contacted to connect to an IPv4 address
-    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010001" && process.file.path not in DD_AGENT_PROCESSES && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_fObsy} || process.parent.file.path
-      not in ${cgroup.rtl_process_parent_fObsy}))
+    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010001" && process.file.path not in DD_AGENT_PROCESSES && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_RKGwv} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent_RKGwv}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1090-proxy
@@ -4030,7 +4043,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_fObsy
+          name: rtl_process_args_RKGwv
           field: process.args
           ttl: 3600000000000
           append: true
@@ -4038,7 +4051,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_fObsy
+          name: rtl_process_parent_RKGwv
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -4049,8 +4062,8 @@ rules:
       - os == "linux"
   - id: socks5_proxy_connection_domain
     description: A SOCKS5 proxy was contacted to connect to a domain name
-    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010003" && process.file.path not in DD_AGENT_PROCESSES && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_BVDJq} || process.parent.file.path
-      not in ${cgroup.rtl_process_parent_BVDJq}))
+    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010003" && process.file.path not in DD_AGENT_PROCESSES && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_GOapO} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent_GOapO}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1090-proxy
@@ -4059,7 +4072,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_BVDJq
+          name: rtl_process_args_GOapO
           field: process.args
           ttl: 3600000000000
           append: true
@@ -4067,7 +4080,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_BVDJq
+          name: rtl_process_parent_GOapO
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -4078,8 +4091,8 @@ rules:
       - os == "linux"
   - id: socks5_proxy_connection_ipv6
     description: A SOCKS5 proxy was contacted to connect to an IPv6 address
-    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010004" && process.file.path not in DD_AGENT_PROCESSES && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_yppXu} || process.parent.file.path
-      not in ${cgroup.rtl_process_parent_yppXu}))
+    expression: packet.filter == "tcp[((tcp[12] & 0xf0) >> 2):4] = 0x05010004" && process.file.path not in DD_AGENT_PROCESSES && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_DUVHb} || process.parent.file.path
+      not in ${cgroup.rtl_process_parent_DUVHb}))
     product_tags:
       - tactic:TA0011-command-and-control
       - technique:T1090-proxy
@@ -4088,7 +4101,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_yppXu
+          name: rtl_process_args_DUVHb
           field: process.args
           ttl: 3600000000000
           append: true
@@ -4096,7 +4109,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_yppXu
+          name: rtl_process_parent_DUVHb
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -4521,8 +4534,8 @@ rules:
       - os == "linux"
   - id: suid_file_execution_v2
     description: a SUID file was executed
-    expression: (setuid.euid == 0 || setuid.uid  == 0)  && process.file.mode & S_ISUID > 0  && process.file.uid == 0  && process.uid != 0  && process.file.path != "/usr/bin/sudo" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_POIBr}
-      || process.parent.file.path not in ${cgroup.rtl_process_parent_POIBr}))
+    expression: (setuid.euid == 0 || setuid.uid  == 0)  && process.file.mode & S_ISUID > 0  && process.file.uid == 0  && process.uid != 0  && process.file.path != "/usr/bin/sudo" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_CflwI}
+      || process.parent.file.path not in ${cgroup.rtl_process_parent_CflwI}))
     product_tags:
       - tactic:TA0004-privilege-escalation
       - technique:T1548-abuse-elevation-control-mechanism
@@ -4531,7 +4544,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_POIBr
+          name: rtl_process_args_CflwI
           field: process.args
           ttl: 3600000000000
           append: true
@@ -4539,7 +4552,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_POIBr
+          name: rtl_process_parent_CflwI
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -4573,7 +4586,7 @@ rules:
       - os == "linux"
   - id: suspicious_container_client_v2
     description: A container management utility was executed in a container
-    expression: exec.file.name in CONTAINER_CLIENTS && process.container.id != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_dcttb} || process.parent.file.path not in ${cgroup.rtl_process_parent_dcttb}))
+    expression: exec.file.name in CONTAINER_CLIENTS && process.container.id != "" && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_dLClg} || process.parent.file.path not in ${cgroup.rtl_process_parent_dLClg}))
     product_tags:
       - tactic:TA0002-execution
       - technique:T1609-container-administration-command
@@ -4582,7 +4595,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_dcttb
+          name: rtl_process_args_dLClg
           field: process.args
           ttl: 3600000000000
           append: true
@@ -4590,7 +4603,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_dcttb
+          name: rtl_process_parent_dLClg
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -4737,8 +4750,8 @@ rules:
       - os == "linux"
   - id: systemd_spawned_shell_v2
     description: systemd spawned shell
-    expression: exec.file.path in SHELLS && process.ancestors.file.path == "/usr/lib/systemd/systemd-executor" && process.parent.file.path not in PACKAGE_MANAGERS && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_HACjs}
-      || process.parent.file.path not in ${cgroup.rtl_process_parent_HACjs}))
+    expression: exec.file.path in SHELLS && process.ancestors.file.path == "/usr/lib/systemd/systemd-executor" && process.parent.file.path not in PACKAGE_MANAGERS && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_woaVK}
+      || process.parent.file.path not in ${cgroup.rtl_process_parent_woaVK}))
     product_tags:
       - tactic:TA0002-execution
       - technique:T1053-scheduled-task
@@ -4747,7 +4760,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_HACjs
+          name: rtl_process_args_woaVK
           field: process.args
           ttl: 3600000000000
           append: true
@@ -4755,7 +4768,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_HACjs
+          name: rtl_process_parent_woaVK
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -4780,7 +4793,7 @@ rules:
       - os == "linux"
   - id: tar_execution_v2
     description: Tar archive created
-    expression: exec.file.path == "/usr/bin/tar" && exec.args_flags in ["create","c"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_FVbpt} || process.parent.file.path not in ${cgroup.rtl_process_parent_FVbpt}))
+    expression: exec.file.path == "/usr/bin/tar" && exec.args_flags in ["create","c"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_ntuZY} || process.parent.file.path not in ${cgroup.rtl_process_parent_ntuZY}))
     product_tags:
       - tactic:TA0009-collection
       - technique:T1560-archive-collected-data
@@ -4789,7 +4802,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_FVbpt
+          name: rtl_process_args_ntuZY
           field: process.args
           ttl: 3600000000000
           append: true
@@ -4797,7 +4810,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_FVbpt
+          name: rtl_process_parent_ntuZY
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
@@ -4890,8 +4903,8 @@ rules:
       - os == "linux"
   - id: user_created_tty_v2
     description: A user was created via an interactive session
-    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_TacIB}
-      || process.parent.file.path not in ${cgroup.rtl_process_parent_TacIB}))
+    expression: exec.file.name in ["useradd", "newusers", "adduser"] && exec.tty_name !="" && process.ancestors.file.path not in PACKAGE_MANAGERS && exec.args_flags not in ["D"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_snCnt}
+      || process.parent.file.path not in ${cgroup.rtl_process_parent_snCnt}))
     product_tags:
       - tactic:TA0003-persistence
       - technique:T1136-create-account
@@ -4900,7 +4913,7 @@ rules:
     actions:
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_args_TacIB
+          name: rtl_process_args_snCnt
           field: process.args
           ttl: 3600000000000
           append: true
@@ -4908,7 +4921,7 @@ rules:
           scope: cgroup
       - filter: process.pid != 0 && event.origin == "ebpf"
         set:
-          name: rtl_process_parent_TacIB
+          name: rtl_process_parent_snCnt
           field: process.parent.file.path
           ttl: 3600000000000
           append: true
