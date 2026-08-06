@@ -1,16 +1,16 @@
 schema:
   version: 1.0.0
-name: Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R9
-framework: stig-ubuntu2004
-version: V1R9
+name: '[DRAFT] Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide (STIG)'
+framework: stig-ubuntu2204
+version: V2R7
 rules:
   - id: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
     description: Set Account Expiration Following Inactivity
     filters: &id001
-      - os.id == "ubuntu" && os.version_id == ~"20.04*"
+      - os.id == "ubuntu" && os.version_id == ~"22.04*"
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
   - id: xccdf_org.ssgproject.content_rule_account_temp_expire_date
@@ -18,7 +18,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_account_temp_expire_date
   - id: xccdf_org.ssgproject.content_rule_accounts_max_concurrent_login_sessions
@@ -26,7 +26,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_max_concurrent_login_sessions
   - id: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
@@ -34,7 +34,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
@@ -42,7 +42,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit
@@ -50,7 +50,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_dictcheck
@@ -58,7 +58,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_dictcheck
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_difok
@@ -66,7 +66,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_difok
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_enforcing
@@ -74,7 +74,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_enforcing
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_lcredit
@@ -82,7 +82,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_lcredit
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
@@ -90,7 +90,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_ocredit
@@ -98,7 +98,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ocredit
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
@@ -106,7 +106,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_retry
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit
@@ -114,23 +114,23 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit
-  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
-    description: Limit Password Reuse (STIGs - ubuntu2004)
+  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_rounds_password_auth
+    description: Set number of Password Hashing Rounds - password-auth
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember
+          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_rounds_password_auth
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faildelay_delay
     description: Enforce Delay After Failed Logon Attempts
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faildelay_delay
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_audit
@@ -138,7 +138,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_audit
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
@@ -146,7 +146,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_interval
@@ -154,7 +154,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_interval
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_silent
@@ -162,7 +162,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_silent
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
@@ -170,7 +170,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time
   - id: xccdf_org.ssgproject.content_rule_accounts_tmout
@@ -178,7 +178,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_tmout
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
@@ -186,7 +186,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
   - id: xccdf_org.ssgproject.content_rule_aide_build_database
@@ -194,7 +194,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_aide_build_database
   - id: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
@@ -202,7 +202,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
   - id: xccdf_org.ssgproject.content_rule_aide_disable_silentreports
@@ -210,7 +210,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_aide_disable_silentreports
   - id: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
@@ -218,7 +218,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
   - id: xccdf_org.ssgproject.content_rule_apparmor_configured
@@ -226,7 +226,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_apparmor_configured
   - id: xccdf_org.ssgproject.content_rule_apt_conf_disallow_unauthenticated
@@ -234,7 +234,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_apt_conf_disallow_unauthenticated
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chmod
@@ -242,7 +242,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chmod
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chown
@@ -250,7 +250,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_chown
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmod
@@ -258,7 +258,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmod
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmodat
@@ -266,7 +266,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchmodat
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchown
@@ -274,7 +274,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchown
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchownat
@@ -282,7 +282,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fchownat
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fremovexattr
@@ -290,7 +290,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fremovexattr
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fsetxattr
@@ -298,7 +298,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_fsetxattr
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lchown
@@ -306,7 +306,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lchown
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lremovexattr
@@ -314,7 +314,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lremovexattr
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lsetxattr
@@ -322,7 +322,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_lsetxattr
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_removexattr
@@ -330,7 +330,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_removexattr
   - id: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_setxattr
@@ -338,15 +338,23 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_setxattr
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_etc_cron_d
+    description: Ensure auditd Collects Changes to Cron Jobs - /etc/cron.d/
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_etc_cron_d
   - id: xccdf_org.ssgproject.content_rule_audit_rules_execution_chacl
     description: Record Any Attempts to Run chacl
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_execution_chacl
   - id: xccdf_org.ssgproject.content_rule_audit_rules_execution_chcon
@@ -354,7 +362,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_execution_chcon
   - id: xccdf_org.ssgproject.content_rule_audit_rules_execution_setfacl
@@ -362,7 +370,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_execution_setfacl
   - id: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_rename
@@ -370,7 +378,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_rename
   - id: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_renameat
@@ -378,7 +386,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_renameat
   - id: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_rmdir
@@ -386,7 +394,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_rmdir
   - id: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_unlink
@@ -394,7 +402,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_unlink
   - id: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_unlinkat
@@ -402,7 +410,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_file_deletion_events_unlinkat
   - id: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_delete
@@ -410,7 +418,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_delete
   - id: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_finit
@@ -418,7 +426,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_finit
   - id: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_init
@@ -426,7 +434,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_kernel_module_loading_init
   - id: xccdf_org.ssgproject.content_rule_audit_rules_login_events_faillog
@@ -434,7 +442,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_login_events_faillog
   - id: xccdf_org.ssgproject.content_rule_audit_rules_login_events_lastlog
@@ -442,23 +450,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_login_events_lastlog
-  - id: xccdf_org.ssgproject.content_rule_audit_rules_login_events_tallylog
-    description: Record Attempts to Alter Logon and Logout Events - tallylog
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_audit_rules_login_events_tallylog
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_apparmor_parser
     description: Record Any Attempts to Run apparmor_parser
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_apparmor_parser
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chage
@@ -466,7 +466,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chage
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chfn
@@ -474,7 +474,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chfn
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chsh
@@ -482,7 +482,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_chsh
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_crontab
@@ -490,7 +490,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_crontab
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_fdisk
@@ -498,7 +498,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_fdisk
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_gpasswd
@@ -506,7 +506,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_gpasswd
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_kmod
@@ -514,7 +514,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_kmod
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_modprobe
@@ -522,7 +522,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_modprobe
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_mount
@@ -530,7 +530,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_mount
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_newgrp
@@ -538,7 +538,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_newgrp
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_pam_timestamp_check
@@ -546,7 +546,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_pam_timestamp_check
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_passwd
@@ -554,7 +554,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_passwd
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_ssh_agent
@@ -562,7 +562,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_ssh_agent
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_ssh_keysign
@@ -570,7 +570,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_ssh_keysign
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_su
@@ -578,7 +578,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_su
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_sudo
@@ -586,7 +586,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_sudo
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_sudoedit
@@ -594,7 +594,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_sudoedit
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_umount
@@ -602,7 +602,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_umount
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_unix_update
@@ -610,7 +610,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_unix_update
   - id: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_usermod
@@ -618,7 +618,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_privileged_commands_usermod
   - id: xccdf_org.ssgproject.content_rule_audit_rules_session_events_btmp
@@ -626,7 +626,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_session_events_btmp
   - id: xccdf_org.ssgproject.content_rule_audit_rules_session_events_utmp
@@ -634,7 +634,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_session_events_utmp
   - id: xccdf_org.ssgproject.content_rule_audit_rules_session_events_wtmp
@@ -642,15 +642,31 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_session_events_wtmp
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_sudoers_d
+    description: Ensure auditd Collects System Administrator Actions - /etc/sudoers.d/
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_sudoers_d
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_sudoers
+    description: Ensure auditd Collects System Administrator Actions - /etc/sudoers
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_sudoers
   - id: xccdf_org.ssgproject.content_rule_audit_rules_suid_privilege_function
     description: Record Events When Privileged Executables Are Run
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_suid_privilege_function
   - id: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_creat
@@ -658,7 +674,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_creat
   - id: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_ftruncate
@@ -666,7 +682,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_ftruncate
   - id: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_open_by_handle_at
@@ -674,7 +690,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_open_by_handle_at
   - id: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_open
@@ -682,7 +698,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_open
   - id: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_openat
@@ -690,7 +706,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_openat
   - id: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_truncate
@@ -698,7 +714,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_unsuccessful_file_modification_truncate
   - id: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_group
@@ -706,7 +722,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_group
   - id: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_gshadow
@@ -714,7 +730,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_gshadow
   - id: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_opasswd
@@ -722,7 +738,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_opasswd
   - id: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_passwd
@@ -730,7 +746,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_passwd
   - id: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_shadow
@@ -738,15 +754,31 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_shadow
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_var_log_journal
+    description: Ensure auditd Collects records for events that affect "/var/log/journal"
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_var_log_journal
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_var_spool_cron
+    description: Ensure auditd Collects Changes to Cron Jobs - /var/spool/cron
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_var_spool_cron
   - id: xccdf_org.ssgproject.content_rule_audit_sudo_log_events
     description: Record Attempts to perform maintenance activities
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_sudo_log_events
   - id: xccdf_org.ssgproject.content_rule_auditd_audispd_configure_remote_server
@@ -754,7 +786,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_auditd_audispd_configure_remote_server
   - id: xccdf_org.ssgproject.content_rule_auditd_audispd_configure_sufficiently_large_partition
@@ -762,7 +794,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_auditd_audispd_configure_sufficiently_large_partition
   - id: xccdf_org.ssgproject.content_rule_auditd_data_disk_full_action
@@ -770,7 +802,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_auditd_data_disk_full_action
   - id: xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct
@@ -778,7 +810,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct
   - id: xccdf_org.ssgproject.content_rule_auditd_data_retention_space_left_action
@@ -786,15 +818,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_space_left_action
   - id: xccdf_org.ssgproject.content_rule_auditd_data_retention_space_left_percentage
-    description: Ensure Sufficient Audit Log Storage (STIGs - ubuntu2004)
+    description: Ensure Sufficient Audit Log Storage (STIGs)
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_auditd_data_retention_space_left_percentage
   - id: xccdf_org.ssgproject.content_rule_auditd_offload_logs
@@ -802,7 +834,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_auditd_offload_logs
   - id: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
@@ -810,7 +842,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
   - id: xccdf_org.ssgproject.content_rule_bios_enable_execution_restrictions
@@ -818,7 +850,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_bios_enable_execution_restrictions
   - id: xccdf_org.ssgproject.content_rule_check_ufw_active
@@ -826,7 +858,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_check_ufw_active
   - id: xccdf_org.ssgproject.content_rule_chronyd_or_ntpd_set_maxpoll
@@ -834,7 +866,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_chronyd_or_ntpd_set_maxpoll
   - id: xccdf_org.ssgproject.content_rule_chronyd_sync_clock
@@ -842,7 +874,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_chronyd_sync_clock
   - id: xccdf_org.ssgproject.content_rule_clean_components_post_updating
@@ -850,7 +882,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_clean_components_post_updating
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_banner_enabled
@@ -858,7 +890,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_banner_enabled
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_ctrlaltdel_reboot
@@ -866,7 +898,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_disable_ctrlaltdel_reboot
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_login_banner_text
@@ -874,15 +906,31 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_login_banner_text
+  - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_idle_delay
+    description: Set GNOME3 Screensaver Inactivity Timeout
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_idle_delay
+  - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay
+    description: Set GNOME3 Screensaver Lock Delay After Activation Period
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled
     description: Enable GNOME3 Screensaver Lock After Idle Period
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled
   - id: xccdf_org.ssgproject.content_rule_dir_group_ownership_library_dirs
@@ -890,23 +938,39 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dir_group_ownership_library_dirs
+  - id: xccdf_org.ssgproject.content_rule_dir_groupowner_system_journal
+    description: Verify group-owner of system journal directories
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_dir_groupowner_system_journal
   - id: xccdf_org.ssgproject.content_rule_dir_groupownership_binary_dirs
     description: Verify that system commands directories are group owned by root
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dir_groupownership_binary_dirs
+  - id: xccdf_org.ssgproject.content_rule_dir_owner_system_journal
+    description: Verify owner of system journal directories
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_dir_owner_system_journal
   - id: xccdf_org.ssgproject.content_rule_dir_ownership_binary_dirs
     description: Verify that System Executable Have Root Ownership
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dir_ownership_binary_dirs
   - id: xccdf_org.ssgproject.content_rule_dir_ownership_library_dirs
@@ -914,7 +978,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dir_ownership_library_dirs
   - id: xccdf_org.ssgproject.content_rule_dir_permissions_binary_dirs
@@ -922,31 +986,23 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dir_permissions_binary_dirs
-  - id: xccdf_org.ssgproject.content_rule_dir_permissions_library_dirs
-    description: Verify that Shared Library Directories Have Restrictive Permissions
+  - id: xccdf_org.ssgproject.content_rule_dir_permissions_system_journal
+    description: Verify Permissions on the system journal directories
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_dir_permissions_library_dirs
-  - id: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
-    description: Verify that All World-Writable Directories Have Sticky Bits Set
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
+          rule: xccdf_org.ssgproject.content_rule_dir_permissions_system_journal
   - id: xccdf_org.ssgproject.content_rule_directory_permissions_var_log_audit
     description: System Audit Logs Must Have Mode 0750 or Less Permissive
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_directory_permissions_var_log_audit
   - id: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_reboot
@@ -954,31 +1010,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_disable_ctrlaltdel_reboot
-  - id: xccdf_org.ssgproject.content_rule_display_login_attempts
-    description: Ensure PAM Displays Last Logon/Access Notification
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_display_login_attempts
-  - id: xccdf_org.ssgproject.content_rule_enable_dconf_user_profile
-    description: Configure GNOME3 DConf User Profile
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_enable_dconf_user_profile
   - id: xccdf_org.ssgproject.content_rule_encrypt_partitions
     description: Encrypt Partitions
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_encrypt_partitions
   - id: xccdf_org.ssgproject.content_rule_ensure_rtc_utc_configuration
@@ -986,7 +1026,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_ensure_rtc_utc_configuration
   - id: xccdf_org.ssgproject.content_rule_ensure_sudo_group_restricted
@@ -994,23 +1034,39 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_ensure_sudo_group_restricted
-  - id: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit
-    description: System Audit Logs Must Be Group Owned By Root
+  - id: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit_stig
+    description: System Audit Logs Must Be Group Owned By Root (STIGs - ubuntu2204)
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit
+          rule: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit_stig
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_journalctl
+    description: Verify Groupowner on the journalctl command
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_journalctl
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_system_journal
+    description: Verify Group Who Owns the system journal
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_system_journal
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_var_log_syslog
     description: Verify Group Who Owns /var/log/syslog File
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_var_log_syslog
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_var_log
@@ -1018,23 +1074,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_var_log
-  - id: xccdf_org.ssgproject.content_rule_file_groupownership_audit_binaries
-    description: Verify that audit tools are owned by group root
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_file_groupownership_audit_binaries
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_audit_configuration
     description: Audit Configuration Files Must Be Owned By Group root
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_groupownership_audit_configuration
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_system_commands_dirs
@@ -1042,15 +1090,31 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_groupownership_system_commands_dirs
+  - id: xccdf_org.ssgproject.content_rule_file_owner_journalctl
+    description: Verify Owner on the journalctl Command
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_file_owner_journalctl
+  - id: xccdf_org.ssgproject.content_rule_file_owner_system_journal
+    description: Verify Owner on the system journal
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_file_owner_system_journal
   - id: xccdf_org.ssgproject.content_rule_file_owner_var_log_syslog
     description: Verify User Who Owns /var/log/syslog File
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_owner_var_log_syslog
   - id: xccdf_org.ssgproject.content_rule_file_owner_var_log
@@ -1058,7 +1122,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_owner_var_log
   - id: xccdf_org.ssgproject.content_rule_file_ownership_audit_binaries
@@ -1066,7 +1130,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_ownership_audit_binaries
   - id: xccdf_org.ssgproject.content_rule_file_ownership_audit_configuration
@@ -1074,7 +1138,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_ownership_audit_configuration
   - id: xccdf_org.ssgproject.content_rule_file_ownership_binary_dirs
@@ -1082,7 +1146,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_ownership_binary_dirs
   - id: xccdf_org.ssgproject.content_rule_file_ownership_library_dirs
@@ -1090,7 +1154,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_ownership_library_dirs
   - id: xccdf_org.ssgproject.content_rule_file_ownership_var_log_audit_stig
@@ -1098,7 +1162,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_ownership_var_log_audit_stig
   - id: xccdf_org.ssgproject.content_rule_file_permissions_audit_binaries
@@ -1106,7 +1170,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_audit_binaries
   - id: xccdf_org.ssgproject.content_rule_file_permissions_binary_dirs
@@ -1114,7 +1178,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_binary_dirs
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_auditd
@@ -1122,39 +1186,63 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_auditd
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rules
+    description: Verify Permissions on /etc/audit/audit.rules
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rules
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rulesd
     description: Verify Permissions on /etc/audit/rules.d/*.rules
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rulesd
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_journalctl
+    description: Verify Permissions on the journal command
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_journalctl
   - id: xccdf_org.ssgproject.content_rule_file_permissions_library_dirs
     description: Verify that Shared Library Files Have Restrictive Permissions
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_library_dirs
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit
-    description: System Audit Logs Must Have Mode 0640 or Less Permissive
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_system_journal
+    description: Verify Permissions on the system journal
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_system_journal
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit_stig
+    description: System Audit Logs Must Have Mode 0600 or Less Permissive
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit_stig
   - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log_syslog
     description: Verify Permissions on /var/log/syslog File
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log_syslog
   - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log
@@ -1162,7 +1250,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log
   - id: xccdf_org.ssgproject.content_rule_grub2_audit_argument
@@ -1170,7 +1258,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_grub2_audit_argument
   - id: xccdf_org.ssgproject.content_rule_grub2_password
@@ -1178,7 +1266,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_grub2_password
   - id: xccdf_org.ssgproject.content_rule_grub2_uefi_password
@@ -1186,7 +1274,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_grub2_uefi_password
   - id: xccdf_org.ssgproject.content_rule_install_smartcard_packages
@@ -1194,15 +1282,23 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_install_smartcard_packages
+  - id: xccdf_org.ssgproject.content_rule_installed_OS_is_vendor_supported
+    description: The Installed Operating System Is Vendor Supported
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_installed_OS_is_vendor_supported
   - id: xccdf_org.ssgproject.content_rule_is_fips_mode_enabled
     description: Verify '/proc/sys/crypto/fips_enabled' exists
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_is_fips_mode_enabled
   - id: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
@@ -1210,7 +1306,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
   - id: xccdf_org.ssgproject.content_rule_no_duplicate_uids
@@ -1218,7 +1314,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_no_duplicate_uids
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
@@ -1226,7 +1322,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords
@@ -1234,7 +1330,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords
   - id: xccdf_org.ssgproject.content_rule_only_allow_dod_certs
@@ -1242,7 +1338,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_only_allow_dod_certs
   - id: xccdf_org.ssgproject.content_rule_package_aide_installed
@@ -1250,7 +1346,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_aide_installed
   - id: xccdf_org.ssgproject.content_rule_package_apparmor_installed
@@ -1258,7 +1354,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_apparmor_installed
   - id: xccdf_org.ssgproject.content_rule_package_audit-audispd-plugins_installed
@@ -1266,7 +1362,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_audit-audispd-plugins_installed
   - id: xccdf_org.ssgproject.content_rule_package_audit_installed
@@ -1274,7 +1370,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_audit_installed
   - id: xccdf_org.ssgproject.content_rule_package_chrony_installed
@@ -1282,23 +1378,47 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_chrony_installed
-  - id: xccdf_org.ssgproject.content_rule_package_mcafeetp_installed
-    description: Install McAfee Endpoint Security for Linux (ENSL)
+  - id: xccdf_org.ssgproject.content_rule_package_nfs-common_removed
+    description: Uninstall nfs-common Package
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_package_mcafeetp_installed
+          rule: xccdf_org.ssgproject.content_rule_package_nfs-common_removed
+  - id: xccdf_org.ssgproject.content_rule_package_nfs-kernel-server_removed
+    description: Uninstall nfs-kernel-server Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_package_nfs-kernel-server_removed
+  - id: xccdf_org.ssgproject.content_rule_package_nss_sss_installed
+    description: Install nss-sss Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_package_nss_sss_installed
+  - id: xccdf_org.ssgproject.content_rule_package_ntp_removed
+    description: Remove the ntp service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_package_ntp_removed
   - id: xccdf_org.ssgproject.content_rule_package_opensc_installed
     description: Install the opensc Package For Multifactor Authentication
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_opensc_installed
   - id: xccdf_org.ssgproject.content_rule_package_openssh-server_installed
@@ -1306,7 +1426,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_openssh-server_installed
   - id: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
@@ -1314,31 +1434,55 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_pam_pwquality_installed
+  - id: xccdf_org.ssgproject.content_rule_package_pam_sss_installed
+    description: Install pam-sss Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_package_pam_sss_installed
   - id: xccdf_org.ssgproject.content_rule_package_rsh-server_removed
     description: Uninstall rsh-server Package
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_rsh-server_removed
+  - id: xccdf_org.ssgproject.content_rule_package_sssd_installed
+    description: Install the SSSD Package
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_package_sssd_installed
   - id: xccdf_org.ssgproject.content_rule_package_telnetd_removed
     description: Uninstall the telnet server
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_telnetd_removed
+  - id: xccdf_org.ssgproject.content_rule_package_timesyncd_removed
+    description: Remove the systemd_timesyncd Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_package_timesyncd_removed
   - id: xccdf_org.ssgproject.content_rule_package_ufw_installed
     description: Install ufw Package
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_ufw_installed
   - id: xccdf_org.ssgproject.content_rule_permissions_local_var_log
@@ -1346,23 +1490,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_permissions_local_var_log
-  - id: xccdf_org.ssgproject.content_rule_policy_temp_passwords_immediate_change
-    description: Policy Requires Immediate Change of Temporary Passwords
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_policy_temp_passwords_immediate_change
   - id: xccdf_org.ssgproject.content_rule_prevent_direct_root_logins
     description: Direct root Logins Are Not Allowed
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_prevent_direct_root_logins
   - id: xccdf_org.ssgproject.content_rule_root_permissions_syslibrary_files
@@ -1372,7 +1508,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_root_permissions_syslibrary_files
   - id: xccdf_org.ssgproject.content_rule_rsyslog_remote_access_monitoring
@@ -1380,7 +1516,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_rsyslog_remote_access_monitoring
   - id: xccdf_org.ssgproject.content_rule_service_auditd_enabled
@@ -1388,7 +1524,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_service_auditd_enabled
   - id: xccdf_org.ssgproject.content_rule_service_kdump_disabled
@@ -1396,7 +1532,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_service_kdump_disabled
   - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
@@ -1404,7 +1540,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
   - id: xccdf_org.ssgproject.content_rule_service_sshd_enabled
@@ -1412,23 +1548,39 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_service_sshd_enabled
+  - id: xccdf_org.ssgproject.content_rule_service_sssd_enabled
+    description: Enable the SSSD Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_service_sssd_enabled
   - id: xccdf_org.ssgproject.content_rule_service_ufw_enabled
     description: Verify ufw Enabled
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_service_ufw_enabled
+  - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_auth_stig
+    description: Set Password Hashing Algorithm for PAM
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_auth_stig
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
     description: Set Password Hashing Algorithm in /etc/login.defs
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
   - id: xccdf_org.ssgproject.content_rule_smartcard_configure_ca
@@ -1436,7 +1588,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_smartcard_configure_ca
   - id: xccdf_org.ssgproject.content_rule_smartcard_configure_cert_checking
@@ -1444,7 +1596,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_smartcard_configure_cert_checking
   - id: xccdf_org.ssgproject.content_rule_smartcard_configure_crl
@@ -1452,7 +1604,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_smartcard_configure_crl
   - id: xccdf_org.ssgproject.content_rule_smartcard_pam_enabled
@@ -1460,7 +1612,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_smartcard_pam_enabled
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
@@ -1468,7 +1620,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords
   - id: xccdf_org.ssgproject.content_rule_sshd_disable_x11_forwarding
@@ -1476,7 +1628,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_disable_x11_forwarding
   - id: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
@@ -1484,7 +1636,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_pam
@@ -1492,7 +1644,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_pam
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_pubkey_auth
@@ -1500,7 +1652,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_pubkey_auth
   - id: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
@@ -1508,7 +1660,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_enable_warning_banner_net
   - id: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
@@ -1516,7 +1668,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout
   - id: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
@@ -1524,15 +1676,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
   - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers_ordered_stig
-    description: Use Only FIPS 140-2 Validated Ciphers (STIGs - ubuntu2004)
+    description: Use Only FIPS 140-2 Validated Ciphers (STIGs)
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_ciphers_ordered_stig
   - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_kex_ordered_stig
@@ -1540,15 +1692,15 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_kex_ordered_stig
   - id: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs_ordered_stig
-    description: Use Only FIPS 140-2 Validated Message Authentication Codes(MACs) (STIGs - ubuntu2004)
+    description: Use Only FIPS 140-2 Validated Message Authentication Codes(MACs) (STIGs)
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_use_approved_macs_ordered_stig
   - id: xccdf_org.ssgproject.content_rule_sshd_x11_use_localhost
@@ -1556,31 +1708,79 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_x11_use_localhost
+  - id: xccdf_org.ssgproject.content_rule_sssd_certification_path_trust_anchor
+    description: Certificate trust path in SSSD
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sssd_certification_path_trust_anchor
+  - id: xccdf_org.ssgproject.content_rule_sssd_enable_pam_services
+    description: Configure PAM in SSSD Services
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sssd_enable_pam_services
+  - id: xccdf_org.ssgproject.content_rule_sssd_enable_smartcards
+    description: Enable Smartcards in SSSD
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sssd_enable_smartcards
+  - id: xccdf_org.ssgproject.content_rule_sssd_enable_user_cert
+    description: Enable Certificates Mapping in SSSD
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sssd_enable_user_cert
   - id: xccdf_org.ssgproject.content_rule_sssd_offline_cred_expiration
     description: Configure SSSD to Expire Offline Credentials
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sssd_offline_cred_expiration
-  - id: xccdf_org.ssgproject.content_rule_sudo_require_authentication
-    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo
+  - id: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
+    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo !authenticate
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_sudo_require_authentication
+          rule: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
+  - id: xccdf_org.ssgproject.content_rule_sudo_remove_nopasswd
+    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo NOPASSWD
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sudo_remove_nopasswd
+  - id: xccdf_org.ssgproject.content_rule_sudo_restrict_privilege_elevation_to_authorized
+    description: The operating system must restrict privilege elevation to authorized personnel
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sudo_restrict_privilege_elevation_to_authorized
   - id: xccdf_org.ssgproject.content_rule_sysctl_kernel_dmesg_restrict
     description: Restrict Access to Kernel Message Buffer
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_dmesg_restrict
   - id: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
@@ -1588,7 +1788,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sysctl_kernel_randomize_va_space
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
@@ -1596,7 +1796,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
   - id: xccdf_org.ssgproject.content_rule_ufw_only_required_services
@@ -1604,7 +1804,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_ufw_only_required_services
   - id: xccdf_org.ssgproject.content_rule_ufw_rate_limit
@@ -1612,7 +1812,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_ufw_rate_limit
   - id: xccdf_org.ssgproject.content_rule_verify_use_mappers
@@ -1620,7 +1820,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_verify_use_mappers
   - id: xccdf_org.ssgproject.content_rule_vlock_installed
@@ -1628,7 +1828,7 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_vlock_installed
   - id: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces
@@ -1636,6 +1836,6 @@ rules:
     filters: *id001
     input:
       - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
+          name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_wireless_disable_interfaces

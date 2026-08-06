@@ -166,7 +166,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_enforce_root
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember
-    description: Limit Password Reuse
+    description: Limit Password Reuse - Users
     filters: *id001
     input:
       - xccdf:
@@ -1094,7 +1094,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
   - id: xccdf_org.ssgproject.content_rule_file_owner_sshd_drop_in_config
-    description: Verify Owner on SSH Server Configuration Files
+    description: Verify Owner on SSH Server Drop-in Configuration Files
     filters: *id001
     input:
       - xccdf:
@@ -1958,7 +1958,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_unix
-    description: Prevent Login to Accounts With Empty Password (ubuntu2204)
+    description: Prevent Login to Accounts With Empty Password (pam_unix)
     filters: *id001
     input:
       - xccdf:
