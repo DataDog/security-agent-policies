@@ -509,6 +509,14 @@ rules:
           name: ssg-rhel9-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_pam_wheel_group_empty
+  - id: xccdf_org.ssgproject.content_rule_ensure_redhat_gpgkey_installed
+    description: Ensure Red Hat GPG Key Installed
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-rhel9-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_ensure_redhat_gpgkey_installed
   - id: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
     description: Ensure Authentication Required for Single User Mode
     filters: *id001

@@ -146,6 +146,19 @@ rules:
     imports:
       - audit-rule-common.rego
       - helpers.rego
+  - id: cis-docker-1.2.0-1.2.12-docker-proxy-org-copy-test
+    description: Docker proxy binary activities should be audited org copy test
+    scope:
+      - docker
+    input:
+      - audit:
+          path: /usr/sbin/docker-proxy
+        type: array
+      - constants:
+          resource_type: docker_daemon
+    imports:
+      - audit-rule-common.rego
+      - helpers.rego
   - id: cis-docker-1.2.0-1.2.12
     description: The /usr/sbin/runc executable should be audited, if applicable
     scope:
