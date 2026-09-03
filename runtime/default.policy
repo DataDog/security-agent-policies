@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.70.0
+version: 1.70.1
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -1921,7 +1921,7 @@ rules:
   - id: dynamic_linker_config_write
     description: A process wrote to a dynamic linker config file
     expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES && process.ancestors.file.path not in DD_AGENT_PROCESSES
-      && process.argv0 not in ["runc", "/usr/bin/runc", "/usr/sbin/runc"]
+      && process.argv0 not in ["runc", "/usr/bin/runc", "/usr/sbin/runc"] && process.file.path not in ["/usr/bin/nvidia-ctk", "/usr/local/nvidia/toolkit/nvidia-ctk"]
     tags:
       threat_score: '8'
       threat_description: Malicious payloads can be executed by hijacking global configurations the dynamic linker uses to load shared libraries.
