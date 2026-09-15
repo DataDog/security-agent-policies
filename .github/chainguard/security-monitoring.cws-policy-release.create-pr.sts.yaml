@@ -1,0 +1,13 @@
+# Policy for: .github/workflows/cws-policy-release.yml in DataDog/security-monitoring
+issuer: https://token.actions.githubusercontent.com
+subject: repo:DataDog/security-monitoring:ref:refs/heads/main
+
+claim_pattern:
+  event_name: workflow_dispatch
+  job_workflow_ref: DataDog/security-monitoring/\.github/workflows/cws-policy-release\.yml@refs/heads/main
+  ref: refs/heads/main
+  repository: DataDog/security-monitoring
+
+permissions:
+  contents: write
+  pull_requests: write
