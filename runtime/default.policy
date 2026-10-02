@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.70.1
+version: 1.71.2
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -915,6 +915,42 @@ rules:
     agent_version: '>=7.65'
     filters:
       - os == "linux"
+  - id: ssm_command_tracking
+    description: Tag the process tree of an AWS SSM Run Command invocation with the inherited SendCommand command ID, captured from the orchestration directory the document worker creates
+    expression: |-
+      mkdir.file.path =~ "/var/lib/amazon/ssm/*/document/orchestration/*" &&
+      process.file.name == "ssm-document-worker"
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - set:
+          name: ssm_command_id
+          scope: process
+          inherited: true
+          field: mkdir.file.path
+          capture: /document/orchestration/([^/]+)
+    silent: true
+    agent_version: '>=7.83'
+    filters:
+      - os == "linux"
+  - id: ssm_session_tracking
+    description: Tag the process tree of an AWS SSM Session Manager session with the inherited StartSession session ID, captured from the orchestration directory the session worker creates
+    expression: |-
+      mkdir.file.path =~ "/var/lib/amazon/ssm/*/session/orchestration/*" &&
+      process.file.name == "ssm-session-worker"
+    product_tags:
+      - policy:threat-detection
+    actions:
+      - set:
+          name: ssm_session_id
+          scope: process
+          inherited: true
+          field: mkdir.file.path
+          capture: /session/orchestration/([^/]+)
+    silent: true
+    agent_version: '>=7.83'
+    filters:
+      - os == "linux"
   - id: execution_context_cicd_runner
     description: Track execution context from CI/CD runner
     expression: "exec.envs in [\"JENKINS_HOME\", \"JENKINS_URL\", \"GITLAB_CI\", \"GITHUB_ACTIONS\", \"CIRCLECI\", \"TRAVIS\", \"BUILDKITE\", \"TEAMCITY_VERSION\", \"BITBUCKET_PIPELINE_UUID\", \"TF_BUILD\", \"CODEBUILD_BUILD_ID\"] && \n${process.correlation_key}\
@@ -940,6 +976,29 @@ rules:
           inherited: true
     silent: true
     agent_version: '>=7.68'
+    filters:
+      - os == "linux"
+  - id: imds_host_aws_access_key_ids
+    description: Track the AWS access key IDs a host resolved from IMDS to correlate its activity with Cloud SIEM and CloudTrail
+    expression: |-
+      imds.type == "response"
+      && imds.cloud_provider == "aws"
+      && imds.aws.security_credentials.access_key_id != ""
+      && process.file.name != ""
+      && imds.aws.security_credentials.access_key_id not in process.aws_security_credentials.access_key_id
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
+      - subtechnique:T1552.005-cloud-instance-metadata-api
+      - policy:threat-detection
+    actions:
+      - set:
+          name: host_aws_access_key_ids
+          field: imds.aws.security_credentials.access_key_id
+          append: true
+          size: 10
+          ttl: 43200000000000
+    agent_version: '>= 7.84'
     filters:
       - os == "linux"
   - id: accept_incoming_http
@@ -1345,13 +1404,15 @@ rules:
     expression: |-
       connect.addr.hostname in [
         "webhook.site",
-        "requestbin.net",
-        "requestbin.com",
-        "pipedream.net",
-        "hookbin.com",
+        ~"*.requestbin.net",
+        ~"*.requestbin.com",
+        ~"*.pipedream.net",
+        ~"*.hookbin.com",
         "canarytokens.org",
-        "webhookrelay.com",
+        ~"*.canarytokens.org",
+        ~"*.webhookrelay.com",
         "pastebin.com",
+        ~"*.pastebin.com",
         "paste.ee",
         "paste2.org",
         "hastebin.com",
@@ -1359,47 +1420,146 @@ rules:
         "dpaste.org",
         "paste.centos.org",
         "paste.ofcode.org",
-        "dropbox.com",
-        "dl.dropboxusercontent.com",
+        ~"*.dropbox.com",
+        ~"*.dropboxapi.com",
+        ~"*.dropboxusercontent.com",
         "drive.google.com",
         "docs.google.com",
         "onedrive.live.com",
         "1drv.ms",
-        "box.com",
-        "box.net",
+        ~"*.box.com",
+        ~"*.box.net",
+        ~"*.boxcloud.com",
         "mega.nz",
         "wetransfer.com",
         "file.io",
+        ~"*.file.io",
         "transfer.sh",
-        "sendspace.com",
-        "gofile.io",
-        "sync.com",
-        "backblaze.com",
+        ~"*.sendspace.com",
+        ~"*.gofile.io",
+        ~"*.sync.com",
+        ~"*.backblazeb2.com",
         "discord.com",
-        "discordapp.com",
+        ~"*.discord.com",
+        ~"*.discordapp.com",
         "discord.gg",
         "api.telegram.org",
         "t.me",
         "slack.com",
-        "hooks.slack.com",
+        ~"*.slack.com",
         "teams.microsoft.com",
         "bitbucket.org",
         "anonfiles.com",
+        ~"*.anonfiles.com",
         "filedropper.com",
+        ~"*.filedropper.com",
         "bayfiles.com",
+        ~"*.bayfiles.com",
         "catbox.moe",
+        ~"*.catbox.moe",
         "anonfile.com",
-        "krakenfiles.com"
+        ~"*.anonfile.com",
+        "krakenfiles.com",
+        ~"*.krakenfiles.com",
+        ~"*.getsession.org"
       ] &&
       connect.addr.port in [80, 443, 8080, 8443, 8000, 8008, 8888] &&
       connect.addr.is_public == true &&
       process.file.path not in ["/usr/bin/datadog-traceroute"]
+    tags:
+      allow_autosuppression: 'true'
+      deprecated: 'true'
     product_tags:
       - tactic:TA0010-exfiltration
       - technique:T1041-exfiltration-over-c2-channel
       - technique:T1567-exfiltration-over-web-service
       - policy:threat-detection
-    agent_version: '>=7.68'
+    agent_version: '>=7.68 <7.79'
+    filters:
+      - os == "linux"
+  - id: connection_to_exfil_domain_v2
+    description: Connection to known data exfiltration domain
+    expression: |-
+      (
+        connect.addr.hostname.root_domain in [
+          "webhook.site",
+          "requestbin.net",
+          "requestbin.com",
+          "pipedream.net",
+          "hookbin.com",
+          "canarytokens.org",
+          "webhookrelay.com",
+          "pastebin.com",
+          "paste.ee",
+          "paste2.org",
+          "hastebin.com",
+          "ghostbin.com",
+          "dpaste.org",
+          "ofcode.org",
+          "dropbox.com",
+          "dropboxapi.com",
+          "dropboxusercontent.com",
+          "1drv.ms",
+          "box.com",
+          "box.net",
+          "boxcloud.com",
+          "mega.nz",
+          "wetransfer.com",
+          "file.io",
+          "transfer.sh",
+          "sendspace.com",
+          "gofile.io",
+          "sync.com",
+          "backblazeb2.com",
+          "discord.com",
+          "discordapp.com",
+          "discord.gg",
+          "t.me",
+          "slack.com",
+          "bitbucket.org",
+          "anonfiles.com",
+          "filedropper.com",
+          "bayfiles.com",
+          "catbox.moe",
+          "anonfile.com",
+          "krakenfiles.com",
+          "getsession.org"
+        ] ||
+        connect.addr.hostname in [
+          "drive.google.com",
+          "docs.google.com",
+          "onedrive.live.com",
+          "api.telegram.org",
+          "teams.microsoft.com",
+          "paste.centos.org"
+        ]
+      ) &&
+      connect.addr.port in [80, 443, 8080, 8443, 8000, 8008, 8888] &&
+      connect.addr.is_public == true &&
+      process.file.path not in ["/usr/bin/datadog-traceroute"] && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_a6d65d87e6} || process.parent.file.path not in ${cgroup.rtl_process_parent_a6d65d87e6}))
+    product_tags:
+      - tactic:TA0010-exfiltration
+      - technique:T1041-exfiltration-over-c2-channel
+      - technique:T1567-exfiltration-over-web-service
+      - policy:threat-detection
+    actions:
+      - filter: process.pid != 0 && event.origin == "ebpf"
+        set:
+          name: rtl_process_args_a6d65d87e6
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+      - filter: process.pid != 0 && event.origin == "ebpf"
+        set:
+          name: rtl_process_parent_a6d65d87e6
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+    agent_version: '>= 7.79'
     filters:
       - os == "linux"
   - id: container_breakout_enumeration_tool
@@ -4044,6 +4204,41 @@ rules:
       - technique:T1547-boot-or-logon-autostart-execution
       - policy:compliance
       - policy:threat-detection
+    filters:
+      - os == "linux"
+  - id: shell_session_leader_from_suspicious_parent
+    description: Session-leading shell spawned by a suspicious parent.
+    expression: |-
+      exec.file.path in SHELLS &&
+      process.sid == process.pid &&
+      (
+        process.parent.file.path in [~"/tmp/**", ~"/var/tmp/**", ~"/dev/shm/**", ~"/run/user/**"] ||
+        process.parent.file.modification_time < 5m ||
+        process.parent.file.in_upper_layer
+      ) && (event.origin != "ebpf" || (process.args == "" || process.args not in ${cgroup.rtl_process_args_36f8130ad5} || process.parent.file.path not in ${cgroup.rtl_process_parent_36f8130ad5}))
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
+      - subtechnique:T1059.004-unix-shell
+      - policy:threat-detection
+    actions:
+      - filter: process.pid != 0 && event.origin == "ebpf"
+        set:
+          name: rtl_process_args_36f8130ad5
+          field: process.args
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+      - filter: process.pid != 0 && event.origin == "ebpf"
+        set:
+          name: rtl_process_parent_36f8130ad5
+          field: process.parent.file.path
+          ttl: 3600000000000
+          append: true
+          private: true
+          scope: cgroup
+    agent_version: '>= 7.80'
     filters:
       - os == "linux"
   - id: sliver_c2_implant_execution
