@@ -101,14 +101,6 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen
-  - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_password_auth
-    description: 'Limit Password Reuse: password-auth'
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_password_auth
   - id: xccdf_org.ssgproject.content_rule_accounts_password_pam_pwhistory_remember_system_auth
     description: 'Limit Password Reuse: system-auth'
     filters: *id001
@@ -181,14 +173,6 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
-  - id: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
-    description: Ensure that Root's Path Does Not Include World or Group-Writable Directories
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
   - id: xccdf_org.ssgproject.content_rule_accounts_set_post_pw_existing
     description: Set existing passwords a period of inactivity before they been locked
     filters: *id001
@@ -197,14 +181,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_set_post_pw_existing
-  - id: xccdf_org.ssgproject.content_rule_accounts_tmout
-    description: Set Interactive Session Timeout
+  - id: xccdf_org.ssgproject.content_rule_accounts_tmout_cis
+    description: Set Interactive Session Timeout for CIS Benchmark
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_accounts_tmout
+          rule: xccdf_org.ssgproject.content_rule_accounts_tmout_cis
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
     description: Ensure the Default Bash Umask is Set Correctly
     filters: *id001
@@ -261,14 +245,6 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_accounts_users_netrc_file_permissions
-  - id: xccdf_org.ssgproject.content_rule_aide_build_database
-    description: Build and Test AIDE Database
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_aide_build_database
   - id: xccdf_org.ssgproject.content_rule_aide_check_audit_tools
     description: Configure AIDE to Verify the Audit Tools
     filters: *id001
@@ -285,38 +261,30 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
-  - id: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
-    description: Modify the System Login Banner for Remote Connections
+  - id: xccdf_org.ssgproject.content_rule_banner_etc_issue_cis
+    description: Ensure Local Login Warning Banner Is Configured Properly
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_banner_etc_issue_net
-  - id: xccdf_org.ssgproject.content_rule_banner_etc_issue
-    description: Modify the System Login Banner
+          rule: xccdf_org.ssgproject.content_rule_banner_etc_issue_cis
+  - id: xccdf_org.ssgproject.content_rule_banner_etc_issue_net_cis
+    description: Ensure Remote Login Warning Banner Is Configured Properly
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_banner_etc_issue
-  - id: xccdf_org.ssgproject.content_rule_banner_etc_motd
-    description: Modify the System Message of the Day Banner
+          rule: xccdf_org.ssgproject.content_rule_banner_etc_issue_net_cis
+  - id: xccdf_org.ssgproject.content_rule_banner_etc_motd_cis
+    description: Ensure Message Of The Day Is Configured Properly
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_banner_etc_motd
-  - id: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
-    description: Ensure that chronyd is running under chrony user account
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
+          rule: xccdf_org.ssgproject.content_rule_banner_etc_motd_cis
   - id: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
     description: A remote time server for Chrony is configured
     filters: *id001
@@ -389,6 +357,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_ensure_root_password_configured
+  - id: xccdf_org.ssgproject.content_rule_file_at_allow_exists
+    description: Ensure that /etc/at.allow exists
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_at_allow_exists
   - id: xccdf_org.ssgproject.content_rule_file_at_deny_not_exist
     description: Ensure that /etc/at.deny does not exist
     filters: *id001
@@ -565,14 +541,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shadow
-  - id: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
-    description: Verify /boot/grub2/grub.cfg Group Ownership
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_config_files
+    description: Verify Group Ownership of the GRUB2 Configuration Files
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_config_files
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
     description: Verify Group Who Owns SSH Server config file
     filters: *id001
@@ -581,14 +557,6 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_sshd_config
-  - id: xccdf_org.ssgproject.content_rule_file_groupowner_user_cfg
-    description: Verify /boot/grub2/user.cfg Group Ownership
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_groupowner_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_groupownership_home_directories
     description: All Interactive User Home Directories Must Be Group-Owned By The Primary Group
     filters: *id001
@@ -765,14 +733,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_etc_shadow
-  - id: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
-    description: Verify /boot/grub/grub.cfg User Ownership
+  - id: xccdf_org.ssgproject.content_rule_file_owner_grub2_config_files
+    description: Verify User Ownership of the GRUB2 Configuration Files
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_owner_grub2_cfg
+          rule: xccdf_org.ssgproject.content_rule_file_owner_grub2_config_files
   - id: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
     description: Verify Owner on SSH Server config file
     filters: *id001
@@ -781,14 +749,6 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_owner_sshd_config
-  - id: xccdf_org.ssgproject.content_rule_file_owner_user_cfg
-    description: Verify /boot/grub2/user.cfg User Ownership
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_owner_user_cfg
   - id: xccdf_org.ssgproject.content_rule_file_ownership_home_directories
     description: All Interactive User Home Directories Must Be Owned By The Primary User
     filters: *id001
@@ -813,14 +773,22 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_ownership_sshd_pub_key
-  - id: xccdf_org.ssgproject.content_rule_file_permission_user_init_files
-    description: Ensure All User Initialization Files Have Mode 0740 Or Less Permissive
+  - id: xccdf_org.ssgproject.content_rule_file_permission_user_bash_history
+    description: Ensure User Bash History File Has Correct Permissions
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permission_user_init_files
+          rule: xccdf_org.ssgproject.content_rule_file_permission_user_bash_history
+  - id: xccdf_org.ssgproject.content_rule_file_permission_user_dot_files
+    description: Ensure User Dot Files Have Mode 0644 or Less Permissive
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_permission_user_dot_files
   - id: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
     description: Verify Permissions on /etc/at.allow file
     filters: *id001
@@ -917,6 +885,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_crontab
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_efi_grub2_config_files
+    description: Verify Permissions on the GRUB2 Files of the EFI System Partition
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_efi_grub2_config_files
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_group
     description: Verify Permissions on group File
     filters: *id001
@@ -973,14 +949,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_shadow
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
-    description: Verify /boot/grub/grub.cfg Permissions
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_grub2_config_files
+    description: Verify Permissions on the GRUB2 Configuration Files in /boot/grub2
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_grub2_cfg
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_grub2_config_files
   - id: xccdf_org.ssgproject.content_rule_file_permissions_home_directories
     description: All Interactive User Home Directories Must Have mode 0750 Or Less Permissive
     filters: *id001
@@ -997,14 +973,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_config
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
-    description: Verify Permissions on SSH Server Private *_key Key Files
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key_cis
+    description: Verify Permissions on SSH Server Private *_key Key Files for CIS Benchmark
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_private_key_cis
   - id: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
     description: Verify Permissions on SSH Server Public *.pub Key Files
     filters: *id001
@@ -1013,14 +989,22 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_permissions_sshd_pub_key
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
-    description: Verify /boot/grub2/user.cfg Permissions
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log_lastlog
+    description: Verify Permissions on /var/log/lastlog(.*) Files
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_user_cfg
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log_lastlog
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log_wbtmp
+    description: Verify Permissions on /var/log/wtmp(.*) Files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log_wbtmp
   - id: xccdf_org.ssgproject.content_rule_gid_passwd_group_same
     description: All GIDs referenced in /etc/passwd must be defined in /etc/group
     filters: *id001
@@ -1349,6 +1333,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_bind_removed
+  - id: xccdf_org.ssgproject.content_rule_package_chrony_installed
+    description: The Chrony package is installed
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_package_chrony_installed
   - id: xccdf_org.ssgproject.content_rule_package_cups_removed
     description: Uninstall CUPS Package
     filters: *id001
@@ -1421,14 +1413,6 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_mcstrans_removed
-  - id: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
-    description: Uninstall net-snmp Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
   - id: xccdf_org.ssgproject.content_rule_package_nginx_removed
     description: Uninstall nginx Package
     filters: *id001
@@ -1445,14 +1429,6 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
-  - id: xccdf_org.ssgproject.content_rule_package_rsync_removed
-    description: Uninstall rsync Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_package_rsync_removed
   - id: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
     description: Ensure rsyslog is Installed
     filters: *id001
@@ -1541,6 +1517,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_partition_for_tmp
+  - id: xccdf_org.ssgproject.content_rule_permissions_local_var_log
+    description: Verify permissions of log files
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_permissions_local_var_log
   - id: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
     description: Disable Postfix Network Listening
     filters: *id001
@@ -1549,14 +1533,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
-  - id: xccdf_org.ssgproject.content_rule_root_path_no_dot
-    description: Ensure that Root's Path Does Not Include Relative Paths or Null Directories
+  - id: xccdf_org.ssgproject.content_rule_root_path_login_integrity
+    description: Ensure the PATH of a Root Login Shell Holds Only Safe Directories
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_root_path_no_dot
+          rule: xccdf_org.ssgproject.content_rule_root_path_login_integrity
   - id: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
     description: Ensure rsyslog Default File Permissions Configured
     filters: *id001
@@ -1565,14 +1549,6 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
-  - id: xccdf_org.ssgproject.content_rule_rsyslog_files_groupownership
-    description: Ensure Log Files Are Owned By Appropriate Group
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-al2023-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_rsyslog_files_groupownership
   - id: xccdf_org.ssgproject.content_rule_rsyslog_files_ownership
     description: Ensure Log Files Are Owned By Appropriate User
     filters: *id001
@@ -1653,6 +1629,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_rpcbind_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_rsyncd_disabled
+    description: Ensure rsyncd service is disabled
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_service_rsyncd_disabled
   - id: xccdf_org.ssgproject.content_rule_service_snmpd_disabled
     description: Disable snmpd Service
     filters: *id001
@@ -1669,6 +1653,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_service_systemd-journald_enabled
+  - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_libuserconf
+    description: Set Password Hashing Algorithm in /etc/libuser.conf
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_libuserconf
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
     description: Set Password Hashing Algorithm in /etc/login.defs
     filters: *id001
@@ -1781,14 +1773,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
-  - id: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose
-    description: Set SSH Daemon LogLevel to VERBOSE
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose_or_info
+    description: Set SSH Daemon LogLevel to VERBOSE or INFO
     filters: *id001
     input:
       - xccdf:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose_or_info
   - id: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
     description: Set SSH authentication attempt limit
     filters: *id001
@@ -1829,6 +1821,14 @@ rules:
           name: ssg-al2023-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sudo_custom_logfile
+  - id: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
+    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo !authenticate
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-al2023-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
+          rule: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
   - id: xccdf_org.ssgproject.content_rule_sudo_require_reauthentication
     description: Require Re-Authentication When Using the sudo Command
     filters: *id001
