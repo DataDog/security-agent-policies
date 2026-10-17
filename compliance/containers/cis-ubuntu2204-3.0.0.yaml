@@ -2,7 +2,7 @@ schema:
   version: 1.0.0
 name: CIS Ubuntu 22.04 Benchmark for Level 1 - Server
 framework: cis-ubuntu2204
-version: 2.0.0
+version: 3.0.0
 rules:
   - id: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
     description: Set Account Expiration Following Inactivity
@@ -269,14 +269,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_root_gid_zero
-  - id: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
-    description: Ensure that Root's Path Does Not Include World or Group-Writable Directories
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_accounts_root_path_dirs_no_write
   - id: xccdf_org.ssgproject.content_rule_accounts_set_post_pw_existing
     description: Set existing passwords a period of inactivity before they been locked
     filters: *id001
@@ -285,22 +277,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_set_post_pw_existing
-  - id: xccdf_org.ssgproject.content_rule_accounts_tmout
-    description: Set Interactive Session Timeout
+  - id: xccdf_org.ssgproject.content_rule_accounts_tmout_cis
+    description: Set Interactive Session Timeout for CIS Benchmark
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_accounts_tmout
-  - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
-    description: Ensure the Default Bash Umask is Set Correctly
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_bashrc
+          rule: xccdf_org.ssgproject.content_rule_accounts_tmout_cis
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
     description: Ensure the Default Umask is Set Correctly in login.defs
     filters: *id001
@@ -309,14 +293,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_login_defs
-  - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
-    description: Ensure the Default Umask is Set Correctly in /etc/profile
+  - id: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile_d
+    description: Ensure the Default Umask is Set Correctly in /etc/profile.d
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile
+          rule: xccdf_org.ssgproject.content_rule_accounts_umask_etc_profile_d
   - id: xccdf_org.ssgproject.content_rule_accounts_umask_root
     description: Ensure the Root Bash Umask is Set Correctly
     filters: *id001
@@ -349,14 +333,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_accounts_user_interactive_home_directory_exists
-  - id: xccdf_org.ssgproject.content_rule_aide_build_database
-    description: Build and Test AIDE Database
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_aide_build_database
   - id: xccdf_org.ssgproject.content_rule_aide_periodic_cron_checking
     description: Configure Periodic Execution of AIDE
     filters: *id001
@@ -405,14 +381,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_check_ufw_active
-  - id: xccdf_org.ssgproject.content_rule_chronyd_configure_pool_and_server
-    description: Chrony Configure Pool and Server
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_chronyd_configure_pool_and_server
   - id: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
     description: Ensure that chronyd is running under chrony user account
     filters: *id001
@@ -421,6 +389,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_chronyd_run_as_chrony_user
+  - id: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
+    description: A remote time server for Chrony is configured
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server
   - id: xccdf_org.ssgproject.content_rule_dconf_gnome_banner_enabled
     description: Enable GNOME3 Login Warning Banner
     filters: *id001
@@ -653,6 +629,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_weekly
+  - id: xccdf_org.ssgproject.content_rule_file_groupowner_cron_yearly
+    description: Verify Group Who Owns cron.yearly
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_groupowner_cron_yearly
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_crontab
     description: Verify Group Who Owns Crontab
     filters: *id001
@@ -989,6 +973,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_owner_cron_weekly
+  - id: xccdf_org.ssgproject.content_rule_file_owner_cron_yearly
+    description: Verify Owner on cron.yearly
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_owner_cron_yearly
   - id: xccdf_org.ssgproject.content_rule_file_owner_crontab
     description: Verify Owner on crontab
     filters: *id001
@@ -1245,14 +1237,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permission_user_bash_history
-  - id: xccdf_org.ssgproject.content_rule_file_permission_user_init_files
-    description: Ensure All User Initialization Files Have Mode 0740 Or Less Permissive
+  - id: xccdf_org.ssgproject.content_rule_file_permission_user_dot_files
+    description: Ensure User Dot Files Have Mode 0644 or Less Permissive
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_file_permission_user_init_files
+          rule: xccdf_org.ssgproject.content_rule_file_permission_user_dot_files
   - id: xccdf_org.ssgproject.content_rule_file_permissions_at_allow
     description: Verify Permissions on /etc/at.allow file
     filters: *id001
@@ -1349,6 +1341,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_weekly
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_cron_yearly
+    description: Verify Permissions on cron.yearly
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_cron_yearly
   - id: xccdf_org.ssgproject.content_rule_file_permissions_crontab
     description: Verify Permissions on crontab
     filters: *id001
@@ -1629,14 +1629,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_groups_no_zero_gid_except_root
-  - id: xccdf_org.ssgproject.content_rule_grub2_enable_apparmor
-    description: Ensure AppArmor is enabled in the bootloader configuration
+  - id: xccdf_org.ssgproject.content_rule_grub2_apparmor_not_disabled
+    description: Ensure AppArmor Is Not Disabled at Boot
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_grub2_enable_apparmor
+          rule: xccdf_org.ssgproject.content_rule_grub2_apparmor_not_disabled
   - id: xccdf_org.ssgproject.content_rule_grub2_password
     description: Set Boot Loader Password in grub2
     filters: *id001
@@ -1661,22 +1661,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_has_nonlocal_mta
-  - id: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
-    description: Ensure ip6tables Firewall Rules Exist for All Open Ports
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_ip6tables_rules_for_open_ports
-  - id: xccdf_org.ssgproject.content_rule_iptables_rules_for_open_ports
-    description: Ensure iptables Firewall Rules Exist for All Open Ports
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_iptables_rules_for_open_ports
   - id: xccdf_org.ssgproject.content_rule_journald_compress
     description: Ensure journald is configured to compress large log files
     filters: *id001
@@ -1693,6 +1677,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_journald_disable_forward_to_syslog
+  - id: xccdf_org.ssgproject.content_rule_journald_forward_to_syslog
+    description: Ensure journald is configured to send logs to rsyslog
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_journald_forward_to_syslog
   - id: xccdf_org.ssgproject.content_rule_journald_storage
     description: Ensure journald is configured to write log files to persistent disk
     filters: *id001
@@ -1709,6 +1701,22 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_kernel_module_cramfs_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_dccp_disabled
+    description: Disable DCCP Support
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_dccp_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_firewire-core_disabled
+    description: Disable IEEE 1394 (FireWire) Support
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_firewire-core_disabled
   - id: xccdf_org.ssgproject.content_rule_kernel_module_freevxfs_disabled
     description: Disable Mounting of freevxfs
     filters: *id001
@@ -1741,6 +1749,30 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_kernel_module_jffs2_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_rds_disabled
+    description: Disable RDS Support
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_rds_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_sctp_disabled
+    description: Disable SCTP Support
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_sctp_disabled
+  - id: xccdf_org.ssgproject.content_rule_kernel_module_tipc_disabled
+    description: Disable TIPC Support
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_kernel_module_tipc_disabled
   - id: xccdf_org.ssgproject.content_rule_kernel_module_usb-storage_disabled
     description: Disable Modprobe Loading of USB Storage Driver
     filters: *id001
@@ -1901,30 +1933,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_mount_option_var_tmp_nosuid
-  - id: xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy
-    description: Ensure nftables Default Deny Firewall Policy
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy
-  - id: xccdf_org.ssgproject.content_rule_nftables_rules_permanent
-    description: Ensure nftables Rules are Permanent
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_nftables_rules_permanent
-  - id: xccdf_org.ssgproject.content_rule_no_dirs_unowned_by_root
-    description: Ensure that All Root's Path Directories Are Owned by Root
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_no_dirs_unowned_by_root
   - id: xccdf_org.ssgproject.content_rule_no_empty_passwords_etc_shadow
     description: Ensure There Are No Accounts With Blank or Null Passwords
     filters: *id001
@@ -2013,38 +2021,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_apparmor-utils_installed
-  - id: xccdf_org.ssgproject.content_rule_package_autofs_removed
-    description: Remove autofs Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_autofs_removed
-  - id: xccdf_org.ssgproject.content_rule_package_avahi_removed
-    description: Uninstall avahi Server Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_avahi_removed
-  - id: xccdf_org.ssgproject.content_rule_package_bind_removed
-    description: Uninstall bind Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_bind_removed
-  - id: xccdf_org.ssgproject.content_rule_package_chrony_installed
-    description: The Chrony package is installed
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_chrony_installed
   - id: xccdf_org.ssgproject.content_rule_package_cron_installed
     description: Install the cron service
     filters: *id001
@@ -2053,38 +2029,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_cron_installed
-  - id: xccdf_org.ssgproject.content_rule_package_cups_removed
-    description: Uninstall CUPS Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_cups_removed
-  - id: xccdf_org.ssgproject.content_rule_package_dhcp_removed
-    description: Uninstall DHCP Server Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_dhcp_removed
-  - id: xccdf_org.ssgproject.content_rule_package_dnsmasq_removed
-    description: Uninstall dnsmasq Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_dnsmasq_removed
-  - id: xccdf_org.ssgproject.content_rule_package_dovecot_removed
-    description: Uninstall dovecot Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_dovecot_removed
   - id: xccdf_org.ssgproject.content_rule_package_ftp_removed
     description: Remove ftp Package
     filters: *id001
@@ -2093,70 +2037,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_ftp_removed
-  - id: xccdf_org.ssgproject.content_rule_package_httpd_removed
-    description: Uninstall apache2 Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_httpd_removed
-  - id: xccdf_org.ssgproject.content_rule_package_iptables_installed
-    description: Install iptables Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_iptables_installed
-  - id: xccdf_org.ssgproject.content_rule_package_iptables-persistent_installed
-    description: Install iptables-persistent Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_iptables-persistent_installed
-  - id: xccdf_org.ssgproject.content_rule_package_iptables-persistent_removed
-    description: Remove iptables-persistent Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_iptables-persistent_removed
-  - id: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
-    description: Uninstall net-snmp Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_net-snmp_removed
-  - id: xccdf_org.ssgproject.content_rule_package_nfs-kernel-server_removed
-    description: Uninstall nfs-kernel-server Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_nfs-kernel-server_removed
-  - id: xccdf_org.ssgproject.content_rule_package_nftables_installed
-    description: Install nftables Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_nftables_installed
-  - id: xccdf_org.ssgproject.content_rule_package_nginx_removed
-    description: Uninstall nginx Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_nginx_removed
   - id: xccdf_org.ssgproject.content_rule_package_nis_removed
     description: Uninstall the nis package
     filters: *id001
@@ -2173,14 +2053,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
-  - id: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
-    description: Uninstall slapd Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
   - id: xccdf_org.ssgproject.content_rule_package_pam_modules_installed
     description: Install pam-modules Package
     filters: *id001
@@ -2213,14 +2085,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_prelink_removed
-  - id: xccdf_org.ssgproject.content_rule_package_rpcbind_removed
-    description: Uninstall rpcbind Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_rpcbind_removed
   - id: xccdf_org.ssgproject.content_rule_package_rsh_removed
     description: Uninstall rsh Package
     filters: *id001
@@ -2229,30 +2093,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_rsh_removed
-  - id: xccdf_org.ssgproject.content_rule_package_rsync_removed
-    description: Uninstall rsync Package
+  - id: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
+    description: Ensure rsyslog is Installed
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_rsync_removed
-  - id: xccdf_org.ssgproject.content_rule_package_samba_removed
-    description: Uninstall Samba Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_samba_removed
-  - id: xccdf_org.ssgproject.content_rule_package_squid_removed
-    description: Uninstall squid Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_squid_removed
+          rule: xccdf_org.ssgproject.content_rule_package_rsyslog_installed
   - id: xccdf_org.ssgproject.content_rule_package_sudo_installed
     description: Install sudo Package
     filters: *id001
@@ -2285,22 +2133,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_telnet_removed
-  - id: xccdf_org.ssgproject.content_rule_package_tftp-server_removed
-    description: Uninstall tftpd-hpa Package
+  - id: xccdf_org.ssgproject.content_rule_package_tnftp_removed
+    description: Remove tnftp Package
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_tftp-server_removed
-  - id: xccdf_org.ssgproject.content_rule_package_timesyncd_installed
-    description: Install the systemd_timesyncd Service
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_timesyncd_installed
+          rule: xccdf_org.ssgproject.content_rule_package_tnftp_removed
   - id: xccdf_org.ssgproject.content_rule_package_ufw_installed
     description: Install ufw Package
     filters: *id001
@@ -2309,38 +2149,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_ufw_installed
-  - id: xccdf_org.ssgproject.content_rule_package_ufw_removed
-    description: Remove ufw Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_ufw_removed
-  - id: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
-    description: Uninstall vsftpd Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_vsftpd_removed
-  - id: xccdf_org.ssgproject.content_rule_package_xinetd_removed
-    description: Uninstall xinetd Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_xinetd_removed
-  - id: xccdf_org.ssgproject.content_rule_package_ypserv_removed
-    description: Uninstall ypserv Package
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_package_ypserv_removed
   - id: xccdf_org.ssgproject.content_rule_partition_for_dev_shm
     description: Ensure /dev/shm is configured
     filters: *id001
@@ -2373,22 +2181,30 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_postfix_network_listening_disabled
-  - id: xccdf_org.ssgproject.content_rule_root_path_all_dirs
-    description: Ensure that All Entries in The Path of Root Are Directories
+  - id: xccdf_org.ssgproject.content_rule_root_path_login_integrity
+    description: Ensure the PATH of a Root Login Shell Holds Only Safe Directories
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_root_path_all_dirs
-  - id: xccdf_org.ssgproject.content_rule_root_path_no_dot
-    description: Ensure that Root's Path Does Not Include Relative Paths or Null Directories
+          rule: xccdf_org.ssgproject.content_rule_root_path_login_integrity
+  - id: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
+    description: Ensure rsyslog Default File Permissions Configured
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_root_path_no_dot
+          rule: xccdf_org.ssgproject.content_rule_rsyslog_filecreatemode
+  - id: xccdf_org.ssgproject.content_rule_rsyslog_nolisten
+    description: Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_rsyslog_nolisten
   - id: xccdf_org.ssgproject.content_rule_service_apport_disabled
     description: Disable Apport Service
     filters: *id001
@@ -2421,14 +2237,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_bluetooth_disabled
-  - id: xccdf_org.ssgproject.content_rule_service_chronyd_disabled
-    description: The Chronyd service is disabled
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_chronyd_disabled
   - id: xccdf_org.ssgproject.content_rule_service_chronyd_enabled
     description: The Chronyd service is enabled
     filters: *id001
@@ -2493,6 +2301,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_httpd_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_named_disabled
+    description: Disable named Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_named_disabled
   - id: xccdf_org.ssgproject.content_rule_service_nfs_disabled
     description: Disable Network File System (nfs)
     filters: *id001
@@ -2501,22 +2317,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_nfs_disabled
-  - id: xccdf_org.ssgproject.content_rule_service_nftables_disabled
-    description: Verify nftables Service is Disabled
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_nftables_disabled
-  - id: xccdf_org.ssgproject.content_rule_service_nftables_enabled
-    description: Verify nftables Service is Enabled
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_nftables_enabled
   - id: xccdf_org.ssgproject.content_rule_service_nginx_disabled
     description: Disable nginx Service
     filters: *id001
@@ -2541,6 +2341,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_rsyncd_disabled
+  - id: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
+    description: Enable rsyslog Service
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_service_rsyslog_enabled
   - id: xccdf_org.ssgproject.content_rule_service_slapd_disabled
     description: Disable LDAP Server (slapd)
     filters: *id001
@@ -2605,14 +2413,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_timesyncd_configured
-  - id: xccdf_org.ssgproject.content_rule_service_timesyncd_disabled
-    description: Disable systemd_timesyncd Service
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_service_timesyncd_disabled
   - id: xccdf_org.ssgproject.content_rule_service_timesyncd_enabled
     description: Enable systemd_timesyncd Service
     filters: *id001
@@ -2653,62 +2453,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_service_ypserv_disabled
-  - id: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
-    description: Set Default ip6tables Policy for Incoming Packets
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_ip6tables_default_rule
-  - id: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
-    description: Set Default iptables Policy for Incoming Packets
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_iptables_default_rule
-  - id: xccdf_org.ssgproject.content_rule_set_ipv6_loopback_traffic
-    description: Set configuration for IPv6 loopback traffic
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_ipv6_loopback_traffic
-  - id: xccdf_org.ssgproject.content_rule_set_loopback_traffic
-    description: Set configuration for loopback traffic
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_loopback_traffic
-  - id: xccdf_org.ssgproject.content_rule_set_nftables_base_chain
-    description: Ensure Base Chains Exist for Nftables
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_nftables_base_chain
-  - id: xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic
-    description: Set nftables Configuration for Loopback Traffic
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic
-  - id: xccdf_org.ssgproject.content_rule_set_nftables_table
-    description: Ensure a Table Exists for Nftables
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_nftables_table
   - id: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_logindefs
     description: Set Password Hashing Algorithm in /etc/login.defs
     filters: *id001
@@ -2725,22 +2469,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth
-  - id: xccdf_org.ssgproject.content_rule_set_ufw_default_rule
-    description: Ensure ufw Default Deny Firewall Policy
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_ufw_default_rule
-  - id: xccdf_org.ssgproject.content_rule_set_ufw_loopback_traffic
-    description: Set UFW Loopback Traffic
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_set_ufw_loopback_traffic
   - id: xccdf_org.ssgproject.content_rule_socket_systemd-journal-remote_disabled
     description: Disable systemd-journal-remote Socket
     filters: *id001
@@ -2829,14 +2557,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_login_grace_time
-  - id: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_info
-    description: Set LogLevel to INFO
+  - id: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose_or_info
+    description: Set SSH Daemon LogLevel to VERBOSE or INFO
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_info
+          rule: xccdf_org.ssgproject.content_rule_sshd_set_loglevel_verbose_or_info
   - id: xccdf_org.ssgproject.content_rule_sshd_set_max_auth_tries
     description: Set SSH authentication attempt limit
     filters: *id001
@@ -2861,30 +2589,30 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sshd_set_maxstartups
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_ciphers
-    description: Use Only Strong Ciphers
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_ciphers_cis
+    description: Disable SSH Ciphers Prohibited by CIS
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_ciphers
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
-    description: Use Only Strong Key Exchange algorithms
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_ciphers_cis
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex_cis
+    description: Disable SSH Key Exchange Algorithms Prohibited by CIS
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex
-  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
-    description: Use Only Strong MACs
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_kex_cis
+  - id: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs_cis
+    description: Disable SSH MACs Prohibited by CIS
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs
+          rule: xccdf_org.ssgproject.content_rule_sshd_use_strong_macs_cis
   - id: xccdf_org.ssgproject.content_rule_sudo_add_use_pty
     description: Ensure Only Users Logged In To Real tty Can Execute Sudo - sudo use_pty
     filters: *id001
@@ -2957,6 +2685,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_accept_source_route
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_forwarding
+    description: Disable Kernel Parameter for IPv4 Forwarding on all IPv4 Interfaces
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_forwarding
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_all_log_martians
     description: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces
     filters: *id001
@@ -3005,6 +2741,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_forwarding
+    description: Disable Kernel Parameter for IPv4 Forwarding By Default
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_forwarding
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
     description: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces by Default
     filters: *id001
@@ -3053,14 +2797,6 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
-    description: Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2204-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_ip_forward
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_tcp_syncookies
     description: Enable Kernel Parameter to Use TCP Syncookies on Network Interfaces
     filters: *id001
@@ -3125,6 +2861,14 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_accept_source_route
+  - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_forwarding
+    description: Disable Kernel Parameter for IPv6 Forwarding by default
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv6_conf_default_forwarding
   - id: xccdf_org.ssgproject.content_rule_systemd_journal_upload_server_tls
     description: 'Configure systemd-journal-upload TLS parameters: ServerKeyFile, ServerCertificateFile and TrustedCertificateFile'
     filters: *id001
@@ -3141,14 +2885,22 @@ rules:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_systemd_journal_upload_url
-  - id: xccdf_org.ssgproject.content_rule_ufw_rules_for_open_ports
-    description: Ensure ufw Firewall Rules Exist for All Open Ports
+  - id: xccdf_org.ssgproject.content_rule_ufw_default_incoming_rule
+    description: Ensure ufw Default Deny Policy for Incoming Connections
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2204-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
-          rule: xccdf_org.ssgproject.content_rule_ufw_rules_for_open_ports
+          rule: xccdf_org.ssgproject.content_rule_ufw_default_incoming_rule
+  - id: xccdf_org.ssgproject.content_rule_ufw_disabled_routed
+    description: Ensure ufw Default Policy for Routed (Forwarded) Traffic is Disabled
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2204-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_cis_level1_server
+          rule: xccdf_org.ssgproject.content_rule_ufw_disabled_routed
   - id: xccdf_org.ssgproject.content_rule_use_pam_wheel_group_for_su
     description: Enforce Usage of pam_wheel with Group Parameter for su Authentication
     filters: *id001
