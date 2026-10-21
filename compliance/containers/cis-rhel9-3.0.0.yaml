@@ -2806,7 +2806,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_forwarding
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
-    description: Enable Kernel Paremeter to Log Martian Packets on all IPv4 Interfaces by Default
+    description: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces by Default
     filters: *id001
     input:
       - xccdf:
