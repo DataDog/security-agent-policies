@@ -646,7 +646,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_file_groupowner_etc_shells
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_grub2_cfg
-    description: Verify /boot/grub2/grub.cfg Group Ownership
+    description: Verify /boot/grub/grub.cfg Group Ownership
     filters: *id001
     input:
       - xccdf:
@@ -1566,7 +1566,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_package_ftp_removed
   - id: xccdf_org.ssgproject.content_rule_package_httpd_removed
-    description: Uninstall apache2 Package
+    description: Uninstall httpd Package
     filters: *id001
     input:
       - xccdf:
@@ -2222,7 +2222,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
-    description: Enable Kernel Paremeter to Log Martian Packets on all IPv4 Interfaces by Default
+    description: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces by Default
     filters: *id001
     input:
       - xccdf:
