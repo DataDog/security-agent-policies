@@ -1701,22 +1701,6 @@ rules:
           name: ssg-rhel10-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_cis_server_l1
           rule: xccdf_org.ssgproject.content_rule_no_empty_passwords
-  - id: xccdf_org.ssgproject.content_rule_no_files_or_dirs_ungroupowned
-    description: Ensure All Files And Directories Are Owned by a Group
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_no_files_or_dirs_ungroupowned
-  - id: xccdf_org.ssgproject.content_rule_no_files_or_dirs_unowned_by_user
-    description: Ensure All Files And Directories Are Owned by a User
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-rhel10-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_cis_server_l1
-          rule: xccdf_org.ssgproject.content_rule_no_files_or_dirs_unowned_by_user
   - id: xccdf_org.ssgproject.content_rule_no_forward_files
     description: Verify No .forward Files Exist
     filters: *id001
