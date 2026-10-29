@@ -1294,7 +1294,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_mcafeetp_installed
   - id: xccdf_org.ssgproject.content_rule_package_opensc_installed
-    description: Install the opensc Package For Multifactor Authentication
+    description: Install the opensc-pkcs11 Package For Multifactor Authentication
     filters: *id001
     input:
       - xccdf:

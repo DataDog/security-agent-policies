@@ -1350,7 +1350,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
   - id: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
-    description: Uninstall openldap-servers Package
+    description: Uninstall slapd Package
     filters: *id001
     input:
       - xccdf:
@@ -1918,7 +1918,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_accept_source_route
   - id: xccdf_org.ssgproject.content_rule_sysctl_net_ipv4_conf_default_log_martians
-    description: Enable Kernel Paremeter to Log Martian Packets on all IPv4 Interfaces by Default
+    description: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces by Default
     filters: *id001
     input:
       - xccdf:
