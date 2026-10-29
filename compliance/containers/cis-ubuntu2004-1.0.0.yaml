@@ -1350,7 +1350,7 @@ rules:
           profile: xccdf_org.ssgproject.content_profile_cis_level1_server
           rule: xccdf_org.ssgproject.content_rule_package_openldap-clients_removed
   - id: xccdf_org.ssgproject.content_rule_package_openldap-servers_removed
-    description: Uninstall slapd Package
+    description: Uninstall openldap-servers Package
     filters: *id001
     input:
       - xccdf:
