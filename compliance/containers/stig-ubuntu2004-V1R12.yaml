@@ -197,14 +197,6 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled
-  - id: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
-    description: Verify that All World-Writable Directories Have Sticky Bits Set (STIG)
-    filters: *id001
-    input:
-      - xccdf:
-          name: ssg-ubuntu2004-ds.xml.bz2
-          profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_var_log_syslog
     description: Verify Group Who Owns /var/log/syslog File (STIG)
     filters: *id001
