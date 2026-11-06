@@ -1,8 +1,8 @@
 schema:
   version: 1.0.0
-name: Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R12
+name: Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V2R4
 framework: stig-ubuntu2004
-version: V1R12
+version: v2r4
 rules:
   - id: xccdf_org.ssgproject.content_rule_account_disable_post_pw_expiration
     description: Set Account Expiration Following Inactivity (STIG)
@@ -389,14 +389,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_set_keepalive
-  - id: xccdf_org.ssgproject.content_rule_sudo_require_authentication
-    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo (STIG)
+  - id: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
+    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo !authenticate (STIG)
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_sudo_require_authentication
+          rule: xccdf_org.ssgproject.content_rule_sudo_remove_no_authenticate
   - id: xccdf_org.ssgproject.content_rule_sysctl_kernel_dmesg_restrict
     description: Restrict Access to Kernel Message Buffer (STIG)
     filters: *id001
@@ -469,6 +469,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_audit
+  - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_authsucc
+    description: Reset the pam_faillock Records After a Successful Authentication (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_authsucc
   - id: xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_interval
     description: Set Interval For Counting Failed Password Attempts (STIG)
     filters: *id001
@@ -613,6 +621,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_dac_modification_setxattr
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_etc_cron_d
+    description: Ensure auditd Collects Changes to Cron Jobs - /etc/cron.d/ (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_etc_cron_d
   - id: xccdf_org.ssgproject.content_rule_audit_rules_execution_chacl
     description: Record Any Attempts to Run chacl (STIG)
     filters: *id001
@@ -1013,6 +1029,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_audit_rules_usergroup_modification_shadow
+  - id: xccdf_org.ssgproject.content_rule_audit_rules_var_spool_cron
+    description: Ensure auditd Collects Changes to Cron Jobs - /var/spool/cron (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_audit_rules_var_spool_cron
   - id: xccdf_org.ssgproject.content_rule_audit_sudo_log_events
     description: Record Attempts to perform maintenance activities (STIG)
     filters: *id001
@@ -1221,14 +1245,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_ensure_sudo_group_restricted
-  - id: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit
-    description: System Audit Logs Must Be Group Owned By Root (STIG)
+  - id: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit_stig
+    description: System Audit Logs Must Be Group Owned By Root (log_group) (STIG)
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit
+          rule: xccdf_org.ssgproject.content_rule_file_group_ownership_var_log_audit_stig
   - id: xccdf_org.ssgproject.content_rule_file_groupowner_var_log
     description: Verify Group Who Owns /var/log Directory (STIG)
     filters: *id001
@@ -1333,6 +1357,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_auditd
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rules
+    description: Verify Permissions on /etc/audit/audit.rules (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rules
   - id: xccdf_org.ssgproject.content_rule_file_permissions_etc_audit_rulesd
     description: Verify Permissions on /etc/audit/rules.d/*.rules (STIG)
     filters: *id001
@@ -1349,14 +1381,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_file_permissions_library_dirs
-  - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit
-    description: System Audit Logs Must Have Mode 0640 or Less Permissive (STIG)
+  - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit_stig
+    description: System Audit Logs Must Have Mode 0600 or Less Permissive (STIG)
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit
+          rule: xccdf_org.ssgproject.content_rule_file_permissions_var_log_audit_stig
   - id: xccdf_org.ssgproject.content_rule_file_permissions_var_log
     description: Verify Permissions on /var/log Directory (STIG)
     filters: *id001
@@ -1421,14 +1453,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_audit_installed
-  - id: xccdf_org.ssgproject.content_rule_package_mcafeetp_installed
-    description: Install McAfee Endpoint Security for Linux (ENSL) (STIG)
+  - id: xccdf_org.ssgproject.content_rule_package_nss_sss_installed
+    description: Install nss-sss Package (STIG)
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_package_mcafeetp_installed
+          rule: xccdf_org.ssgproject.content_rule_package_nss_sss_installed
   - id: xccdf_org.ssgproject.content_rule_package_opensc_installed
     description: Install the opensc-pkcs11 Package For Multifactor Authentication (STIG)
     filters: *id001
@@ -1445,6 +1477,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_openssh-server_installed
+  - id: xccdf_org.ssgproject.content_rule_package_pam_sss_installed
+    description: Install pam-sss Package (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_package_pam_sss_installed
   - id: xccdf_org.ssgproject.content_rule_package_rsh-server_removed
     description: Uninstall rsh-server Package (STIG)
     filters: *id001
@@ -1453,14 +1493,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_package_rsh-server_removed
-  - id: xccdf_org.ssgproject.content_rule_policy_temp_passwords_immediate_change
-    description: Policy Requires Immediate Change of Temporary Passwords (STIG)
+  - id: xccdf_org.ssgproject.content_rule_package_sssd_installed
+    description: Install the SSSD Package (STIG)
     filters: *id001
     input:
       - xccdf:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
-          rule: xccdf_org.ssgproject.content_rule_policy_temp_passwords_immediate_change
+          rule: xccdf_org.ssgproject.content_rule_package_sssd_installed
   - id: xccdf_org.ssgproject.content_rule_prevent_direct_root_logins
     description: Direct root Logins Are Not Allowed (STIG)
     filters: *id001
@@ -1511,6 +1551,14 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_service_sshd_enabled
+  - id: xccdf_org.ssgproject.content_rule_service_sssd_enabled
+    description: Enable the SSSD Service (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_service_sssd_enabled
   - id: xccdf_org.ssgproject.content_rule_smartcard_configure_ca
     description: Configure Smart Card Certificate Authority Validation (STIG)
     filters: *id001
@@ -1591,6 +1639,38 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sshd_x11_use_localhost
+  - id: xccdf_org.ssgproject.content_rule_sssd_certification_path_trust_anchor
+    description: Certificate trust path in SSSD (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sssd_certification_path_trust_anchor
+  - id: xccdf_org.ssgproject.content_rule_sssd_enable_pam_services
+    description: Configure PAM in SSSD Services (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sssd_enable_pam_services
+  - id: xccdf_org.ssgproject.content_rule_sssd_enable_smartcards
+    description: Enable Smartcards in SSSD (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sssd_enable_smartcards
+  - id: xccdf_org.ssgproject.content_rule_sssd_enable_user_cert
+    description: Enable Certificates Mapping in SSSD (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sssd_enable_user_cert
   - id: xccdf_org.ssgproject.content_rule_sssd_offline_cred_expiration
     description: Configure SSSD to Expire Offline Credentials (STIG)
     filters: *id001
@@ -1599,6 +1679,22 @@ rules:
           name: ssg-ubuntu2004-ds.xml.bz2
           profile: xccdf_org.ssgproject.content_profile_stig
           rule: xccdf_org.ssgproject.content_rule_sssd_offline_cred_expiration
+  - id: xccdf_org.ssgproject.content_rule_sudo_remove_nopasswd
+    description: Ensure Users Re-Authenticate for Privilege Escalation - sudo NOPASSWD (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sudo_remove_nopasswd
+  - id: xccdf_org.ssgproject.content_rule_sudo_restrict_privilege_elevation_to_authorized
+    description: The operating system must restrict privilege elevation to authorized personnel (STIG)
+    filters: *id001
+    input:
+      - xccdf:
+          name: ssg-ubuntu2004-ds.xml.bz2
+          profile: xccdf_org.ssgproject.content_profile_stig
+          rule: xccdf_org.ssgproject.content_rule_sudo_restrict_privilege_elevation_to_authorized
   - id: xccdf_org.ssgproject.content_rule_ufw_only_required_services
     description: Only Allow Authorized Network Services in ufw (STIG)
     filters: *id001
