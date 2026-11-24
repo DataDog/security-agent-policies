@@ -1,5 +1,5 @@
 # IMPORTANT: Edits to this file will not be reflected in the Datadog App and will be overwritten with new policy file downloads. Please modify rules in the Datadog App for full functionality.
-version: 1.71.2
+version: 1.72.0
 type: policy
 macros:
   - id: APP_PACKAGE_MANAGERS
@@ -140,6 +140,12 @@ macros:
     expression: '[~"python2*", ~"python3*", "node", "perl", ~"ruby*"]'
   - id: IPCHECK_DOMAINS
     expression: '["icanhazip.com", "ip-api.com", "myip.opendns.com", "checkip.amazonaws.com", "whatismyip.akamai.com"]'
+  - id: KNOWN_EBPF_TOOLS
+    description: Third-party security agents and tracing tools that legitimately load eBPF programs declaring tampering-capable helpers, matching Tetragon by executable name and SentinelOne agent executables and bpftrace by installation path
+    expression: |-
+      (process.file.name in ["tetragon", "tetragon-ce", "tetragon-ee"] ||
+       process.file.path in ["/usr/bin/bpftrace", "/usr/local/bin/bpftrace"] ||
+       (process.file.name == "sentinelone-agent" && process.file.path in [~"/opt/sentinelone/**", ~"/opt/SentinelOne/**"]))
   - id: LIBC_VERSIONS
     description: LIBC Library Versions
     expression: '["libc-2.29.so", "libc-2.30.so", "libc-2.31.so", "libc-2.32.so", "libc-2.33.so", "libc-2.34.so", "libc-2.35.so", "libc-2.36.so", "libc-2.37.so"]'
@@ -173,6 +179,9 @@ macros:
       "/usr/bin/dnf-automatic"]'
   - id: PASTE_SITES
     expression: '["pastebin.com", "ghostbin.com", "termbin.com", "klgrth.io", "rentry.co", "transfer.sh"]'
+  - id: PHP_PROCESSES
+    description: Processes that execute PHP application code (PHP-FPM, CGI, LiteSpeed, Apache mod_php, FrankenPHP)
+    expression: '[~"php*", ~"lsphp*", "apache2", "httpd", "frankenphp"]'
   - id: PROXYJACKING_DOMAINS
     expression: '[~"*.honeygain.com", "honeygain.com", ~"*.peer2profit.com", "peer2profit.com", ~"*.iproyal.com", "iproyal.com", ~"*.pawns.app", "pawns.app", ~"*.traffmonetizer.com", "traffmonetizer.com", ~"*.proxyrack.com", "proxyrack.com", ~"*.packetstream.io",
       "packetstream.io", ~"*.earn.fm", "earn.fm", ~"*.earnfm.com", "earnfm.com", ~"*.repocket.com", "repocket.com", ~"*.getgrass.io", "getgrass.io"]   '
@@ -850,7 +859,10 @@ rules:
         (exec.file.name in ["pip", "pip2", "pip3", ~"pip3.*", "pipx", "uv"] &&
          process.args =~ "* install *") ||
         (exec.file.name in ["python", "python3", ~"python3.*"] &&
-         (process.args =~ "* -m pip install *" || process.args =~ "* -m uv pip install *" || process.args =~ "* setup.py install*")) ||
+         (process.args =~ "* -m pip install *" || process.args =~ "-m pip install *" ||
+          process.args =~ "* -m uv pip install *" || process.args =~ "-m uv pip install *" ||
+          process.args =~ "setup.py install*" || process.args =~ "*/setup.py install*" ||
+          process.args =~ "* setup.py install*")) ||
         (exec.file.name == "poetry" &&
          (process.args =~ "* install*" || process.args =~ "* add *")) ||
         (exec.file.name in ["conda", "mamba"] &&
@@ -1183,10 +1195,11 @@ rules:
     filters:
       - os == "linux"
   - id: bpf_override_return_usage
-    description: 'An eBPF program declaring the bpf_override_return helper was loaded. This helper forces an early return from a kernel function and is a classic eBPF-rootkit primitive used to bypass LSM checks, silence kill signals, or hide filesystem entries
-      from getdents. In-the-wild example: the LinkPro rootkit (Synacktiv), a Go eBPF rootkit that uses bpf_override_return to hook getdents and sys_bpf to hide its own programs, with a fallback to /etc/ld.so.preload on kernels where the helper is unavailable.
-      Legitimate uses of this helper are rare (fault injection in kernel tests) and should be allowlisted per-host.'
-    expression: bpf.cmd == BPF_PROG_LOAD && BPF_OVERRIDE_RETURN in bpf.prog.helpers
+    description: 'An eBPF program declaring the bpf_override_return helper was loaded from a process outside the known eBPF tooling set (Tetragon executable names, SentinelOne agent executables and bpftrace at standard install paths). This helper forces an early
+      return from a kernel function and is a classic eBPF-rootkit primitive used to bypass LSM checks, silence kill signals, or hide filesystem entries from getdents. In-the-wild example: the LinkPro rootkit (Synacktiv), a Go eBPF rootkit that uses bpf_override_return
+      to hook getdents and sys_bpf to hide its own programs, with a fallback to /etc/ld.so.preload on kernels where the helper is unavailable. Legitimate uses of this helper are rare (fault injection in kernel tests, Tetragon Override enforcement, bpftrace override
+      probes) and should be allowlisted per-host.'
+    expression: bpf.cmd == BPF_PROG_LOAD && BPF_OVERRIDE_RETURN in bpf.prog.helpers && !KNOWN_EBPF_TOOLS
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1014-rootkit
@@ -1194,11 +1207,11 @@ rules:
     filters:
       - os == "linux"
   - id: bpf_probe_write_user_usage
-    description: 'An eBPF program declaring the bpf_probe_write_user helper was loaded from a process outside the Datadog Agent. This helper writes into the traced process''s userspace memory and is abused by eBPF rootkits to tamper with syscall return buffers,
-      argv, authentication results, or Netlink responses so that host tools report a doctored view of the system. In-the-wild example: the VoidLink rootkit (Elastic Security Labs), which kprobes __sys_recvmsg and uses bpf_probe_write_user to rewrite Netlink
-      SOCK_DIAG_BY_FAMILY responses so that `ss` swallows attacker sockets into the preceding message and skips them. Legitimate uses (userspace profilers, fuzzers via uprobe) exist, but are uncommon enough that per-host allowlisting is preferred over broadly
-      disabling the rule.'
-    expression: bpf.cmd == BPF_PROG_LOAD && BPF_PROBE_WRITE_USER in bpf.prog.helpers && process.file.path not in DD_AGENT_PROCESSES
+    description: 'An eBPF program declaring the bpf_probe_write_user helper was loaded from a process outside the Datadog Agent and the known eBPF tooling set (Tetragon executable names, SentinelOne agent executables and bpftrace at standard install paths).
+      This helper writes into the traced process''s userspace memory and is abused by eBPF rootkits to tamper with syscall return buffers, argv, authentication results, or Netlink responses so that host tools report a doctored view of the system. In-the-wild
+      example: the VoidLink rootkit (Elastic Security Labs), which kprobes __sys_recvmsg and uses bpf_probe_write_user to rewrite Netlink SOCK_DIAG_BY_FAMILY responses so that `ss` swallows attacker sockets into the preceding message and skips them. Legitimate
+      uses (userspace profilers, fuzzers via uprobe, third-party eBPF security agents) exist, but are uncommon enough that per-host allowlisting is preferred over broadly disabling the rule.'
+    expression: bpf.cmd == BPF_PROG_LOAD && BPF_PROBE_WRITE_USER in bpf.prog.helpers && process.file.path not in DD_AGENT_PROCESSES && !KNOWN_EBPF_TOOLS
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1014-rootkit
@@ -1206,10 +1219,11 @@ rules:
     filters:
       - os == "linux"
   - id: bpf_send_signal_usage
-    description: An eBPF program declaring the bpf_send_signal or bpf_send_signal_thread helper was loaded. These helpers deliver a signal to the traced task from kernel context and are abused by eBPF rootkits to terminate endpoint security tooling (EDR agents,
-      auditd, osquery) from a kprobe or fentry program, bypassing the usual ptrace/kill audit trail. Legitimate uses are narrow (some bpftrace signal-on-event scripts, research profilers) and should be allowlisted per-host. Pairs well with the bpf_override_return
-      and bpf_probe_write_user rules to cover the core eBPF-rootkit tampering primitive set.
-    expression: bpf.cmd == BPF_PROG_LOAD && (BPF_SEND_SIGNAL in bpf.prog.helpers || BPF_SEND_SIGNAL_THREAD in bpf.prog.helpers)
+    description: An eBPF program declaring the bpf_send_signal or bpf_send_signal_thread helper was loaded from a process outside the known eBPF tooling set (Tetragon executable names, SentinelOne agent executables and bpftrace at standard install paths). These
+      helpers deliver a signal to the traced task from kernel context and are abused by eBPF rootkits to terminate endpoint security tooling (EDR agents, auditd, osquery) from a kprobe or fentry program, bypassing the usual ptrace/kill audit trail. Legitimate
+      uses are narrow (Tetragon Sigkill enforcement, some bpftrace signal-on-event scripts, research profilers) and should be allowlisted per-host. Pairs well with the bpf_override_return and bpf_probe_write_user rules to cover the core eBPF-rootkit tampering
+      primitive set.
+    expression: bpf.cmd == BPF_PROG_LOAD && (BPF_SEND_SIGNAL in bpf.prog.helpers || BPF_SEND_SIGNAL_THREAD in bpf.prog.helpers) && !KNOWN_EBPF_TOOLS
     product_tags:
       - tactic:TA0005-defense-evasion
       - technique:T1562-impair-defenses
@@ -2080,7 +2094,7 @@ rules:
       - os == "linux"
   - id: dynamic_linker_config_write
     description: A process wrote to a dynamic linker config file
-    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && open.flags & (OPEN_WRITE_FLAGS) > 0 && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES && process.ancestors.file.path not in DD_AGENT_PROCESSES
+    expression: open.file.path in ["/etc/ld.so.preload", "/etc/ld.so.conf", ~"/etc/ld.so.conf.d/*.conf"] && open.flags & (O_TRUNC|O_APPEND|O_RDWR|O_WRONLY) > 0 && process.file.path not in PACKAGE_MANAGERS_AND_RUNTIMES && process.ancestors.file.path not in DD_AGENT_PROCESSES
       && process.argv0 not in ["runc", "/usr/bin/runc", "/usr/sbin/runc"] && process.file.path not in ["/usr/bin/nvidia-ctk", "/usr/local/nvidia/toolkit/nvidia-ctk"]
     tags:
       threat_score: '8'
@@ -3737,6 +3751,69 @@ rules:
       - policy:threat-detection
     filters:
       - os == "linux"
+  - id: php_script_renamed
+    description: A PHP application process renamed a file to a PHP script
+    expression: |-
+      rename.retval == 0 &&
+      (rename.file.destination.name =~ "*.php" || rename.syscall.destination.path =~ "*.php") &&
+      process.file.name in [~"php*", ~"lsphp*", "apache2", "httpd", "frankenphp"]
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1505-server-software-component
+      - subtechnique:T1505.003-web-shell
+      - policy:threat-detection
+    actions:
+      - filter: rename.retval == 0 && rename.file.destination.mount_id != 0 && rename.file.destination.inode != 0
+        set:
+          name: uploaded_code_file_ids
+          default_value: ''
+          expression: '"%{rename.file.destination.mount_id}:%{rename.file.destination.inode}"'
+          scope: cgroup
+          append: true
+          size: 64
+      - filter: rename.retval == 0 && rename.file.destination.mount_id != 0 && rename.file.destination.inode != 0
+        set:
+          name: current_php_script_file_id
+          default_value: ''
+          expression: '"%{rename.file.destination.mount_id}:%{rename.file.destination.inode}"'
+          append: false
+          ttl: 1000000
+          size: 1
+    agent_version: '>= 7.80'
+    filters:
+      - os == "linux"
+  - id: php_script_written
+    description: A PHP application process opened a PHP script for writing or creation
+    expression: |-
+      open.retval >= 0 &&
+      open.file.name =~ "*.php" &&
+      open.flags & (O_WRONLY | O_RDWR | O_CREAT | O_TRUNC) > 0 &&
+      process.file.name in [~"php*", ~"lsphp*", "apache2", "httpd", "frankenphp"]
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1505-server-software-component
+      - subtechnique:T1505.003-web-shell
+      - policy:threat-detection
+    actions:
+      - filter: open.retval >= 0 && open.file.mount_id != 0 && open.file.inode != 0
+        set:
+          name: uploaded_code_file_ids
+          default_value: ''
+          expression: '"%{open.file.mount_id}:%{open.file.inode}"'
+          scope: cgroup
+          append: true
+          size: 64
+      - filter: open.retval >= 0 && open.file.mount_id != 0 && open.file.inode != 0
+        set:
+          name: current_php_script_file_id
+          default_value: ''
+          expression: '"%{open.file.mount_id}:%{open.file.inode}"'
+          append: false
+          ttl: 1000000
+          size: 1
+    agent_version: '>= 7.80'
+    filters:
+      - os == "linux"
   - id: php_shell
     description: Process arguments indicating possible php shell detected
     expression: exec.file.name == "php" && exec.args_flags in ["r"] && ((exec.args in [~"*socket_bind*", ~"*socket_listen*", ~"*socket_accept*", ~"*socket_create*", ~"*socket_write*", ~"*socket_read*"]) || (exec.args in [~"*/bin/bash*", ~"*/bin/sh*"]))
@@ -3755,6 +3832,35 @@ rules:
       - policy:threat-detection
     filters:
       - os == "windows"
+  - id: php_uploaded_script_read
+    description: A PHP application process opened a previously uploaded script for reading
+    expression: |-
+      open.retval >= 0 && open.file.name =~ "*.php" && open.file.mount_id != 0 && open.file.inode != 0 &&
+      "%{open.file.mount_id}:%{open.file.inode}" in ${cgroup.uploaded_code_file_ids} &&
+      (open.flags & O_ACCMODE == O_RDONLY || open.flags & O_ACCMODE == O_RDWR) &&
+      open.flags & O_PATH == 0 &&
+      process.file.name in PHP_PROCESSES
+    product_tags:
+      - tactic:TA0003-persistence
+      - technique:T1505-server-software-component
+      - subtechnique:T1505.003-web-shell
+      - policy:threat-detection
+    actions:
+      - set:
+          name: suspected_webshell_file_id
+          default_value: ''
+          expression: '"%{open.file.mount_id}:%{open.file.inode}"'
+          scope: cgroup
+          ttl: 600000000000
+      - set:
+          name: suspected_webshell_file
+          field: open.file.path
+          scope: cgroup
+          ttl: 600000000000
+    silent: false
+    agent_version: '>= 7.86.1'
+    filters:
+      - os == "linux"
   - id: potential_web_shell_parent
     description: A web application spawned a shell or shell utility
     expression: |-
@@ -4211,6 +4317,7 @@ rules:
     expression: |-
       exec.file.path in SHELLS &&
       process.sid == process.pid &&
+      process.parent.file.path not in ["/tmp/cws-instrumentation", "/datadog-cws-instrumentation/cws-instrumentation"] &&
       (
         process.parent.file.path in [~"/tmp/**", ~"/var/tmp/**", ~"/dev/shm/**", ~"/run/user/**"] ||
         process.parent.file.modification_time < 5m ||
@@ -4787,6 +4894,65 @@ rules:
           private: true
           scope: cgroup
     agent_version: '>= 7.71'
+    filters:
+      - os == "linux"
+  - id: suspected_webshell_outbound_connection
+    description: A process associated with a suspected webshell initiated a non-loopback network connection
+    expression: |-
+      ${cgroup.suspected_webshell_file} != "" &&
+      (process.file.name in PHP_PROCESSES || process.ancestors.file.name in PHP_PROCESSES) &&
+      (connect.addr.family == AF_INET || connect.addr.family == AF_INET6) &&
+      connect.addr.ip not in [127.0.0.0/8, 0.0.0.0/32, ::1/128, ::/128]
+    product_tags:
+      - tactic:TA0011-command-and-control
+      - technique:T1071-application-layer-protocol
+      - policy:threat-detection
+    silent: false
+    agent_version: '>= 7.86.1'
+    filters:
+      - os == "linux"
+  - id: suspected_webshell_sensitive_file_read
+    description: A process associated with a suspected webshell opened a sensitive file for reading
+    expression: |-
+      ${cgroup.suspected_webshell_file} != "" &&
+      (process.file.name in PHP_PROCESSES || process.ancestors.file.name in PHP_PROCESSES) &&
+      open.retval >= 0 && open.flags & O_ACCMODE != O_WRONLY && open.flags & O_PATH == 0 &&
+      (open.file.path in CREDENTIAL_PATHS_SSH ||
+       open.file.path in CREDENTIAL_PATHS_AWS ||
+       open.file.path in CREDENTIAL_PATHS_GCP ||
+       open.file.path in CREDENTIAL_PATHS_AZURE ||
+       open.file.path in CREDENTIAL_PATHS_K8S ||
+       open.file.path in CREDENTIAL_PATHS_DOCKER ||
+       open.file.path in CREDENTIAL_PATHS_SYSTEM)
+    product_tags:
+      - tactic:TA0006-credential-access
+      - technique:T1552-unsecured-credentials
+      - subtechnique:T1552.001-credentials-in-files
+      - policy:threat-detection
+    silent: false
+    agent_version: '>= 7.86.1'
+    filters:
+      - os == "linux"
+  - id: suspected_webshell_shell_execution
+    description: A process associated with a suspected webshell executed a shell or shell utility
+    expression: |-
+      ${cgroup.suspected_webshell_file} != "" &&
+      (process.file.name in PHP_PROCESSES || process.ancestors.file.name in PHP_PROCESSES) &&
+      (exec.file.path in SHELLS || exec.comm in HTTP_UTILS || exec.file.path in SHELL_UTILS)
+    product_tags:
+      - tactic:TA0002-execution
+      - technique:T1059-command-and-scripting-interpreter
+      - policy:threat-detection
+    actions:
+      - filter: ${process.correlation_key} == ""
+        set:
+          name: correlation_key
+          default_value: ''
+          expression: '"php_webshell_${builtins.uuid4}"'
+          scope: process
+          inherited: true
+    silent: false
+    agent_version: '>= 7.86.1'
     filters:
       - os == "linux"
   - id: suspicious_bitsadmin_usage
